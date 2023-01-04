@@ -42,7 +42,7 @@ class ProximityTerminalControl(term: Terminal with ProximityUnit)
   def RepairableObject = term
   def AutoRepairObject = term
 
-  var terminalAction: Cancellable             = Default.Cancellable
+private var terminalAction: Cancellable             = Default.Cancellable
   val callbacks: mutable.ListBuffer[ActorRef] = new mutable.ListBuffer[ActorRef]()
   val log                                     = org.log4s.getLogger
 

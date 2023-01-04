@@ -34,8 +34,8 @@ class OrbitalShuttlePadControl(pad: OrbitalShuttlePad) extends Actor {
     * (actually, a hallway with a teleport);
     * the target doors are of a specific type that flag their purpose - "gr_door_mb_orb"
     */
-  var managedDoors: List[Door] = Nil
-  var shuttle: Vehicle = _
+private var managedDoors: List[Door] = Nil
+private var shuttle: Vehicle = _
 
   def receive: Receive = startUp
 

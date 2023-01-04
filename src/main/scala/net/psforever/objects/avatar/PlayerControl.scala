@@ -74,9 +74,9 @@ class PlayerControl(player: Player, avatarActor: typed.ActorRef[AvatarActor.Comm
   private[this] val log = org.log4s.getLogger(player.Name)
   private[this] val damageLog = org.log4s.getLogger(Damageable.LogChannel)
   /** suffocating, or regaining breath? */
-  var submergedCondition: Option[OxygenState] = None
+private var submergedCondition: Option[OxygenState] = None
   /** assistance for deployable construction, retention of the construction item */
-  var deployablePair: Option[(Deployable, ConstructionItem)] = None
+private var deployablePair: Option[(Deployable, ConstructionItem)] = None
   /** control agency for the player's locker container (dedicated inventory slot #5) */
   val lockerControlAgent: ActorRef = {
     val locker = player.avatar.locker

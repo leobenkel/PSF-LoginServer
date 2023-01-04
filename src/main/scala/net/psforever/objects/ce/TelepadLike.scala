@@ -157,7 +157,7 @@ object TelepadLike {
   * @param obj an entity that extends `TelepadLike`
   */
 class TelepadControl(obj: InternalTelepad) extends akka.actor.Actor {
-  var setup: Cancellable = Default.Cancellable
+private var setup: Cancellable = Default.Cancellable
 
   def receive: akka.actor.Actor.Receive = {
     case TelepadLike.Activate(o: InternalTelepad) if obj eq o =>

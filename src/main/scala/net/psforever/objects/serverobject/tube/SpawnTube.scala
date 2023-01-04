@@ -10,7 +10,7 @@ import net.psforever.objects.serverobject.structures.Amenity
   * @param tDef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
   */
 class SpawnTube(tDef: SpawnTubeDefinition) extends Amenity with SpawnPoint {
-  var offline: Boolean = false
+private var offline: Boolean = false
 
   override def isOffline: Boolean = offline || super.isOffline
 

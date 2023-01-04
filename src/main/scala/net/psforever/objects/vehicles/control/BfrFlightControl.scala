@@ -16,7 +16,7 @@ class BfrFlightControl(vehicle: Vehicle)
   with VehicleCapacitance {
   def CapacitanceObject: Vehicle = vehicle
 
-  var flying: Option[Boolean] = None
+private var flying: Option[Boolean] = None
 
   override def postStop() : Unit = {
     super.postStop()

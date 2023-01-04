@@ -9,8 +9,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 class SphereOfInfluenceActor(zone: Zone) extends Actor {
-  var sois: Iterable[(Building, Int)] = Nil
-  var populateTick: Cancellable       = Default.Cancellable
+private var sois: Iterable[(Building, Int)] = Nil
+private var populateTick: Cancellable       = Default.Cancellable
   //private[this] val log = org.log4s.getLogger(s"${zone.Id.capitalize}-SphereOfInfluenceActor")
 
   def receive: Receive = Stopped

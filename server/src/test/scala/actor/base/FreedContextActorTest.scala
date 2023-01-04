@@ -32,7 +32,7 @@ abstract class FreedContextActorTest extends ActorTest {
   * Surrender your `context` object for a greater good!
   */
 private class ContextSensitive extends Actor {
-  var output: ActorRef = ActorRef.noSender
+private var output: ActorRef = ActorRef.noSender
 
   def receive: Receive = {
     case _ =>

@@ -181,44 +181,44 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
   MDC("connectionId") = connectionId
 
   private[this] val log                                              = org.log4s.getLogger
-  var avatarActor: typed.ActorRef[AvatarActor.Command]               = context.spawnAnonymous(AvatarActor(context.self))
-  var chatActor: typed.ActorRef[ChatActor.Command]                   = context.spawnAnonymous(ChatActor(context.self, avatarActor))
-  var accountIntermediary: ActorRef                                  = Default.Actor
-  var accountPersistence: ActorRef                                   = Default.Actor
-  var galaxyService: ActorRef                                        = Default.Actor
-  var squadService: ActorRef                                         = Default.Actor
-  var propertyOverrideManager: ActorRef                              = Default.Actor
-  var cluster: typed.ActorRef[ICS.Command]                           = Default.Actor
-  var _session: Session                                              = Session()
-  var progressBarValue: Option[Float]                                = None
-  var shooting: mutable.Set[PlanetSideGUID]                          = mutable.Set.empty //ChangeFireStateMessage_Start
-  var prefire: mutable.Set[PlanetSideGUID]                           = mutable.Set.empty //if WeaponFireMessage precedes ChangeFireStateMessage_Start
-  var shootingStart: mutable.HashMap[PlanetSideGUID, Long]           = mutable.HashMap[PlanetSideGUID, Long]()
-  var shootingStop: mutable.HashMap[PlanetSideGUID, Long]            = mutable.HashMap[PlanetSideGUID, Long]()
-  var shotsWhileDead: Int                                            = 0
-  var accessedContainer: Option[PlanetSideGameObject with Container] = None
-  var connectionState: Int                                           = 25
-  var flying: Boolean                                                = false
-  var loadConfZone: Boolean                                          = false
-  var noSpawnPointHere: Boolean                                      = false
-  var usingMedicalTerminal: Option[PlanetSideGUID]                   = None
-  var serverVehicleControlVelocity: Option[Int]                      = None
-  var deadState: DeadState.Value                                     = DeadState.Dead
+private var avatarActor: typed.ActorRef[AvatarActor.Command]               = context.spawnAnonymous(AvatarActor(context.self))
+private var chatActor: typed.ActorRef[ChatActor.Command]                   = context.spawnAnonymous(ChatActor(context.self, avatarActor))
+private var accountIntermediary: ActorRef                                  = Default.Actor
+private var accountPersistence: ActorRef                                   = Default.Actor
+private var galaxyService: ActorRef                                        = Default.Actor
+private var squadService: ActorRef                                         = Default.Actor
+private var propertyOverrideManager: ActorRef                              = Default.Actor
+private var cluster: typed.ActorRef[ICS.Command]                           = Default.Actor
+private var _session: Session                                              = Session()
+private var progressBarValue: Option[Float]                                = None
+private var shooting: mutable.Set[PlanetSideGUID]                          = mutable.Set.empty //ChangeFireStateMessage_Start
+private var prefire: mutable.Set[PlanetSideGUID]                           = mutable.Set.empty //if WeaponFireMessage precedes ChangeFireStateMessage_Start
+private var shootingStart: mutable.HashMap[PlanetSideGUID, Long]           = mutable.HashMap[PlanetSideGUID, Long]()
+private var shootingStop: mutable.HashMap[PlanetSideGUID, Long]            = mutable.HashMap[PlanetSideGUID, Long]()
+private var shotsWhileDead: Int                                            = 0
+private var accessedContainer: Option[PlanetSideGameObject with Container] = None
+private var connectionState: Int                                           = 25
+private var flying: Boolean                                                = false
+private var loadConfZone: Boolean                                          = false
+private var noSpawnPointHere: Boolean                                      = false
+private var usingMedicalTerminal: Option[PlanetSideGUID]                   = None
+private var serverVehicleControlVelocity: Option[Int]                      = None
+private var deadState: DeadState.Value                                     = DeadState.Dead
   val projectiles: Array[Option[Projectile]] =
     Array.fill[Option[Projectile]](Projectile.rangeUID - Projectile.baseUID)(None)
-  var drawDeloyableIcon: PlanetSideGameObject with Deployable => Unit = RedrawDeployableIcons
-  var updateSquad: () => Unit                                         = NoSquadUpdates
-  var recentTeleportAttempt: Long                                     = 0
-  var lastTerminalOrderFulfillment: Boolean                           = true
-  var kitToBeUsed: Option[PlanetSideGUID]                             = None
-  var shiftPosition: Option[Vector3]                                  = None
-  var shiftOrientation: Option[Vector3]                               = None
-  var nextSpawnPoint: Option[SpawnPoint]                              = None
-  var setupAvatarFunc: () => Unit                                     = AvatarCreate
-  var setCurrentAvatarFunc: Player => Unit                            = SetCurrentAvatarNormally
-  var persistFunc: () => Unit                                         = NoPersistence
-  var persist: () => Unit                                             = UpdatePersistenceOnly
-  var specialItemSlotGuid: Option[PlanetSideGUID] =
+private var drawDeloyableIcon: PlanetSideGameObject with Deployable => Unit = RedrawDeployableIcons
+private var updateSquad: () => Unit                                         = NoSquadUpdates
+private var recentTeleportAttempt: Long                                     = 0
+private var lastTerminalOrderFulfillment: Boolean                           = true
+private var kitToBeUsed: Option[PlanetSideGUID]                             = None
+private var shiftPosition: Option[Vector3]                                  = None
+private var shiftOrientation: Option[Vector3]                               = None
+private var nextSpawnPoint: Option[SpawnPoint]                              = None
+private var setupAvatarFunc: () => Unit                                     = AvatarCreate
+private var setCurrentAvatarFunc: Player => Unit                            = SetCurrentAvatarNormally
+private var persistFunc: () => Unit                                         = NoPersistence
+private var persist: () => Unit                                             = UpdatePersistenceOnly
+private var specialItemSlotGuid: Option[PlanetSideGUID] =
     None // If a special item (e.g. LLU) has been attached to the player the GUID should be stored here, or cleared when dropped, since the drop hotkey doesn't send the GUID of the object to be dropped.
 
   /**
@@ -227,7 +227,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * should only be set during the transient period when moving between one spawn point and the next
     * leaving set prior to a subsequent transfers may cause unstable vehicle associations, with memory leak potential
     */
-  var interstellarFerry: Option[Vehicle] = None
+private var interstellarFerry: Option[Vehicle] = None
 
   /**
     * used during zone transfers for cleanup to refer to the vehicle that instigated a transfer
@@ -236,9 +236,9 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * the old-zone unique identifier for the carrier
     * no harm should come from leaving the field set to an old unique identifier value after the transfer period
     */
-  var interstellarFerryTopLevelGUID: Option[PlanetSideGUID] = None
+private var interstellarFerryTopLevelGUID: Option[PlanetSideGUID] = None
   val squadUI: mutable.LongMap[SquadUIElement]              = new mutable.LongMap[SquadUIElement]()
-  var squad_supplement_id: Int                              = 0
+private var squad_supplement_id: Int                              = 0
 
   /**
     * When joining or creating a squad, the original state of the avatar's internal LFS variable is blanked.
@@ -248,9 +248,9 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Upon leaving or disbanding a squad, this value is made false.
     * Control switching between the `Avatar`-local and the `WorldSessionActor`-local variable is contingent on `squadUI` being populated.
     */
-  var lfsm: Boolean                       = false
-  var squadSetup: () => Unit              = FirstTimeSquadSetup
-  var squadUpdateCounter: Int             = 0
+private var lfsm: Boolean                       = false
+private var squadSetup: () => Unit              = FirstTimeSquadSetup
+private var squadUpdateCounter: Int             = 0
   val queuedSquadActions: Seq[() => Unit] = Seq(SquadUpdates, NoSquadUpdates, NoSquadUpdates, NoSquadUpdates)
 
   /** Upstream message counter<br>
@@ -261,45 +261,45 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *   `KeepAliveMessage` (any passenger mount that is not the driver)<br>
     * As they should arrive roughly every 250 milliseconds this allows for a very crude method of scheduling tasks up to four times per second
     */
-  var upstreamMessageCount: Int                                              = 0
-  var zoningType: Zoning.Method                                              = Zoning.Method.None
-  var zoningChatMessageType: ChatMessageType                                 = ChatMessageType.CMT_QUIT
-  var zoningStatus: Zoning.Status                                            = Zoning.Status.None
-  var zoningCounter: Int                                                     = 0
-  var instantActionFallbackDestination: Option[Zoning.InstantAction.Located] = None
-  var loginChatMessage: String                                               = ""
+private var upstreamMessageCount: Int                                              = 0
+private var zoningType: Zoning.Method                                              = Zoning.Method.None
+private var zoningChatMessageType: ChatMessageType                                 = ChatMessageType.CMT_QUIT
+private var zoningStatus: Zoning.Status                                            = Zoning.Status.None
+private var zoningCounter: Int                                                     = 0
+private var instantActionFallbackDestination: Option[Zoning.InstantAction.Located] = None
+private var loginChatMessage: String                                               = ""
   lazy val unsignedIntMaxValue: Long                                         = Int.MaxValue.toLong * 2L + 1L
-  var serverTime: Long                                                       = 0
-  var amsSpawnPoints: List[SpawnPoint]                                       = Nil
+private var serverTime: Long                                                       = 0
+private var amsSpawnPoints: List[SpawnPoint]                                       = Nil
 
   /** a flag for the zone having finished loading during zoning
     * `None` when no zone is loaded
     * `Some(true)` when a zone has successfully loaded
     * `Some(false)` when the loading process has failed or was executed but did not complete for some reason
     */
-  var zoneLoaded: Option[Boolean] = None
+private var zoneLoaded: Option[Boolean] = None
 
   /** a flag that forces the current zone to reload itself during a zoning operation */
-  var zoneReload: Boolean                            = false
-  var interimUngunnedVehicle: Option[PlanetSideGUID] = None
-  var interimUngunnedVehicleSeat: Option[Int]        = None
-  var keepAliveFunc: () => Unit                      = KeepAlivePersistenceInitial
-  var setAvatar: Boolean                             = false
-  var turnCounterFunc: PlanetSideGUID => Unit        = TurnCounterDuringInterim
-  var waypointCooldown: Long = 0L
-  var heightLast: Float = 0f
-  var heightTrend: Boolean = false //up = true, down = false
-  var heightHistory: Float = 0f
-  var contextSafeEntity: PlanetSideGUID = PlanetSideGUID(0)
+private var zoneReload: Boolean                            = false
+private var interimUngunnedVehicle: Option[PlanetSideGUID] = None
+private var interimUngunnedVehicleSeat: Option[Int]        = None
+private var keepAliveFunc: () => Unit                      = KeepAlivePersistenceInitial
+private var setAvatar: Boolean                             = false
+private var turnCounterFunc: PlanetSideGUID => Unit        = TurnCounterDuringInterim
+private var waypointCooldown: Long = 0L
+private var heightLast: Float = 0f
+private var heightTrend: Boolean = false //up = true, down = false
+private var heightHistory: Float = 0f
+private var contextSafeEntity: PlanetSideGUID = PlanetSideGUID(0)
   val collisionHistory: mutable.HashMap[ActorRef, Long] = mutable.HashMap()
-  var populateAvatarAwardRibbonsFunc: (Int, Long) => Unit = setupAvatarAwardMessageDelivery
+private var populateAvatarAwardRibbonsFunc: (Int, Long) => Unit = setupAvatarAwardMessageDelivery
 
-  var clientKeepAlive: Cancellable   = Default.Cancellable
-  var progressBarUpdate: Cancellable = Default.Cancellable
-  var reviveTimer: Cancellable       = Default.Cancellable
-  var respawnTimer: Cancellable      = Default.Cancellable
-  var zoningTimer: Cancellable       = Default.Cancellable
-  var charSavedTimer: Cancellable    = Default.Cancellable
+private var clientKeepAlive: Cancellable   = Default.Cancellable
+private var progressBarUpdate: Cancellable = Default.Cancellable
+private var reviveTimer: Cancellable       = Default.Cancellable
+private var respawnTimer: Cancellable      = Default.Cancellable
+private var zoningTimer: Cancellable       = Default.Cancellable
+private var charSavedTimer: Cancellable    = Default.Cancellable
 
   override def supervisorStrategy: SupervisorStrategy = {
     import net.psforever.objects.inventory.InventoryDisarrayException
@@ -9985,7 +9985,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  var oldRefsMap: mutable.HashMap[PlanetSideGUID, String] = new mutable.HashMap[PlanetSideGUID, String]()
+private var oldRefsMap: mutable.HashMap[PlanetSideGUID, String] = new mutable.HashMap[PlanetSideGUID, String]()
   def updateOldRefsMap(): Unit = {
     if(player.HasGUID) {
       oldRefsMap.addAll(

@@ -46,7 +46,7 @@ import scala.concurrent.duration._
   * @param vehicle the `Vehicle` object being governed
   */
 class VehicleControl(vehicle: Vehicle)
-  extends ServerObjectControl
+    extends ServerObjectControl
     with FactionAffinityBehavior.Check
     with MountableBehavior
     with DamageableVehicle
@@ -88,17 +88,20 @@ class VehicleControl(vehicle: Vehicle)
   }
 
   /** cheap flag for whether the vehicle is decaying */
-  var decaying : Boolean = false
+  protected var decaying: Boolean = false
+
   /** primary vehicle decay timer */
-  var decayTimer : Cancellable = Default.Cancellable
+  private var decayTimer: Cancellable = Default.Cancellable
+
   /** becoming waterlogged, or drying out? */
-  var submergedCondition : Option[OxygenState] = None
+  private var submergedCondition: Option[OxygenState] = None
+
   /** ... */
-  var passengerRadiationCloudTimer: Cancellable = Default.Cancellable
+  private var passengerRadiationCloudTimer: Cancellable = Default.Cancellable
 
-  def receive : Receive = Enabled
+  def receive: Receive = Enabled
 
-  override def postStop() : Unit = {
+  override def postStop(): Unit = {
     super.postStop()
     damageableVehiclePostStop()
     decaying = false
@@ -111,121 +114,121 @@ class VehicleControl(vehicle: Vehicle)
     endAllCargoOperations()
   }
 
-  def commonEnabledBehavior: Receive = checkBehavior
-    .orElse(attributeBehavior)
-    .orElse(jammableBehavior)
-    .orElse(takesDamage)
-    .orElse(siphoningBehavior)
-    .orElse(canBeRepairedByNanoDispenser)
-    .orElse(containerBehavior)
-    .orElse(environmentBehavior)
-    .orElse(cargoBehavior)
-    .orElse {
-      case Vehicle.Ownership(None) =>
-        LoseOwnership()
+  def commonEnabledBehavior: Receive =
+    checkBehavior
+      .orElse(attributeBehavior)
+      .orElse(jammableBehavior)
+      .orElse(takesDamage)
+      .orElse(siphoningBehavior)
+      .orElse(canBeRepairedByNanoDispenser)
+      .orElse(containerBehavior)
+      .orElse(environmentBehavior)
+      .orElse(cargoBehavior)
+      .orElse {
+        case Vehicle.Ownership(None) =>
+          LoseOwnership()
 
-      case Vehicle.Ownership(Some(player)) =>
-        GainOwnership(player)
+        case Vehicle.Ownership(Some(player)) =>
+          GainOwnership(player)
 
-      case msg @ Mountable.TryMount(player, mount_point) =>
-        mountBehavior.apply(msg)
-        mountCleanup(mount_point, player)
+        case msg @ Mountable.TryMount(player, mount_point) =>
+          mountBehavior.apply(msg)
+          mountCleanup(mount_point, player)
 
-      case msg @ Mountable.TryDismount(_, seat_num, _) =>
-        dismountBehavior.apply(msg)
-        dismountCleanup(seat_num)
+        case msg @ Mountable.TryDismount(_, seat_num, _) =>
+          dismountBehavior.apply(msg)
+          dismountCleanup(seat_num)
 
-      case Vehicle.ChargeShields(amount) =>
-        chargeShields(amount)
+        case Vehicle.ChargeShields(amount) =>
+          chargeShields(amount)
 
-      case Vehicle.UpdateZoneInteractionProgressUI(player) =>
-        updateZoneInteractionProgressUI(player)
+        case Vehicle.UpdateZoneInteractionProgressUI(player) =>
+          updateZoneInteractionProgressUI(player)
 
-      case Vehicle.UpdateSubsystemStates(toChannel, stateToResolve) =>
-        val events = vehicle.Zone.VehicleEvents
-        val guid0 = Service.defaultPlayerGUID
-        (stateToResolve match {
-          case Some(state) =>
-            vehicle.Subsystems().filter { _.Enabled == state } //only subsystems that are enabled or are disabled
-          case None =>
-            vehicle.Subsystems() //all subsystems
-        })
-          .flatMap { _.getMessage(vehicle) }
-          .foreach { pkt =>
-            events ! VehicleServiceMessage(toChannel, VehicleAction.SendResponse(guid0, pkt))
-          }
-
-
-      case FactionAffinity.ConvertFactionAffinity(faction) =>
-        val originalAffinity = vehicle.Faction
-        if (originalAffinity != (vehicle.Faction = faction)) {
-          vehicle.Utilities.foreach({
-            case (_ : Int, util : Utility) => util().Actor forward FactionAffinity.ConfirmFactionAffinity()
+        case Vehicle.UpdateSubsystemStates(toChannel, stateToResolve) =>
+          val events = vehicle.Zone.VehicleEvents
+          val guid0  = Service.defaultPlayerGUID
+          (stateToResolve match {
+            case Some(state) =>
+              vehicle.Subsystems().filter { _.Enabled == state } //only subsystems that are enabled or are disabled
+            case None =>
+              vehicle.Subsystems() //all subsystems
           })
-        }
-        sender() ! FactionAffinity.AssertFactionAffinity(vehicle, faction)
+            .flatMap { _.getMessage(vehicle) }
+            .foreach { pkt =>
+              events ! VehicleServiceMessage(toChannel, VehicleAction.SendResponse(guid0, pkt))
+            }
 
-      case CommonMessages.Use(player, Some(item : SimpleItem))
-        if item.Definition == GlobalDefinitions.remote_electronics_kit =>
-        //TODO setup certifications check
-        if (vehicle.Faction != player.Faction) {
-          sender() ! CommonMessages.Progress(
-            GenericHackables.GetHackSpeed(player, vehicle),
-            Vehicles.FinishHackingVehicle(vehicle, player, 3212836864L),
-            GenericHackables.HackingTickAction(progressType = 1, player, vehicle, item.GUID)
-          )
-        }
-
-      case Terminal.TerminalMessage(player, msg, reply) =>
-        val zone = vehicle.Zone
-        if (permitTerminalMessage(player, msg)) {
-          reply match {
-            case Terminal.VehicleLoadout(definition, weapons, inventory) =>
-              log.info(s"changing vehicle equipment loadout to ${player.Name}'s option #${msg.unk1 + 1}")
-              val (oldWeapons, newWeapons, oldInventory, finalInventory) =
-                handleTerminalMessageVehicleLoadout(player, definition, weapons, inventory)
-              zone.VehicleEvents ! VehicleServiceMessage(
-                zone.id,
-                VehicleAction.ChangeLoadout(vehicle.GUID, oldWeapons, newWeapons, oldInventory, finalInventory)
-              )
-              zone.AvatarEvents ! AvatarServiceMessage(
-                player.Name,
-                AvatarAction.TerminalOrderResult(msg.terminal_guid, msg.transaction_type, result = true)
-              )
-
-            case _ => ;
+        case FactionAffinity.ConvertFactionAffinity(faction) =>
+          val originalAffinity = vehicle.Faction
+          if (originalAffinity != (vehicle.Faction = faction)) {
+            vehicle.Utilities.foreach({
+              case (_: Int, util: Utility) => util().Actor forward FactionAffinity.ConfirmFactionAffinity()
+            })
           }
-        } else {
-          zone.AvatarEvents ! AvatarServiceMessage(
-            player.Name,
-            AvatarAction.TerminalOrderResult(msg.terminal_guid, msg.transaction_type, result = false)
-          )
-        }
+          sender() ! FactionAffinity.AssertFactionAffinity(vehicle, faction)
 
-      case VehicleControl.Disable() =>
-        PrepareForDisabled(kickPassengers = false)
-        context.become(Disabled)
+        case CommonMessages.Use(player, Some(item: SimpleItem))
+            if item.Definition == GlobalDefinitions.remote_electronics_kit =>
+          //TODO setup certifications check
+          if (vehicle.Faction != player.Faction) {
+            sender() ! CommonMessages.Progress(
+              GenericHackables.GetHackSpeed(player, vehicle),
+              Vehicles.FinishHackingVehicle(vehicle, player, 3212836864L),
+              GenericHackables.HackingTickAction(progressType = 1, player, vehicle, item.GUID)
+            )
+          }
 
-      case Vehicle.Deconstruct(time) =>
-        time match {
-          case Some(delay) if vehicle.Definition.undergoesDecay =>
-            decaying = true
-            decayTimer.cancel()
-            decayTimer = context.system.scheduler.scheduleOnce(delay, self, VehicleControl.PrepareForDeletion())
-          case _ =>
-            PrepareForDisabled(kickPassengers = true)
-            PrepareForDeletion()
-            context.become(ReadyToDelete)
-        }
+        case Terminal.TerminalMessage(player, msg, reply) =>
+          val zone = vehicle.Zone
+          if (permitTerminalMessage(player, msg)) {
+            reply match {
+              case Terminal.VehicleLoadout(definition, weapons, inventory) =>
+                log.info(s"changing vehicle equipment loadout to ${player.Name}'s option #${msg.unk1 + 1}")
+                val (oldWeapons, newWeapons, oldInventory, finalInventory) =
+                  handleTerminalMessageVehicleLoadout(player, definition, weapons, inventory)
+                zone.VehicleEvents ! VehicleServiceMessage(
+                  zone.id,
+                  VehicleAction.ChangeLoadout(vehicle.GUID, oldWeapons, newWeapons, oldInventory, finalInventory)
+                )
+                zone.AvatarEvents ! AvatarServiceMessage(
+                  player.Name,
+                  AvatarAction.TerminalOrderResult(msg.terminal_guid, msg.transaction_type, result = true)
+                )
 
-      case VehicleControl.PrepareForDeletion() =>
-        PrepareForDisabled(kickPassengers = true)
-        PrepareForDeletion()
-        context.become(ReadyToDelete)
+              case _ => ;
+            }
+          } else {
+            zone.AvatarEvents ! AvatarServiceMessage(
+              player.Name,
+              AvatarAction.TerminalOrderResult(msg.terminal_guid, msg.transaction_type, result = false)
+            )
+          }
 
-      case VehicleControl.AssignOwnership(player) =>
-        vehicle.AssignOwnership(player)
-    }
+        case VehicleControl.Disable() =>
+          PrepareForDisabled(kickPassengers = false)
+          context.become(Disabled)
+
+        case Vehicle.Deconstruct(time) =>
+          time match {
+            case Some(delay) if vehicle.Definition.undergoesDecay =>
+              decaying = true
+              decayTimer.cancel()
+              decayTimer = context.system.scheduler.scheduleOnce(delay, self, VehicleControl.PrepareForDeletion())
+            case _ =>
+              PrepareForDisabled(kickPassengers = true)
+              PrepareForDeletion()
+              context.become(ReadyToDelete)
+          }
+
+        case VehicleControl.PrepareForDeletion() =>
+          PrepareForDisabled(kickPassengers = true)
+          PrepareForDeletion()
+          context.become(ReadyToDelete)
+
+        case VehicleControl.AssignOwnership(player) =>
+          vehicle.AssignOwnership(player)
+      }
 
   final def Enabled: Receive =
     commonEnabledBehavior
@@ -233,66 +236,70 @@ class VehicleControl(vehicle: Vehicle)
         case VehicleControl.RadiationTick =>
           vehicle.interaction().find { _.Type == RadiationInVehicleInteraction } match {
             case Some(func) => func.interaction(vehicle.getInteractionSector(), vehicle)
-            case _ => ;
+            case _          => ;
           }
         case _ => ;
       }
 
-  def commonDisabledBehavior: Receive = checkBehavior
-    .orElse {
-      case msg @ Mountable.TryDismount(_, seat_num, _) =>
-        dismountBehavior.apply(msg)
-        dismountCleanup(seat_num)
+  def commonDisabledBehavior: Receive =
+    checkBehavior
+      .orElse {
+        case msg @ Mountable.TryDismount(_, seat_num, _) =>
+          dismountBehavior.apply(msg)
+          dismountCleanup(seat_num)
 
-      case Vehicle.Deconstruct(time) =>
-        time match {
-          case Some(delay) if vehicle.Definition.undergoesDecay =>
-            decaying = true
-            decayTimer.cancel()
-            decayTimer = context.system.scheduler.scheduleOnce(delay, self, VehicleControl.PrepareForDeletion())
-          case _ =>
-            PrepareForDeletion()
-            context.become(ReadyToDelete)
-        }
+        case Vehicle.Deconstruct(time) =>
+          time match {
+            case Some(delay) if vehicle.Definition.undergoesDecay =>
+              decaying = true
+              decayTimer.cancel()
+              decayTimer = context.system.scheduler.scheduleOnce(delay, self, VehicleControl.PrepareForDeletion())
+            case _ =>
+              PrepareForDeletion()
+              context.become(ReadyToDelete)
+          }
 
-      case VehicleControl.PrepareForDeletion() =>
-        PrepareForDeletion()
-        context.become(ReadyToDelete)
-    }
+        case VehicleControl.PrepareForDeletion() =>
+          PrepareForDeletion()
+          context.become(ReadyToDelete)
+      }
 
-  final def Disabled: Receive = commonDisabledBehavior
-    .orElse {
-      case _ => ;
-    }
+  final def Disabled: Receive =
+    commonDisabledBehavior
+      .orElse {
+        case _ => ;
+      }
 
-  def commonDeleteBehavior: Receive = checkBehavior
-    .orElse {
-      case VehicleControl.Deletion() =>
-        val zone = vehicle.Zone
-        zone.VehicleEvents ! VehicleServiceMessage(
-          zone.id,
-          VehicleAction.UnloadVehicle(Service.defaultPlayerGUID, vehicle, vehicle.GUID)
-        )
-        zone.Transport.tell(Zone.Vehicle.Despawn(vehicle), zone.Transport)
-    }
+  def commonDeleteBehavior: Receive =
+    checkBehavior
+      .orElse {
+        case VehicleControl.Deletion() =>
+          val zone = vehicle.Zone
+          zone.VehicleEvents ! VehicleServiceMessage(
+            zone.id,
+            VehicleAction.UnloadVehicle(Service.defaultPlayerGUID, vehicle, vehicle.GUID)
+          )
+          zone.Transport.tell(Zone.Vehicle.Despawn(vehicle), zone.Transport)
+      }
 
-  final def ReadyToDelete: Receive = commonDeleteBehavior
-    .orElse {
-      case _ => ;
-    }
+  final def ReadyToDelete: Receive =
+    commonDeleteBehavior
+      .orElse {
+        case _ => ;
+      }
 
   override protected def mountTest(
-                                    obj: PlanetSideServerObject with Mountable,
-                                    seatNumber: Int,
-                                    user: Player
-                                  ): Boolean = {
-    val seatGroup = vehicle.SeatPermissionGroup(seatNumber).getOrElse(AccessPermissionGroup.Passenger)
+      obj: PlanetSideServerObject with Mountable,
+      seatNumber: Int,
+      user: Player
+  ): Boolean = {
+    val seatGroup  = vehicle.SeatPermissionGroup(seatNumber).getOrElse(AccessPermissionGroup.Passenger)
     val permission = vehicle.PermissionGroup(seatGroup.id).getOrElse(VehicleLockState.Empire)
     (if (seatGroup == AccessPermissionGroup.Driver) {
-      vehicle.Owner.contains(user.GUID) || vehicle.Owner.isEmpty || permission != VehicleLockState.Locked
-    } else {
-      permission != VehicleLockState.Locked
-    }) &&
+       vehicle.Owner.contains(user.GUID) || vehicle.Owner.isEmpty || permission != VehicleLockState.Locked
+     } else {
+       permission != VehicleLockState.Locked
+     }) &&
     super.mountTest(obj, seatNumber, user)
   }
 
@@ -304,7 +311,7 @@ class VehicleControl(vehicle: Vehicle)
         if (seatNumber == 0 && !obj.OwnerName.contains(user.Name) && obj.Definition.CanBeOwned.nonEmpty) {
           //whatever vehicle was previously owned
           vehicle.Zone.GUID(user.avatar.vehicle) match {
-            case Some(v : Vehicle) =>
+            case Some(v: Vehicle) =>
               v.Actor ! Vehicle.Ownership(None)
             case _ =>
               user.avatar.vehicle = None
@@ -321,10 +328,10 @@ class VehicleControl(vehicle: Vehicle)
   }
 
   override protected def dismountTest(
-                                       obj: Mountable with WorldEntity,
-                                       seatNumber: Int,
-                                       user: Player
-                                     ): Boolean = {
+      obj: Mountable with WorldEntity,
+      seatNumber: Int,
+      user: Player
+  ): Boolean = {
     vehicle.DeploymentState == DriveState.Deployed || super.dismountTest(obj, seatNumber, user)
   }
 
@@ -349,10 +356,12 @@ class VehicleControl(vehicle: Vehicle)
         LoseOwnership()
       }
       //are we already decaying? are we unowned? is no one seated anywhere?
-      if (!decaying &&
-          obj.Definition.undergoesDecay &&
-          obj.Owner.isEmpty &&
-          obj.Seats.values.forall(!_.isOccupied)) {
+      if (
+        !decaying &&
+        obj.Definition.undergoesDecay &&
+        obj.Owner.isEmpty &&
+        obj.Seats.values.forall(!_.isOccupied)
+      ) {
         decaying = true
         decayTimer = context.system.scheduler.scheduleOnce(
           MountableObject.Definition.DeconstructionTime.getOrElse(5 minutes),
@@ -363,9 +372,9 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def PrepareForDisabled(kickPassengers: Boolean) : Unit = {
-    val guid = vehicle.GUID
-    val zone = vehicle.Zone
+  def PrepareForDisabled(kickPassengers: Boolean): Unit = {
+    val guid   = vehicle.GUID
+    val zone   = vehicle.Zone
     val zoneId = zone.id
     val events = zone.VehicleEvents
     //miscellaneous changes
@@ -395,7 +404,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def PrepareForDeletion() : Unit = {
+  def PrepareForDeletion(): Unit = {
     decaying = false
     val zone = vehicle.Zone
     //cancel jammed behavior
@@ -418,10 +427,12 @@ class VehicleControl(vehicle: Vehicle)
   def LoseOwnership(): Unit = {
     val obj = MountableObject
     Vehicles.Disown(obj.GUID, obj)
-    if (!decaying &&
-        obj.Definition.undergoesDecay &&
-        obj.Owner.isEmpty &&
-        obj.Seats.values.forall(!_.isOccupied)) {
+    if (
+      !decaying &&
+      obj.Definition.undergoesDecay &&
+      obj.Owner.isEmpty &&
+      obj.Seats.values.forall(!_.isOccupied)
+    ) {
       decaying = true
       decayTimer = context.system.scheduler.scheduleOnce(
         obj.Definition.DeconstructionTime.getOrElse(5 minutes),
@@ -468,12 +479,12 @@ class VehicleControl(vehicle: Vehicle)
   }
 
   def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
-    val obj      = ContainerObject
-    val oguid    = obj.GUID
-    val zone     = obj.Zone
-    val channel  = self.toString
-    val events   = zone.VehicleEvents
-    val iguid    = item.GUID
+    val obj     = ContainerObject
+    val oguid   = obj.GUID
+    val zone    = obj.Zone
+    val channel = self.toString
+    val events  = zone.VehicleEvents
+    val iguid   = item.GUID
     item.Faction = obj.Faction
     events ! VehicleServiceMessage(
       //TODO when a new weapon, the equipment slot ui goes blank, but the weapon functions; remount vehicle to correct it
@@ -501,8 +512,8 @@ class VehicleControl(vehicle: Vehicle)
   }
 
   def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
-    val obj  = ContainerObject
-    val zone = obj.Zone
+    val obj       = ContainerObject
+    val zone      = obj.Zone
     val toChannel = if (obj.VisibleSlots.contains(fromSlot)) zone.id else self.toString
     zone.VehicleEvents ! VehicleServiceMessage(
       toChannel,
@@ -513,16 +524,16 @@ class VehicleControl(vehicle: Vehicle)
   def permitTerminalMessage(player: Player, msg: ItemTransactionMessage): Boolean = true
 
   def handleTerminalMessageVehicleLoadout(
-                                           player: Player,
-                                           definition: VehicleDefinition,
-                                           weapons: List[InventoryItem],
-                                           inventory: List[InventoryItem]
-                                         ): (
+      player: Player,
+      definition: VehicleDefinition,
+      weapons: List[InventoryItem],
+      inventory: List[InventoryItem]
+  ): (
       List[(Equipment, PlanetSideGUID)],
       List[InventoryItem],
       List[(Equipment, PlanetSideGUID)],
       List[InventoryItem]
-    ) = {
+  ) = {
     //remove old inventory
     val oldInventory = vehicle.Inventory.Clear().map { case InventoryItem(obj, _) => (obj, obj.GUID) }
     //"dropped" items are lost; if it doesn't go in the trunk, it vanishes into the nanite cloud
@@ -536,15 +547,13 @@ class VehicleControl(vehicle: Vehicle)
             weapon.AmmoSlots.foreach { ammo => ammo.Box.Capacity = ammo.MaxMagazine() }
         }
       (Nil, Nil, afterInventory)
-    }
-    else {
+    } else {
       //vehicle loadout is not for this vehicle; do not transfer over weapon ammo
       if (
         vehicle.Definition.TrunkSize == definition.TrunkSize && vehicle.Definition.TrunkOffset == definition.TrunkOffset
       ) {
         (Nil, Nil, afterInventory) //trunk is the same dimensions, however
-      }
-      else {
+      } else {
         //accommodate as much of inventory as possible
         val (stow, _) = GridInventory.recoverInventory(afterInventory, vehicle.Inventory)
         (Nil, Nil, stow)
@@ -558,7 +567,8 @@ class VehicleControl(vehicle: Vehicle)
 
   //make certain vehicles don't charge shields too quickly
   def canChargeShields(): Boolean = {
-    val func: VitalsActivity => Boolean = VehicleControl.LastShieldChargeOrDamage(System.currentTimeMillis(), vehicle.Definition)
+    val func: VitalsActivity => Boolean =
+      VehicleControl.LastShieldChargeOrDamage(System.currentTimeMillis(), vehicle.Definition)
     vehicle.Health > 0 && vehicle.Shields < vehicle.MaxShields &&
     !vehicle.History.exists(func)
   }
@@ -569,7 +579,12 @@ class VehicleControl(vehicle: Vehicle)
       vehicle.Shields = vehicle.Shields + amount
       vehicle.Zone.VehicleEvents ! VehicleServiceMessage(
         s"${vehicle.Actor}",
-        VehicleAction.PlanetsideAttribute(PlanetSideGUID(0), vehicle.GUID, vehicle.Definition.shieldUiAttribute, vehicle.Shields)
+        VehicleAction.PlanetsideAttribute(
+          PlanetSideGUID(0),
+          vehicle.GUID,
+          vehicle.Definition.shieldUiAttribute,
+          vehicle.Shields
+        )
       )
     }
   }
@@ -581,7 +596,11 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithWater(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+  def doInteractingWithWater(
+      obj: PlanetSideServerObject,
+      body: PieceOfEnvironment,
+      data: Option[OxygenStateTarget]
+  ): Unit = {
     val (effect: Boolean, time: Long, percentage: Float) = {
       val (a, b, c) = RespondsToZoneEnvironment.drowningInWateryConditions(obj, submergedCondition, interactionTime)
       if (a && GlobalDefinitions.isFlightVehicle(vehicle.Definition)) {
@@ -594,14 +613,15 @@ class VehicleControl(vehicle: Vehicle)
       import scala.concurrent.ExecutionContext.Implicits.global
       submergedCondition = Some(OxygenState.Suffocation)
       interactionTime = System.currentTimeMillis() + time
-      interactionTimer = context.system.scheduler.scheduleOnce(delay = time.milliseconds, self, VehicleControl.Disable())
+      interactionTimer =
+        context.system.scheduler.scheduleOnce(delay = time.milliseconds, self, VehicleControl.Disable())
       doInteractingWithWaterToTargets(
         percentage,
         body,
         vehicle.Seats.values
           .flatMap {
             case seat if seat.isOccupied => seat.occupants
-            case _ => Nil
+            case _                       => Nil
           }
           .filter { p => p.isAlive && (p.Zone eq vehicle.Zone) }
       )
@@ -619,10 +639,10 @@ class VehicleControl(vehicle: Vehicle)
     * @param targets recipients of the information
     */
   def doInteractingWithWaterToTargets(
-                                       percentage: Float,
-                                       body: PieceOfEnvironment,
-                                       targets: Iterable[PlanetSideServerObject]
-                                     ): Unit = {
+      percentage: Float,
+      body: PieceOfEnvironment,
+      targets: Iterable[PlanetSideServerObject]
+  ): Unit = {
     val vtarget = Some(OxygenStateTarget(vehicle.GUID, OxygenState.Suffocation, percentage))
     targets.foreach { target =>
       target.Actor ! InteractingWithEnvironment(target, body, vtarget)
@@ -635,7 +655,11 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithLava(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+  def doInteractingWithLava(
+      obj: PlanetSideServerObject,
+      body: PieceOfEnvironment,
+      data: Option[OxygenStateTarget]
+  ): Unit = {
     val vehicle = DamageableObject
     if (!obj.Destroyed) {
       PerformDamage(
@@ -649,7 +673,11 @@ class VehicleControl(vehicle: Vehicle)
       //keep doing damage
       if (vehicle.Health > 0) {
         import scala.concurrent.ExecutionContext.Implicits.global
-        interactionTimer = context.system.scheduler.scheduleOnce(delay = 250 milliseconds, self, InteractingWithEnvironment(obj, body, None))
+        interactionTimer = context.system.scheduler.scheduleOnce(
+          delay = 250 milliseconds,
+          self,
+          InteractingWithEnvironment(obj, body, None)
+        )
       }
     }
   }
@@ -661,7 +689,11 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithDeath(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+  def doInteractingWithDeath(
+      obj: PlanetSideServerObject,
+      body: PieceOfEnvironment,
+      data: Option[OxygenStateTarget]
+  ): Unit = {
     if (!obj.Destroyed) {
       PerformDamage(
         vehicle,
@@ -681,10 +713,10 @@ class VehicleControl(vehicle: Vehicle)
     * @param data additional interaction information, if applicable
     */
   def doInteractingWithMovementTrigger(
-                                        obj: PlanetSideServerObject,
-                                        body: PieceOfEnvironment,
-                                        data: Option[OxygenStateTarget]
-                                      ): Unit = {
+      obj: PlanetSideServerObject,
+      body: PieceOfEnvironment,
+      data: Option[OxygenStateTarget]
+  ): Unit = {
     body.asInstanceOf[GeneralMovementField].triggerAction(obj)
   }
 
@@ -696,7 +728,11 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def stopInteractingWithWater(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+  def stopInteractingWithWater(
+      obj: PlanetSideServerObject,
+      body: PieceOfEnvironment,
+      data: Option[OxygenStateTarget]
+  ): Unit = {
     val (effect: Boolean, time: Long, percentage: Float) =
       RespondsToZoneEnvironment.recoveringFromWateryConditions(obj, submergedCondition, interactionTime)
     if (effect) {
@@ -704,7 +740,8 @@ class VehicleControl(vehicle: Vehicle)
       import scala.concurrent.ExecutionContext.Implicits.global
       submergedCondition = Some(OxygenState.Recovery)
       interactionTime = System.currentTimeMillis() + time
-      interactionTimer = context.system.scheduler.scheduleOnce(delay = time milliseconds, self, RecoveredFromEnvironmentInteraction())
+      interactionTimer =
+        context.system.scheduler.scheduleOnce(delay = time milliseconds, self, RecoveredFromEnvironmentInteraction())
       stopInteractingWithWaterToTargets(
         percentage,
         body,
@@ -729,10 +766,10 @@ class VehicleControl(vehicle: Vehicle)
     * @param targets recipients of the information
     */
   def stopInteractingWithWaterToTargets(
-                                         percentage: Float,
-                                         body: PieceOfEnvironment,
-                                         targets: Iterable[PlanetSideServerObject]
-                                       ): Unit = {
+      percentage: Float,
+      body: PieceOfEnvironment,
+      targets: Iterable[PlanetSideServerObject]
+  ): Unit = {
     val vtarget = Some(OxygenStateTarget(vehicle.GUID, OxygenState.Recovery, percentage))
     targets.foreach { target =>
       target.Actor ! EscapeFromEnvironment(target, body, vtarget)
@@ -753,13 +790,14 @@ class VehicleControl(vehicle: Vehicle)
     * update the visual progress element (progress bar) that is visible to the recipient's client.
     * @param player the recipient of this ui update
     */
-  def updateZoneInteractionProgressUI(player : Player) : Unit = {
+  def updateZoneInteractionProgressUI(player: Player): Unit = {
     submergedCondition match {
       case Some(OxygenState.Suffocation) =>
         interactWith match {
           case Some(body) =>
             val percentage: Float = {
-              val (a, _, c) = RespondsToZoneEnvironment.drowningInWateryConditions(vehicle, submergedCondition, interactionTime)
+              val (a, _, c) =
+                RespondsToZoneEnvironment.drowningInWateryConditions(vehicle, submergedCondition, interactionTime)
               if (a && GlobalDefinitions.isFlightVehicle(vehicle.Definition)) {
                 0f //no progress bar
               } else {
@@ -785,7 +823,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  override def parseAttribute(attribute: Int, value: Long, other: Option[Any]) : Unit = {
+  override def parseAttribute(attribute: Int, value: Long, other: Option[Any]): Unit = {
     val vguid = vehicle.GUID
     val (dname, dguid) = other match {
       case Some(p: Player) => (p.Name, p.GUID)
@@ -825,7 +863,13 @@ class VehicleControl(vehicle: Vehicle)
                     if (vehicle.SeatPermissionGroup(cargoIndex).contains(group)) {
                       //todo: this probably doesn't work for passengers within the cargo vehicle
                       // Instruct client to start bail dismount procedure
-                      self ! DismountVehicleCargoMsg(dguid, cargo.GUID, bailed = true, requestedByPassenger = false, kicked = false)
+                      self ! DismountVehicleCargoMsg(
+                        dguid,
+                        cargo.GUID,
+                        bailed = true,
+                        requestedByPassenger = false,
+                        kicked = false
+                      )
                     }
                   case None => ; // No vehicle in cargo
                 }
@@ -859,10 +903,10 @@ class VehicleControl(vehicle: Vehicle)
   }
 
   def vehicleSubsystemMessages(messages: List[PlanetSideGamePacket]): Unit = {
-    val zone = vehicle.Zone
+    val zone   = vehicle.Zone
     val zoneid = zone.id
     val events = zone.VehicleEvents
-    val guid0 = Service.defaultPlayerGUID
+    val guid0  = Service.defaultPlayerGUID
     messages.foreach { pkt =>
       events ! VehicleServiceMessage(
         zoneid,
@@ -894,7 +938,7 @@ object VehicleControl {
     */
   def LastShieldChargeOrDamage(now: Long, vdef: VehicleDefinition)(act: VitalsActivity): Boolean = {
     act match {
-      case dact: DamagingActivity   => now - dact.time < vdef.ShieldDamageDelay //damage delays next charge
+      case dact: DamagingActivity   => now - dact.time < vdef.ShieldDamageDelay  //damage delays next charge
       case vsc: VehicleShieldCharge => now - vsc.time < vdef.ShieldPeriodicDelay //previous charge delays next
       case _                        => false
     }

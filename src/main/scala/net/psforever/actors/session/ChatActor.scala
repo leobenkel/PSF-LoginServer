@@ -126,18 +126,18 @@ class ChatActor(
   implicit val ec: ExecutionContextExecutor = context.executionContext
 
   private[this] val log                                             = org.log4s.getLogger
-  var channels: List[ChatChannel]                                   = List()
-  var session: Option[Session]                                      = None
-  var chatService: Option[ActorRef[ChatService.Command]]            = None
-  var cluster: Option[ActorRef[InterstellarClusterService.Command]] = None
-  var silenceTimer: Cancellable                                     = Default.Cancellable
+private var channels: List[ChatChannel]                                   = List()
+private var session: Option[Session]                                      = None
+private var chatService: Option[ActorRef[ChatService.Command]]            = None
+private var cluster: Option[ActorRef[InterstellarClusterService.Command]] = None
+private var silenceTimer: Cancellable                                     = Default.Cancellable
   /**
     * when another player is listed as one of our ignored players,
     * and that other player sends an emote,
     * that player is assigned a cooldown and only one emote per period will be seen<br>
     * key - character unique avatar identifier, value - when the current cooldown period will end
     */
-  var ignoredEmoteCooldown: mutable.LongMap[Long]                   = mutable.LongMap[Long]()
+private var ignoredEmoteCooldown: mutable.LongMap[Long]                   = mutable.LongMap[Long]()
 
   val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.messageAdapter[ChatService.MessageResponse] {
     case ChatService.MessageResponse(_session, message, channel) => IncomingMessage(_session, message, channel)

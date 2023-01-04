@@ -5,7 +5,6 @@ import net.psforever.objects.entity.IdentifiableEntity
 import net.psforever.objects.guid.key.{AvailabilityPolicy, Monitor}
 
 private class Key extends Monitor {
-  var policy: AvailabilityPolicy = AvailabilityPolicy.Available
-
-  var obj: Option[IdentifiableEntity]  = None
+  var policy: AvailabilityPolicy      = AvailabilityPolicy.Available
+  var obj: Option[IdentifiableEntity] = None
 }

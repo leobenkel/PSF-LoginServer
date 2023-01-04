@@ -46,7 +46,7 @@ class FacilityTurretControl(turret: FacilityTurret)
   def CaptureTerminalAwareObject = turret
 
   // Used for timing ammo recharge for vanu turrets in caves
-  var weaponAmmoRechargeTimer = Default.Cancellable
+private var weaponAmmoRechargeTimer = Default.Cancellable
 
   override def postStop(): Unit = {
     super.postStop()

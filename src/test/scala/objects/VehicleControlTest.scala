@@ -198,7 +198,7 @@ class VehicleControlPrepareForDeletionMountedCargoTest extends FreedContextActor
   guid.register(lodestar, 2)
   player1.GUID = PlanetSideGUID(3)
   player2.GUID = PlanetSideGUID(4)
-  var utilityId = 10
+private var utilityId = 10
   lodestar.Utilities.values.foreach { util =>
     util().GUID = PlanetSideGUID(utilityId)
     utilityId += 1

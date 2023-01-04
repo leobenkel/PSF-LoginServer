@@ -504,7 +504,7 @@ class PacketCodingActorITest extends ActorTest {
     None,
     RibbonBars()
   )
-  var char: Option[Int] => DetailedCharacterData = DetailedCharacterData(
+private var char: Option[Int] => DetailedCharacterData = DetailedCharacterData(
     0,
     0,
     100,

@@ -18,8 +18,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 trait AntTransferBehavior extends TransferBehavior with NtuStorageBehavior {
-  var panelAnimationFunc: () => Unit = NoCharge
-  var ntuChargingTick     = Default.Cancellable
+private var panelAnimationFunc: () => Unit = NoCharge
+private var ntuChargingTick     = Default.Cancellable
   findChargeTargetFunc    = Vehicles.FindANTChargingSource
   findDischargeTargetFunc = Vehicles.FindANTDischargingTarget
 
