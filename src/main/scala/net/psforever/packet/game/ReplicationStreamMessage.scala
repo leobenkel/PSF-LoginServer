@@ -65,8 +65,8 @@ final case class SquadInfo(
     this And SquadInfo(None, None, Some(zone), None, None, None)
   def ZoneId(zone: Option[PlanetSideZoneID]): SquadInfo =
     zone match {
-      case Some(zoneId) => this And SquadInfo(None, None, zone, None, None, None)
-      case None         => SquadInfo(leader, task, zone, size, capacity, squad_guid)
+      case z @ Some(_) => this And SquadInfo(None, None, z, None, None, None)
+      case z @ None    => SquadInfo(leader, task, z, size, capacity, squad_guid)
     }
   def Size(sz: Int): SquadInfo =
     this And SquadInfo(None, None, None, Some(sz), None, None)
@@ -657,17 +657,17 @@ object SquadHeader {
   /**
     * `Codec` for standard `SquadHeader` entries.
     */
-private val codec: Codec[Option[SquadInfo]] = meta_codec(allCodec)
+  val codec: Codec[Option[SquadInfo]] = meta_codec(allCodec)
 
   /**
     * `Codec` for types of `SquadHeader` initializations.
     */
-private val info_codec: Codec[Option[SquadInfo]] = meta_codec(infoCodec)
+  val info_codec: Codec[Option[SquadInfo]] = meta_codec(infoCodec)
 
   /**
     * Alternate `Codec` for types of `SquadHeader` initializations.
     */
-private val alt_info_codec: Codec[Option[SquadInfo]] = meta_codec(alt_infoCodec)
+  val alt_info_codec: Codec[Option[SquadInfo]] = meta_codec(alt_infoCodec)
 }
 
 object SquadListing {
@@ -711,12 +711,12 @@ object SquadListing {
   /**
     * `Codec` for standard `SquadListing` entries.
     */
-private val codec: Codec[SquadListing] = meta_codec({ _ => SquadHeader.codec })
+  val codec: Codec[SquadListing] = meta_codec({ _ => SquadHeader.codec })
 
   /**
     * `Codec` for branching types of `SquadListing` initializations.
     */
-private val info_codec: Codec[SquadListing] = meta_codec({ index: Int =>
+  val info_codec: Codec[SquadListing] = meta_codec({ index: Int =>
     newcodecs.binary_choice(index == 0, "listing" | SquadHeader.info_codec, "listing" | SquadHeader.alt_info_codec)
   })
 }

@@ -1240,7 +1240,7 @@ object GlobalDefinitions {
 
   private val door_spawn_mb = new DoorDefinition(257)
 
-  private val gr_door_mb_orb = new DoorDefinition(368)
+  val gr_door_mb_orb = new DoorDefinition(368)
 
   private val spawn_tube_door = new DoorDefinition(813)
 

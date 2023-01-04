@@ -7,18 +7,19 @@ import net.psforever.objects.equipment.Equipment
 import net.psforever.objects.loadouts.Loadout
 import net.psforever.packet.game.ItemTransactionMessage
 import net.psforever.types.ExoSuitType
+import org.log4s.Logger
 
 import scala.annotation.switch
 
 object EquipmentTerminalDefinition {
-  private[this] val log = org.log4s.getLogger("TerminalDefinition")
+  private[this] val log: Logger = org.log4s.getLogger("TerminalDefinition")
 
   /**
     * A `Map` of information for changing exo-suits.
     * key - an identification string sent by the client
     * value - a `Tuple` containing exo-suit specifications
     */
-  private val suits: Map[String, (ExoSuitType.Value, Int)] = Map(
+  val suits: Map[String, (ExoSuitType.Value, Int)] = Map(
     "standard_issue_armor" -> (ExoSuitType.Standard, 0),
     "lite_armor"           -> (ExoSuitType.Agile, 0),
     "med_armor"            -> (ExoSuitType.Reinforced, 0),
@@ -30,7 +31,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a `Tuple` containing exo-suit specifications
     */
-  private val maxSuits: Map[String, (ExoSuitType.Value, Int)] = Map(
+  val maxSuits: Map[String, (ExoSuitType.Value, Int)] = Map(
     "trhev_antiaircraft"  -> (ExoSuitType.MAX, 1),
     "trhev_antipersonnel" -> (ExoSuitType.MAX, 2),
     "trhev_antivehicular" -> (ExoSuitType.MAX, 3),
@@ -49,7 +50,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  private val infantryAmmunition: Map[String, () => Equipment] = Map(
+  val infantryAmmunition: Map[String, () => Equipment] = Map(
     "9mmbullet"             -> MakeAmmoBox(bullet_9mm),
     "9mmbullet_AP"          -> MakeAmmoBox(bullet_9mm_AP),
     "shotgun_shell"         -> MakeAmmoBox(shotgun_shell),
@@ -72,7 +73,7 @@ object EquipmentTerminalDefinition {
     "pellet_gun_ammo"       -> MakeAmmoBox(pellet_gun_ammo),
     "six_shooter_ammo"      -> MakeAmmoBox(six_shooter_ammo)
   )
-  private val maxAmmo: Map[String, () => Equipment] = Map(
+  val maxAmmo: Map[String, () => Equipment] = Map(
     "dualcycler_ammo"    -> MakeAmmoBox(dualcycler_ammo),
     "pounder_ammo"       -> MakeAmmoBox(pounder_ammo),
     "burster_ammo"       -> MakeAmmoBox(burster_ammo),
@@ -89,7 +90,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  private val supportAmmunition: Map[String, () => Equipment] = Map(
+  val supportAmmunition: Map[String, () => Equipment] = Map(
     "health_canister"  -> MakeAmmoBox(health_canister),
     "armor_canister"   -> MakeAmmoBox(armor_canister),
     "upgrade_canister" -> MakeAmmoBox(upgrade_canister)
@@ -144,7 +145,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  private val infantryWeapons: Map[String, () => Equipment] = Map(
+  val infantryWeapons: Map[String, () => Equipment] = Map(
     "ilc9"             -> MakeTool(ilc9),
     "repeater"         -> MakeTool(repeater),
     "isp"              -> MakeTool(isp), //amp
@@ -192,7 +193,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  private val supportWeapons: Map[String, () => Equipment] = Map(
+  val supportWeapons: Map[String, () => Equipment] = Map(
     "medkit"                 -> MakeKit(medkit),
     "super_medkit"           -> MakeKit(super_medkit),
     "super_armorkit"         -> MakeKit(super_armorkit),
@@ -266,12 +267,12 @@ object EquipmentTerminalDefinition {
   /**
     * A single-element `Map` of the one piece of `Equipment` specific to the Router.
     */
-  private val routerTerminal: Map[String, () => Equipment] = Map("router_telepad" -> MakeTelepad(router_telepad))
+  val routerTerminal: Map[String, () => Equipment] = Map("router_telepad" -> MakeTelepad(router_telepad))
 
   /**
     * A single-element `Map` of the one piece of `Equipment` for the Flail.
     */
-  private val flailTerminal: Map[String, () => Equipment] = Map(
+  val flailTerminal: Map[String, () => Equipment] = Map(
     "flail_targeting_laser" -> MakeSimpleItem(flail_targeting_laser)
   )
 

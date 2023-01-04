@@ -26,8 +26,8 @@ object DeploymentAction extends Enumeration {
 object DeployableIcon extends Enumeration {
   type Type = Value
 
-  private val Boomer, HEMine, MotionAlarmSensor, SpitfireTurret, RouterTelepad, DisruptorMine, ShadowTurret,
-      CerebusTurret, TRAP, AegisShieldGenerator, FieldTurret, SensorDisruptor = Value
+  val Boomer, HEMine, MotionAlarmSensor, SpitfireTurret, RouterTelepad, DisruptorMine, ShadowTurret, CerebusTurret,
+      TRAP, AegisShieldGenerator, FieldTurret, SensorDisruptor = Value
 
   implicit val codec: Codec[DeployableIcon.Value] = PacketHelpers.createEnumerationCodec(this, uint4L)
 }

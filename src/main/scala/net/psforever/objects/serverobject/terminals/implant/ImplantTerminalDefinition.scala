@@ -12,7 +12,7 @@ import net.psforever.objects.definition.ImplantDefinition
   * attached as a child of the visible implant terminal component - the "implant_terminal_mech."
   */
 object ImplantTerminalDefinition {
-private val implants: Map[String, ImplantDefinition] = Map(
+  val implants: Map[String, ImplantDefinition] = Map(
     "advanced_regen"   -> GlobalDefinitions.advanced_regen,
     "targeting"        -> GlobalDefinitions.targeting,
     "audio_amplifier"  -> GlobalDefinitions.audio_amplifier,

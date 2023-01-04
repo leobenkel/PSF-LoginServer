@@ -64,7 +64,10 @@ final case class GenericObjectActionMessage(object_guid: PlanetSideGUID, code: I
 }
 
 object GenericObjectActionMessage extends Marshallable[GenericObjectActionMessage] {
-  def apply(object_guid: PlanetSideGUID, code: GenericObjectActionEnum.GenericObjectActionEnum): GenericObjectActionMessage = {
+  def apply(
+      object_guid: PlanetSideGUID,
+      code: GenericObjectActionEnum.GenericObjectActionEnum
+  ): GenericObjectActionMessage = {
     GenericObjectActionMessage(object_guid, code.id)
   }
 
@@ -90,5 +93,5 @@ object GenericObjectActionEnum extends Enumeration {
   /** <b>Effect:</b> Capture console displays "Facility hacked by the <Faction> LLU has been spawned." when looked at<br>
     * <b>Target</b>: CaptureTerminal
     */
-private val FlagSpawned = Value(14)
+  val FlagSpawned = Value(14)
 }

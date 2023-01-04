@@ -49,7 +49,7 @@ trait RespondsToZoneEnvironment {
 
   def InteractiveObject: PlanetSideServerObject with InteractsWithZone
 
-private val environmentBehavior: Receive = {
+  val environmentBehavior: Receive = {
     case InteractingWithEnvironment(target, body, optional) =>
       doEnvironmentInteracting(target, body, optional)
 

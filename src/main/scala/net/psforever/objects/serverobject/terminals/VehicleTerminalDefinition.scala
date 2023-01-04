@@ -70,7 +70,7 @@ object VehicleTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  private val bfrVehicles: Map[String, () => Vehicle] = Map(
+  val bfrVehicles: Map[String, () => Vehicle] = Map(
     "colossus_gunner"  -> MakeVehicle(colossus_gunner),
     "colossus_flight"  -> MakeVehicle(colossus_flight),
     "peregrine_gunner" -> MakeVehicle(peregrine_gunner),
