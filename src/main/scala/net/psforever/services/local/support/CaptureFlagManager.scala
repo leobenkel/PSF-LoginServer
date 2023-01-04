@@ -24,7 +24,7 @@ import scala.concurrent.duration.DurationInt
 class CaptureFlagManager(zone: Zone) extends Actor{
   private[this] val log = org.log4s.getLogger(self.path.name)
 
-  var galaxyService: ActorRef = ActorRef.noSender
+private var galaxyService: ActorRef = ActorRef.noSender
 
   private var mapUpdateTick: Cancellable = Default.Cancellable
 

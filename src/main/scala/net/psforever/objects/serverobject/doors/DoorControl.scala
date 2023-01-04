@@ -17,8 +17,8 @@ class DoorControl(door: Door)
   extends PoweredAmenityControl
   with FactionAffinityBehavior.Check {
   def FactionObject: FactionAffinity = door
-  var isLocked: Boolean = false
-  var lockingMechanism: Door.LockingMechanismLogic = DoorControl.alwaysOpen
+private var isLocked: Boolean = false
+private var lockingMechanism: Door.LockingMechanismLogic = DoorControl.alwaysOpen
 
   def commonBehavior: Receive = checkBehavior
     .orElse {

@@ -41,7 +41,7 @@ class ChatService(context: ActorContext[ChatService.Command]) extends AbstractBe
   import ChatMessageType._
 
   private[this] val log                = org.log4s.getLogger
-  var subscriptions: List[JoinChannel] = List[JoinChannel]()
+private var subscriptions: List[JoinChannel] = List[JoinChannel]()
 
   override def onMessage(msg: Command): Behavior[Command] = {
     msg match {

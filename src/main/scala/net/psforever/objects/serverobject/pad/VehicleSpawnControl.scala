@@ -38,21 +38,21 @@ class VehicleSpawnControl(pad: VehicleSpawnPad)
     with FactionAffinityBehavior.Check {
 
   /** a reminder sent to future customers */
-  var periodicReminder: Cancellable = Default.Cancellable
+private var periodicReminder: Cancellable = Default.Cancellable
 
   /** repeatedly test whether queued orders are valid */
-  var queueManagement: Cancellable = Default.Cancellable
+private var queueManagement: Cancellable = Default.Cancellable
 
   /** a list of vehicle orders that have been submitted for this spawn pad */
-  var orders: List[VehicleSpawnPad.VehicleOrder] = List.empty[VehicleSpawnPad.VehicleOrder]
+private var orders: List[VehicleSpawnPad.VehicleOrder] = List.empty[VehicleSpawnPad.VehicleOrder]
 
   /** the current vehicle order being acted upon;
     * used as a guard condition to control order processing rate
     */
-  var trackedOrder: Option[VehicleSpawnControl.Order] = None
+private var trackedOrder: Option[VehicleSpawnControl.Order] = None
 
   /** how to process either the first order or every subsequent order */
-  var handleOrderFunc: VehicleSpawnPad.VehicleOrder => Unit = NewTasking
+private var handleOrderFunc: VehicleSpawnPad.VehicleOrder => Unit = NewTasking
 
   def LogId = ""
 

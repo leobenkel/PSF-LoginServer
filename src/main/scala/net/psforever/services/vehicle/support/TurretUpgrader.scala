@@ -17,9 +17,9 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 
 class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
-  var task: Cancellable = Default.Cancellable
+private var task: Cancellable = Default.Cancellable
 
-  var list: List[TurretUpgrader.Entry] = List()
+private var list: List[TurretUpgrader.Entry] = List()
 
   val sameEntryComparator = new SimilarityComparator[TurretUpgrader.Entry]() {
     def Test(entry1: TurretUpgrader.Entry, entry2: TurretUpgrader.Entry): Boolean = {

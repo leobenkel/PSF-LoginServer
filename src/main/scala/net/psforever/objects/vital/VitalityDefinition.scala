@@ -157,7 +157,7 @@ trait VitalityDefinition extends DamageModifiers {
     * Although "vitality" has nothing to do with explosions directly,
     * exploding objects tend to be entities with `Vitality` (lowest common denominator inheritance).
     */
-  var explodes: Boolean = false
+  private var explodes: Boolean = false
 
   /**
     * damage that is inherent to the object, used for explosions, mainly

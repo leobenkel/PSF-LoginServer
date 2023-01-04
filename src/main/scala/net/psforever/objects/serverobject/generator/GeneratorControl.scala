@@ -35,11 +35,11 @@ class GeneratorControl(gen: Generator)
   def RepairableObject   = gen
   def AutoRepairObject   = gen
   /** flagged to explode after some time */
-  var imminentExplosion: Boolean   = false
+private var imminentExplosion: Boolean   = false
   /** explode when this timer completes */
-  var queuedExplosion: Cancellable = Default.Cancellable
+private var queuedExplosion: Cancellable = Default.Cancellable
   /** when damaged, announce that damage was dealt on a schedule */
-  var alarmCooldown: Cancellable   = Default.Cancellable
+private var alarmCooldown: Cancellable   = Default.Cancellable
   /** the canned explosion used by this generator */
   lazy val explosionFunc: (PlanetSideGameObject, PlanetSideGameObject, Float) => Boolean = {
     /*

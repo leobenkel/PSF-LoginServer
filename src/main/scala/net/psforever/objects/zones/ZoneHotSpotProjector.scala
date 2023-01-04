@@ -64,13 +64,13 @@ class ZoneHotSpotDisplay(
 class ZoneHotSpotProjector(zone: Zone, hotspots: ListBuffer[HotSpotInfo], blankingTime: FiniteDuration) extends Actor {
 
   /** a hook for the `GalaxyService` used to broadcast messages */
-  var galaxy: ActorRef = ActorRef.noSender
+private var galaxy: ActorRef = ActorRef.noSender
 
   /** the timer for the blanking process */
-  var blanking: Cancellable = Default.Cancellable
+private var blanking: Cancellable = Default.Cancellable
 
   /** how long to wait in between blanking periods while hotspots decay */
-  var blankingDelay: FiniteDuration = blankingTime
+private var blankingDelay: FiniteDuration = blankingTime
 
   private[this] val log = org.log4s.getLogger(s"${zone.id.capitalize}HotSpotProjector")
 

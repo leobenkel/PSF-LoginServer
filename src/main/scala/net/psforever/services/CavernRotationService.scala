@@ -332,21 +332,21 @@ class CavernRotationService(
   )
 
   /** monitors for the cavern zones */
-  var managedZones: List[ZoneMonitor] = Nil
+private var managedZones: List[ZoneMonitor] = Nil
   /** index of the next cavern that will lock */
-  var nextToLock: Int = 0
+private var nextToLock: Int = 0
   /** index of the next cavern that will unlock */
-  var nextToUnlock: Int = 0
+private var nextToUnlock: Int = 0
   /** timer for cavern rotation - the cavern closing warning */
-  var lockTimer: Cancellable = Default.Cancellable
+private var lockTimer: Cancellable = Default.Cancellable
   /** timer for cavern rotation - the actual opening and closing functionality */
-  var unlockTimer: Cancellable = Default.Cancellable
-  var simultaneousUnlockedZones: Int = Config.app.game.cavernRotation.simultaneousUnlockedZones
+private var unlockTimer: Cancellable = Default.Cancellable
+private var simultaneousUnlockedZones: Int = Config.app.game.cavernRotation.simultaneousUnlockedZones
   /** time between individual cavern rotation events (hours) */
   val timeBetweenRotationsHours: Float = Config.app.game.cavernRotation.hoursBetweenRotation
   /** number of zones unlocked at the same time */
   /** period of all caverns having rotated (hours) */
-  var timeToCompleteAllRotationsHours: Float = 0f
+private var timeToCompleteAllRotationsHours: Float = 0f
   /** how long before any given cavern closure that the first closing message is shown (minutes) */
   val firstClosingWarningAtMinutes: Int = 15
 

@@ -23,7 +23,7 @@ import scala.concurrent.duration._
 class VehicleSpawnControlFinalClearance(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
   def LogId = "-clearer"
 
-  var temp: Cancellable = Default.Cancellable
+private var temp: Cancellable = Default.Cancellable
 
   override def postStop() : Unit = {
     temp.cancel()

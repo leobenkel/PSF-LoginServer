@@ -755,12 +755,12 @@ class AvatarActor(
   implicit val ec: ExecutionContextExecutor = context.executionContext
 
   private[this] val log                            = org.log4s.getLogger
-  var account: Option[Account]                     = None
-  var session: Option[Session]                     = None
+private var account: Option[Account]                     = None
+private var session: Option[Session]                     = None
   val implantTimers: mutable.Map[Int, Cancellable] = mutable.Map()
-  var staminaRegenTimer: Cancellable               = Default.Cancellable
-  var _avatar: Option[Avatar]                      = None
-  var saveLockerFunc: () => Unit                   = storeNewLocker
+private var staminaRegenTimer: Cancellable               = Default.Cancellable
+private var _avatar: Option[Avatar]                      = None
+private var saveLockerFunc: () => Unit                   = storeNewLocker
   //val topic: ActorRef[Topic.Command[Avatar]]       = context.spawnAnonymous(Topic[Avatar]("avatar"))
 
   def avatar: Avatar = _avatar.get

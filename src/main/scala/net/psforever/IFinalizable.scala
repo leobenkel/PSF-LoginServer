@@ -4,7 +4,7 @@ package net.psforever
 class ObjectFinalizedException(msg: String) extends Exception(msg)
 
 trait IFinalizable {
-  var closed = false
+private var closed = false
 
   def close = {
     closed = true

@@ -31,7 +31,7 @@ class VehicleSpawnControlLoadVehicle(pad: VehicleSpawnPad) extends VehicleSpawnC
 
   val railJack = context.actorOf(Props(classOf[VehicleSpawnControlRailJack], pad), s"${context.parent.path.name}-rails")
 
-  var temp: Option[VehicleSpawnControl.Order] = None
+private var temp: Option[VehicleSpawnControl.Order] = None
 
   implicit val timeout = Timeout(3.seconds)
 

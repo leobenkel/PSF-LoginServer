@@ -101,8 +101,8 @@ class InterstellarClusterService(context: ActorContext[InterstellarClusterServic
   import InterstellarClusterService._
 
   private[this] val log = org.log4s.getLogger
-  var intercontinentalSetup: Boolean = false
-  var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = None
+private var intercontinentalSetup: Boolean = false
+private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = None
 
   val zoneActors: mutable.Map[String, (ActorRef[ZoneActor.Command], Zone)] = {
     import scala.concurrent.ExecutionContext.Implicits.global

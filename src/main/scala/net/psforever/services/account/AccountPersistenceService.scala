@@ -44,7 +44,7 @@ class AccountPersistenceService extends Actor {
   /** an association of user text descriptors - player names - and their current monitor indices<br>
     * key - player name, value - monitor index
     */
-  var userIndices: mutable.Map[String, Int] = mutable.Map[String, Int]()
+private var userIndices: mutable.Map[String, Int] = mutable.Map[String, Int]()
 
   /**
     * an association of user test descriptors - player names - and their current monitor<br>
@@ -53,9 +53,9 @@ class AccountPersistenceService extends Actor {
   val accounts: mutable.Map[String, ActorRef] = mutable.Map[String, ActorRef]()
 
   /** squad service event hook */
-  var squad: ActorRef = ActorRef.noSender
+private var squad: ActorRef = ActorRef.noSender
   /** galaxy service event hook */
-  var galaxy: ActorRef = ActorRef.noSender
+private var galaxy: ActorRef = ActorRef.noSender
 
   /** log, for trace and warnings only */
   private val log = org.log4s.getLogger
@@ -243,24 +243,24 @@ class PersistenceMonitor(
                           galaxyService: ActorRef
                         ) extends Actor {
   /** the last-reported zone of this player */
-  var inZone: Zone = Zone.Nowhere
+private var inZone: Zone = Zone.Nowhere
 
   /** the last-reported game coordinate position of this player */
-  var lastPosition: Vector3 = Vector3.Zero
+private var lastPosition: Vector3 = Vector3.Zero
 
   /**
     */
-  var kicked: Boolean = false
+private var kicked: Boolean = false
 
   /**
     */
-  var kickTime: Option[Long] = None
+private var kickTime: Option[Long] = None
 
   /** a custom logout time for this player; 60s by default */
-  var persistTime: Option[Long] = None
+private var persistTime: Option[Long] = None
 
   /** the ongoing amount of permissible inactivity */
-  var timer: Cancellable = Default.Cancellable
+private var timer: Cancellable = Default.Cancellable
 
   /** the sparingly-used log */
   private val log = org.log4s.getLogger

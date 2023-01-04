@@ -22,25 +22,25 @@ class HartTimer(zone: Zone) extends Actor {
   /** since the system is zone-locked, caching this value is fine */
   val zoneId = zone.id
   /** all of the paired HART facility amenities and the shuttle housed in that facility (in that order) */
-  var padAndShuttlePairs: List[(PlanetSideGUID, PlanetSideGUID)] = List()
+private var padAndShuttlePairs: List[(PlanetSideGUID, PlanetSideGUID)] = List()
 
   /* the HART system is controlled by a sequence of events;
    * the sequence describes key state changes and animation cues
    * to produce the effect of the orbital shuttle being used
    */
-  var sequence = Seq.empty[HartEvent]
+private var sequence = Seq.empty[HartEvent]
   /** index keeping track of the current event in the sequence */
-  var sequenceIndex: Int = 0
+private var sequenceIndex: Int = 0
   /** how many events are a part of this sequence */
-  var sequenceLength = 0
+private var sequenceLength = 0
   /** when the timing of the events in the system changes,
     * do not push the changes until completion of the current routine
     */
-  var delayedScheduleChange: Option[Seq[HartEvent]] = None
+private var delayedScheduleChange: Option[Seq[HartEvent]] = None
   /** the time at the start of the previous event */
-  var lastStartTime: Long = 0
+private var lastStartTime: Long = 0
   /** scheduler for each event in the sequence */
-  var timer: Cancellable = Default.Cancellable
+private var timer: Cancellable = Default.Cancellable
 
   /** a message bus to which all associated orbital shuttle pads are subscribed */
   val padEvents = new GenericEventBus[HartTimer.Command]

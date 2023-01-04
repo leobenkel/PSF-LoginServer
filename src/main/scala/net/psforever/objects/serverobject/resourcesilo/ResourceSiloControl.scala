@@ -28,7 +28,7 @@ class ResourceSiloControl(resourceSilo: ResourceSilo)
   def FactionObject: FactionAffinity = resourceSilo
 
   private[this] val log               = org.log4s.getLogger
-  var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
+private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
 
   def receive: Receive = {
     case Service.Startup() =>

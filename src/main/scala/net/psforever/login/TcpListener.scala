@@ -19,10 +19,10 @@ class TcpListener[T <: Actor](actorClass: Class[T], nextActorName: String, liste
 
   IO(Tcp) ! Tcp.Bind(self, new InetSocketAddress(listenAddress, port))
 
-  var sessionId           = 0L
-  var bytesRecevied       = 0L
-  var bytesSent           = 0L
-  var nextActor: ActorRef = ActorRef.noSender
+private var sessionId           = 0L
+private var bytesRecevied       = 0L
+private var bytesSent           = 0L
+private var nextActor: ActorRef = ActorRef.noSender
 
   def receive = {
     case Tcp.Bound(local) =>

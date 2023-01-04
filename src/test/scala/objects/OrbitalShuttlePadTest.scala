@@ -28,7 +28,7 @@ class OrbitalShuttlePadControlTest extends FreedContextActorTest {
   services ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   services ! ServiceManager.Register(Props[HartService](), "hart")
   expectNoMessage(1000 milliseconds)
-  var buildingMap = new TrieMap[Int, Building]()
+private var buildingMap = new TrieMap[Int, Building]()
   val vehicles = ListBuffer[Vehicle]()
   val guid = new NumberPoolHub(new MaxNumberSource(max = 20))
   guid.AddPool("vehicles", (11 to 15).toList)

@@ -164,13 +164,13 @@ class MiddlewareActor(
 
   private[this] val log = org.log4s.getLogger
 
-  var clientNonce: Long = 0
+private var clientNonce: Long = 0
 
-  var serverMACBuffer: ByteVector = ByteVector.empty
+private var serverMACBuffer: ByteVector = ByteVector.empty
 
   val random = new SecureRandom()
 
-  var crypto: Option[CryptoCoding] = None
+private var crypto: Option[CryptoCoding] = None
 
   val nextActor: ActorRef[PlanetSidePacket] =
     context.spawnAnonymous(next(context.self, sender, connectionId), ActorTags(s"id=$connectionId"))
@@ -179,10 +179,10 @@ class MiddlewareActor(
   private val inReorderQueue: mutable.Queue[InReorderEntry] = mutable.Queue()
 
   /** Latest incoming sequence number */
-  var inSequence = -1
+private var inSequence = -1
 
   /** Latest incoming subslot number */
-  var inSubslot = -1
+private var inSubslot = -1
 
   /** List of missing subslot numbers and attempts counter */
   val inSubslotsMissing: mutable.Map[Int, Int] = TrieMap()
@@ -196,7 +196,7 @@ class MiddlewareActor(
   /** Latest outbound sequence number;
     * the current sequence is one less than this number
     */
-  var outSequence = 0
+private var outSequence = 0
 
   /**
     * Increment the outbound sequence number.
@@ -217,7 +217,7 @@ class MiddlewareActor(
   /** Latest outbound subslot number;
     * the current subslot is one less than this number
     */
-  var outSubslot = 0
+private var outSubslot = 0
 
   /**
     * Increment the outbound subslot number.
@@ -254,14 +254,14 @@ class MiddlewareActor(
     * The client and server supposedly maintain reciprocating mechanisms.
     */
   val preparedSlottedMetaPackets: Array[SlottedMetaPacket] = new Array[SlottedMetaPacket](smpHistoryLength)
-  var nextSmpIndex: Int                                    = 0
-  var acceptedSmpSubslot: Int                              = 0
+private var nextSmpIndex: Int                                    = 0
+private var acceptedSmpSubslot: Int                              = 0
 
   /** end of life stat */
-  var timesInReorderQueue: Int = 0
+private var timesInReorderQueue: Int = 0
 
   /** end of life stat */
-  var timesSubslotMissing: Int = 0
+private var timesSubslotMissing: Int = 0
 
   /** Delay between runs of the packet bundler/resolver timer (ms);
     * 250ms per network update (client upstream), so 10 runs of this bundling code every update
@@ -269,13 +269,13 @@ class MiddlewareActor(
   val packetProcessorDelay = Config.app.network.middleware.packetBundlingDelay
 
   /** Timer that handles the bundling and throttling of outgoing packets and resolves disorganized inbound packets */
-  var packetProcessor: Cancellable = Default.Cancellable
+private var packetProcessor: Cancellable = Default.Cancellable
 
   /** how long packets that are out of sequential order wait for the missing sequence before being expedited (ms) */
   val inReorderTimeout = Config.app.network.middleware.inReorderTimeout
 
   /** Timer that handles the bundling and throttling of outgoing packets requesting packets with known subslot numbers */
-  var subslotMissingProcessor: Cancellable = Default.Cancellable
+private var subslotMissingProcessor: Cancellable = Default.Cancellable
 
   /** how long to wait between repeated requests for packets with known missing subslot numbers (ms) */
   val inSubslotMissingDelay = Config.app.network.middleware.inSubslotMissingDelay

@@ -21,11 +21,11 @@ object PsAdminActor {
 class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends Actor with Stash {
   private[this] val log = org.log4s.getLogger(self.path.name)
 
-  var cluster: typed.ActorRef[InterstellarClusterService.Command] = null
+private var cluster: typed.ActorRef[InterstellarClusterService.Command] = null
 
   // val services          = Map[String, ActorRef]()
   // val servicesToResolve = Array("cluster")
-  var buffer = ByteString()
+private var buffer = ByteString()
 
   implicit val formats = DefaultFormats // for JSON serialization
 

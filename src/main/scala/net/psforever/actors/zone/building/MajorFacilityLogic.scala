@@ -8,7 +8,11 @@ import net.psforever.actors.commands.NtuCommand
 import net.psforever.actors.zone.{BuildingActor, BuildingControlDetails, ZoneActor}
 import net.psforever.objects.serverobject.generator.{Generator, GeneratorControl}
 import net.psforever.objects.serverobject.structures.{Amenity, Building}
-import net.psforever.objects.serverobject.terminals.capture.{CaptureTerminal, CaptureTerminalAware, CaptureTerminalAwareBehavior}
+import net.psforever.objects.serverobject.terminals.capture.{
+  CaptureTerminal,
+  CaptureTerminalAware,
+  CaptureTerminalAwareBehavior
+}
 import net.psforever.services.{InterstellarClusterService, Service}
 import net.psforever.services.avatar.{AvatarAction, AvatarServiceMessage}
 import net.psforever.services.galaxy.{GalaxyAction, GalaxyServiceMessage}
@@ -29,12 +33,11 @@ import net.psforever.types.{PlanetSideEmpire, PlanetSideGUID, PlanetSideGenerato
   * @param interstellarCluster event system for behavior updates from the whole server
   */
 final case class MajorFacilityWrapper(
-                                       building: Building,
-                                       context: ActorContext[BuildingActor.Command],
-                                       galaxyService: classic.ActorRef,
-                                       interstellarCluster: ActorRef[InterstellarClusterService.Command]
-                                     )
-  extends BuildingWrapper {
+    building: Building,
+    context: ActorContext[BuildingActor.Command],
+    galaxyService: classic.ActorRef,
+    interstellarCluster: ActorRef[InterstellarClusterService.Command]
+) extends BuildingWrapper {
   var hasNtuSupply: Boolean = true
 }
 
@@ -42,15 +45,14 @@ final case class MajorFacilityWrapper(
   * The logic that governs "major facilities" in the overworld -
   * those bases that have lattice connectivity and individual nanite resource stockpiles.
   */
-case object MajorFacilityLogic
-  extends BuildingLogic {
+case object MajorFacilityLogic extends BuildingLogic {
   import BuildingActor.Command
 
   override def wrapper(
-                        building: Building,
-                        context: ActorContext[BuildingActor.Command],
-                        details: BuildingControlDetails
-                      ): BuildingWrapper = {
+      building: Building,
+      context: ActorContext[BuildingActor.Command],
+      details: BuildingControlDetails
+  ): BuildingWrapper = {
     MajorFacilityWrapper(building, context, details.galaxyService, details.interstellarCluster)
   }
 
@@ -79,12 +81,12 @@ case object MajorFacilityLogic
     * @param mapUpdateOnChange if `true`, dispatch a `MapUpdate` message for this building
     */
   private def updateForceDomeStatus(
-                                     details: BuildingWrapper,
-                                     updatedStatus: Boolean,
-                                     mapUpdateOnChange: Boolean
-                                   ): Unit = {
+      details: BuildingWrapper,
+      updatedStatus: Boolean,
+      mapUpdateOnChange: Boolean
+  ): Unit = {
     val building = details.building
-    val zone = building.Zone
+    val zone     = building.Zone
     building.ForceDomeActive = updatedStatus
     zone.LocalEvents ! LocalServiceMessage(
       zone.id,
@@ -109,7 +111,7 @@ case object MajorFacilityLogic
     building.NtuLevel == 0 ||
     (building.Generator match {
       case Some(o) => o.Condition == PlanetSideGeneratorState.Destroyed
-      case _ => false
+      case _       => false
     })
   }
 
@@ -125,7 +127,7 @@ case object MajorFacilityLogic
   def checkForceDomeStatus(building: Building): Option[Boolean] = {
     if (building.IsCapitol) {
       val originalStatus = building.ForceDomeActive
-      val faction = building.Faction
+      val faction        = building.Faction
       val updatedStatus = if (invalidBuildingCapitolForceDomeConditions(building)) {
         false
       } else {
@@ -165,16 +167,22 @@ case object MajorFacilityLogic
         }
       case terminal: CaptureTerminal =>
         // Notify amenities that listen for CC hack state changes, e.g. wall turrets to dismount seated players
-        details.building.Amenities.filter(x => x.isInstanceOf[CaptureTerminalAware]).foreach(amenity => {
-          data match {
-            case Some(isResecured: Boolean) => amenity.Actor ! CaptureTerminalAwareBehavior.TerminalStatusChanged(terminal, isResecured)
-            case _ => log(details).warn("CaptureTerminal AmenityStateChange was received with no attached data.")
-          }
-        })
+        details.building.Amenities
+          .filter(x => x.isInstanceOf[CaptureTerminalAware])
+          .foreach(amenity => {
+            data match {
+              case Some(isResecured: Boolean) =>
+                amenity.Actor ! CaptureTerminalAwareBehavior.TerminalStatusChanged(terminal, isResecured)
+              case _ => log(details).warn("CaptureTerminal AmenityStateChange was received with no attached data.")
+            }
+          })
         // When a CC is hacked (or resecured) all currently hacked amenities for the base should return to their default unhacked state
         details.building.HackableAmenities.foreach(amenity => {
           if (amenity.HackedBy.isDefined) {
-            details.building.Zone.LocalEvents ! LocalServiceMessage(amenity.Zone.id,LocalAction.ClearTemporaryHack(PlanetSideGUID(0), amenity))
+            details.building.Zone.LocalEvents ! LocalServiceMessage(
+              amenity.Zone.id,
+              LocalAction.ClearTemporaryHack(PlanetSideGUID(0), amenity)
+            )
           }
         })
       // No map update needed - will be sent by `HackCaptureActor` when required
@@ -193,7 +201,7 @@ case object MajorFacilityLogic
   def powerOff(details: BuildingWrapper): Behavior[Command] = {
     details.building.Generator match {
       case Some(gen) => gen.Actor ! BuildingActor.NtuDepleted()
-      case _ => powerLost(details)
+      case _         => powerLost(details)
     }
     Behaviors.same
   }
@@ -207,7 +215,7 @@ case object MajorFacilityLogic
   def powerOn(details: BuildingWrapper): Behavior[Command] = {
     details.building.Generator match {
       case Some(gen) if details.building.NtuLevel > 0 => gen.Actor ! BuildingActor.SuppliedWithNtu()
-      case _ => powerRestored(details)
+      case _                                          => powerRestored(details)
     }
     Behaviors.same
   }
@@ -257,28 +265,28 @@ case object MajorFacilityLogic
     */
   private def generatorStateChange(details: BuildingWrapper, generator: Generator, event: Any): Boolean = {
     val building = details.building
-    val zone = building.Zone
+    val zone     = building.Zone
     event match {
       case Some(GeneratorControl.Event.UnderAttack) =>
         val events = zone.AvatarEvents
-        val guid = building.GUID
-        val msg = AvatarAction.GenericObjectAction(Service.defaultPlayerGUID, guid, 15)
+        val guid   = building.GUID
+        val msg    = AvatarAction.GenericObjectAction(Service.defaultPlayerGUID, guid, 15)
         building.PlayersInSOI.foreach { player =>
           events ! AvatarServiceMessage(player.Name, msg)
         }
         false
       case Some(GeneratorControl.Event.Critical) =>
         val events = zone.AvatarEvents
-        val guid = building.GUID
-        val msg = AvatarAction.PlanetsideAttributeToAll(guid, 46, 1)
+        val guid   = building.GUID
+        val msg    = AvatarAction.PlanetsideAttributeToAll(guid, 46, 1)
         building.PlayersInSOI.foreach { player =>
           events ! AvatarServiceMessage(player.Name, msg)
         }
         true
       case Some(GeneratorControl.Event.Destabilized) =>
         val events = zone.AvatarEvents
-        val guid = building.GUID
-        val msg = AvatarAction.GenericObjectAction(Service.defaultPlayerGUID, guid, 16)
+        val guid   = building.GUID
+        val msg    = AvatarAction.GenericObjectAction(Service.defaultPlayerGUID, guid, 16)
         building.PlayersInSOI.foreach { player =>
           events ! AvatarServiceMessage(player.Name, msg)
         }
@@ -289,7 +297,7 @@ case object MajorFacilityLogic
         powerLost(details)
         alignForceDomeStatus(details, mapUpdateOnChange = false)
         val zone = building.Zone
-        val msg = AvatarAction.PlanetsideAttributeToAll(building.GUID, 46, 2)
+        val msg  = AvatarAction.PlanetsideAttributeToAll(building.GUID, 46, 2)
         building.PlayersInSOI.foreach { player =>
           zone.AvatarEvents ! AvatarServiceMessage(player.Name, msg)
         } //???
@@ -301,9 +309,9 @@ case object MajorFacilityLogic
         powerRestored(details)
         alignForceDomeStatus(details, mapUpdateOnChange = false)
         val events = zone.AvatarEvents
-        val guid = building.GUID
-        val msg1 = AvatarAction.PlanetsideAttributeToAll(guid, 46, 0)
-        val msg2 = AvatarAction.GenericObjectAction(Service.defaultPlayerGUID, guid, 17)
+        val guid   = building.GUID
+        val msg1   = AvatarAction.PlanetsideAttributeToAll(guid, 46, 0)
+        val msg2   = AvatarAction.GenericObjectAction(Service.defaultPlayerGUID, guid, 17)
         building.PlayersInSOI.foreach { player =>
           val name = player.Name
           events ! AvatarServiceMessage(name, msg1) //reset ???; might be global?
@@ -316,9 +324,9 @@ case object MajorFacilityLogic
   }
 
   def setFactionTo(
-                    details: BuildingWrapper,
-                    faction: PlanetSideEmpire.Value
-                  ): Behavior[Command] = {
+      details: BuildingWrapper,
+      faction: PlanetSideEmpire.Value
+  ): Behavior[Command] = {
     if (details.asInstanceOf[MajorFacilityWrapper].hasNtuSupply) {
       BuildingActor.setFactionTo(details, faction, log)
       alignForceDomeStatus(details, mapUpdateOnChange = false)
@@ -341,10 +349,10 @@ case object MajorFacilityLogic
     */
   private def powerLost(details: BuildingWrapper): Behavior[Command] = {
     val building = details.building
-    val zone = building.Zone
-    val zoneId = zone.id
-    val events = zone.AvatarEvents
-    val guid = building.GUID
+    val zone     = building.Zone
+    val zoneId   = zone.id
+    val events   = zone.AvatarEvents
+    val guid     = building.GUID
     val powerMsg = BuildingActor.PowerOff()
     building.Amenities.foreach { amenity =>
       amenity.Actor ! powerMsg
@@ -364,10 +372,10 @@ case object MajorFacilityLogic
     */
   private def powerRestored(details: BuildingWrapper): Behavior[Command] = {
     val building = details.building
-    val zone = building.Zone
-    val zoneId = zone.id
-    val events = zone.AvatarEvents
-    val guid = building.GUID
+    val zone     = building.Zone
+    val zoneId   = zone.id
+    val events   = zone.AvatarEvents
+    val guid     = building.GUID
     val powerMsg = BuildingActor.PowerOn()
     building.Amenities.foreach { amenity =>
       amenity.Actor ! powerMsg
