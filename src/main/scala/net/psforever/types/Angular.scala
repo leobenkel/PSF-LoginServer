@@ -13,7 +13,7 @@ import shapeless.{::, HNil}
   */
 object Angular {
   //roll
-private val codec_roll: Codec[Float] = (
+  private val codec_roll: Codec[Float] = (
     ignore(1) ::
       codec_roll(7)
   ).xmap[Float](
@@ -27,7 +27,7 @@ private val codec_roll: Codec[Float] = (
   def codec_roll(bits: Int): Codec[Float] = newcodecs.q_float(0.0f, 360.0f, bits)
 
   //pitch
-private val codec_pitch: Codec[Float] = (
+  private val codec_pitch: Codec[Float] = (
     ignore(1) ::
       codec_pitch(7)
   ).xmap[Float](
@@ -67,7 +67,7 @@ private val codec_pitch: Codec[Float] = (
         yaw => encodeCorrectedAngle(yaw, North)
       )
 
-private val codec_zero_centered: Codec[Float] = codec_yaw(North = 0).xmap[Float](
+  val codec_zero_centered: Codec[Float] = codec_yaw(North = 0).xmap[Float](
     out => if (out > 180) out - 360 else out,
     in => {
       val adjustedIn = in % 360
@@ -108,7 +108,7 @@ private val codec_zero_centered: Codec[Float] = codec_yaw(North = 0).xmap[Float]
   def flipClockwise(angle: Float): Float = {
     //counterclockwise: 0-degrees starts at East Vector3(1,0,0)
     //clockwise: 0-degrees starts at North Vector3(0,1,0)
-    val boundedAngle =  {
+    val boundedAngle = {
       //the result will always be -1 < n < 360
       var pos = angle
       while (pos < 0) pos = pos + 360f

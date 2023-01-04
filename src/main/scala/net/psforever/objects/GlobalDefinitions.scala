@@ -84,26 +84,26 @@ object GlobalDefinitions {
   /*
   Implants
    */
-  private val advanced_regen = new ImplantDefinition(ImplantType.AdvancedRegen) {
+  val advanced_regen = new ImplantDefinition(ImplantType.AdvancedRegen) {
     Name = "advanced_regen"
   }
   advanced_regen.InitializationDuration = 120
   advanced_regen.StaminaCost = 2
   advanced_regen.CostIntervalDefault = 500
 
-  private val targeting = new ImplantDefinition(ImplantType.Targeting) {
+  val targeting = new ImplantDefinition(ImplantType.Targeting) {
     Name = "targeting"
   }
   targeting.InitializationDuration = 60
 
-  private val audio_amplifier = new ImplantDefinition(ImplantType.AudioAmplifier) {
+  val audio_amplifier = new ImplantDefinition(ImplantType.AudioAmplifier) {
     Name = "audio_amplifier"
   }
   audio_amplifier.InitializationDuration = 60
   audio_amplifier.StaminaCost = 1
   audio_amplifier.CostIntervalDefault = 1000
 
-  private val darklight_vision = new ImplantDefinition(ImplantType.DarklightVision) {
+  val darklight_vision = new ImplantDefinition(ImplantType.DarklightVision) {
     Name = "darklight_vision"
   }
   darklight_vision.InitializationDuration = 60
@@ -111,30 +111,30 @@ object GlobalDefinitions {
   darklight_vision.StaminaCost = 1
   darklight_vision.CostIntervalDefault = 500
 
-  private val melee_booster = new ImplantDefinition(ImplantType.MeleeBooster) {
+  val melee_booster = new ImplantDefinition(ImplantType.MeleeBooster) {
     Name = "melee_booster"
   }
   melee_booster.InitializationDuration = 120
   melee_booster.StaminaCost = 10
 
-  private val personal_shield = new ImplantDefinition(ImplantType.PersonalShield) {
+  val personal_shield = new ImplantDefinition(ImplantType.PersonalShield) {
     Name = "personal_shield"
   }
   personal_shield.InitializationDuration = 120
   personal_shield.StaminaCost = 1
   personal_shield.CostIntervalDefault = 600
 
-  private val range_magnifier = new ImplantDefinition(ImplantType.RangeMagnifier) {
+  val range_magnifier = new ImplantDefinition(ImplantType.RangeMagnifier) {
     Name = "range_magnifier"
   }
   range_magnifier.InitializationDuration = 60
 
-  private val second_wind = new ImplantDefinition(ImplantType.SecondWind) {
+  val second_wind = new ImplantDefinition(ImplantType.SecondWind) {
     Name = "second_wind"
   }
   second_wind.InitializationDuration = 180
 
-  private val silent_run = new ImplantDefinition(ImplantType.SilentRun) {
+  val silent_run = new ImplantDefinition(ImplantType.SilentRun) {
     Name = "silent_run"
   }
   silent_run.InitializationDuration = 90
@@ -142,7 +142,7 @@ object GlobalDefinitions {
   silent_run.CostIntervalDefault = 333
   silent_run.CostIntervalByExoSuitHashMap(ExoSuitType.Infiltration) = 1000
 
-  private val surge = new ImplantDefinition(ImplantType.Surge) {
+  val surge = new ImplantDefinition(ImplantType.Surge) {
     Name = "surge"
   }
   surge.InitializationDuration = 90
@@ -1179,7 +1179,7 @@ object GlobalDefinitions {
 
   private val air_vehicle_terminal = new OrderTerminalDefinition(43)
 
-  private val dropship_vehicle_terminal = new OrderTerminalDefinition(263)
+  val dropship_vehicle_terminal = new OrderTerminalDefinition(263)
 
   private val vehicle_terminal_combined = new OrderTerminalDefinition(952)
 
@@ -1321,7 +1321,7 @@ object GlobalDefinitions {
     LatticeLinkBenefit = LatticeBenefit.TechnologyPlant
   }
 
-  private val building = new BuildingDefinition(474) { Name = "building" } //borrows object id of entity mainbase1
+  val building = new BuildingDefinition(474) { Name = "building" } //borrows object id of entity mainbase1
 
   private val vanu_core = new BuildingDefinition(932) { Name = "vanu_core" }
 
