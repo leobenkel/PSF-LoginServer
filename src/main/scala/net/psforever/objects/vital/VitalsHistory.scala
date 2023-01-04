@@ -1,12 +1,11 @@
 // Copyright (c) 2020 PSForever
 package net.psforever.objects.vital
 
-import net.psforever.objects.Player
 import net.psforever.objects.ballistics.{PlayerSource, VehicleSource}
-import net.psforever.objects.definition.{EquipmentDefinition, KitDefinition, ToolDefinition}
+import net.psforever.objects.definition._
 import net.psforever.objects.serverobject.terminals.TerminalDefinition
 import net.psforever.objects.vital.environment.EnvironmentReason
-import net.psforever.objects.vital.etc.{ExplodingEntityReason, PainboxReason, SuicideReason}
+import net.psforever.objects.vital.etc._
 import net.psforever.objects.vital.interaction.{DamageInteraction, DamageResult}
 import net.psforever.objects.vital.projectile.ProjectileReason
 import net.psforever.types.{ExoSuitType, ImplantType}

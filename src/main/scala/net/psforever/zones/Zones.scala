@@ -1,38 +1,35 @@
 package net.psforever.zones
 
-import java.io.FileNotFoundException
-
-import net.psforever.objects.serverobject.terminals.{ProximityTerminal, ProximityTerminalDefinition, Terminal, TerminalDefinition}
-import net.psforever.objects.serverobject.mblocker.Locker
-import java.util.concurrent.atomic.AtomicInteger
-
 import akka.actor.ActorContext
 import io.circe._
 import io.circe.parser._
-import net.psforever.objects.{GlobalDefinitions, LocalLockerItem, LocalProjectile}
-import net.psforever.objects.ballistics.Projectile
 import net.psforever.objects.definition.BasicDefinition
-import net.psforever.objects.guid.selector.{NumberSelector, RandomSelector, SpecificSelector}
-import net.psforever.objects.serverobject.doors.{Door, DoorDefinition, SpawnTubeDoor}
+import net.psforever.objects.guid.selector._
+import net.psforever.objects.serverobject.doors._
 import net.psforever.objects.serverobject.generator.Generator
 import net.psforever.objects.serverobject.llu.{CaptureFlagSocket, CaptureFlagSocketDefinition}
 import net.psforever.objects.serverobject.locks.IFFLock
+import net.psforever.objects.serverobject.mblocker.Locker
 import net.psforever.objects.serverobject.pad.{VehicleSpawnPad, VehicleSpawnPadDefinition}
 import net.psforever.objects.serverobject.painbox.{Painbox, PainboxDefinition}
 import net.psforever.objects.serverobject.resourcesilo.ResourceSilo
 import net.psforever.objects.serverobject.shuttle.OrbitalShuttlePad
-import net.psforever.objects.serverobject.structures.{Building, BuildingDefinition, FoundationBuilder, StructureType, WarpGate}
+import net.psforever.objects.serverobject.structures._
 import net.psforever.objects.serverobject.terminals.capture.{CaptureTerminal, CaptureTerminalDefinition}
 import net.psforever.objects.serverobject.terminals.implant.ImplantTerminalMech
+import net.psforever.objects.serverobject.terminals._
 import net.psforever.objects.serverobject.tube.SpawnTube
 import net.psforever.objects.serverobject.turret.{FacilityTurret, FacilityTurretDefinition}
 import net.psforever.objects.serverobject.zipline.ZipLinePath
-import net.psforever.objects.zones.{MapInfo, Zone, ZoneInfo, ZoneMap}
-import net.psforever.types.{Angular, PlanetSideEmpire, Vector3}
+import net.psforever.objects.zones._
+import net.psforever.objects._
+import net.psforever.types._
 import net.psforever.util.DefinitionUtil
 
-import scala.io.Source
+import java.io.FileNotFoundException
+import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.parallel.CollectionConverters._
+import scala.io.Source
 
 object Zones {
 
