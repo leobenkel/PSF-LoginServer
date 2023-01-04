@@ -18,7 +18,7 @@ sealed abstract class VehicleSubsystemConditionModifier(
                                                        ) extends IntEnumEntry
 
 object VehicleSubsystemConditionModifier extends IntEnum[VehicleSubsystemConditionModifier] {
-  val values = findValues
+private val values = findValues
 
   case object Off extends VehicleSubsystemConditionModifier(value = 1065353216, multiplier = 0f, addend = 0)
 

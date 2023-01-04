@@ -91,7 +91,7 @@ object BattleFrameRoboticsData extends Marshallable[BattleFrameRoboticsData] {
     )
   }
 
-  val codec_flight: Codec[BattleFrameRoboticsData] = {
+private val codec_flight: Codec[BattleFrameRoboticsData] = {
     import shapeless.::
     (
       ("pos" | PlacementData.codec) >>:~ { pos =>

@@ -21,7 +21,7 @@ import scala.concurrent.duration._
 class VehicleSpawnControlConcealPlayer(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
   def LogId = "-concealer"
 
-  val loadVehicle =
+private val loadVehicle =
     context.actorOf(Props(classOf[VehicleSpawnControlLoadVehicle], pad), s"${context.parent.path.name}-load")
 
   def receive: Receive = {

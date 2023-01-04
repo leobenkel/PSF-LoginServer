@@ -7,8 +7,8 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class LoginMessageTest extends Specification {
-  val string_password = hex"0x01030000000f0000008b4465632020322032303039408061816154000000"
-  val string_token =
+private val string_password = hex"0x01030000000f0000008b4465632020322032303039408061816154000000"
+private val string_token =
     hex"0x01030000000f0000008b4465632020322032303039a0a0a0a0a121212121a1a1a1a222222222a2a2a2a323232323a3a3a3a424240040806154000000"
 
   "LoginMessage" should {

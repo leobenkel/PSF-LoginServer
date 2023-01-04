@@ -7,7 +7,7 @@ import enumeratum.values.{StringEnum, StringEnumEntry}
 sealed abstract class Hand(val value: String) extends StringEnumEntry
 
 object Handiness extends StringEnum[Hand] {
-  val values = findValues
+private val values = findValues
 
   case object Generic extends Hand(value = "Generic")
   case object Left extends Hand(value = "Left")

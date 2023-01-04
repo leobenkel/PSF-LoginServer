@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class WeaponLazeTargetPositionMessageTest extends Specification {
-  val string = hex"C8 4C00 6C2D7 65535 CA16 982D7 4A535 CA16"
+private val string = hex"C8 4C00 6C2D7 65535 CA16 982D7 4A535 CA16"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -9,8 +9,8 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class SmallTurretDataTest extends Specification {
-  val string_spitfire_short = hex"17 BB000000 9D37010 E4F08 6AFCA 0312 00 7F 42 2C1F0F0000F00"
-  val string_spitfire =
+private val string_spitfire_short = hex"17 BB000000 9D37010 E4F08 6AFCA 0312 00 7F 42 2C1F0F0000F00"
+private val string_spitfire =
     hex"17 4F010000 9D3A910 D1D78 AE3FC 9111 00 00 69 4488107F80F2021DBF80B80C80000008086EDB83A03200000"
 
   "SmallTurretData" should {

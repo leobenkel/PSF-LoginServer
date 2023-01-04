@@ -98,7 +98,7 @@ object Shortcut extends Marshallable[Shortcut] {
   /**
    * Main transcoder for medkit shortcuts.
    */
-  val medkitCodec: Codec[Medkit] = (
+private val medkitCodec: Codec[Medkit] = (
     ("tile" | PacketHelpers.encodedStringAligned(adjustment=5)) ::
       ("effect1" | PacketHelpers.encodedWideString) ::
       ("effect2" | PacketHelpers.encodedWideString)
@@ -113,7 +113,7 @@ object Shortcut extends Marshallable[Shortcut] {
    * Main transcoder for text chat macro shortcuts.
    * All strings transcoders are utilized.
    */
-  val macroCodec: Codec[Macro] = (
+private val macroCodec: Codec[Macro] = (
     ("tile" | PacketHelpers.encodedStringAligned(adjustment=5)) ::
       ("effect1" | PacketHelpers.encodedWideString) ::
       ("effect2" | PacketHelpers.encodedWideString)
@@ -129,7 +129,7 @@ object Shortcut extends Marshallable[Shortcut] {
   /**
    * Main transcoder for implant quick-use shortcuts.
    */
-  val implantCodec: Codec[Implant] = (
+private val implantCodec: Codec[Implant] = (
     ("tile" | PacketHelpers.encodedStringAligned(adjustment=5)) ::
       ("effect1" | PacketHelpers.encodedWideString) ::
       ("effect2" | PacketHelpers.encodedWideString)

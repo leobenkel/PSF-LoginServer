@@ -9,9 +9,9 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class RemoteProjectileDataTest extends Specification {
-  val string_striker_projectile               = hex"17 C5000000 A4B 009D 4C129 0CB0A 9814 00 F5 E3 040000666686400"
-  val string_hunter_seeker_missile_projectile = hex"17 c5000000 ca9 ab9e af127 ec465 3723 00 15 c4 2400009a99c9400"
-  val string_oicw_little_buddy                = hex"18 ef000000 aca 3d0e 1ef35 d9417 2511 00 0f 21 d3bf0d1bc38900000000000fc"
+private val string_striker_projectile               = hex"17 C5000000 A4B 009D 4C129 0CB0A 9814 00 F5 E3 040000666686400"
+private val string_hunter_seeker_missile_projectile = hex"17 c5000000 ca9 ab9e af127 ec465 3723 00 15 c4 2400009a99c9400"
+private val string_oicw_little_buddy                = hex"18 ef000000 aca 3d0e 1ef35 d9417 2511 00 0f 21 d3bf0d1bc38900000000000fc"
 
   "RemoteProjectileData" should {
     "decode (striker_missile_targeting_projectile)" in {

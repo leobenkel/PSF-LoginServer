@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class BattleExperienceMessageTest extends Specification {
-  val string = hex"B4 8A0A E7030000 00"
+private val string = hex"B4 8A0A E7030000 00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

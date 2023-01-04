@@ -16,7 +16,7 @@ trait MountableBehavior {
   def MountableObject: PlanetSideServerObject with Mountable
 
   /** retain the mount point that was used by this occupant to mount */
-  val usedMountPoint: mutable.HashMap[String, Int] = mutable.HashMap()
+private val usedMountPoint: mutable.HashMap[String, Int] = mutable.HashMap()
 
   def getUsedMountPoint(playerName: String, seatNumber: Int): Int = {
     usedMountPoint
@@ -38,7 +38,7 @@ trait MountableBehavior {
     * @see `Seat`
     * @see `Mountable`
     */
-  val mountBehavior: Receive = {
+private val mountBehavior: Receive = {
     case Mountable.TryMount(user, mount_point) =>
       val obj = MountableObject
       obj.GetSeatFromMountPoint(mount_point) match {
@@ -82,7 +82,7 @@ trait MountableBehavior {
     * @see `Seat`
     * @see `Mountable`
     */
-  val dismountBehavior: Receive = {
+private val dismountBehavior: Receive = {
     case Mountable.TryDismount(user, seat_number, bail_type) =>
       val obj = MountableObject
       if (dismountTest(obj, seat_number, user) && tryDismount(obj, seat_number, user, bail_type)) {

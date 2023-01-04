@@ -17,7 +17,7 @@ object Config {
   private val logger = org.log4s.getLogger
 
   // prog.home is defined when we are running from SBT pack
-  val directory: String = System.getProperty("prog.home") match {
+private val directory: String = System.getProperty("prog.home") match {
     case null =>
       Paths.get("config").toAbsolutePath.toString
     case home =>

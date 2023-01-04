@@ -8,8 +8,8 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ObjectAttachMessageTest extends Specification {
-  val stringToInventory = hex"2A 9F05 D405 86"
-  val stringToCursor    = hex"2A 9F05 D405 00FA"
+private val stringToInventory = hex"2A 9F05 D405 86"
+private val stringToCursor    = hex"2A 9F05 D405 00FA"
 
   "decode (inventory 1,1)" in {
     PacketCoding.decodePacket(stringToInventory).require match {

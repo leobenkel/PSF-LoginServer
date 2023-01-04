@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class OneMannedFieldTurretDataTest extends Specification {
-  val string_orion =
+private val string_orion =
     hex"17 5E010000 D82640B 92F76 01D65 F611 00 00 5E 4400006304BFC1E4041826E1503900000010104CE704C06400000"
 
   "OneMannedFieldTurretData" should {

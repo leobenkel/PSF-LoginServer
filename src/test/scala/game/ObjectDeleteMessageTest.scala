@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ObjectDeleteMessageTest extends Specification {
-  val string = hex"19 4C00 00"
+private val string = hex"19 4C00 00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

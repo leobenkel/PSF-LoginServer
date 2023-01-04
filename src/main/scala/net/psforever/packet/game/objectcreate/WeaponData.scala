@@ -189,5 +189,5 @@ object WeaponData extends Marshallable[WeaponData] {
 
   implicit val codec: Codec[WeaponData] = baseCodec(CommonFieldData.codec)
 
-  val codec2: Codec[WeaponData] = baseCodec(CommonFieldData.codec2)
+private val codec2: Codec[WeaponData] = baseCodec(CommonFieldData.codec2)
 }

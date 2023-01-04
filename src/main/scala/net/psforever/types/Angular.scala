@@ -13,7 +13,7 @@ import shapeless.{::, HNil}
   */
 object Angular {
   //roll
-  val codec_roll: Codec[Float] = (
+private val codec_roll: Codec[Float] = (
     ignore(1) ::
       codec_roll(7)
   ).xmap[Float](
@@ -27,7 +27,7 @@ object Angular {
   def codec_roll(bits: Int): Codec[Float] = newcodecs.q_float(0.0f, 360.0f, bits)
 
   //pitch
-  val codec_pitch: Codec[Float] = (
+private val codec_pitch: Codec[Float] = (
     ignore(1) ::
       codec_pitch(7)
   ).xmap[Float](
@@ -67,7 +67,7 @@ object Angular {
         yaw => encodeCorrectedAngle(yaw, North)
       )
 
-  val codec_zero_centered: Codec[Float] = codec_yaw(North = 0).xmap[Float](
+private val codec_zero_centered: Codec[Float] = codec_yaw(North = 0).xmap[Float](
     out => if (out > 180) out - 360 else out,
     in => {
       val adjustedIn = in % 360

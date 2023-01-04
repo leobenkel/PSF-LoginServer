@@ -60,10 +60,10 @@ object InventoryData {
   /**
     * A `Codec` for `0x17` `ObjectCreateMessage` data.
     */
-  val codec: Codec[InventoryData] = codec(InventoryItemData.codec)
+private val codec: Codec[InventoryData] = codec(InventoryItemData.codec)
 
   /**
     * A `Codec` for `0x18` `ObjectCreateDetailedMessage` data.
     */
-  val codec_detailed: Codec[InventoryData] = codec(InventoryItemData.codec_detailed)
+private val codec_detailed: Codec[InventoryData] = codec(InventoryItemData.codec_detailed)
 }

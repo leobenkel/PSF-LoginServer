@@ -8,8 +8,8 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class FireHintMessageTest extends Specification {
-  val string  = hex"a1 0117 23cd63f1d7480d 000077ff9d1d00"
-  val string2 = hex"a1 080e 65af5705074411 0000cffee0fc7b08899f5580"
+private val string  = hex"a1 0117 23cd63f1d7480d 000077ff9d1d00"
+private val string2 = hex"a1 080e 65af5705074411 0000cffee0fc7b08899f5580"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

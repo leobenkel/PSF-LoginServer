@@ -657,17 +657,17 @@ object SquadHeader {
   /**
     * `Codec` for standard `SquadHeader` entries.
     */
-  val codec: Codec[Option[SquadInfo]] = meta_codec(allCodec)
+private val codec: Codec[Option[SquadInfo]] = meta_codec(allCodec)
 
   /**
     * `Codec` for types of `SquadHeader` initializations.
     */
-  val info_codec: Codec[Option[SquadInfo]] = meta_codec(infoCodec)
+private val info_codec: Codec[Option[SquadInfo]] = meta_codec(infoCodec)
 
   /**
     * Alternate `Codec` for types of `SquadHeader` initializations.
     */
-  val alt_info_codec: Codec[Option[SquadInfo]] = meta_codec(alt_infoCodec)
+private val alt_info_codec: Codec[Option[SquadInfo]] = meta_codec(alt_infoCodec)
 }
 
 object SquadListing {
@@ -711,12 +711,12 @@ object SquadListing {
   /**
     * `Codec` for standard `SquadListing` entries.
     */
-  val codec: Codec[SquadListing] = meta_codec({ _ => SquadHeader.codec })
+private val codec: Codec[SquadListing] = meta_codec({ _ => SquadHeader.codec })
 
   /**
     * `Codec` for branching types of `SquadListing` initializations.
     */
-  val info_codec: Codec[SquadListing] = meta_codec({ index: Int =>
+private val info_codec: Codec[SquadListing] = meta_codec({ index: Int =>
     newcodecs.binary_choice(index == 0, "listing" | SquadHeader.info_codec, "listing" | SquadHeader.alt_info_codec)
   })
 }

@@ -24,7 +24,7 @@ class ZoneProjectileActor(
                          ) extends Actor {
   /** a series of timers matched against projectile unique identifiers,
     * marking the maximum lifespan of the projectile */
-  val projectileLifespan: mutable.HashMap[PlanetSideGUID, Cancellable] = new mutable.HashMap[PlanetSideGUID, Cancellable]
+private val projectileLifespan: mutable.HashMap[PlanetSideGUID, Cancellable] = new mutable.HashMap[PlanetSideGUID, Cancellable]
 
   override def postStop() : Unit = {
     projectileLifespan.values.foreach { _.cancel() }

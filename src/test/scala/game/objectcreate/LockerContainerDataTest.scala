@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class LockerContainerDataTest extends Specification {
-  val string_locker_container =
+private val string_locker_container =
     hex"17 AF010000 E414C0C00000000000000000000600000818829DC2E030000000202378620D80C00000378FA0FADC000006F1FC199D800000"
 
   "LockerContainerData" should {

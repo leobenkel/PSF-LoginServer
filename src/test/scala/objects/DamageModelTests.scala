@@ -472,11 +472,11 @@ class DamageCalculationsTests extends Specification {
 }
 
 class ResistanceCalculationsTests extends Specification {
-  val wep        = GlobalDefinitions.galaxy_gunship_cannon
-  val wep_fmode  = Tool(wep).FireMode
-  val proj       = DamageModelTests.projectile
-  val player     = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-  val projectile = Projectile(proj, wep, wep_fmode, player, Vector3(2, 2, 0), Vector3.Zero)
+private val wep        = GlobalDefinitions.galaxy_gunship_cannon
+private val wep_fmode  = Tool(wep).FireMode
+private val proj       = DamageModelTests.projectile
+private val player     = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val projectile = Projectile(proj, wep, wep_fmode, player, Vector3(2, 2, 0), Vector3.Zero)
 
   "ResistanceCalculations" should {
     "ignore all targets" in {
@@ -585,12 +585,12 @@ class ResistanceCalculationsTests extends Specification {
 }
 
 class ResolutionCalculationsTests extends Specification {
-  val wep       = GlobalDefinitions.galaxy_gunship_cannon
-  val wep_fmode = Tool(wep).FireMode
-  val proj      = DamageModelTests.projectile
-  val player    = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val wep       = GlobalDefinitions.galaxy_gunship_cannon
+private val wep_fmode = Tool(wep).FireMode
+private val proj      = DamageModelTests.projectile
+private val player    = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
   player.Spawn()
-  val projectile = Projectile(proj, wep, wep_fmode, player, Vector3(2, 2, 0), Vector3.Zero)
+private val projectile = Projectile(proj, wep, wep_fmode, player, Vector3(2, 2, 0), Vector3.Zero)
 
   "ResolutionCalculations" should {
     "calculate no damage" in {
@@ -732,13 +732,13 @@ class ResolutionCalculationsTests extends Specification {
 }
 
 class DamageModelTests extends Specification {
-  val wep       = GlobalDefinitions.galaxy_gunship_cannon
-  val wep_tool  = Tool(wep)
-  val wep_fmode = wep_tool.FireMode
-  val proj      = DamageModelTests.projectile
-  val player    = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val wep       = GlobalDefinitions.galaxy_gunship_cannon
+private val wep_tool  = Tool(wep)
+private val wep_fmode = wep_tool.FireMode
+private val proj      = DamageModelTests.projectile
+private val player    = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
   player.Spawn()
-  val projectile = Projectile(proj, wep, wep_fmode, player, Vector3(2, 2, 0), Vector3.Zero)
+private val projectile = Projectile(proj, wep, wep_fmode, player, Vector3(2, 2, 0), Vector3.Zero)
 
   "DamageModel" should {
     "be a part of vitality" in {

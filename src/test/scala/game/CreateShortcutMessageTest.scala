@@ -8,10 +8,10 @@ import net.psforever.types.{ImplantType, PlanetSideGUID}
 import scodec.bits._
 
 class CreateShortcutMessageTest extends Specification {
-  val stringMedkit = hex"28 7210 01 00 90 C0 6D65646B6974 80 80"
-  val stringMacro =
+private val stringMedkit = hex"28 7210 01 00 90 C0 6D65646B6974 80 80"
+private val stringMacro =
     hex"28 4C05 08 00 B1 C0 73686F72746375745F6D6163726F 83 4E00 5400 5500 9B 2F00 7000 6C00 6100 7400 6F00 6F00 6E00 2000 4900 6E00 6300 6F00 6D00 6900 6E00 6700 2000 4E00 5400 5500 2000 7300 7000 6100 6D00 2100"
-  val stringRemove = hex"28 4C05 01 00 00"
+private val stringRemove = hex"28 4C05 01 00 00"
 
   "decode (medkit)" in {
     PacketCoding.decodePacket(stringMedkit).require match {

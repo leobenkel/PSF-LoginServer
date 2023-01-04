@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class VoiceHostKillTest extends Specification {
-  val string_kill = hex"b1"
+private val string_kill = hex"b1"
 
   "decode" in {
     PacketCoding.decodePacket(string_kill).require match {

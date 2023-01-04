@@ -12,11 +12,11 @@ import shapeless.{::, HNil}
 object DeployOutcome extends Enumeration(1) {
   type Type = Value
 
-  val Failure = Value(2)
+private val Failure = Value(2)
   //3 produces a Success message, but 4 is common
-  val Success = Value(4)
+private val Success = Value(4)
 
-  val codec = PacketHelpers.createLongEnumerationCodec(this, uint32L)
+private val codec = PacketHelpers.createLongEnumerationCodec(this, uint32L)
 }
 
 /**

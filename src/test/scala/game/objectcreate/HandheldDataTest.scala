@@ -9,8 +9,8 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class HandheldDataTest extends Specification {
-  val string_ace_held    = hex"17 76000000 0406900650C80480000000"
-  val string_ace_dropped = hex"17 AF000000 90024113B329C5D5A2D1200005B440000000"
+private val string_ace_held    = hex"17 76000000 0406900650C80480000000"
+private val string_ace_dropped = hex"17 AF000000 90024113B329C5D5A2D1200005B440000000"
 
   "ACE" should {
     "decode (held)" in {
@@ -101,7 +101,7 @@ class HandheldDataTest extends Specification {
     }
   }
 
-  val string_telepad = hex"17 86000000 5700 f3a a201 80 0302020000000"
+private val string_telepad = hex"17 86000000 5700 f3a a201 80 0302020000000"
 
   "Telepad" should {
     "decode" in {
@@ -148,7 +148,7 @@ class HandheldDataTest extends Specification {
     }
   }
 
-  val string_boomertrigger = hex"17 76000000 58084A8100E80C00000000" //reconstructed from an inventory entry
+private val string_boomertrigger = hex"17 76000000 58084A8100E80C00000000" //reconstructed from an inventory entry
 
   "Boomer Trigger" should {
     "decode" in {
@@ -194,8 +194,8 @@ class HandheldDataTest extends Specification {
     }
   }
 
-  val string_detonater_held    = hex"17 76000000 1A886A8421080400000000"
-  val string_detonater_dropped = hex"17 AF000000 EA8620ED1549B4B6A741500001B000000000"
+private val string_detonater_held    = hex"17 76000000 1A886A8421080400000000"
+private val string_detonater_dropped = hex"17 AF000000 EA8620ED1549B4B6A741500001B000000000"
 
   "Command Detonater" should {
     "decode (held)" in {

@@ -61,7 +61,7 @@ sealed abstract class EnvironmentTrait extends EnumEntry {
 
 object EnvironmentAttribute extends Enum[EnvironmentTrait] {
   /** glue connecting `EnumEntry` to `Enumeration` */
-  val values: IndexedSeq[EnvironmentTrait] = findValues
+private val values: IndexedSeq[EnvironmentTrait] = findValues
 
   case object Water extends EnvironmentTrait {
     /** water can only interact with objects that are negatively affected by being exposed to water;

@@ -75,7 +75,7 @@ class AuraContainerTest extends Specification {
 }
 
 class AuraEffectBehaviorInitTest extends ActorTest {
-  val obj = new AuraTest.Entity()
+private val obj = new AuraTest.Entity()
 
   "AuraEffectBehavior" should {
     "init" in {
@@ -86,8 +86,8 @@ class AuraEffectBehaviorInitTest extends ActorTest {
 }
 
 class AuraEffectBehaviorStartEffectTest extends ActorTest {
-  val obj = new AuraTest.Entity()
-  val updateProbe = new TestProbe(system)
+private val obj = new AuraTest.Entity()
+private val updateProbe = new TestProbe(system)
   obj.Actor = system.actorOf(Props(classOf[AuraTest.Agency], obj, updateProbe.ref), "aura-test-actor")
 
   "AuraEffectBehavior" should {
@@ -117,8 +117,8 @@ class AuraEffectBehaviorStartEffectTest extends ActorTest {
 }
 
 class AuraEffectBehaviorStartLongerEffectTest extends ActorTest {
-  val obj = new AuraTest.Entity()
-  val updateProbe = new TestProbe(system)
+private val obj = new AuraTest.Entity()
+private val updateProbe = new TestProbe(system)
   obj.Actor = system.actorOf(Props(classOf[AuraTest.Agency], obj, updateProbe.ref), "aura-test-actor")
 
   "AuraEffectBehavior" should {
@@ -142,8 +142,8 @@ class AuraEffectBehaviorStartLongerEffectTest extends ActorTest {
 }
 
 class AuraEffectBehaviorNoRedundantStartEffectTest extends ActorTest {
-  val obj = new AuraTest.Entity()
-  val updateProbe = new TestProbe(system)
+private val obj = new AuraTest.Entity()
+private val updateProbe = new TestProbe(system)
   obj.Actor = system.actorOf(Props(classOf[AuraTest.Agency], obj, updateProbe.ref), "aura-test-actor")
 
   "AuraEffectBehavior" should {
@@ -167,8 +167,8 @@ class AuraEffectBehaviorNoRedundantStartEffectTest extends ActorTest {
 }
 
 class AuraEffectBehaviorNoOverrideStartEffectTest extends ActorTest {
-  val obj = new AuraTest.Entity()
-  val updateProbe = new TestProbe(system)
+private val obj = new AuraTest.Entity()
+private val updateProbe = new TestProbe(system)
   obj.Actor = system.actorOf(Props(classOf[AuraTest.Agency], obj, updateProbe.ref), "aura-test-actor")
 
   "AuraEffectBehavior" should {
@@ -192,8 +192,8 @@ class AuraEffectBehaviorNoOverrideStartEffectTest extends ActorTest {
 }
 
 class AuraEffectBehaviorNoStartUnsupportedEffectTest extends ActorTest {
-  val obj = new AuraTest.Entity()
-  val updateProbe = new TestProbe(system)
+private val obj = new AuraTest.Entity()
+private val updateProbe = new TestProbe(system)
   obj.Actor = system.actorOf(Props(classOf[AuraTest.Agency], obj, updateProbe.ref), "aura-test-actor") //supports Plasma only
 
   "AuraEffectBehavior" should {
@@ -209,8 +209,8 @@ class AuraEffectBehaviorNoStartUnsupportedEffectTest extends ActorTest {
 
 
 class AuraEffectBehaviorEndEarlyTest extends ActorTest {
-  val obj = new AuraTest.Entity()
-  val updateProbe = new TestProbe(system)
+private val obj = new AuraTest.Entity()
+private val updateProbe = new TestProbe(system)
   obj.Actor = system.actorOf(Props(classOf[AuraTest.Agency], obj, updateProbe.ref), "aura-test-actor")
 
   "AuraEffectBehavior" should {
@@ -239,8 +239,8 @@ class AuraEffectBehaviorEndEarlyTest extends ActorTest {
 }
 
 class AuraEffectBehaviorEndNothingTest extends ActorTest {
-  val obj = new AuraTest.Entity()
-  val updateProbe = new TestProbe(system)
+private val obj = new AuraTest.Entity()
+private val updateProbe = new TestProbe(system)
   obj.Actor = system.actorOf(Props(classOf[AuraTest.Agency], obj, updateProbe.ref), "aura-test-actor")
 
   "AuraEffectBehavior" should {

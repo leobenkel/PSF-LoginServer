@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class WarpgateRequestTest extends Specification {
-  val string = hex"A4 1D00 1F00 1327 1F00 00 00" //an Extinction warp gate to a Desolation warp gate
+private val string = hex"A4 1D00 1F00 1327 1F00 00 00" //an Extinction warp gate to a Desolation warp gate
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

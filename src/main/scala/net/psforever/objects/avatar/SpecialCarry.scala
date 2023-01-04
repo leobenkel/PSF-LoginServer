@@ -9,7 +9,7 @@ sealed abstract class SpecialCarry(override val value: String) extends StringEnu
   * Things that the player can carry that are not stored in the inventory or in holsters.
   */
 object SpecialCarry extends StringEnum[SpecialCarry] {
-  val values = findValues
+private val values = findValues
 
   /** The lattice logic unit (LLU).  Not actually a flag. */
   case object CaptureFlag extends SpecialCarry(value = "CaptureFlag")

@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class SimDataChallengeRespTest extends Specification {
-  val string = hex"97050067030000e9030000e1040000000100006502000005003b3388faa52df48fb27971e7c3a9d0c109d5b03f00"
+private val string = hex"97050067030000e9030000e1040000000100006502000005003b3388faa52df48fb27971e7c3a9d0c109d5b03f00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

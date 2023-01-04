@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class MountVehicleMsgTest extends Specification {
-  val string = hex"0E E104 6704 06"
+private val string = hex"0E E104 6704 06"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

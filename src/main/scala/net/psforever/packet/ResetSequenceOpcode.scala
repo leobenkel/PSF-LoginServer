@@ -7,7 +7,7 @@ import scodec.codecs.uint8L
 
 object ResetSequenceOpcode extends Enumeration(1) {
   type Type = Value
-  val ResetSequence = Value
+private val ResetSequence = Value
 
   def getPacketDecoder(opcode: ResetSequenceOpcode.Type): BitVector => Attempt[DecodeResult[PlanetSideResetSequencePacket]] =
     opcode match {

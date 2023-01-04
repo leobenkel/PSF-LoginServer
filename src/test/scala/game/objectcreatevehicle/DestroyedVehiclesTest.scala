@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class DestroyedVehiclesTest extends Specification {
-  val string_ams_destroyed = hex"17 8D000000 978 3D10 002D765535CA16000000 0"
+private val string_ams_destroyed = hex"17 8D000000 978 3D10 002D765535CA16000000 0"
 
   "Destroyed vehicles" should {
     "decode (ams, destroyed)" in {

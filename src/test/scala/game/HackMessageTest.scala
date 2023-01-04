@@ -9,7 +9,7 @@ import scodec.bits._
 
 class HackMessageTest extends Specification {
   // Record 62 in PSCap-hack-door-tower.gcap
-  val string = hex"54 000105c3800000202fc04200000000"
+private val string = hex"54 000105c3800000202fc04200000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

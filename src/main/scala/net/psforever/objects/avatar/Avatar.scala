@@ -76,38 +76,38 @@ object Avatar {
   def makeLocker(): LockerContainer = {
     new LockerContainer({
       val inv = new LocallyRegisteredInventory(numbers = 40150 until 40450) // TODO var bad
-      inv.Resize(30,20)
+      inv.Resize(30, 20)
       inv
     })
   }
 }
 
 case class Cooldowns(
-                      /** Timestamps of when a vehicle or equipment was last purchased */
-                      purchase: Map[String, LocalDateTime] = Map(),
-                      /** Timestamps of when a vehicle or equipment was last purchased */
-                      use: Map[String, LocalDateTime] = Map()
-                    )
+    /** Timestamps of when a vehicle or equipment was last purchased */
+    purchase: Map[String, LocalDateTime] = Map(),
+    /** Timestamps of when a vehicle or equipment was last purchased */
+    use: Map[String, LocalDateTime] = Map()
+)
 
 case class Loadouts(
-                     suit: Seq[Option[Loadout]] = Seq.fill(20)(None),
-                     squad: Seq[Option[SquadLoadout]] = Seq.fill(10)(None)
-                   )
+    suit: Seq[Option[Loadout]] = Seq.fill(20)(None),
+    squad: Seq[Option[SquadLoadout]] = Seq.fill(10)(None)
+)
 
 case class ProgressDecoration(
-                               cosmetics: Option[Set[Cosmetic]] = None,
-                               ribbonBars: RibbonBars = RibbonBars(),
-                               firstTimeEvents: Set[String] =
-                               FirstTimeEvents.Maps ++ FirstTimeEvents.Monoliths ++
-                                 FirstTimeEvents.Standard.All ++ FirstTimeEvents.Cavern.All ++
-                                 FirstTimeEvents.TR.All ++ FirstTimeEvents.NC.All ++ FirstTimeEvents.VS.All ++
-                                 FirstTimeEvents.Generic
-                             )
+    cosmetics: Option[Set[Cosmetic]] = None,
+    ribbonBars: RibbonBars = RibbonBars(),
+    firstTimeEvents: Set[String] =
+      FirstTimeEvents.Maps ++ FirstTimeEvents.Monoliths ++
+        FirstTimeEvents.Standard.All ++ FirstTimeEvents.Cavern.All ++
+        FirstTimeEvents.TR.All ++ FirstTimeEvents.NC.All ++ FirstTimeEvents.VS.All ++
+        FirstTimeEvents.Generic
+)
 
 case class MemberLists(
-                        friend: List[Friend] = List[Friend](),
-                        ignored: List[Ignored] = List[Ignored]()
-                      )
+    friend: List[Friend] = List[Friend](),
+    ignored: List[Ignored] = List[Ignored]()
+)
 
 case class Avatar(
     /** unique identifier corresponding to a database table row index */
@@ -136,8 +136,8 @@ case class Avatar(
   assert(bep >= 0)
   assert(cep >= 0)
 
-  val br: BattleRank  = BattleRank.withExperience(bep)
-  val cr: CommandRank = CommandRank.withExperience(cep)
+  val br: BattleRank          = BattleRank.withExperience(bep)
+  private val cr: CommandRank = CommandRank.withExperience(cep)
 
   private def cooldown(
       times: Map[String, LocalDateTime],

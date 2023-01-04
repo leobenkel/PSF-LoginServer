@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits.HexStringSyntax
 
 class ReleaseAvatarRequestMessageTest extends Specification {
-  val string = hex"ac"
+private val string = hex"ac"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

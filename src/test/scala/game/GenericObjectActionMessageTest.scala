@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class GenericObjectActionMessageTest extends Specification {
-  val string = hex"56 B501 24"
+private val string = hex"56 B501 24"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

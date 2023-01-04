@@ -54,7 +54,7 @@ private var galaxyService: ActorRef = ActorRef.noSender
     }
   }
 
-  val serviceManager = ServiceManager.serviceManager
+private val serviceManager = ServiceManager.serviceManager
   serviceManager ! Lookup("galaxy")
 
   def receive: Receive = {
@@ -262,5 +262,5 @@ object CaptureFlagChatMessageStrings {
 object CaptureFlagLostReasonEnum extends Enumeration {
   type CaptureFlagLostReasonEnum = Value
 
-  val Resecured, TimedOut, Ended = Value
+private val Resecured, TimedOut, Ended = Value
 }

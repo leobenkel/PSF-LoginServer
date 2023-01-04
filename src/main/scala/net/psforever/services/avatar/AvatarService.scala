@@ -15,7 +15,7 @@ class AvatarService(zone: Zone) extends Actor {
 
   private[this] val log = org.log4s.getLogger
 
-  val AvatarEvents = new GenericEventBus[AvatarServiceResponse] //AvatarEventBus
+private val AvatarEvents = new GenericEventBus[AvatarServiceResponse] //AvatarEventBus
 
   def receive = {
     case Service.Join(channel) =>

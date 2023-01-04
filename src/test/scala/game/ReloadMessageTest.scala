@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ReloadMessageTest extends Specification {
-  val string = hex"0D 4C00 7B000000 FFFFFFFF"
+private val string = hex"0D 4C00 7B000000 FFFFFFFF"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

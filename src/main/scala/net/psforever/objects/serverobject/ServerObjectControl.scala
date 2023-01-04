@@ -8,7 +8,7 @@ abstract class ServerObjectControl
   extends Actor {
   protected val log = org.log4s.getLogger(toString())
 
-  val attributeBehavior: Receive = {
+private val attributeBehavior: Receive = {
     case ServerObject.AttributeMsg(attribute, value, other) =>
       parseAttribute(attribute, value, other)
 

@@ -22,7 +22,7 @@ final case class DroppodLaunchInfo(
                                   )
 
 object DroppodLaunchInfo {
-  val codec: Codec[DroppodLaunchInfo] = (
+private val codec: Codec[DroppodLaunchInfo] = (
     ("guid" | PlanetSideGUID.codec) ::
     ("zone_number" | uint16L) ::
     (floatL :: floatL).narrow[Vector3](

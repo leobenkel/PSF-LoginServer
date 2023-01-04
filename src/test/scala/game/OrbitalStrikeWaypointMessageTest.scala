@@ -8,8 +8,8 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class OrbitalStrikeWaypointMessageTest extends Specification {
-  val string_on  = hex"B9 46 0C AA E3 D2 2A 92 00"
-  val string_off = hex"B9 46 0C 00"
+private val string_on  = hex"B9 46 0C AA E3 D2 2A 92 00"
+private val string_off = hex"B9 46 0C 00"
 
   "decode (on)" in {
     PacketCoding.decodePacket(string_on).require match {

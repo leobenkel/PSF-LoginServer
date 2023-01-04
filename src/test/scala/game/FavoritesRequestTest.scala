@@ -8,7 +8,7 @@ import net.psforever.types.{LoadoutType, PlanetSideGUID}
 import scodec.bits._
 
 class FavoritesRequestTest extends Specification {
-  val stringInfantry = hex"5E 4B00 1187 4500 7800 6100 6D00 7000 6C00 6500"
+private val stringInfantry = hex"5E 4B00 1187 4500 7800 6100 6D00 7000 6C00 6500"
 
   "decode (for infantry)" in {
     PacketCoding.decodePacket(stringInfantry).require match {

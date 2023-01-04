@@ -24,7 +24,7 @@ class SpawnTubeControl(tube: SpawnTube)
   def RepairableObject = tube
   def AutoRepairObject = tube
 
-  val commonBehavior: Receive = checkBehavior
+private val commonBehavior: Receive = checkBehavior
     .orElse(takesDamage)
     .orElse(canBeRepairedByNanoDispenser)
     .orElse(autoRepairBehavior)

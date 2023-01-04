@@ -36,7 +36,7 @@ object InternalSlot {
   /**
     * Used for `0x18` `ObjectCreateDetailedMessage` packets
     */
-  val codec_detailed: Codec[InternalSlot] = (
+private val codec_detailed: Codec[InternalSlot] = (
     ("objectClass" | uintL(11)) >>:~ { obj_cls =>
       ("guid" | PlanetSideGUID.codec) ::
         ("parentSlot" | PacketHelpers.encodedStringSize) ::
@@ -56,7 +56,7 @@ object InternalSlot {
   /**
     * Used for `0x17` `ObjectCreateMessage` packets
     */
-  val codec: Codec[InternalSlot] = (
+private val codec: Codec[InternalSlot] = (
     ("objectClass" | uintL(11)) >>:~ { obj_cls =>
       ("guid" | PlanetSideGUID.codec) ::
         ("parentSlot" | PacketHelpers.encodedStringSize) ::

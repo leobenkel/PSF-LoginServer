@@ -70,8 +70,8 @@ object GenericActionEnum extends Enumeration {
   type GenericActionEnum = Value
 
   /** Drop special item e.g. LLU */
-  val DropSpecialItem = Value(11)
+val DropSpecialItem = Value(11)
 
   /** Plays the base capture fanfare sound */
-  val BaseCaptureFanfare = Value(12)
+private val BaseCaptureFanfare = Value(12)
 }

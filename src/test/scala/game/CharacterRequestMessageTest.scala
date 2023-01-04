@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class CharacterRequestMessageTest extends Specification {
-  val string = hex"30 c1d87a02 00000000"
+private val string = hex"30 c1d87a02 00000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

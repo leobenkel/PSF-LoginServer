@@ -226,7 +226,7 @@ class UtilityInternalTelepadTest extends ActorTest {
 }
 
 object UtilityTest {
-  val vehicle = Vehicle(GlobalDefinitions.quadstealth)
+private val vehicle = Vehicle(GlobalDefinitions.quadstealth)
 
   class SetupControl(obj: Utility) extends Actor {
     def receive: Receive = {

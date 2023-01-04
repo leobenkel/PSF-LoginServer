@@ -66,10 +66,21 @@ import net.psforever.services.galaxy.{GalaxyAction, GalaxyResponse, GalaxyServic
 import net.psforever.services.local.support.{CaptureFlagManager, HackCaptureActor}
 import net.psforever.services.local.{LocalAction, LocalResponse, LocalServiceMessage, LocalServiceResponse}
 import net.psforever.services.properties.PropertyOverrideManager
-import net.psforever.services.teamwork.{SquadResponse, SquadServiceMessage, SquadServiceResponse, SquadAction => SquadServiceAction}
+import net.psforever.services.teamwork.{
+  SquadResponse,
+  SquadServiceMessage,
+  SquadServiceResponse,
+  SquadAction => SquadServiceAction
+}
 import net.psforever.services.hart.HartTimer
 import net.psforever.services.vehicle.{VehicleAction, VehicleResponse, VehicleServiceMessage, VehicleServiceResponse}
-import net.psforever.services.{CavernRotationService, RemoverActor, Service, ServiceManager, InterstellarClusterService => ICS}
+import net.psforever.services.{
+  CavernRotationService,
+  RemoverActor,
+  Service,
+  ServiceManager,
+  InterstellarClusterService => ICS
+}
 import net.psforever.types._
 import net.psforever.util.{Config, DefinitionUtil}
 import net.psforever.zones.Zones
@@ -180,45 +191,47 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
 
   MDC("connectionId") = connectionId
 
-  private[this] val log                                              = org.log4s.getLogger
-private var avatarActor: typed.ActorRef[AvatarActor.Command]               = context.spawnAnonymous(AvatarActor(context.self))
-private var chatActor: typed.ActorRef[ChatActor.Command]                   = context.spawnAnonymous(ChatActor(context.self, avatarActor))
-private var accountIntermediary: ActorRef                                  = Default.Actor
-private var accountPersistence: ActorRef                                   = Default.Actor
-private var galaxyService: ActorRef                                        = Default.Actor
-private var squadService: ActorRef                                         = Default.Actor
-private var propertyOverrideManager: ActorRef                              = Default.Actor
-private var cluster: typed.ActorRef[ICS.Command]                           = Default.Actor
-private var _session: Session                                              = Session()
-private var progressBarValue: Option[Float]                                = None
-private var shooting: mutable.Set[PlanetSideGUID]                          = mutable.Set.empty //ChangeFireStateMessage_Start
-private var prefire: mutable.Set[PlanetSideGUID]                           = mutable.Set.empty //if WeaponFireMessage precedes ChangeFireStateMessage_Start
-private var shootingStart: mutable.HashMap[PlanetSideGUID, Long]           = mutable.HashMap[PlanetSideGUID, Long]()
-private var shootingStop: mutable.HashMap[PlanetSideGUID, Long]            = mutable.HashMap[PlanetSideGUID, Long]()
-private var shotsWhileDead: Int                                            = 0
-private var accessedContainer: Option[PlanetSideGameObject with Container] = None
-private var connectionState: Int                                           = 25
-private var flying: Boolean                                                = false
-private var loadConfZone: Boolean                                          = false
-private var noSpawnPointHere: Boolean                                      = false
-private var usingMedicalTerminal: Option[PlanetSideGUID]                   = None
-private var serverVehicleControlVelocity: Option[Int]                      = None
-private var deadState: DeadState.Value                                     = DeadState.Dead
-  val projectiles: Array[Option[Projectile]] =
+  private[this] val log                                        = org.log4s.getLogger
+  private var avatarActor: typed.ActorRef[AvatarActor.Command] = context.spawnAnonymous(AvatarActor(context.self))
+  private var chatActor: typed.ActorRef[ChatActor.Command] =
+    context.spawnAnonymous(ChatActor(context.self, avatarActor))
+  private var accountIntermediary: ActorRef         = Default.Actor
+  private var accountPersistence: ActorRef          = Default.Actor
+  private var galaxyService: ActorRef               = Default.Actor
+  private var squadService: ActorRef                = Default.Actor
+  private var propertyOverrideManager: ActorRef     = Default.Actor
+  private var cluster: typed.ActorRef[ICS.Command]  = Default.Actor
+  private var _session: Session                     = Session()
+  private var progressBarValue: Option[Float]       = None
+  private var shooting: mutable.Set[PlanetSideGUID] = mutable.Set.empty //ChangeFireStateMessage_Start
+  private var prefire: mutable.Set[PlanetSideGUID] =
+    mutable.Set.empty //if WeaponFireMessage precedes ChangeFireStateMessage_Start
+  private var shootingStart: mutable.HashMap[PlanetSideGUID, Long]           = mutable.HashMap[PlanetSideGUID, Long]()
+  private var shootingStop: mutable.HashMap[PlanetSideGUID, Long]            = mutable.HashMap[PlanetSideGUID, Long]()
+  private var shotsWhileDead: Int                                            = 0
+  private var accessedContainer: Option[PlanetSideGameObject with Container] = None
+  private var connectionState: Int                                           = 25
+  private var flying: Boolean                                                = false
+  private var loadConfZone: Boolean                                          = false
+  private var noSpawnPointHere: Boolean                                      = false
+  private var usingMedicalTerminal: Option[PlanetSideGUID]                   = None
+  private var serverVehicleControlVelocity: Option[Int]                      = None
+  private var deadState: DeadState.Value                                     = DeadState.Dead
+  private val projectiles: Array[Option[Projectile]] =
     Array.fill[Option[Projectile]](Projectile.rangeUID - Projectile.baseUID)(None)
-private var drawDeloyableIcon: PlanetSideGameObject with Deployable => Unit = RedrawDeployableIcons
-private var updateSquad: () => Unit                                         = NoSquadUpdates
-private var recentTeleportAttempt: Long                                     = 0
-private var lastTerminalOrderFulfillment: Boolean                           = true
-private var kitToBeUsed: Option[PlanetSideGUID]                             = None
-private var shiftPosition: Option[Vector3]                                  = None
-private var shiftOrientation: Option[Vector3]                               = None
-private var nextSpawnPoint: Option[SpawnPoint]                              = None
-private var setupAvatarFunc: () => Unit                                     = AvatarCreate
-private var setCurrentAvatarFunc: Player => Unit                            = SetCurrentAvatarNormally
-private var persistFunc: () => Unit                                         = NoPersistence
-private var persist: () => Unit                                             = UpdatePersistenceOnly
-private var specialItemSlotGuid: Option[PlanetSideGUID] =
+  private var drawDeloyableIcon: PlanetSideGameObject with Deployable => Unit = RedrawDeployableIcons
+  private var updateSquad: () => Unit                                         = NoSquadUpdates
+  private var recentTeleportAttempt: Long                                     = 0
+  private var lastTerminalOrderFulfillment: Boolean                           = true
+  private var kitToBeUsed: Option[PlanetSideGUID]                             = None
+  private var shiftPosition: Option[Vector3]                                  = None
+  private var shiftOrientation: Option[Vector3]                               = None
+  private var nextSpawnPoint: Option[SpawnPoint]                              = None
+  private var setupAvatarFunc: () => Unit                                     = AvatarCreate
+  private var setCurrentAvatarFunc: Player => Unit                            = SetCurrentAvatarNormally
+  private var persistFunc: () => Unit                                         = NoPersistence
+  private var persist: () => Unit                                             = UpdatePersistenceOnly
+  private var specialItemSlotGuid: Option[PlanetSideGUID] =
     None // If a special item (e.g. LLU) has been attached to the player the GUID should be stored here, or cleared when dropped, since the drop hotkey doesn't send the GUID of the object to be dropped.
 
   /**
@@ -227,7 +240,7 @@ private var specialItemSlotGuid: Option[PlanetSideGUID] =
     * should only be set during the transient period when moving between one spawn point and the next
     * leaving set prior to a subsequent transfers may cause unstable vehicle associations, with memory leak potential
     */
-private var interstellarFerry: Option[Vehicle] = None
+  private var interstellarFerry: Option[Vehicle] = None
 
   /**
     * used during zone transfers for cleanup to refer to the vehicle that instigated a transfer
@@ -236,9 +249,9 @@ private var interstellarFerry: Option[Vehicle] = None
     * the old-zone unique identifier for the carrier
     * no harm should come from leaving the field set to an old unique identifier value after the transfer period
     */
-private var interstellarFerryTopLevelGUID: Option[PlanetSideGUID] = None
-  val squadUI: mutable.LongMap[SquadUIElement]              = new mutable.LongMap[SquadUIElement]()
-private var squad_supplement_id: Int                              = 0
+  private var interstellarFerryTopLevelGUID: Option[PlanetSideGUID] = None
+  private val squadUI: mutable.LongMap[SquadUIElement]              = new mutable.LongMap[SquadUIElement]()
+  private var squad_supplement_id: Int                              = 0
 
   /**
     * When joining or creating a squad, the original state of the avatar's internal LFS variable is blanked.
@@ -248,10 +261,10 @@ private var squad_supplement_id: Int                              = 0
     * Upon leaving or disbanding a squad, this value is made false.
     * Control switching between the `Avatar`-local and the `WorldSessionActor`-local variable is contingent on `squadUI` being populated.
     */
-private var lfsm: Boolean                       = false
-private var squadSetup: () => Unit              = FirstTimeSquadSetup
-private var squadUpdateCounter: Int             = 0
-  val queuedSquadActions: Seq[() => Unit] = Seq(SquadUpdates, NoSquadUpdates, NoSquadUpdates, NoSquadUpdates)
+  private var lfsm: Boolean                       = false
+  private var squadSetup: () => Unit              = FirstTimeSquadSetup
+  private var squadUpdateCounter: Int             = 0
+  private val queuedSquadActions: Seq[() => Unit] = Seq(SquadUpdates, NoSquadUpdates, NoSquadUpdates, NoSquadUpdates)
 
   /** Upstream message counter<br>
     * Checks for server acknowledgement of the following messages in the following conditions:<br>
@@ -261,45 +274,45 @@ private var squadUpdateCounter: Int             = 0
     *   `KeepAliveMessage` (any passenger mount that is not the driver)<br>
     * As they should arrive roughly every 250 milliseconds this allows for a very crude method of scheduling tasks up to four times per second
     */
-private var upstreamMessageCount: Int                                              = 0
-private var zoningType: Zoning.Method                                              = Zoning.Method.None
-private var zoningChatMessageType: ChatMessageType                                 = ChatMessageType.CMT_QUIT
-private var zoningStatus: Zoning.Status                                            = Zoning.Status.None
-private var zoningCounter: Int                                                     = 0
-private var instantActionFallbackDestination: Option[Zoning.InstantAction.Located] = None
-private var loginChatMessage: String                                               = ""
-  lazy val unsignedIntMaxValue: Long                                         = Int.MaxValue.toLong * 2L + 1L
-private var serverTime: Long                                                       = 0
-private var amsSpawnPoints: List[SpawnPoint]                                       = Nil
+  private var upstreamMessageCount: Int                                              = 0
+  private var zoningType: Zoning.Method                                              = Zoning.Method.None
+  private var zoningChatMessageType: ChatMessageType                                 = ChatMessageType.CMT_QUIT
+  private var zoningStatus: Zoning.Status                                            = Zoning.Status.None
+  private var zoningCounter: Int                                                     = 0
+  private var instantActionFallbackDestination: Option[Zoning.InstantAction.Located] = None
+  private var loginChatMessage: String                                               = ""
+  lazy val unsignedIntMaxValue: Long                                                 = Int.MaxValue.toLong * 2L + 1L
+  private var serverTime: Long                                                       = 0
+  private var amsSpawnPoints: List[SpawnPoint]                                       = Nil
 
   /** a flag for the zone having finished loading during zoning
     * `None` when no zone is loaded
     * `Some(true)` when a zone has successfully loaded
     * `Some(false)` when the loading process has failed or was executed but did not complete for some reason
     */
-private var zoneLoaded: Option[Boolean] = None
+  private var zoneLoaded: Option[Boolean] = None
 
   /** a flag that forces the current zone to reload itself during a zoning operation */
-private var zoneReload: Boolean                            = false
-private var interimUngunnedVehicle: Option[PlanetSideGUID] = None
-private var interimUngunnedVehicleSeat: Option[Int]        = None
-private var keepAliveFunc: () => Unit                      = KeepAlivePersistenceInitial
-private var setAvatar: Boolean                             = false
-private var turnCounterFunc: PlanetSideGUID => Unit        = TurnCounterDuringInterim
-private var waypointCooldown: Long = 0L
-private var heightLast: Float = 0f
-private var heightTrend: Boolean = false //up = true, down = false
-private var heightHistory: Float = 0f
-private var contextSafeEntity: PlanetSideGUID = PlanetSideGUID(0)
-  val collisionHistory: mutable.HashMap[ActorRef, Long] = mutable.HashMap()
-private var populateAvatarAwardRibbonsFunc: (Int, Long) => Unit = setupAvatarAwardMessageDelivery
+  private var zoneReload: Boolean                                 = false
+  private var interimUngunnedVehicle: Option[PlanetSideGUID]      = None
+  private var interimUngunnedVehicleSeat: Option[Int]             = None
+  private var keepAliveFunc: () => Unit                           = KeepAlivePersistenceInitial
+  private var setAvatar: Boolean                                  = false
+  private var turnCounterFunc: PlanetSideGUID => Unit             = TurnCounterDuringInterim
+  private var waypointCooldown: Long                              = 0L
+  private var heightLast: Float                                   = 0f
+  private var heightTrend: Boolean                                = false //up = true, down = false
+  private var heightHistory: Float                                = 0f
+  private var contextSafeEntity: PlanetSideGUID                   = PlanetSideGUID(0)
+  private val collisionHistory: mutable.HashMap[ActorRef, Long]   = mutable.HashMap()
+  private var populateAvatarAwardRibbonsFunc: (Int, Long) => Unit = setupAvatarAwardMessageDelivery
 
-private var clientKeepAlive: Cancellable   = Default.Cancellable
-private var progressBarUpdate: Cancellable = Default.Cancellable
-private var reviveTimer: Cancellable       = Default.Cancellable
-private var respawnTimer: Cancellable      = Default.Cancellable
-private var zoningTimer: Cancellable       = Default.Cancellable
-private var charSavedTimer: Cancellable    = Default.Cancellable
+  private var clientKeepAlive: Cancellable   = Default.Cancellable
+  private var progressBarUpdate: Cancellable = Default.Cancellable
+  private var reviveTimer: Cancellable       = Default.Cancellable
+  private var respawnTimer: Cancellable      = Default.Cancellable
+  private var zoningTimer: Cancellable       = Default.Cancellable
+  private var charSavedTimer: Cancellable    = Default.Cancellable
 
   override def supervisorStrategy: SupervisorStrategy = {
     import net.psforever.objects.inventory.InventoryDisarrayException
@@ -319,24 +332,28 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
           case e: Equipment =>
             (
-              player.Holsters().zipWithIndex.flatMap { case (o, i) =>
-                o.Equipment match {
-                  case Some(e) => Some((player, InventoryItem(e, i)))
-                  case None    => None
+              player
+                .Holsters()
+                .zipWithIndex
+                .flatMap {
+                  case (o, i) =>
+                    o.Equipment match {
+                      case Some(e) => Some((player, InventoryItem(e, i)))
+                      case None    => None
+                    }
                 }
-              }.toList ++
-                player.Inventory.Items.map { o => (player, o) } ++
-                {
-                  player.FreeHand.Equipment match {
-                    case Some(o) => List((player, InventoryItem(e, Player.FreeHandSlot)))
-                    case _       => Nil
-                  }
-                } ++
+                .toList ++
+                player.Inventory.Items.map { o => (player, o) } ++ {
+                player.FreeHand.Equipment match {
+                  case Some(o) => List((player, InventoryItem(e, Player.FreeHandSlot)))
+                  case _       => Nil
+                }
+              } ++
                 (ValidObject(player.VehicleSeated) match {
-                  case Some(v: Vehicle) => v.Trunk.Items.map{ o => (v, o) }
+                  case Some(v: Vehicle) => v.Trunk.Items.map { o => (v, o) }
                   case _                => Nil
                 })
-              )
+            )
               .find { case (_, InventoryItem(o, _)) => o eq e } match {
               case Some((c: Container, InventoryItem(obj, index))) =>
                 if (!obj.HasGUID) {
@@ -431,7 +448,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         notCollidingRemainder.foreach { entry =>
           inv.InsertQuickly(entry.start, entry.obj)
         }
-        var didNotFit : List[Equipment] = Nil
+        var didNotFit: List[Equipment] = Nil
         allOverlaps.foreach { entry =>
           inv.Fit(entry.obj.Definition.Tile) match {
             case Some(newStart) =>
@@ -441,36 +458,43 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           }
         }
         //completely clear the inventory
-        val pguid = player.GUID
+        val pguid           = player.GUID
         val equipmentInHand = player.Slot(player.DrawnSlot).Equipment
         //redraw suit
-        sendResponse(ArmorChangedMessage(
-          pguid,
-          player.ExoSuit,
-          InfantryLoadout.DetermineSubtypeA(player.ExoSuit, equipmentInHand)
-        ))
+        sendResponse(
+          ArmorChangedMessage(
+            pguid,
+            player.ExoSuit,
+            InfantryLoadout.DetermineSubtypeA(player.ExoSuit, equipmentInHand)
+          )
+        )
         //redraw item in free hand (if)
         player.FreeHand.Equipment match {
           case Some(item) =>
-            sendResponse(ObjectCreateDetailedMessage(
-              item.Definition.ObjectId,
-              item.GUID,
-              ObjectCreateMessageParent(pguid, Player.FreeHandSlot),
-              item.Definition.Packet.DetailedConstructorData(item).get
-            ))
+            sendResponse(
+              ObjectCreateDetailedMessage(
+                item.Definition.ObjectId,
+                item.GUID,
+                ObjectCreateMessageParent(pguid, Player.FreeHandSlot),
+                item.Definition.Packet.DetailedConstructorData(item).get
+              )
+            )
           case _ => ;
         }
         //redraw items in holsters
-        player.Holsters().zipWithIndex.foreach { case (slot, index) =>
-          slot.Equipment match {
-            case Some(item) =>
-              sendResponse(ObjectCreateDetailedMessage(
-                item.Definition.ObjectId,
-                item.GUID,
-                item.Definition.Packet.DetailedConstructorData(item).get
-              ))
-            case _ => ;
-          }
+        player.Holsters().zipWithIndex.foreach {
+          case (slot, index) =>
+            slot.Equipment match {
+              case Some(item) =>
+                sendResponse(
+                  ObjectCreateDetailedMessage(
+                    item.Definition.ObjectId,
+                    item.GUID,
+                    item.Definition.Packet.DetailedConstructorData(item).get
+                  )
+                )
+              case _ => ;
+            }
         }
         //redraw raised hand (if)
         equipmentInHand match {
@@ -482,24 +506,28 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         val recoveredItems = inv.Items
         recoveredItems.foreach { entry =>
           val item = entry.obj
-          sendResponse(ObjectCreateDetailedMessage(
-            item.Definition.ObjectId,
-            item.GUID,
-            ObjectCreateMessageParent(pguid, entry.start),
-            item.Definition.Packet.DetailedConstructorData(item).get
-          ))
+          sendResponse(
+            ObjectCreateDetailedMessage(
+              item.Definition.ObjectId,
+              item.GUID,
+              ObjectCreateMessageParent(pguid, entry.start),
+              item.Definition.Packet.DetailedConstructorData(item).get
+            )
+          )
         }
         //drop items that did not fit
         val placementData = PlacementData(player.Position, Vector3.z(player.Orientation.z))
         didNotFit.foreach { item =>
-          sendResponse(ObjectCreateMessage(
-            item.Definition.ObjectId,
-            item.GUID,
-            DroppedItemData(
-              placementData,
-              item.Definition.Packet.ConstructorData(item).get
+          sendResponse(
+            ObjectCreateMessage(
+              item.Definition.ObjectId,
+              item.GUID,
+              DroppedItemData(
+                placementData,
+                item.Definition.Packet.ConstructorData(item).get
+              )
             )
-          ))
+          )
         }
     }
   }
@@ -534,7 +562,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
   def avatar: Avatar = _session.avatar
 
-  val serviceManager = ServiceManager.serviceManager
+  private val serviceManager = ServiceManager.serviceManager
   serviceManager ! Lookup("accountIntermediary")
   serviceManager ! Lookup("accountPersistence")
   serviceManager ! Lookup("galaxy")
@@ -577,11 +605,13 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
   def ValidObject(id: Int): Option[PlanetSideGameObject] = ValidObject(Some(PlanetSideGUID(id)), decorator = "")
 
-  def ValidObject(id: Int, decorator: String): Option[PlanetSideGameObject] = ValidObject(Some(PlanetSideGUID(id)), decorator)
+  def ValidObject(id: Int, decorator: String): Option[PlanetSideGameObject] =
+    ValidObject(Some(PlanetSideGUID(id)), decorator)
 
   def ValidObject(id: PlanetSideGUID): Option[PlanetSideGameObject] = ValidObject(Some(id), decorator = "")
 
-  def ValidObject(id: PlanetSideGUID, decorator: String): Option[PlanetSideGameObject] = ValidObject(Some(id), decorator)
+  def ValidObject(id: PlanetSideGUID, decorator: String): Option[PlanetSideGameObject] =
+    ValidObject(Some(id), decorator)
 
   def ValidObject(id: Option[PlanetSideGUID]): Option[PlanetSideGameObject] = ValidObject(id, decorator = "")
 
@@ -625,7 +655,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
           case None if !id.contains(PlanetSideGUID(0)) =>
             //delete stale entity reference from client
-            log.error(s"$elevatedDecorator: ${player.Name} has an invalid reference to $hint with GUID $guid in zone ${continent.id}")
+            log.error(
+              s"$elevatedDecorator: ${player.Name} has an invalid reference to $hint with GUID $guid in zone ${continent.id}"
+            )
             sendResponse(ObjectDeleteMessage(guid, 0))
             None
 
@@ -787,7 +819,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       if (serverVehicleControlVelocity.isEmpty) {
         PlayerActionsToCancel()
         continent.GUID(player.VehicleSeated) match {
-          case Some(vehicle : Vehicle) if vehicle.MountedIn.isEmpty =>
+          case Some(vehicle: Vehicle) if vehicle.MountedIn.isEmpty =>
             vehicle.PassengerInSeat(player) match {
               case Some(0) =>
                 deadState = DeadState.Release // cancel movement updates
@@ -808,7 +840,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       if (serverVehicleControlVelocity.isEmpty) {
         PlayerActionsToCancel()
         continent.GUID(player.VehicleSeated) match {
-          case Some(vehicle : Vehicle) if vehicle.MountedIn.isEmpty =>
+          case Some(vehicle: Vehicle) if vehicle.MountedIn.isEmpty =>
             vehicle.PassengerInSeat(player) match {
               case Some(0) =>
                 deadState = DeadState.Release // cancel movement updates
@@ -863,8 +895,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
         case GalaxyResponse.UpdateBroadcastPrivileges(zoneId, gateMapId, fromFactions, toFactions) =>
           val faction = player.Faction
-          val from = fromFactions.contains(faction)
-          val to = toFactions.contains(faction)
+          val from    = fromFactions.contains(faction)
+          val to      = toFactions.contains(faction)
           if (from && !to) {
             sendResponse(BroadcastWarpgateUpdateMessage(zoneId, gateMapId, PlanetSideEmpire.NEUTRAL))
           } else if (!from && to) {
@@ -923,10 +955,11 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           }
 
         case GalaxyResponse.LockedZoneUpdate(zone, time) =>
-          sendResponse(ZoneInfoMessage(zone.Number, empire_status=false, lock_time=time))
+          sendResponse(ZoneInfoMessage(zone.Number, empire_status = false, lock_time = time))
 
-        case GalaxyResponse.UnlockedZoneUpdate(zone) => ;
-          sendResponse(ZoneInfoMessage(zone.Number, empire_status=true, lock_time=0L))
+        case GalaxyResponse.UnlockedZoneUpdate(zone) =>
+          ;
+          sendResponse(ZoneInfoMessage(zone.Number, empire_status = true, lock_time = 0L))
           val popBO = 0
           val popTR = zone.Players.count(_.faction == PlanetSideEmpire.TR)
           val popNC = zone.Players.count(_.faction == PlanetSideEmpire.NC)
@@ -1315,11 +1348,13 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           zoningType = Zoning.Method.Login
           response match {
             case Some((zone, spawnPoint)) =>
-              loginChatMessage = "@login_reposition_to_friendly_facility" //Your previous location was held by the enemy. You have been moved to the nearest friendly facility.
+              loginChatMessage =
+                "@login_reposition_to_friendly_facility" //Your previous location was held by the enemy. You have been moved to the nearest friendly facility.
               val (pos, ori) = spawnPoint.SpecificPoint(player)
               LoadZonePhysicalSpawnPoint(zone.id, pos, ori, respawnTime = 0 seconds, Some(spawnPoint))
             case _ =>
-              loginChatMessage = "@login_reposition_to_sanctuary" //Your previous location was held by the enemy.  As there were no operational friendly facilities on that continent, you have been brought back to your Sanctuary.
+              loginChatMessage =
+                "@login_reposition_to_sanctuary" //Your previous location was held by the enemy.  As there were no operational friendly facilities on that continent, you have been brought back to your Sanctuary.
               RequestSanctuaryZoneSpawn(player, player.Zone.Number)
           }
 
@@ -1393,7 +1428,14 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         //VanuModuleUpdateMessage()
         //ModuleLimitsMessage()
         val isCavern = continent.map.cavern
-        sendResponse(ZoneInfoMessage(continentNumber, true, if (isCavern) { Int.MaxValue.toLong } else { 0L }))
+        sendResponse(
+          ZoneInfoMessage(
+            continentNumber,
+            true,
+            if (isCavern) { Int.MaxValue.toLong }
+            else { 0L }
+          )
+        )
         sendResponse(ZoneLockInfoMessage(continentNumber, false, true))
         sendResponse(ZoneForcedCavernConnectionsMessage(continentNumber, 0))
         sendResponse(
@@ -1432,11 +1474,11 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
               game.Friend(f.name, AvatarActor.onlineIfNotIgnoredEitherWay(avatar, f.name))
             }
         ) ++
-        //ignored list (no one ever online)
-        FriendsResponse.packetSequence(
-          MemberAction.InitializeIgnoreList,
-          avatar.people.ignored.map { f => game.Friend(f.name) }
-        )
+          //ignored list (no one ever online)
+          FriendsResponse.packetSequence(
+            MemberAction.InitializeIgnoreList,
+            avatar.people.ignored.map { f => game.Friend(f.name) }
+          )
       ).foreach { sendResponse }
       //the following subscriptions last until character switch/logout
       galaxyService ! Service.Join("galaxy")             //for galaxy-wide messages
@@ -1581,7 +1623,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             setCurrentAvatarFunc(tplayer)
             respawnTimer = context.system.scheduler.scheduleOnce(
               delay = (if (attempt <= max_attempts / 2) 10
-              else 5) seconds,
+                       else 5) seconds,
               self,
               SetCurrentAvatar(tplayer, max_attempts, attempt + max_attempts / 3)
             )
@@ -1635,9 +1677,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       player.Zone = inZone
       optionalSavedData match {
         case Some(results) =>
-          val health = results.health
+          val health             = results.health
           val hasHealthUponLogin = health > 0
-          val position = Vector3(results.px * 0.001f, results.py * 0.001f, results.pz * 0.001f)
+          val position           = Vector3(results.px * 0.001f, results.py * 0.001f, results.pz * 0.001f)
           player.Position = position
           player.Orientation = Vector3(0f, 0f, results.orientation * 0.001f)
           /*
@@ -1662,11 +1704,11 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             player.ZoningRequest = Zoning.Method.Login
             zoningChatMessageType = ChatMessageType.UNK_227
             if (Zones.sanctuaryZoneNumber(player.Faction) != inZone.Number) {
-              val pfaction = player.Faction
-              val buildings = inZone.Buildings.values
-              val ourBuildings = buildings.filter { _.Faction == pfaction }.toSeq
-              val playersInZone = inZone.Players
-              val friendlyPlayersInZone = playersInZone.count { _.faction == pfaction }
+              val pfaction                = player.Faction
+              val buildings               = inZone.Buildings.values
+              val ourBuildings            = buildings.filter { _.Faction == pfaction }.toSeq
+              val playersInZone           = inZone.Players
+              val friendlyPlayersInZone   = playersInZone.count { _.faction == pfaction }
               val noFriendlyPlayersInZone = friendlyPlayersInZone == 0
               if (inZone.map.cavern) {
                 loginChatMessage = "@reset_sanctuary_locked"
@@ -1763,7 +1805,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
                 tplayer.Release //for proper respawn
                 tplayer.Zone = inZone
                 tplayer
-            }, avatar = a
+            },
+            avatar = a
           )
           avatarActor ! AvatarActor.ReplaceAvatar(a)
           avatarLoginResponse(a)
@@ -1800,23 +1843,23 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     //xy-coordinates indicate spawn bias:
     val sanctuaryNum = Zones.sanctuaryZoneNumber(target.Faction)
     val harts = Zones.zones.find(zone => zone.Number == sanctuaryNum) match {
-      case Some(zone) => zone.Buildings
-        .values
-        .filter(b => b.Amenities.exists { a: Amenity => a.isInstanceOf[OrbitalShuttlePad] })
-        .toSeq
+      case Some(zone) =>
+        zone.Buildings.values
+          .filter(b => b.Amenities.exists { a: Amenity => a.isInstanceOf[OrbitalShuttlePad] })
+          .toSeq
       case None =>
         Nil
     }
     //compass directions to modify spawn destination
     val directionBias = math.abs(scala.util.Random.nextInt() % avatar.name.hashCode % 8) match {
-      case 0 => Vector3(-1, 1,0) //NW
-      case 1 => Vector3( 0, 1,0) //N
-      case 2 => Vector3( 1, 1,0) //NE
-      case 3 => Vector3( 1, 0,0) //E
-      case 4 => Vector3( 1,-1,0) //SE
-      case 5 => Vector3( 0,-1,0) //S
-      case 6 => Vector3(-1,-1,0) //SW
-      case 7 => Vector3(-1, 0,0) //W
+      case 0 => Vector3(-1, 1, 0)  //NW
+      case 1 => Vector3(0, 1, 0)   //N
+      case 2 => Vector3(1, 1, 0)   //NE
+      case 3 => Vector3(1, 0, 0)   //E
+      case 4 => Vector3(1, -1, 0)  //SE
+      case 5 => Vector3(0, -1, 0)  //S
+      case 6 => Vector3(-1, -1, 0) //SW
+      case 7 => Vector3(-1, 0, 0)  //W
     }
     if (harts.nonEmpty) {
       //get a hart building and select one of the spawn facilities surrounding it
@@ -1969,7 +2012,13 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         if (zoningType == Zoning.Method.InstantAction)
           LoadZonePhysicalSpawnPoint(zone.id, pos, ori, respawnTime = 0 seconds, Some(spawnPoint))
         else
-          LoadZonePhysicalSpawnPoint(zone.id, pos, ori, CountSpawnDelay(zone.id, spawnPoint, continent.id), Some(spawnPoint))
+          LoadZonePhysicalSpawnPoint(
+            zone.id,
+            pos,
+            ori,
+            CountSpawnDelay(zone.id, spawnPoint, continent.id),
+            Some(spawnPoint)
+          )
       case None =>
         log.warn(
           s"SpawnPointResponse: ${player.Name} received no spawn point response when asking InterstellarClusterService"
@@ -1996,7 +2045,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     CancelAllProximityUnits()
     //droppod action
     val droppod = Vehicle(GlobalDefinitions.droppod)
-    droppod.GUID = PlanetSideGUID(0)  //droppod is not registered, we must jury-rig this
+    droppod.GUID = PlanetSideGUID(0) //droppod is not registered, we must jury-rig this
     droppod.Faction = player.Faction
     droppod.Position = spawnPosition.xy + Vector3.z(1024)
     droppod.Orientation = Vector3.z(180) //you always seems to land looking south; don't know why
@@ -2249,13 +2298,16 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
         DropSpecialSlotItem()
         ToggleMaxSpecialState(enable = false)
-        if (player.LastDamage match {
-          case Some(damage) => damage.interaction.cause match {
-            case cause: ExplodingEntityReason => cause.entity.isInstanceOf[VehicleSpawnPad]
-            case _ => false
+        if (
+          player.LastDamage match {
+            case Some(damage) =>
+              damage.interaction.cause match {
+                case cause: ExplodingEntityReason => cause.entity.isInstanceOf[VehicleSpawnPad]
+                case _                            => false
+              }
+            case None => false
           }
-          case None => false
-        }) {
+        ) {
           //also, @SVCP_Killed_TooCloseToPadOnCreate^n~ or "... within n meters of pad ..."
           sendResponse(ChatMsg(ChatMessageType.UNK_227, false, "", "@SVCP_Killed_OnPadOnCreate", None))
         }
@@ -2298,7 +2350,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           HandleReleaseAvatar(player, continent)
         }
         AvatarActor.savePlayerLocation(player)
-        renewCharSavedTimer(fixedLen=1800L, varLen=0L)
+        renewCharSavedTimer(fixedLen = 1800L, varLen = 0L)
 
       case AvatarResponse.LoadPlayer(pkt) =>
         if (tplayer_guid != guid) {
@@ -2318,7 +2370,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       case AvatarResponse.ObjectHeld(slot, previousSlot) =>
         if (tplayer_guid == guid) {
           if (slot > -1) {
-            sendResponse(ObjectHeldMessage(guid, slot, unk1=true))
+            sendResponse(ObjectHeldMessage(guid, slot, unk1 = true))
             //Stop using proximity terminals if player unholsters a weapon
             if (player.VisibleSlots.contains(slot)) {
               continent.GUID(usingMedicalTerminal) match {
@@ -2329,7 +2381,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             }
           }
         } else {
-          sendResponse(ObjectHeldMessage(guid, previousSlot, unk1=false))
+          sendResponse(ObjectHeldMessage(guid, previousSlot, unk1 = false))
         }
 
       case AvatarResponse.OxygenState(player, vehicle) =>
@@ -2475,8 +2527,10 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       case AvatarResponse.TerminalOrderResult(terminal_guid, action, result) =>
         sendResponse(ItemTransactionResultMessage(terminal_guid, action, result))
         lastTerminalOrderFulfillment = true
-        if (result &&
-          (action == TransactionType.Buy || action == TransactionType.Loadout)) {
+        if (
+          result &&
+          (action == TransactionType.Buy || action == TransactionType.Loadout)
+        ) {
           AvatarActor.savePlayerData(player)
           renewCharSavedTimer(
             Config.app.game.savedMsg.interruptedByAction.fixed,
@@ -2511,10 +2565,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           delete.foreach { case (obj, _) => TaskWorkflow.execute(GUIDTask.unregisterEquipment(continent.GUID, obj)) }
           //redraw
           if (maxhand) {
-            TaskWorkflow.execute(HoldNewEquipmentUp(player)(
-              Tool(GlobalDefinitions.MAXArms(subtype, player.Faction)),
-              0
-            ))
+            TaskWorkflow.execute(
+              HoldNewEquipmentUp(player)(
+                Tool(GlobalDefinitions.MAXArms(subtype, player.Faction)),
+                0
+              )
+            )
           }
           //draw free hand
           player.FreeHand.Equipment match {
@@ -2590,10 +2646,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           }
           //redraw
           if (maxhand) {
-            TaskWorkflow.execute(HoldNewEquipmentUp(player)(
-              Tool(GlobalDefinitions.MAXArms(subtype, player.Faction)),
-              slot = 0
-            ))
+            TaskWorkflow.execute(
+              HoldNewEquipmentUp(player)(
+                Tool(GlobalDefinitions.MAXArms(subtype, player.Faction)),
+                slot = 0
+              )
+            )
           }
           ApplyPurchaseTimersBeforePackingLoadout(player, player, holsters ++ inventory)
           DropLeftovers(player)(drops)
@@ -3086,11 +3144,13 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             sendResponse(ItemTransactionResultMessage(msg.terminal_guid, TransactionType.Buy, success = false))
           case None =>
             avatarActor ! AvatarActor.UpdatePurchaseTime(item.Definition)
-            TaskWorkflow.execute(BuyNewEquipmentPutInInventory(
-              continent.GUID(tplayer.VehicleSeated) match { case Some(v: Vehicle) => v; case _ => player },
-              tplayer,
-              msg.terminal_guid
-            )(item))
+            TaskWorkflow.execute(
+              BuyNewEquipmentPutInInventory(
+                continent.GUID(tplayer.VehicleSeated) match { case Some(v: Vehicle) => v; case _ => player },
+                tplayer,
+                msg.terminal_guid
+              )(item)
+            )
         }
 
       case Terminal.SellEquipment() =>
@@ -3151,7 +3211,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
                 })
                 TaskWorkflow.execute(registerVehicleFromSpawnPad(vehicle, pad, term))
                 sendResponse(ItemTransactionResultMessage(msg.terminal_guid, TransactionType.Buy, success = true))
-                if(GlobalDefinitions.isBattleFrameVehicle(vehicle.Definition)) {
+                if (GlobalDefinitions.isBattleFrameVehicle(vehicle.Definition)) {
                   sendResponse(UnuseItemMessage(player.GUID, msg.terminal_guid))
                 }
               case _ =>
@@ -3175,7 +3235,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
       case _ =>
         val transaction = msg.transaction_type
-        log.warn(s"n/a: ${tplayer.Name} made a $transaction request but terminal#${msg.terminal_guid.guid} is missing or wrong")
+        log.warn(
+          s"n/a: ${tplayer.Name} made a $transaction request but terminal#${msg.terminal_guid.guid} is missing or wrong"
+        )
         sendResponse(ItemTransactionResultMessage(msg.terminal_guid, transaction, success = false))
         lastTerminalOrderFulfillment = true
     }
@@ -3229,7 +3291,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
       case VehicleResponse.FrameVehicleState(vguid, u1, pos, oient, vel, u2, u3, u4, is_crouched, u6, u7, u8, u9, uA) =>
         if (tplayer_guid != guid) {
-          sendResponse(FrameVehicleStateMessage(vguid, u1, pos, oient, vel, u2, u3, u4, is_crouched, u6, u7, u8, u9, uA))
+          sendResponse(
+            FrameVehicleStateMessage(vguid, u1, pos, oient, vel, u2, u3, u4, is_crouched, u6, u7, u8, u9, uA)
+          )
         }
 
       case VehicleResponse.GenericObjectAction(object_guid, action) =>
@@ -3398,10 +3462,10 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         CancelAllProximityUnits()
         if (player.VisibleSlots.contains(player.DrawnSlot)) {
           player.DrawnSlot = Player.HandsDownSlot
-          sendResponse(ObjectHeldMessage(player.GUID, Player.HandsDownSlot, unk1=true))
+          sendResponse(ObjectHeldMessage(player.GUID, Player.HandsDownSlot, unk1 = true))
           continent.AvatarEvents ! AvatarServiceMessage(
             continent.id,
-            AvatarAction.SendResponse(player.GUID, ObjectHeldMessage(player.GUID, player.LastDrawnSlot, unk1=false))
+            AvatarAction.SendResponse(player.GUID, ObjectHeldMessage(player.GUID, player.LastDrawnSlot, unk1 = false))
           )
         }
         sendResponse(PlanetsideAttributeMessage(vehicle_guid, 22, 1L))          //mount points off
@@ -3426,20 +3490,21 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         DriverVehicleControl(vehicle, vehicle.Definition.AutoPilotSpeed2)
 
       case VehicleResponse.PeriodicReminder(VehicleSpawnPad.Reminders.Blocked, data) =>
-        sendResponse(ChatMsg(
-          ChatMessageType.CMT_OPEN,
-          true,
-          "",
-          s"The vehicle spawn where you placed your order is blocked. ${data.getOrElse("")}",
-          None
-        ))
+        sendResponse(
+          ChatMsg(
+            ChatMessageType.CMT_OPEN,
+            true,
+            "",
+            s"The vehicle spawn where you placed your order is blocked. ${data.getOrElse("")}",
+            None
+          )
+        )
 
       case VehicleResponse.PeriodicReminder(_, data) =>
         val (isType, flag, msg): (ChatMessageType, Boolean, String) = data match {
-          case Some(msg: String)
-            if msg.startsWith("@") => (ChatMessageType.UNK_227, false, msg)
-          case Some(msg: String)   => (ChatMessageType.CMT_OPEN, true, msg)
-          case _                   => (ChatMessageType.CMT_OPEN, true, "Your vehicle order has been cancelled.")
+          case Some(msg: String) if msg.startsWith("@") => (ChatMessageType.UNK_227, false, msg)
+          case Some(msg: String)                        => (ChatMessageType.CMT_OPEN, true, msg)
+          case _                                        => (ChatMessageType.CMT_OPEN, true, "Your vehicle order has been cancelled.")
         }
         sendResponse(ChatMsg(isType, flag, "", msg, None))
 
@@ -3624,23 +3689,25 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
     sendResponse(PlanetsideAttributeMessage(PlanetSideGUID(0), 82, 0))
     //TODO if Medkit does not have shortcut, add to a free slot or write over slot 64
-    avatar.shortcuts
-      .zipWithIndex
-      .collect { case (Some(shortcut), index) =>
-        sendResponse(CreateShortcutMessage(
-          guid,
-          index + 1,
-          Some(AvatarShortcut.convert(shortcut))
-        ))
+    avatar.shortcuts.zipWithIndex
+      .collect {
+        case (Some(shortcut), index) =>
+          sendResponse(
+            CreateShortcutMessage(
+              guid,
+              index + 1,
+              Some(AvatarShortcut.convert(shortcut))
+            )
+          )
       }
     sendResponse(ChangeShortcutBankMessage(guid, 0))
     //Favorites lists
     avatarActor ! AvatarActor.InitialRefreshLoadouts()
 
     sendResponse(
-      SetChatFilterMessage(ChatChannel.Platoon, origin=false, ChatChannel.values.toList)
+      SetChatFilterMessage(ChatChannel.Platoon, origin = false, ChatChannel.values.toList)
     ) //TODO will not always be "on" like this
-    sendResponse(AvatarDeadStateMessage(DeadState.Alive, 0, 0, tplayer.Position, player.Faction, unk5=true))
+    sendResponse(AvatarDeadStateMessage(DeadState.Alive, 0, 0, tplayer.Position, player.Faction, unk5 = true))
     //looking for squad (members)
     if (tplayer.avatar.lookingForSquad || lfsm) {
       sendResponse(PlanetsideAttributeMessage(guid, 53, 1))
@@ -3653,15 +3720,19 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     //for caverns, who knows what this does
     //why is this all set in bulk?
     continent.Buildings
-      .filter { case (_, building) =>
-        val buildingType = building.BuildingType
-        buildingType == StructureType.Facility ||
-        buildingType == StructureType.Tower ||
-        buildingType == StructureType.Bunker
+      .filter {
+        case (_, building) =>
+          val buildingType = building.BuildingType
+          buildingType == StructureType.Facility ||
+          buildingType == StructureType.Tower ||
+          buildingType == StructureType.Bunker
       }
-      .foreach { case (_, building) =>
-      sendResponse(PlanetsideAttributeMessage(building.GUID, 67, 0/*building.BuildingType == StructureType.Facility*/))
-    }
+      .foreach {
+        case (_, building) =>
+          sendResponse(
+            PlanetsideAttributeMessage(building.GUID, 67, 0 /*building.BuildingType == StructureType.Facility*/ )
+          )
+      }
     (0 to 30).foreach(i => {
       //TODO 30 for a new character only?
       sendResponse(AvatarStatisticsMessage(2, Statistics(0L)))
@@ -3724,7 +3795,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         }
         // ANT capacitor
         if (vehicle.Definition == GlobalDefinitions.ant) {
-          sendResponse(PlanetsideAttributeMessage(vehicle.GUID, 45, vehicle.NtuCapacitorScaled)) // set ntu on vehicle UI
+          sendResponse(
+            PlanetsideAttributeMessage(vehicle.GUID, 45, vehicle.NtuCapacitorScaled)
+          ) // set ntu on vehicle UI
         }
         // vehicle capacitor
         if (vehicle.Definition.MaxCapacitor > 0) {
@@ -3775,7 +3848,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     * @param bundleSize it doesn't matter
     * @param delay it doesn't matter
     */
-  def skipAvatarAwardMessageDelivery(bundleSize: Int, delay: Long): Unit = { }
+  def skipAvatarAwardMessageDelivery(bundleSize: Int, delay: Long): Unit = {}
 
   /**
     * Extract the award advancement information from a player character, and
@@ -3800,10 +3873,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
   def setupAvatarAwardMessageDelivery(tplayer: Player, bundleSize: Int, delay: Long): Unit = {
     val date: Int = (System.currentTimeMillis() / 1000L).toInt - 604800 //last week, in seconds
     performAvatarAwardMessageDelivery(
-      Award
-        .values
+      Award.values
         .filter { merit =>
-          val label = merit.value
+          val label     = merit.value
           val alignment = merit.alignment
           if (merit.category == AwardCategory.Exclusive) false
           else if (alignment != PlanetSideEmpire.NEUTRAL && alignment != player.Faction) false
@@ -3829,9 +3901,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     * @param delay dispatch packet divisions in intervals
     */
   def performAvatarAwardMessageDelivery(
-                                         messageBundles: Iterable[Iterable[PlanetSidePacket]],
-                                         delay: Long
-                                       ): Unit = {
+      messageBundles: Iterable[Iterable[PlanetSidePacket]],
+      delay: Long
+  ): Unit = {
     messageBundles match {
       case Nil => ;
       case x :: Nil =>
@@ -3888,7 +3960,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           )
           sendResponse(PlanetsideAttributeMessage(player.GUID, 32, elem.index))
         case _ =>
-          log.warn(s"RespawnSquadSetup: asked to redraw squad information, but ${player.Name} has no squad element for squad $squad_supplement_id")
+          log.warn(
+            s"RespawnSquadSetup: asked to redraw squad information, but ${player.Name} has no squad element for squad $squad_supplement_id"
+          )
       }
     }
   }
@@ -4008,7 +4082,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       case msg @ BeginZoningMessage() =>
         log.trace(s"BeginZoningMessage: ${player.Name} is reticulating ${continent.id}'s splines ...")
         zoneLoaded = None
-        val name = avatar.name
+        val name           = avatar.name
         val continentId    = continent.id
         val faction        = player.Faction
         val factionChannel = s"$faction"
@@ -4183,11 +4257,11 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             .filter {
               case (index, seat) =>
                 seat.isOccupied &&
-                live.contains(seat.occupant.get) &&
-                (vehicle.Definition match {
-                  case GlobalDefinitions.orbital_shuttle | GlobalDefinitions.droppod => true
-                  case _                                                             => index > 0
-                })
+                  live.contains(seat.occupant.get) &&
+                  (vehicle.Definition match {
+                    case GlobalDefinitions.orbital_shuttle | GlobalDefinitions.droppod => true
+                    case _                                                             => index > 0
+                  })
             }
             .foreach {
               case (index, seat) =>
@@ -4219,12 +4293,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
               .filter {
                 case (index, seat) =>
                   seat.isOccupied &&
-                  !seat.occupant.contains(player) &&
-                  live.contains(seat.occupant.get) &&
-                  (vehicle.Definition match {
-                    case GlobalDefinitions.orbital_shuttle => true
-                    case _                                 => index > 0
-                  })
+                    !seat.occupant.contains(player) &&
+                    live.contains(seat.occupant.get) &&
+                    (vehicle.Definition match {
+                      case GlobalDefinitions.orbital_shuttle => true
+                      case _                                 => index > 0
+                    })
               }
               .foreach {
                 case (index, seat) =>
@@ -4511,10 +4585,10 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         //the majority of the following check retrieves information to determine if we are in control of the child
         tools.find { _.GUID == object_guid } match {
           case None =>
-            //todo: old warning; this state is problematic, but can trigger in otherwise valid instances
-            //log.warn(
-            //  s"ChildObjectState: ${player.Name} is using a different controllable agent than entity ${object_guid.guid}"
-            //)
+          //todo: old warning; this state is problematic, but can trigger in otherwise valid instances
+          //log.warn(
+          //  s"ChildObjectState: ${player.Name} is using a different controllable agent than entity ${object_guid.guid}"
+          //)
           case Some(tool) =>
             //TODO set tool orientation?
             player.Orientation = Vector3(0f, pitch, yaw)
@@ -4651,7 +4725,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             flight_time,
             unk9,
             unkA
-            ) =>
+          ) =>
         //log.info(s"$msg")
         GetVehicleAndSeat() match {
           case (Some(obj), Some(0)) =>
@@ -4661,7 +4735,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             val (position, angle, velocity, notMountedState) = continent.GUID(obj.MountedIn) match {
               case Some(v: Vehicle) =>
                 updateBlockMap(obj, continent, pos)
-                (pos, v.Orientation - Vector3.z(value = 90f) * Vehicles.CargoOrientation(obj).toFloat, v.Velocity, false)
+                (
+                  pos,
+                  v.Orientation - Vector3.z(value = 90f) * Vehicles.CargoOrientation(obj).toFloat,
+                  v.Velocity,
+                  false
+                )
               case _ =>
                 (pos, ang, vel, true)
             }
@@ -4763,9 +4842,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       case msg @ LongRangeProjectileInfoMessage(guid, _, _) =>
         //log.info(s"$msg")
         FindContainedWeapon match {
-          case (Some(vehicle: Vehicle), weapons)
-            if weapons.exists { _.GUID == guid } => ; //now what?
-          case _ => ;
+          case (Some(vehicle: Vehicle), weapons) if weapons.exists { _.GUID == guid } => ; //now what?
+          case _                                                                      => ;
         }
 
       case msg @ ReleaseAvatarRequestMessage() =>
@@ -4810,18 +4888,18 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
       case msg @ ChangeAmmoMessage(item_guid, unk1) =>
         val (thing, equipment) = FindContainedEquipment()
-        if(equipment.isEmpty) {
+        if (equipment.isEmpty) {
           log.warn(s"ChangeAmmo: either can not find $item_guid or the object found was not Equipment")
         } else {
           equipment foreach {
-            case obj : ConstructionItem =>
+            case obj: ConstructionItem =>
               if (Deployables.performConstructionItemAmmoChange(player.avatar.certifications, obj, obj.AmmoTypeIndex)) {
                 log.info(
                   s"${player.Name} switched ${player.Sex.possessive} ${obj.Definition.Name} to construct ${obj.AmmoType} (option #${obj.FireModeIndex})"
                 )
                 sendResponse(ChangeAmmoMessage(obj.GUID, obj.AmmoTypeIndex))
               }
-            case tool : Tool =>
+            case tool: Tool =>
               thing match {
                 case Some(correctThing: PlanetSideServerObject with Container) =>
                   PerformToolAmmoChange(tool, correctThing)
@@ -4837,23 +4915,29 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         FindEquipment(item_guid) match {
           case Some(obj: PlanetSideGameObject with FireModeSwitch[_]) =>
             val originalModeIndex = obj.FireModeIndex
-            if (obj match {
-              case citem: ConstructionItem =>
-                val modeChanged = Deployables.performConstructionItemFireModeChange(
-                  player.avatar.certifications,
-                  citem,
-                  originalModeIndex
-                )
-                modeChanged
-              case _ =>
-                obj.NextFireMode == originalModeIndex
-            }) {
+            if (
+              obj match {
+                case citem: ConstructionItem =>
+                  val modeChanged = Deployables.performConstructionItemFireModeChange(
+                    player.avatar.certifications,
+                    citem,
+                    originalModeIndex
+                  )
+                  modeChanged
+                case _ =>
+                  obj.NextFireMode == originalModeIndex
+              }
+            ) {
               val modeIndex = obj.FireModeIndex
               obj match {
                 case citem: ConstructionItem =>
-                  log.info(s"${player.Name} switched ${player.Sex.possessive} ${obj.Definition.Name} to construct ${citem.AmmoType} (mode #$modeIndex)")
+                  log.info(
+                    s"${player.Name} switched ${player.Sex.possessive} ${obj.Definition.Name} to construct ${citem.AmmoType} (mode #$modeIndex)"
+                  )
                 case _ =>
-                  log.info(s"${player.Name} changed ${player.Sex.possessive} her ${obj.Definition.Name}'s fire mode to #$modeIndex")
+                  log.info(
+                    s"${player.Name} changed ${player.Sex.possessive} her ${obj.Definition.Name}'s fire mode to #$modeIndex"
+                  )
               }
               sendResponse(ChangeFireModeMessage(item_guid, modeIndex))
               continent.AvatarEvents ! AvatarServiceMessage(
@@ -5007,33 +5091,36 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         FindContainedWeapon match {
           case (Some(obj: PlanetSideServerObject with Container), tools) =>
             tools.filter { _.GUID == item_guid }.foreach { tool =>
-              val currentMagazine : Int = tool.Magazine
-              val magazineSize : Int = tool.MaxMagazine
-              val reloadValue : Int = magazineSize - currentMagazine
+              val currentMagazine: Int = tool.Magazine
+              val magazineSize: Int    = tool.MaxMagazine
+              val reloadValue: Int     = magazineSize - currentMagazine
               if (magazineSize > 0 && reloadValue > 0) {
-                FindEquipmentStock(obj, FindAmmoBoxThatUses(tool.AmmoType), reloadValue, CountAmmunition).reverse match {
+                FindEquipmentStock(
+                  obj,
+                  FindAmmoBoxThatUses(tool.AmmoType),
+                  reloadValue,
+                  CountAmmunition
+                ).reverse match {
                   case Nil => ;
                   case x :: xs =>
-                    val (deleteFunc, modifyFunc) : (Equipment => Future[Any], (AmmoBox, Int) => Unit) = obj match {
-                      case veh : Vehicle =>
+                    val (deleteFunc, modifyFunc): (Equipment => Future[Any], (AmmoBox, Int) => Unit) = obj match {
+                      case veh: Vehicle =>
                         (RemoveOldEquipmentFromInventory(veh), ModifyAmmunitionInVehicle(veh))
                       case _ =>
                         (RemoveOldEquipmentFromInventory(obj), ModifyAmmunition(obj))
                     }
                     xs.foreach { item => deleteFunc(item.obj) }
                     val box = x.obj.asInstanceOf[AmmoBox]
-                    val tailReloadValue : Int = if (xs.isEmpty) {
+                    val tailReloadValue: Int = if (xs.isEmpty) {
                       0
-                    }
-                    else {
+                    } else {
                       xs.map(_.obj.asInstanceOf[AmmoBox].Capacity).sum
                     }
-                    val sumReloadValue : Int = box.Capacity + tailReloadValue
+                    val sumReloadValue: Int = box.Capacity + tailReloadValue
                     val actualReloadValue = if (sumReloadValue <= reloadValue) {
                       deleteFunc(box)
                       sumReloadValue
-                    }
-                    else {
+                    } else {
                       modifyFunc(box, reloadValue - tailReloadValue)
                       reloadValue
                     }
@@ -5164,10 +5251,10 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           ValidObject(item_guid, decorator = "MoveItem")
         ) match {
           case (
-            Some(source: PlanetSideServerObject with Container),
-            Some(destination: PlanetSideServerObject with Container),
-            Some(item: Equipment)
-            ) =>
+                Some(source: PlanetSideServerObject with Container),
+                Some(destination: PlanetSideServerObject with Container),
+                Some(item: Equipment)
+              ) =>
             ContainableMoveItem(player.Name, source, destination, item, destination.SlotMapResolution(dest))
           case (None, _, _) =>
             log.error(
@@ -5251,8 +5338,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           ) =>
         // TODO: Not all fields in the response are identical to source in real packet logs (but seems to be ok)
         val equipment = FindContainedEquipment(item_used_guid) match {
-          case (o @ Some(_), a)
-            if a.exists(_.isInstanceOf[Tool]) =>
+          case (o @ Some(_), a) if a.exists(_.isInstanceOf[Tool]) =>
             FindEnabledWeaponsToHandleWeaponFireAccountability(o, a.collect { case w: Tool => w })._2.headOption
           case (Some(_), a) =>
             a.headOption
@@ -5267,8 +5353,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             CancelZoningProcessWithDescriptiveReason("cancel_use")
             (continent.GUID(player.VehicleSeated), equipment) match {
               case (Some(vehicle: Vehicle), Some(item))
-                if GlobalDefinitions.isBattleFrameVehicle(vehicle.Definition) &&
-                   GlobalDefinitions.isBattleFrameNTUSiphon(item.Definition) =>
+                  if GlobalDefinitions.isBattleFrameVehicle(vehicle.Definition) &&
+                    GlobalDefinitions.isBattleFrameNTUSiphon(item.Definition) =>
                 resourceSilo.Actor ! CommonMessages.Use(player, equipment)
               case _ =>
                 resourceSilo.Actor ! CommonMessages.Use(player)
@@ -5315,7 +5401,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
                 case (Some(item), _) =>
                   log.error(s"UseItem: ${player.Name} looking for Kit to use, but found $item instead")
                 case (None, None) =>
-                  log.warn(s"UseItem: anticipated a Kit $item_used_guid for ${player.Name}, but can't find it")              }
+                  log.warn(s"UseItem: anticipated a Kit $item_used_guid for ${player.Name}, but can't find it")
+              }
             } else if (itemType == ObjectClass.avatar && unk3) {
               equipment match {
                 case Some(tool: Tool) if tool.Definition == GlobalDefinitions.bank =>
@@ -5507,7 +5594,14 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
                   CancelZoningProcessWithDescriptiveReason("cancel_use")
                   terminal.Actor ! Terminal.Request(
                     player,
-                    ItemTransactionMessage(object_guid, TransactionType.Buy, 0, "flail_targeting_laser", 0, PlanetSideGUID(0))
+                    ItemTransactionMessage(
+                      object_guid,
+                      TransactionType.Buy,
+                      0,
+                      "flail_targeting_laser",
+                      0,
+                      PlanetSideGUID(0)
+                    )
                   )
                 } else {
                   log.info(s"${player.Name} is accessing a ${terminal.Definition.Name}")
@@ -5647,8 +5741,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             CancelZoningProcessWithDescriptiveReason("cancel_use")
             (continent.GUID(player.VehicleSeated), equipment) match {
               case (Some(vehicle: Vehicle), Some(item))
-                if GlobalDefinitions.isBattleFrameVehicle(vehicle.Definition) &&
-                   GlobalDefinitions.isBattleFrameNTUSiphon(item.Definition) =>
+                  if GlobalDefinitions.isBattleFrameVehicle(vehicle.Definition) &&
+                    GlobalDefinitions.isBattleFrameNTUSiphon(item.Definition) =>
                 vehicle.Actor ! CommonMessages.Use(player, equipment)
               case _ => ;
             }
@@ -5657,8 +5751,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             CancelZoningProcessWithDescriptiveReason("cancel_use")
             equipment match {
               case Some(item)
-                if GlobalDefinitions.isBattleFrameArmorSiphon(item.Definition) ||
-                   GlobalDefinitions.isBattleFrameNTUSiphon(item.Definition) => ;
+                  if GlobalDefinitions.isBattleFrameArmorSiphon(item.Definition) ||
+                    GlobalDefinitions.isBattleFrameNTUSiphon(item.Definition) =>
+                ;
 
               case _ =>
                 log.warn(s"UseItem: ${player.Name} does not know how to handle $obj")
@@ -5717,7 +5812,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
               case _ =>
                 GUIDTask.registerObject(continent.GUID, dObj)
             }
-            TaskWorkflow.execute(CallBackForTask(tasking, continent.Deployables, Zone.Deployable.BuildByOwner(dObj, player, obj)))
+            TaskWorkflow.execute(
+              CallBackForTask(tasking, continent.Deployables, Zone.Deployable.BuildByOwner(dObj, player, obj))
+            )
 
           case Some(obj) =>
             log.warn(s"DeployObject: what is $obj, ${player.Name}?  It's not a construction tool!")
@@ -5728,21 +5825,20 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       case msg @ GenericObjectActionMessage(object_guid, code) =>
         //log.info(s"$msg")
         ValidObject(object_guid, decorator = "GenericObjectAction") match {
-          case Some(vehicle: Vehicle)
-            if vehicle.OwnerName.contains(player.Name) =>
+          case Some(vehicle: Vehicle) if vehicle.OwnerName.contains(player.Name) =>
             vehicle.Actor ! ServerObject.GenericObjectAction(object_guid, code, Some(player.GUID))
 
           case Some(tool: Tool) =>
-            if (code == 35 &&
-                (tool.Definition == GlobalDefinitions.maelstrom || tool.Definition.Name.startsWith("aphelion_laser"))
+            if (
+              code == 35 &&
+              (tool.Definition == GlobalDefinitions.maelstrom || tool.Definition.Name.startsWith("aphelion_laser"))
             ) {
               //maelstrom primary fire mode discharge (no target)
               //aphelion_laser discharge (no target)
               HandleWeaponFireAccountability(object_guid, PlanetSideGUID(Projectile.baseUID))
             } else {
               ValidObject(player.VehicleSeated, decorator = "GenericObjectAction/Vehicle") match {
-                case Some(vehicle: Vehicle)
-                  if vehicle.OwnerName.contains(player.Name) =>
+                case Some(vehicle: Vehicle) if vehicle.OwnerName.contains(player.Name) =>
                   vehicle.Actor ! ServerObject.GenericObjectAction(object_guid, code, Some(tool))
                 case _ => ;
               }
@@ -5780,7 +5876,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           if (action == 29) {
             log.info(s"${player.Name} is AFK")
             AvatarActor.savePlayerLocation(player)
-            displayCharSavedMsgThenRenewTimer(fixedLen=1800L, varLen=0L) //~30min
+            displayCharSavedMsgThenRenewTimer(fixedLen = 1800L, varLen = 0L) //~30min
             player.AwayFromKeyboard = true
           } else if (action == 30) {
             log.info(s"${player.Name} is back")
@@ -5899,7 +5995,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       case msg @ FavoritesRequest(player_guid, loadoutType, action, line, label) =>
         CancelZoningProcessWithDescriptiveReason("cancel_use")
         action match {
-          case FavoritesAction.Save   =>
+          case FavoritesAction.Save =>
             avatarActor ! AvatarActor.SaveLoadout(player, loadoutType, label, line)
           case FavoritesAction.Delete =>
             avatarActor ! AvatarActor.DeleteLoadout(player, loadoutType, line)
@@ -5926,26 +6022,27 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         }
 
       case msg @ WeaponFireMessage(
-        _,
-        weapon_guid,
-        projectile_guid,
-        shot_origin,
-        _,
-        _,
-        _,
-        _, //max_distance,
-        _,
-        _, //projectile_type,
-        thrown_projectile_vel
-      ) =>
+            _,
+            weapon_guid,
+            projectile_guid,
+            shot_origin,
+            _,
+            _,
+            _,
+            _, //max_distance,
+            _,
+            _, //projectile_type,
+            thrown_projectile_vel
+          ) =>
         log.info(s"$msg")
         HandleWeaponFire(weapon_guid, projectile_guid, shot_origin, thrown_projectile_vel.flatten)
 
-      case WeaponLazeTargetPositionMessage(_, _, _) => ;
+      case WeaponLazeTargetPositionMessage(_, _, _) =>
+        ;
         //do not need to handle the progress bar animation/state on the server
         //laze waypoint is requested by client upon completion (see SquadWaypointRequest)
         val purpose = if (squad_supplement_id > 0) {
-          s" for ${player.Sex.possessive} squad (#${squad_supplement_id -1})"
+          s" for ${player.Sex.possessive} squad (#${squad_supplement_id - 1})"
         } else {
           " ..."
         }
@@ -5962,7 +6059,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
                 continent.AvatarEvents ! AvatarServiceMessage(target, AvatarAction.ProjectileAutoLockAwareness(mode))
               }
             }
-          case _ => ;
+          case _ => ()
         }
 
       case msg @ HitMessage(
@@ -5981,11 +6078,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             //find target(s)
             (hit_info match {
               case Some(hitInfo) =>
-                val hitPos     = hitInfo.hit_pos
+                val hitPos = hitInfo.hit_pos
                 ValidObject(hitInfo.hitobject_guid, decorator = "Hit/hitInfo") match {
                   case _ if projectile.profile == GlobalDefinitions.flail_projectile =>
-                    val radius  = projectile.profile.DamageRadius * projectile.profile.DamageRadius
-                    val targets = Zone.findAllTargets(hitPos)(continent, player, projectile.profile)
+                    val radius = projectile.profile.DamageRadius * projectile.profile.DamageRadius
+                    val targets = Zone
+                      .findAllTargets(hitPos)(continent, player, projectile.profile)
                       .filter { target =>
                         Vector3.DistanceSquared(target.Position, hitPos) <= radius
                       }
@@ -6191,7 +6289,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
               )
             case Some(obj: Mountable) =>
               obj.PassengerInSeat(player) match {
-               case Some(seat_num) =>
+                case Some(seat_num) =>
                   obj.Actor ! Mountable.TryDismount(player, seat_num, bailType)
                   if (interstellarFerry.isDefined) {
                     //short-circuit the temporary channel for transferring between zones, the player is no longer doing that
@@ -6223,11 +6321,10 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           //kicking someone else out of a mount; need to own that mount/mountable
           player.avatar.vehicle match {
             case Some(obj_guid) =>
-              (
-                (
-                  ValidObject(obj_guid, decorator = "DismountVehicle/Vehicle"),
-                  ValidObject(player_guid, decorator = "DismountVehicle/Player")
-                ) match {
+              ((
+                ValidObject(obj_guid, decorator = "DismountVehicle/Vehicle"),
+                ValidObject(player_guid, decorator = "DismountVehicle/Player")
+              ) match {
                 case (vehicle @ Some(obj: Vehicle), tplayer) =>
                   if (obj.MountedIn.isEmpty) (vehicle, tplayer) else (None, None)
                 case (mount @ Some(obj: Mountable), tplayer) =>
@@ -6291,9 +6388,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         )
 
       case msg @ SquadWaypointRequest(request, _, wtype, unk, info) =>
-        val time = System.currentTimeMillis()
+        val time    = System.currentTimeMillis()
         val subtype = wtype.subtype
-        if(subtype == WaypointSubtype.Squad) {
+        if (subtype == WaypointSubtype.Squad) {
           squadService ! SquadServiceMessage(player, continent, SquadServiceAction.Waypoint(request, wtype, unk, info))
         } else if (subtype == WaypointSubtype.Laze && time - waypointCooldown > 1000) {
           //guarding against duplicating laze waypoints
@@ -6309,8 +6406,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
               val fall = heightLast - heightHistory
               heightHistory = heightLast
               fall
-            }
-            else {
+            } else {
               val fall = heightHistory - heightLast
               heightLast = heightHistory
               fall
@@ -6319,46 +6415,50 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             0f
           }
         }
-        val (target1, target2, bailProtectStatus, velocity) = (ctype, ValidObject(p, decorator = "GenericCollision/Primary")) match {
-          case (CollisionIs.OfInfantry, out @ Some(user: Player))
-            if user == player =>
-            val bailStatus = session.flying || player.spectator || session.speed > 1f || player.BailProtection
-            player.BailProtection = false
-            val v = if (player.avatar.implants.exists {
-              case Some(implant) => implant.definition.implantType == ImplantType.Surge && implant.active
-              case _             => false
-            }) {
-              Vector3.Zero
-            } else {
-              pv
-            }
-            (out, None, bailStatus, v)
-          case (CollisionIs.OfGroundVehicle, out @ Some(v: Vehicle))
-            if v.Seats(0).occupant.contains(player) =>
-            val bailStatus = v.BailProtection
-            v.BailProtection = false
-            (out, ValidObject(t, decorator = "GenericCollision/GroundVehicle"), bailStatus, pv)
-          case (CollisionIs.OfAircraft, out @ Some(v: Vehicle))
-            if v.Definition.CanFly && v.Seats(0).occupant.contains(player) =>
-            (out, ValidObject(t, decorator = "GenericCollision/Aircraft"), false, pv)
-          case (CollisionIs.BetweenThings, o_) =>
-            log.warn("GenericCollision: CollisionIs.BetweenThings detected - no handling case")
-            (None, None, false, Vector3.Zero)
-          case _ =>
-            (None, None, false, Vector3.Zero)
-        }
+        val (target1, target2, bailProtectStatus, velocity) =
+          (ctype, ValidObject(p, decorator = "GenericCollision/Primary")) match {
+            case (CollisionIs.OfInfantry, out @ Some(user: Player)) if user == player =>
+              val bailStatus = session.flying || player.spectator || session.speed > 1f || player.BailProtection
+              player.BailProtection = false
+              val v =
+                if (
+                  player.avatar.implants.exists {
+                    case Some(implant) => implant.definition.implantType == ImplantType.Surge && implant.active
+                    case _             => false
+                  }
+                ) {
+                  Vector3.Zero
+                } else {
+                  pv
+                }
+              (out, None, bailStatus, v)
+            case (CollisionIs.OfGroundVehicle, out @ Some(v: Vehicle)) if v.Seats(0).occupant.contains(player) =>
+              val bailStatus = v.BailProtection
+              v.BailProtection = false
+              (out, ValidObject(t, decorator = "GenericCollision/GroundVehicle"), bailStatus, pv)
+            case (CollisionIs.OfAircraft, out @ Some(v: Vehicle))
+                if v.Definition.CanFly && v.Seats(0).occupant.contains(player) =>
+              (out, ValidObject(t, decorator = "GenericCollision/Aircraft"), false, pv)
+            case (CollisionIs.BetweenThings, o_) =>
+              log.warn("GenericCollision: CollisionIs.BetweenThings detected - no handling case")
+              (None, None, false, Vector3.Zero)
+            case _ =>
+              (None, None, false, Vector3.Zero)
+          }
         val curr = System.currentTimeMillis()
         (target1, t, target2) match {
           case (None, _, _) => ;
 
           case (Some(us: PlanetSideServerObject with Vitality with FactionAffinity), PlanetSideGUID(0), _) =>
-            if (collisionHistory.get(us.Actor) match {
-              case Some(lastCollision) if curr - lastCollision <= 1000L =>
-                false
-              case _ =>
-                collisionHistory.put(us.Actor, curr)
-                true
-            }) {
+            if (
+              collisionHistory.get(us.Actor) match {
+                case Some(lastCollision) if curr - lastCollision <= 1000L =>
+                  false
+                case _ =>
+                  collisionHistory.put(us.Actor, curr)
+                  true
+              }
+            ) {
               if (!bailProtectStatus) {
                 HandleDealingDamage(
                   us,
@@ -6372,17 +6472,20 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             }
 
           case (
-            Some(us: PlanetSideServerObject with Vitality with FactionAffinity), _,
-            Some(victim: PlanetSideServerObject with Vitality with FactionAffinity)
-            ) =>
-            if (collisionHistory.get(victim.Actor) match {
-              case Some(lastCollision) if curr - lastCollision <= 1000L =>
-                false
-              case _ =>
-                collisionHistory.put(victim.Actor, curr)
-                true
-            }) {
-              val usSource = SourceEntry(us)
+                Some(us: PlanetSideServerObject with Vitality with FactionAffinity),
+                _,
+                Some(victim: PlanetSideServerObject with Vitality with FactionAffinity)
+              ) =>
+            if (
+              collisionHistory.get(victim.Actor) match {
+                case Some(lastCollision) if curr - lastCollision <= 1000L =>
+                  false
+                case _ =>
+                  collisionHistory.put(victim.Actor, curr)
+                  true
+              }
+            ) {
+              val usSource     = SourceEntry(us)
               val victimSource = SourceEntry(victim)
               //we take damage from the collision
               if (!bailProtectStatus) {
@@ -6441,7 +6544,9 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             avatarActor ! AvatarActor.SetCosmetics(Cosmetic.valuesFromAttributeValue(attribute_value))
 
           case Some(obj) =>
-            log.trace(s"PlanetsideAttribute: ${player.Name} does not know how to apply unknown attributes behavior $attribute_type to ${obj.Definition.Name}")
+            log.trace(
+              s"PlanetsideAttribute: ${player.Name} does not know how to apply unknown attributes behavior $attribute_type to ${obj.Definition.Name}"
+            )
 
           case _ => ;
         }
@@ -6517,18 +6622,26 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         (continent.GUID(vehicle_guid), continent.GUID(player.VehicleSeated)) match {
           case (Some(packetVehicle: Vehicle), Some(playerVehicle: Vehicle)) if packetVehicle eq playerVehicle =>
             if (alert == TerrainCondition.Unsafe) {
-              log.info(s"${player.Name}'s ${packetVehicle.Definition.Name} is approaching terrain unsuitable for idling")
+              log.info(
+                s"${player.Name}'s ${packetVehicle.Definition.Name} is approaching terrain unsuitable for idling"
+              )
             }
           case (Some(packetVehicle: Vehicle), Some(playerVehicle: Vehicle)) =>
             if (alert == TerrainCondition.Unsafe) {
-              log.info(s"${packetVehicle.Definition.Name}@${packetVehicle.GUID} is approaching terrain unsuitable for idling, but is not ${player.Name}'s vehicle")
+              log.info(
+                s"${packetVehicle.Definition.Name}@${packetVehicle.GUID} is approaching terrain unsuitable for idling, but is not ${player.Name}'s vehicle"
+              )
             }
           case (Some(_: Vehicle), _) =>
             log.warn(s"InvalidTerrain: ${player.Name} is not seated in a(ny) vehicle near unsuitable terrain")
           case (Some(packetThing), _) =>
-            log.warn(s"InvalidTerrain: ${player.Name} thinks that ${packetThing.Definition.Name}@${packetThing.GUID} is near unsuitable terrain")
+            log.warn(
+              s"InvalidTerrain: ${player.Name} thinks that ${packetThing.Definition.Name}@${packetThing.GUID} is near unsuitable terrain"
+            )
           case _ =>
-            log.error(s"InvalidTerrain: ${player.Name} is complaining about a thing@$vehicle_guid that can not be found")
+            log.error(
+              s"InvalidTerrain: ${player.Name} is complaining about a thing@$vehicle_guid that can not be found"
+            )
         }
 
       case ActionCancelMessage(_, _, _) =>
@@ -6604,7 +6717,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
   private def registerVehicle(vehicle: Vehicle): TaskBundle = {
     TaskBundle(
       new StraightforwardTask() {
-        private val localVehicle = vehicle
+        private val localVehicle  = vehicle
         private val localAnnounce = self
 
         override def description(): String = s"register a ${localVehicle.Definition.Name}"
@@ -6719,7 +6832,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         private val localDriver   = driver
         private val localAnnounce = self
 
-        override def description(): String = s"unregister a ${localVehicle.Definition.Name} driven by ${localDriver.Name}"
+        override def description(): String =
+          s"unregister a ${localVehicle.Definition.Name} driven by ${localDriver.Name}"
 
         def action(): Future[Any] = {
           Future(true)
@@ -6931,13 +7045,13 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     }
   }
 
-/**
-  * Check two locations for a controlled piece of equipment that is associated with the `player`
-  * and has the specified global unique identifier number.
-  */
+  /**
+    * Check two locations for a controlled piece of equipment that is associated with the `player`
+    * and has the specified global unique identifier number.
+    */
   def FindContainedEquipment(
-                              guid: PlanetSideGUID
-                            ): (Option[PlanetSideGameObject with Container], Set[Equipment]) = {
+      guid: PlanetSideGUID
+  ): (Option[PlanetSideGameObject with Container], Set[Equipment]) = {
     val (o, equipment) = FindContainedEquipment()
     equipment.find { _.GUID == guid } match {
       case Some(equip) => (o, Set(equip))
@@ -6982,8 +7096,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     *         the second value is an `Tool` object in the former
     */
   def FindContainedWeapon(
-                           guid: PlanetSideGUID
-                         ): (Option[PlanetSideGameObject with Container], Set[Tool]) = {
+      guid: PlanetSideGUID
+  ): (Option[PlanetSideGameObject with Container], Set[Tool]) = {
     val (o, equipment) = FindContainedWeapon
     equipment.find { _.GUID == guid } match {
       case Some(equip) => (o, Set(equip))
@@ -7072,7 +7186,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           case x :: xs =>
             val modifyFunc: (AmmoBox, Int) => Unit = obj match {
               case veh: Vehicle => ModifyAmmunitionInVehicle(veh)
-              case _ =>            ModifyAmmunition(obj)
+              case _            => ModifyAmmunition(obj)
             }
             val stowNewFunc: Equipment => TaskBundle = PutNewEquipmentInInventoryOrDrop(obj)
             val stowFunc: Equipment => Future[Any]   = PutEquipmentInInventoryOrDrop(obj)
@@ -7084,7 +7198,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             })
 
             //box will be the replacement ammo; give it the discovered magazine and load it into the weapon
-            val box                 = x.obj.asInstanceOf[AmmoBox]
+            val box = x.obj.asInstanceOf[AmmoBox]
             //previousBox is the current magazine in tool; it will be removed from the weapon
             val previousBox         = tool.AmmoSlot.Box
             val originalBoxCapacity = box.Capacity
@@ -7097,7 +7211,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             val ammoSlotIndex       = tool.FireMode.AmmoSlotIndex
             val box_guid            = box.GUID
             val tool_guid           = tool.GUID
-            obj.Inventory -= x.start //remove replacement ammo from inventory
+            obj.Inventory -= x.start                //remove replacement ammo from inventory
             tool.AmmoSlots(ammoSlotIndex).Box = box //put replacement ammo in tool
             sendResponse(ObjectDetachMessage(tool_guid, previousBox.GUID, Vector3.Zero, 0f))
             sendResponse(ObjectDetachMessage(obj.GUID, box_guid, Vector3.Zero, 0f))
@@ -7916,7 +8030,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
           case Some(_) | None => ;
         }
       })
-      RemoveBoomerTriggersFromInventory()foreach(trigger => { NormalItemDrop(obj, continent)(trigger) })
+      RemoveBoomerTriggersFromInventory() foreach (trigger => { NormalItemDrop(obj, continent)(trigger) })
     }
   }
 
@@ -8432,7 +8546,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         }
 
       case obj: Vehicle if obj.CanDamage =>
-        val name = player.Name
+        val name      = player.Name
         val ownerName = obj.OwnerName.getOrElse("someone")
         if (ownerName.equals(name)) {
           log.info(s"$name is damaging ${player.Sex.possessive} own ${obj.Definition.Name}")
@@ -8445,7 +8559,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         obj.Actor ! Vitality.Damage(func)
 
       case obj: Deployable if obj.CanDamage =>
-        val name = player.Name
+        val name      = player.Name
         val ownerName = obj.OwnerName.getOrElse("someone")
         if (ownerName.equals(name)) {
           log.info(s"$name is damaging ${player.Sex.possessive} own ${obj.Definition.Name}")
@@ -8682,21 +8796,22 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     val events = continent.AvatarEvents
     val zoneId = continent.id
     (player.Inventory.Items ++ player.HolsterItems())
-      .collect { case InventoryItem(obj: BoomerTrigger, index) =>
-        player.Slot(index).Equipment = None
-        continent.GUID(obj.Companion) match {
-          case Some(mine: BoomerDeployable) => mine.Actor ! Deployable.Ownership(None)
-          case _ => ;
-        }
-        if (player.VisibleSlots.contains(index)) {
-          events ! AvatarServiceMessage(
-            zoneId,
-            AvatarAction.ObjectDelete(Service.defaultPlayerGUID, obj.GUID)
-          )
-        } else {
-          sendResponse(ObjectDeleteMessage(obj.GUID, 0))
-        }
-        obj
+      .collect {
+        case InventoryItem(obj: BoomerTrigger, index) =>
+          player.Slot(index).Equipment = None
+          continent.GUID(obj.Companion) match {
+            case Some(mine: BoomerDeployable) => mine.Actor ! Deployable.Ownership(None)
+            case _                            => ;
+          }
+          if (player.VisibleSlots.contains(index)) {
+            events ! AvatarServiceMessage(
+              zoneId,
+              AvatarAction.ObjectDelete(Service.defaultPlayerGUID, obj.GUID)
+            )
+          } else {
+            sendResponse(ObjectDeleteMessage(obj.GUID, 0))
+          }
+          obj
       }
   }
 
@@ -8731,12 +8846,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     *                    does not factor in any time required for loading zone or game objects
     */
   def LoadZonePhysicalSpawnPoint(
-                                  zoneId: String,
-                                  pos: Vector3,
-                                  ori: Vector3,
-                                  respawnTime: FiniteDuration,
-                                  physSpawnPoint: Option[SpawnPoint]
-                                ): Unit = {
+      zoneId: String,
+      pos: Vector3,
+      ori: Vector3,
+      respawnTime: FiniteDuration,
+      physSpawnPoint: Option[SpawnPoint]
+  ): Unit = {
     log.info(s"${player.Name} will load in zone $zoneId at position $pos in $respawnTime")
     respawnTimer.cancel()
     reviveTimer.cancel()
@@ -8815,15 +8930,19 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       val original = player
       if (player.isBackpack) {
         session = session.copy(player = targetPlayer)
-        TaskWorkflow.execute(taskThenZoneChange(
-          GUIDTask.unregisterObject(continent.GUID, original.avatar.locker),
-          ICS.FindZone(_.id.equals(zoneId), context.self)
-        ))
+        TaskWorkflow.execute(
+          taskThenZoneChange(
+            GUIDTask.unregisterObject(continent.GUID, original.avatar.locker),
+            ICS.FindZone(_.id.equals(zoneId), context.self)
+          )
+        )
       } else if (player.HasGUID) {
-        TaskWorkflow.execute(taskThenZoneChange(
-          GUIDTask.unregisterAvatar(continent.GUID, original),
-          ICS.FindZone(_.id.equals(zoneId), context.self)
-        ))
+        TaskWorkflow.execute(
+          taskThenZoneChange(
+            GUIDTask.unregisterAvatar(continent.GUID, original),
+            ICS.FindZone(_.id.equals(zoneId), context.self)
+          )
+        )
       } else {
         cluster ! ICS.FindZone(_.id.equals(zoneId), context.self)
       }
@@ -8920,10 +9039,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     } else if (vehicle.Definition == GlobalDefinitions.droppod) {
       LoadZoneCommonTransferActivity()
       player.Continent = zoneId //forward-set the continent id to perform a test
-      TaskWorkflow.execute(taskThenZoneChange(
-        GUIDTask.unregisterAvatar(continent.GUID, player),
-        ICS.FindZone(_.id == zoneId, context.self)
-      ))
+      TaskWorkflow.execute(
+        taskThenZoneChange(
+          GUIDTask.unregisterAvatar(continent.GUID, player),
+          ICS.FindZone(_.id == zoneId, context.self)
+        )
+      )
     } else {
       UnaccessContainer(vehicle)
       LoadZoneCommonTransferActivity()
@@ -8942,10 +9063,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         }
       //unregister vehicle and driver whole + GiveWorld
       continent.Transport ! Zone.Vehicle.Despawn(vehicle)
-      TaskWorkflow.execute(taskThenZoneChange(
-        unregisterDrivenVehicle(vehicle, player),
-        ICS.FindZone(_.id == zoneId, context.self)
-      ))
+      TaskWorkflow.execute(
+        taskThenZoneChange(
+          unregisterDrivenVehicle(vehicle, player),
+          ICS.FindZone(_.id == zoneId, context.self)
+        )
+      )
     }
   }
 
@@ -8988,10 +9111,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       val continentId = continent.id
       interstellarFerryTopLevelGUID = None
 
-      TaskWorkflow.execute(taskThenZoneChange(
-        GUIDTask.unregisterAvatar(continent.GUID, player),
-        ICS.FindZone(_.id == zoneId, context.self)
-      ))
+      TaskWorkflow.execute(
+        taskThenZoneChange(
+          GUIDTask.unregisterAvatar(continent.GUID, player),
+          ICS.FindZone(_.id == zoneId, context.self)
+        )
+      )
     }
   }
 
@@ -9034,16 +9159,16 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
   /** Before changing zones, perform the following task (which can be a nesting of subtasks). */
   def taskThenZoneChange(
-                          task: TaskBundle,
-                          zoneMessage: ICS.FindZone
-                        ): TaskBundle = {
+      task: TaskBundle,
+      zoneMessage: ICS.FindZone
+  ): TaskBundle = {
     TaskBundle(
       new StraightforwardTask() {
-        val localAvatar = avatar
-        val localZone = continent
+        val localAvatar  = avatar
+        val localZone    = continent
         val localCluster = cluster
 
-        override def description() : String = s"doing ${task.description()} before transferring zones"
+        override def description(): String = s"doing ${task.description()} before transferring zones"
 
         def action(): Future[Any] = {
           continent.Population ! Zone.Population.Leave(localAvatar)
@@ -9559,6 +9684,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       turnCounterFunc = NormalTurnCounter
     }
   }
+
   /**
     * The upstream counter accumulates when the server receives specific messages from the client.<br>
     * <br>
@@ -9652,11 +9778,11 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
   }
 
   def HandleWeaponFire(
-                        weaponGUID: PlanetSideGUID,
-                        projectileGUID: PlanetSideGUID,
-                        shotOrigin: Vector3,
-                        shotVelocity: Option[Vector3]
-                      ): Unit = {
+      weaponGUID: PlanetSideGUID,
+      projectileGUID: PlanetSideGUID,
+      shotOrigin: Vector3,
+      shotVelocity: Option[Vector3]
+  ): Unit = {
     HandleWeaponFireAccountability(weaponGUID, projectileGUID) match {
       case (Some(obj), Some(tool)) =>
         val projectileIndex = projectileGUID.guid - Projectile.baseUID
@@ -9664,7 +9790,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
         if (
           projectilePlace match {
             case Some(projectile) =>
-              !projectile.isResolved && System.currentTimeMillis() - projectile.fire_time < projectile.profile.Lifespan.toLong
+              !projectile.isResolved && System
+                .currentTimeMillis() - projectile.fire_time < projectile.profile.Lifespan.toLong
             case None =>
               false
           }
@@ -9711,7 +9838,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
             case mode: ChargeFireModeDefinition =>
               ProjectileQuality.Modified(
                 {
-                  val timeInterval = projectile.fire_time - shootingStart.getOrElse(tool.GUID, System.currentTimeMillis())
+                  val timeInterval =
+                    projectile.fire_time - shootingStart.getOrElse(tool.GUID, System.currentTimeMillis())
                   timeInterval.toFloat / mode.Time.toFloat
                 }
               )
@@ -9750,7 +9878,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       // Cancel NC MAX shield if it's active
       ToggleMaxSpecialState(enable = false)
     }
-    val (o, tools) = FindContainedWeapon
+    val (o, tools)        = FindContainedWeapon
     val (_, enabledTools) = FindEnabledWeaponsToHandleWeaponFireAccountability(o, tools)
     if (enabledTools.size != tools.size) {
       o match {
@@ -9776,8 +9904,8 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
               avatar.stamina > 0 &&
               tool.FireModeIndex == 1 &&
               (tool.Definition.Name == "anniversary_guna"
-               || tool.Definition.Name == "anniversary_gun"
-               || tool.Definition.Name == "anniversary_gunb")
+              || tool.Definition.Name == "anniversary_gun"
+              || tool.Definition.Name == "anniversary_gunb")
             ) {
               avatarActor ! AvatarActor.ConsumeStamina(avatar.stamina)
             }
@@ -9794,12 +9922,11 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
   }
 
   def FindEnabledWeaponsToHandleWeaponFireAccountability(
-                                                          o: Option[PlanetSideGameObject with Container],
-                                                          tools: Set[Tool]
-                                                        ): (Option[PlanetSideGameObject with Container], Set[Tool]) = {
+      o: Option[PlanetSideGameObject with Container],
+      tools: Set[Tool]
+  ): (Option[PlanetSideGameObject with Container], Set[Tool]) = {
     val enabledTools = o match {
-      case Some(v: Vehicle)
-        if GlobalDefinitions.isBattleFrameVehicle(v.Definition) =>
+      case Some(v: Vehicle) if GlobalDefinitions.isBattleFrameVehicle(v.Definition) =>
         val filteredTools = tools.filter { tool: Tool =>
           v.Weapons.find {
             case (index, slot) =>
@@ -9808,11 +9935,14 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
               index > 0 && index < 4 && slot.Equipment.nonEmpty && (tool eq slot.Equipment.get)
           } match {
             case Some((index, _)) =>
-              val mountIsEnabled = v.Subsystems(if (v.Weapons.keys.min == index) {
-                "BattleframeLeftArm"
-              } else {
-                "BattleframeRightArm"
-              }).get.Enabled
+              val mountIsEnabled = v
+                .Subsystems(if (v.Weapons.keys.min == index) {
+                  "BattleframeLeftArm"
+                } else {
+                  "BattleframeRightArm"
+                })
+                .get
+                .Enabled
               if (!mountIsEnabled) {
                 //can't stop the local discharge, but it will not actually shoot anything; assert the magazine
                 sendResponse(QuantityUpdateMessage(tool.AmmoSlot.Box.GUID, tool.Magazine))
@@ -9843,10 +9973,10 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     *         nothing if no targets were affected
     */
   def HandleDamageProxy(
-                         projectile: Projectile,
-                         pguid: PlanetSideGUID,
-                         hitPos: Vector3
-                       ): List[(PlanetSideGameObject with FactionAffinity with Vitality, Projectile, Vector3, Vector3)] = {
+      projectile: Projectile,
+      pguid: PlanetSideGUID,
+      hitPos: Vector3
+  ): List[(PlanetSideGameObject with FactionAffinity with Vitality, Projectile, Vector3, Vector3)] = {
     GlobalDefinitions.getDamageProxy(projectile, hitPos) match {
       case Nil =>
         Nil
@@ -9891,17 +10021,17 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
 
   def HandleDamageProxySetupLittleBuddy(listOfProjectiles: List[Projectile], detonationPosition: Vector3): Boolean = {
     val listOfLittleBuddies: List[Projectile] = listOfProjectiles.filter { _.tool_def == GlobalDefinitions.oicw }
-    val size: Int = listOfLittleBuddies.size
+    val size: Int                             = listOfLittleBuddies.size
     if (size > 0) {
       val desiredDownwardsProjectiles: Int = 2
-      val firstHalf: Int = math.min(size, desiredDownwardsProjectiles) //number that fly straight down
-      val secondHalf: Int = math.max(size - firstHalf, 0) //number that are flared out
-      val z: Float = player.Orientation.z //player's standing direction
-      val north: Vector3 = Vector3(0,1,0) //map North
-      val speed: Float = 144f //speed (packet discovered)
-      val dist: Float = 25 //distance (client defined)
-      val downwardsAngle: Float = -85f
-      val flaredAngle: Float = -70f
+      val firstHalf: Int                   = math.min(size, desiredDownwardsProjectiles) //number that fly straight down
+      val secondHalf: Int                  = math.max(size - firstHalf, 0)               //number that are flared out
+      val z: Float                         = player.Orientation.z                        //player's standing direction
+      val north: Vector3                   = Vector3(0, 1, 0)                            //map North
+      val speed: Float                     = 144f                                        //speed (packet discovered)
+      val dist: Float                      = 25                                          //distance (client defined)
+      val downwardsAngle: Float            = -85f
+      val flaredAngle: Float               = -70f
       //angle of separation for downwards, degrees from vertical for flared out
       val (smallStep, smallAngle): (Float, Float) = if (firstHalf > 1) {
         (360f / firstHalf, downwardsAngle)
@@ -9915,12 +10045,12 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       }
       val smallRotOffset: Float = z + 90f
       val largeRotOffset: Float = z + math.random().toFloat * 45f
-      val verticalCorrection = Vector3.z(dist - dist * math.sin(math.toRadians(90 - smallAngle + largeAngle)).toFloat)
+      val verticalCorrection    = Vector3.z(dist - dist * math.sin(math.toRadians(90 - smallAngle + largeAngle)).toFloat)
       //downwards projectiles
       var i: Int = 0
       listOfLittleBuddies.take(firstHalf).foreach { proxy =>
         val facing = (smallRotOffset + smallStep * i.toFloat) % 360
-        val dir = north.Rx(smallAngle).Rz(facing)
+        val dir    = north.Rx(smallAngle).Rz(facing)
         proxy.Position = detonationPosition + dir.xy + verticalCorrection
         proxy.Velocity = dir * speed
         proxy.Orientation = Vector3(0, (360f + smallAngle) % 360, facing)
@@ -9931,7 +10061,7 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
       i = 0
       listOfLittleBuddies.drop(firstHalf).foreach { proxy =>
         val facing = (largeRotOffset + largeStep * i.toFloat) % 360
-        val dir = north.Rx(largeAngle).Rz(facing)
+        val dir    = north.Rx(largeAngle).Rz(facing)
         proxy.Position = detonationPosition + dir
         proxy.Velocity = dir * speed
         proxy.Orientation = Vector3(0, (360f + largeAngle) % 360, facing)
@@ -9963,55 +10093,66 @@ private var charSavedTimer: Cancellable    = Default.Cancellable
     spawnPoint match {
       case Some(aSpawnPoint) =>
         !aSpawnPoint.isOffline &&
-        (aSpawnPoint.Owner match {
-          case w: WarpGate => w.Active
-          case b: Building => b.Faction == player.Faction
-          case v: Vehicle  => v.Faction == player.Faction && !v.Destroyed && v.DeploymentState == DriveState.Deployed
-          case _           => true
-        })
-      case None            => true
+          (aSpawnPoint.Owner match {
+            case w: WarpGate => w.Active
+            case b: Building => b.Faction == player.Faction
+            case v: Vehicle  => v.Faction == player.Faction && !v.Destroyed && v.DeploymentState == DriveState.Deployed
+            case _           => true
+          })
+      case None => true
     }
   }
 
   def updateBlockMap(target: BlockMapEntity, zone: Zone, newCoords: Vector3): Unit = {
     target.blockMapEntry match {
       case Some(entry) =>
-        if (BlockMap.findSectorIndices(continent.blockMap, newCoords, entry.rangeX, entry.rangeY).toSet.equals(entry.sectors)) {
+        if (
+          BlockMap
+            .findSectorIndices(continent.blockMap, newCoords, entry.rangeX, entry.rangeY)
+            .toSet
+            .equals(entry.sectors)
+        ) {
           target.updateBlockMapEntry(newCoords) //soft update
         } else {
           zone.actor ! ZoneActor.UpdateBlockMap(target, newCoords) //hard update
         }
-      case None        => ;
+      case None => ;
     }
   }
 
-private var oldRefsMap: mutable.HashMap[PlanetSideGUID, String] = new mutable.HashMap[PlanetSideGUID, String]()
+  private var oldRefsMap: mutable.HashMap[PlanetSideGUID, String] = new mutable.HashMap[PlanetSideGUID, String]()
   def updateOldRefsMap(): Unit = {
-    if(player.HasGUID) {
+    if (player.HasGUID) {
       oldRefsMap.addAll(
         (continent.GUID(player.VehicleSeated) match {
-          case Some(v : Vehicle) =>
+          case Some(v: Vehicle) =>
             v.Weapons.toList.collect {
-              case (_, slot : EquipmentSlot) if slot.Equipment.nonEmpty => updateOldRefsMap(slot.Equipment.get)
+              case (_, slot: EquipmentSlot) if slot.Equipment.nonEmpty => updateOldRefsMap(slot.Equipment.get)
             }.flatten ++
-            updateOldRefsMap(v.Inventory)
+              updateOldRefsMap(v.Inventory)
           case _ =>
             Map.empty[PlanetSideGUID, String]
         }) ++
-        (accessedContainer match {
-          case Some(cont) => updateOldRefsMap(cont.Inventory)
-          case None => Map.empty[PlanetSideGUID, String]
-        }) ++
-        player.Holsters().toList.collect {
-          case slot if slot.Equipment.nonEmpty => updateOldRefsMap(slot.Equipment.get)
-        }.flatten ++
-        updateOldRefsMap(player.Inventory) ++
-        updateOldRefsMap(player.avatar.locker.Inventory)
+          (accessedContainer match {
+            case Some(cont) => updateOldRefsMap(cont.Inventory)
+            case None       => Map.empty[PlanetSideGUID, String]
+          }) ++
+          player
+            .Holsters()
+            .toList
+            .collect {
+              case slot if slot.Equipment.nonEmpty => updateOldRefsMap(slot.Equipment.get)
+            }
+            .flatten ++
+          updateOldRefsMap(player.Inventory) ++
+          updateOldRefsMap(player.avatar.locker.Inventory)
       )
     }
   }
 
-  def updateOldRefsMap(inventory: net.psforever.objects.inventory.GridInventory): IterableOnce[(PlanetSideGUID, String)] = {
+  def updateOldRefsMap(
+      inventory: net.psforever.objects.inventory.GridInventory
+  ): IterableOnce[(PlanetSideGUID, String)] = {
     inventory.Items.flatMap {
       case InventoryItem(o, _) => updateOldRefsMap(o)
     }
@@ -10030,8 +10171,10 @@ private var oldRefsMap: mutable.HashMap[PlanetSideGUID, String] = new mutable.Ha
   }
 
   def fallHeightTracker(zHeight: Float): Unit = {
-    if ((heightTrend && heightLast - zHeight >= 0.5f) ||
-        (!heightTrend && zHeight - heightLast >= 0.5f)) {
+    if (
+      (heightTrend && heightLast - zHeight >= 0.5f) ||
+      (!heightTrend && zHeight - heightLast >= 0.5f)
+    ) {
       heightTrend = !heightTrend
 //      if (heightTrend) {
 //        GetMountableAndSeat(None, player, continent) match {
@@ -10068,7 +10211,7 @@ private var oldRefsMap: mutable.HashMap[PlanetSideGUID, String] = new mutable.Ha
   }
 
   def charSaved(): Unit = {
-    sendResponse(ChatMsg(ChatMessageType.UNK_227, wideContents=false, "", "@charsaved", None))
+    sendResponse(ChatMsg(ChatMessageType.UNK_227, wideContents = false, "", "@charsaved", None))
   }
 
   def failWithError(error: String) = {

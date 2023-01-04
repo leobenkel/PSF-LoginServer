@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class GenericActionMessageTest extends Specification {
-  val string = hex"A7 94"
+private val string = hex"A7 94"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

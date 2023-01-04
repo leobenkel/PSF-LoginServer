@@ -109,33 +109,33 @@ class SocketActor(
 
   private[this] val log = org.log4s.getLogger
 
-  val udpCommandAdapter: ActorRef[Udp.Command] =
+private val udpCommandAdapter: ActorRef[Udp.Command] =
     if (!Config.app.development.netSim.enable) {
       context.messageAdapter[Udp.Command](UdpCommandMessage)
     } else {
       context.spawnAnonymous(NetworkSimulator(context.self))
     }
 
-  val updEventAdapter: ActorRef[Udp.Event] =
+private val updEventAdapter: ActorRef[Udp.Event] =
     if (!Config.app.development.netSim.enable) {
       context.messageAdapter[Udp.Event](UdpEventMessage)
     } else {
       context.spawnAnonymous(NetworkSimulator(context.self))
     }
 
-  val updUnboundAdapter: ActorRef[Udp.Unbound] = context.messageAdapter[Udp.Unbound](UdpUnboundMessage)
-  val senderHack: classic.ActorRef             = context.actorOf(classic.Props(new SenderHack(context.self)))
+private val updUnboundAdapter: ActorRef[Udp.Unbound] = context.messageAdapter[Udp.Unbound](UdpUnboundMessage)
+private val senderHack: classic.ActorRef             = context.actorOf(classic.Props(new SenderHack(context.self)))
 
   IO(Udp)(context.system.classicSystem).tell(Udp.Bind(updEventAdapter.toClassic, address), senderHack)
 
-  val random = new SecureRandom()
+private val random = new SecureRandom()
 
-  val packetActors: mutable.Map[InetSocketAddress, ActorRef[MiddlewareActor.Command]] = mutable.Map()
+private val packetActors: mutable.Map[InetSocketAddress, ActorRef[MiddlewareActor.Command]] = mutable.Map()
 
-  val incomingTimes: mutable.Map[InetSocketAddress, Long] = mutable.Map()
-  val outgoingTimes: mutable.Map[InetSocketAddress, Long] = mutable.Map()
+private val incomingTimes: mutable.Map[InetSocketAddress, Long] = mutable.Map()
+private val outgoingTimes: mutable.Map[InetSocketAddress, Long] = mutable.Map()
 
-  val sessionReaper: Cancellable = context.system.scheduler.scheduleWithFixedDelay(0.seconds, 5.seconds)(() => {
+private val sessionReaper: Cancellable = context.system.scheduler.scheduleWithFixedDelay(0.seconds, 5.seconds)(() => {
     val now = System.currentTimeMillis()
     packetActors.keys.foreach(addr => {
       packetActors.get(addr) match {

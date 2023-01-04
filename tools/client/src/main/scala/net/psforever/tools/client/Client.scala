@@ -88,7 +88,7 @@ class Client(username: String, password: String) {
   private var ref: Option[ActorRef[Udp.Message]] = None
   private var crypto: Option[CryptoCoding]       = None
   private val buffer                             = new Array[Byte](65535)
-  val random                                     = new SecureRandom()
+private val random                                     = new SecureRandom()
 
   private val inQueue: mutable.Queue[PlanetSidePacket]            = mutable.Queue()
   private val splitPackets: mutable.ArrayDeque[(Int, ByteVector)] = mutable.ArrayDeque()

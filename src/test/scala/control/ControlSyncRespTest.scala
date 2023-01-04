@@ -7,7 +7,7 @@ import net.psforever.packet.control._
 import scodec.bits._
 
 class ControlSyncRespTest extends Specification {
-  val string = hex"0008 5268 21392D92 0000000000000276 0000000000000275 0000000000000275 0000000000000276"
+private val string = hex"0008 5268 21392D92 0000000000000276 0000000000000275 0000000000000275 0000000000000276"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -8,7 +8,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class DamageWithPositionMessageTest extends Specification {
-  val string = hex"A6 11 6C2D7 65535 CA16"
+private val string = hex"A6 11 6C2D7 65535 CA16"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

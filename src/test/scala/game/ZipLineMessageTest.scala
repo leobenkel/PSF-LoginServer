@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class ZipLineMessageTest extends Specification {
-  val string = hex"BF 4B00 19 80000010 5bb4089c 52116881 cf76e840"
+private val string = hex"BF 4B00 19 80000010 5bb4089c 52116881 cf76e840"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

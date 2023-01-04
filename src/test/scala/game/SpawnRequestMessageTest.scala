@@ -8,7 +8,7 @@ import net.psforever.types.SpawnGroup
 import scodec.bits._
 
 class SpawnRequestMessageTest extends Specification {
-  val string = hex"4a000007000000000000000200"
+private val string = hex"4a000007000000000000000200"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

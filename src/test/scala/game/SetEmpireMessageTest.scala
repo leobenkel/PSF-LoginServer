@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideEmpire, PlanetSideGUID}
 import scodec.bits._
 
 class SetEmpireMessageTest extends Specification {
-  val string = hex"24 02 00 80"
+private val string = hex"24 02 00 80"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

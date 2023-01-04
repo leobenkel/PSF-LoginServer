@@ -78,11 +78,11 @@ object InterstellarClusterService {
   final case class PlayersResponse(players: Seq[Avatar])
 
   final case class DroppodLaunchRequest(
-                                         zoneNumber: Int,
-                                         position: Vector3,
-                                         faction: PlanetSideEmpire.Value,
-                                         replyTo: ActorRef[DroppodLaunchExchange]
-                                       ) extends Command
+      zoneNumber: Int,
+      position: Vector3,
+      faction: PlanetSideEmpire.Value,
+      replyTo: ActorRef[DroppodLaunchExchange]
+  ) extends Command
 
   final case class CavernRotation(msg: CavernRotationService.Command) extends Command
 
@@ -96,19 +96,19 @@ object InterstellarClusterService {
 }
 
 class InterstellarClusterService(context: ActorContext[InterstellarClusterService.Command], _zones: Iterable[Zone])
-  extends AbstractBehavior[InterstellarClusterService.Command](context) {
+    extends AbstractBehavior[InterstellarClusterService.Command](context) {
 
   import InterstellarClusterService._
 
-  private[this] val log = org.log4s.getLogger
-private var intercontinentalSetup: Boolean = false
-private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = None
+  private[this] val log                                                       = org.log4s.getLogger
+  private var intercontinentalSetup: Boolean                                  = false
+  private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = None
 
-  val zoneActors: mutable.Map[String, (ActorRef[ZoneActor.Command], Zone)] = {
+  private val zoneActors: mutable.Map[String, (ActorRef[ZoneActor.Command], Zone)] = {
     import scala.concurrent.ExecutionContext.Implicits.global
     //setup the callback upon each successful result
     val zoneLoadedList = _zones.map { _.ZoneInitialized() }
-    val continentLinkFunc: ()=>Unit = MakeIntercontinentalLattice(
+    val continentLinkFunc: () => Unit = MakeIntercontinentalLattice(
       zoneLoadedList.toList,
       context.system.receptionist,
       context.messageAdapter[Receptionist.Listing](ReceptionistListing)
@@ -116,20 +116,19 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
     zoneLoadedList.foreach {
       _.onComplete({
         case Success(true) => continentLinkFunc()
-        case _ => //log.error("")
+        case _             => //log.error("")
       })
     }
     //construct the zones, resulting in the callback
     mutable.Map(
-      _zones.map {
-        zone =>
-          val zoneActor = context.spawn(ZoneActor(zone), s"zone-${zone.id}")
-          (zone.id, (zoneActor, zone))
+      _zones.map { zone =>
+        val zoneActor = context.spawn(ZoneActor(zone), s"zone-${zone.id}")
+        (zone.id, (zoneActor, zone))
       }.toSeq: _*
     )
   }
 
-  val zones: Iterable[Zone] = zoneActors.map {
+  private val zones: Iterable[Zone] = zoneActors.map {
     case (_, (_, zone: Zone)) => zone
   }
 
@@ -244,13 +243,13 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
             //applies to transit across intercontinental lattice
             (((zones.find(_.Number == fromZoneNumber) match {
               case Some(zone) => zone.GUID(fromOriginGuid)
-              case _ => None
+              case _          => None
             }) match {
               case Some(warpGate: WarpGate) => warpGate.Neighbours //valid for warp gates only right now
-              case _ => None
+              case _                        => None
             }) match {
               case Some(neighbors) => neighbors.find(_ match { case _: WarpGate => true; case _ => false })
-              case _ => None
+              case _               => None
             }) match {
               case Some(outputGate: WarpGate) =>
                 //destination (next direct stopping point) found
@@ -278,7 +277,7 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
         zones.find(_.Number == zoneNumber) match {
           case Some(zone) =>
             //TODO all of the checks for the specific DroppodLaunchResponseMessage excuses go here
-            if(zone.map.cavern) {
+            if (zone.map.cavern) {
               //just being cautious - caverns are typically not normally selectable as drop zones
               replyTo ! DroppodLaunchDenial(DroppodError.ZoneNotAvailable, None)
             } else if (zone.Number == Zones.sanctuaryZoneNumber(faction)) {
@@ -293,7 +292,7 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
       case CavernRotation(rotationMsg) =>
         cavernRotation match {
           case Some(rotation) => rotation ! rotationMsg
-          case _ => ;
+          case _              => ;
         }
     }
     this
@@ -311,13 +310,15 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
     * @param adapter the callback for a particular typed actor resource request
     */
   private def MakeIntercontinentalLattice(
-                                           flags: List[Future[Boolean]],
-                                           receptionist: ActorRef[Receptionist.Command],
-                                           adapter: ActorRef[Receptionist.Listing]
-                                         )(): Unit = {
-    if (flags.forall {
-      _.value.contains(Success(true))
-    } && !intercontinentalSetup) {
+      flags: List[Future[Boolean]],
+      receptionist: ActorRef[Receptionist.Command],
+      adapter: ActorRef[Receptionist.Listing]
+  )(): Unit = {
+    if (
+      flags.forall {
+        _.value.contains(Success(true))
+      } && !intercontinentalSetup
+    ) {
       intercontinentalSetup = true
       //intercontinental lattice setup
       _zones.foreach { zone =>
@@ -329,20 +330,22 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
             case (source, target) =>
               val thisBuilding = source.split("/")(1)
               val (otherZone, otherBuilding) = target.split("/").take(2) match {
-                case Array(a : String, b : String) => (a, b)
-                case _ => ("", "")
+                case Array(a: String, b: String) => (a, b)
+                case _                           => ("", "")
               }
               (_zones.find {
                 _.id.equals(otherZone)
               } match {
                 case Some(_otherZone) => (zone.Building(thisBuilding), _otherZone.Building(otherBuilding), _otherZone)
-                case None => (None, None, Zone.Nowhere)
+                case None             => (None, None, Zone.Nowhere)
               }) match {
                 case (Some(sourceBuilding), Some(targetBuilding), _otherZone) =>
                   zone.AddIntercontinentalLatticeLink(sourceBuilding, targetBuilding)
                   _otherZone.AddIntercontinentalLatticeLink(targetBuilding, sourceBuilding)
                 case (a, b, _) =>
-                  log.error(s"InterstellarCluster: can't create lattice link between $source (${a.nonEmpty}) and $target (${b.nonEmpty})")
+                  log.error(
+                    s"InterstellarCluster: can't create lattice link between $source (${a.nonEmpty}) and $target (${b.nonEmpty})"
+                  )
               }
           }
       }
@@ -352,10 +355,14 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
       // exception: the cavern gates are not be connected by default (see below)
       _zones.foreach { zone =>
         zone.Buildings.values
-          .collect { case gate : WarpGate if gate.Active => gate }
-          .filterNot { gate => gate.AllNeighbours.getOrElse(Nil).exists(_.isInstanceOf[WarpGate]) || !gate.Active || gate.Broadcast }
+          .collect { case gate: WarpGate if gate.Active => gate }
+          .filterNot { gate =>
+            gate.AllNeighbours.getOrElse(Nil).exists(_.isInstanceOf[WarpGate]) || !gate.Active || gate.Broadcast
+          }
           .foreach { gate =>
-            log.error(s"InterstellarCluster: found degenerate intercontinental lattice link - no paired warp gate for ${zone.id} ${gate.Name}")
+            log.error(
+              s"InterstellarCluster: found degenerate intercontinental lattice link - no paired warp gate for ${zone.id} ${gate.Name}"
+            )
           }
       }
       //error checking: connections between above-ground geowarp gates and subterranean cavern gates should exist
@@ -375,7 +382,7 @@ private var cavernRotation: Option[ActorRef[CavernRotationService.Command]] = No
           }
           ((_zones.find(_.id.equals(zone1)), _zones.find(_.id.equals(zone2))) match {
             case (Some(z1), Some(z2)) => (z1.Building(gate1), z2.Building(gate2))
-            case _ => (None, None)
+            case _                    => (None, None)
           }) match {
             case (Some(_), Some(_)) => ;
             case _ =>

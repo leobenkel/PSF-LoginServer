@@ -13,5 +13,5 @@ class LockerContainerDefinition extends EquipmentDefinition(objectId = 456) {
 }
 
 object LockerContainerDefinition {
-  val converter = new LockerContainerConverter()
+private val converter = new LockerContainerConverter()
 }

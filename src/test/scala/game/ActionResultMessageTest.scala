@@ -7,8 +7,8 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class ActionResultMessageTest extends Specification {
-  val string_pass = hex"1f 80"
-  val string_fail = hex"1f 0080000000"
+private val string_pass = hex"1f 80"
+private val string_fail = hex"1f 0080000000"
 
   "decode (pass)" in {
     PacketCoding.decodePacket(string_pass).require match {

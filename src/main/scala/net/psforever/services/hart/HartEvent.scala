@@ -10,12 +10,12 @@ import net.psforever.types.HartSequence
 object ShuttleState extends Enumeration {
   type Type = Value
 
-  val State13 = Value(13)
-  val State14 = Value(14)
-  val State10 = Value(10)
-  val State11 = Value(11)
-  val State12 = Value(12)
-  val State15 = Value(15)
+private val State13 = Value(13)
+private val State14 = Value(14)
+private val State10 = Value(10)
+private val State11 = Value(11)
+private val State12 = Value(12)
+private val State15 = Value(15)
 }
 
 /**

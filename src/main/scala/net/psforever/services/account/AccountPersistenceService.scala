@@ -50,7 +50,7 @@ private var userIndices: mutable.Map[String, Int] = mutable.Map[String, Int]()
     * an association of user test descriptors - player names - and their current monitor<br>
     * key - player name, value - player monitor
     */
-  val accounts: mutable.Map[String, ActorRef] = mutable.Map[String, ActorRef]()
+private val accounts: mutable.Map[String, ActorRef] = mutable.Map[String, ActorRef]()
 
   /** squad service event hook */
 private var squad: ActorRef = ActorRef.noSender
@@ -83,7 +83,7 @@ private var galaxy: ActorRef = ActorRef.noSender
     * Updates to persistence can be received and will be distributed, if possible;
     * but, updating should be reserved for individual persistence monitor callback (by the user who is being monitored).
     */
-  val Started: Receive = {
+private val Started: Receive = {
     case msg @ AccountPersistenceService.Login(name, _) =>
       (accounts.get(name) match {
         case Some(ref) => ref
@@ -133,7 +133,7 @@ private var galaxy: ActorRef = ActorRef.noSender
     * Process the system event service hooks when they arrive, before starting proper persistence monitoring.
     * @see `ServiceManager.LookupResult`
     */
-  val Setup: Receive = {
+private val Setup: Receive = {
     case ServiceManager.LookupResult("squad", endpoint) =>
       squad = endpoint
       log.trace("Service hooks obtained.  Attempting standard operation.")

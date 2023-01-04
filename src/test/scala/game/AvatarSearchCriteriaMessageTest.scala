@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class AvatarSearchCriteriaMessageTest extends Specification {
-  val string = hex"64 C604 00 00 00 00 00 00"
+private val string = hex"64 C604 00 00 00 00 00 00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

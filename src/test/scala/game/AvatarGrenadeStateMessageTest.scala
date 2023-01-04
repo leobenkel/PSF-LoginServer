@@ -8,7 +8,7 @@ import net.psforever.types.{GrenadeState, PlanetSideGUID}
 import scodec.bits._
 
 class AvatarGrenadeStateMessageTest extends Specification {
-  val string = hex"A9 DA11 01"
+private val string = hex"A9 DA11 01"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

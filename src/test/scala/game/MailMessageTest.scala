@@ -8,7 +8,7 @@ import scodec.bits._
 
 class MailMessageTest extends Specification {
   //we've never received this packet before so this whole test is faked
-  val string = hex"F1 86466174654A489250726 96F72697479204D61696C2054657374 8E48656C6C6F204175726178697321"
+private val string = hex"F1 86466174654A489250726 96F72697479204D61696C2054657374 8E48656C6C6F204175726178697321"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class AegisShieldGeneratorDataTest extends Specification {
-  val string_aegis = hex"17 10010000 F80FC09 9DF96 0C676 801C 00 00 00 443E09FF0000000000000000000000000"
+private val string_aegis = hex"17 10010000 F80FC09 9DF96 0C676 801C 00 00 00 443E09FF0000000000000000000000000"
 
   "AegisShieldGeneratorData" should {
     "decode" in {

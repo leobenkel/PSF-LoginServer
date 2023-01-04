@@ -8,7 +8,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class DisplayedAwardMessageTest extends Specification {
-  val string = hex"D1 9F06 A6010000 3 0"
+private val string = hex"D1 9F06 A6010000 3 0"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -69,7 +69,7 @@ object PlayerStateMessage extends Marshallable[PlayerStateMessage] {
   /**
     * A `Codec` for reading out the four `Boolean` values near the end of the formal packet.
     */
-  val booleanCodec: Codec[fourBoolPattern] = (
+private val booleanCodec: Codec[fourBoolPattern] = (
     ("is_crouching" | bool) ::
       ("is_jumping" | bool) ::
       ("jump_thrust" | bool) ::
@@ -79,7 +79,7 @@ object PlayerStateMessage extends Marshallable[PlayerStateMessage] {
   /**
     * A `Codec` for ignoring the four values at the end of the formal packet (all set to `false`).
     */
-  val defaultCodec: Codec[fourBoolPattern] = ignore(0).hlist
+private val defaultCodec: Codec[fourBoolPattern] = ignore(0).hlist
     .xmap[fourBoolPattern](
       {
         case _ :: HNil =>

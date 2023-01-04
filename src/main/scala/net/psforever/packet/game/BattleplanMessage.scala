@@ -16,7 +16,7 @@ import scala.annotation.tailrec
 object DiagramActionCode extends Enumeration {
   type Type = Value
 
-  val Action0, Style, Vertex, Action3, Action4, Action5, DrawString, Action7, Action8, Action9, ActionA, ActionB,
+private val Action0, Style, Vertex, Action3, Action4, Action5, DrawString, Action7, Action8, Action9, ActionA, ActionB,
       ActionC, //clear?
   ActionD,     //opposite of clear?
   StartDrawing, StopDrawing = Value //TODO replace all these with descriptive words

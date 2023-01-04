@@ -11,7 +11,7 @@ import scodec.codecs._
   */
 object BugType extends Enumeration {
   type Type = Value
-  val CRASH, GAMEPLAY, ART, SOUND, HARDWARE, OTHER = Value
+private val CRASH, GAMEPLAY, ART, SOUND, HARDWARE, OTHER = Value
 
   implicit val codec = PacketHelpers.createEnumerationCodec(this, uint4L)
 }

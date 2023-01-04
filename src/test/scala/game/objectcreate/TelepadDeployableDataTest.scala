@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class TelepadDeployableDataTest extends Specification {
-  val string = hex"17 c8000000 f42 6101 fbcfc 0fd43 6903 00 00 79 05 8101 ae01 5700c"
+private val string = hex"17 c8000000 f42 6101 fbcfc 0fd43 6903 00 00 79 05 8101 ae01 5700c"
   //TODO validate the unknown fields before router_guid for testing
 
   "TelepadData" should {

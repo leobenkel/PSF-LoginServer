@@ -25,7 +25,7 @@ import enumeratum.values.{IntEnum, IntEnumEntry}
 sealed abstract class SpawnGroup(val value: Int) extends IntEnumEntry
 
 object SpawnGroup extends IntEnum[SpawnGroup] {
-  val values = findValues
+private val values = findValues
 
   case object Sanctuary extends SpawnGroup(0)
 

@@ -70,7 +70,7 @@ object VehicleTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  val bfrVehicles: Map[String, () => Vehicle] = Map(
+  private val bfrVehicles: Map[String, () => Vehicle] = Map(
     "colossus_gunner"  -> MakeVehicle(colossus_gunner),
     "colossus_flight"  -> MakeVehicle(colossus_flight),
     "peregrine_gunner" -> MakeVehicle(peregrine_gunner),
@@ -553,8 +553,7 @@ object VehicleTerminalDefinition {
           SimplifiedEntry(ammo_ppa, 98)
         ),
         aphelion_flight
-      ),
-      {
+      ), {
         val ammo = ShorthandAmmoBox(colossus_100mm_cannon_ammo, colossus_100mm_cannon_ammo.Capacity)
         "colossus_gunner" -> VehicleLoadout(
           "default_colossus_gunner",
@@ -588,8 +587,7 @@ object VehicleTerminalDefinition {
           SimplifiedEntry(ammo_tcannon, 98)
         ),
         colossus_flight
-      ),
-      {
+      ), {
         val ammo = ShorthandAmmoBox(peregrine_particle_cannon_ammo, peregrine_particle_cannon_ammo.Capacity)
         "peregrine_gunner" -> VehicleLoadout(
           "default_peregrine_gunner",

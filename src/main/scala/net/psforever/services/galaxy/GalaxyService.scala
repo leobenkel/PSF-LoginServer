@@ -9,7 +9,7 @@ import net.psforever.services.{GenericEventBus, Service}
 class GalaxyService extends Actor {
   private[this] val log = org.log4s.getLogger
 
-  val GalaxyEvents = new GenericEventBus[GalaxyServiceResponse]
+private val GalaxyEvents = new GenericEventBus[GalaxyServiceResponse]
 
   def receive: Receive = {
     case Service.Join(faction) if "TRNCVS".containsSlice(faction) =>

@@ -59,7 +59,7 @@ private var handleOrderFunc: VehicleSpawnPad.VehicleOrder => Unit = NewTasking
   /**
     * The first chained action of the vehicle spawning process.
     */
-  val concealPlayer =
+private val concealPlayer =
     context.actorOf(Props(classOf[VehicleSpawnControlConcealPlayer], pad), s"${context.parent.path.name}-conceal")
 
   def FactionObject: FactionAffinity = pad

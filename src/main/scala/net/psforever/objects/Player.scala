@@ -78,7 +78,7 @@ class Player(var avatar: Avatar)
   /** From PlanetsideAttributeMessage */
   private var PlanetsideAttribute: Array[Long] = Array.ofDim(120)
 
-  val squadLoadouts = new LoadoutManager(10)
+private val squadLoadouts = new LoadoutManager(10)
 
   private var resistArmMotion: (Player, Int) => Boolean = Player.neverRestrict
 

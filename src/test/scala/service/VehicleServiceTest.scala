@@ -159,9 +159,9 @@ class DismountVehicleTest extends ActorTest {
 
 class InventoryStateTest extends ActorTest {
   ServiceManager.boot(system)
-  val tool = Tool(GlobalDefinitions.beamer)
+private val tool = Tool(GlobalDefinitions.beamer)
   tool.AmmoSlots.head.Box.GUID = PlanetSideGUID(13)
-  val cdata = tool.Definition.Packet.ConstructorData(tool).get
+private val cdata = tool.Definition.Packet.ConstructorData(tool).get
 
   "VehicleService" should {
     "pass InventoryState" in {
@@ -184,9 +184,9 @@ class InventoryStateTest extends ActorTest {
 
 class InventoryState2Test extends ActorTest {
   ServiceManager.boot(system)
-  val tool = Tool(GlobalDefinitions.beamer)
+private val tool = Tool(GlobalDefinitions.beamer)
   tool.AmmoSlots.head.Box.GUID = PlanetSideGUID(13)
-  val cdata = tool.Definition.Packet.ConstructorData(tool).get
+private val cdata = tool.Definition.Packet.ConstructorData(tool).get
 
   "VehicleService" should {
     "pass InventoryState2" in {
@@ -231,9 +231,9 @@ class KickPassengerTest extends ActorTest {
 
 class LoadVehicleTest extends ActorTest {
   ServiceManager.boot(system)
-  val vehicle = Vehicle(GlobalDefinitions.quadstealth)
+private val vehicle = Vehicle(GlobalDefinitions.quadstealth)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "test-vehicle")
-  val cdata = vehicle.Definition.Packet.ConstructorData(vehicle).get
+private val cdata = vehicle.Definition.Packet.ConstructorData(vehicle).get
 
   "VehicleService" should {
     "pass LoadVehicle" in {
@@ -293,11 +293,11 @@ class SeatPermissionsTest extends ActorTest {
 
 class StowEquipmentTest extends ActorTest {
   ServiceManager.boot(system)
-  val tool = Tool(GlobalDefinitions.beamer)
+private val tool = Tool(GlobalDefinitions.beamer)
   tool.GUID = PlanetSideGUID(12)
   tool.AmmoSlots.head.Box.GUID = PlanetSideGUID(13)
-  val toolDef = tool.Definition
-  val cdata   = tool.Definition.Packet.DetailedConstructorData(tool).get
+private val toolDef = tool.Definition
+private val cdata   = tool.Definition.Packet.DetailedConstructorData(tool).get
 
   "StowEquipment" should {
     "pass StowEquipment" in {

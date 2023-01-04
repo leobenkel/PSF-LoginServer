@@ -28,5 +28,5 @@ final case class FacilityWrapper(
                                 )
   extends BuildingWrapper {
   /** a custom source for nanite transfer units */
-  val supplier = new FakeNtuSource(building)
+private val supplier = new FakeNtuSource(building)
 }

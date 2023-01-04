@@ -24,7 +24,7 @@ trait DeploymentBehavior {
 
   def DeploymentObject: Deployment.DeploymentObject
 
-  val deployBehavior: Receive = {
+private val deployBehavior: Receive = {
     case Deployment.TryDeploymentChange(state) =>
       sender() ! TryDeploymentStateChange(state)
 

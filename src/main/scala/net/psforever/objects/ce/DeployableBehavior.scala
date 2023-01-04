@@ -61,7 +61,7 @@ trait DeployableBehavior {
 
   def isConstructed: Option[Boolean] = constructed
 
-  val deployableBehavior: Receive = {
+private val deployableBehavior: Receive = {
     case Zone.Deployable.Setup() if constructed.isEmpty && setup.isCancelled =>
       setupDeployable(sender())
 

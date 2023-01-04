@@ -62,7 +62,7 @@ final case class Projectile(
   }
 
   /** Information about the current world coordinates and orientation of the projectile */
-  val current: SimpleWorldEntity                   = new SimpleWorldEntity()
+private val current: SimpleWorldEntity                   = new SimpleWorldEntity()
   private var resolved: DamageResolution.Value = DamageResolution.Unresolved
 
   /**

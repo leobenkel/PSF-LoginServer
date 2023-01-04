@@ -9,7 +9,7 @@ import shapeless.{::, HNil}
 object MemberEvent extends Enumeration {
   type Type = Value
 
-  val Add, Remove, Promote, UpdateZone, Unknown4 = Value
+private val Add, Remove, Promote, UpdateZone, Unknown4 = Value
 
   implicit val codec = PacketHelpers.createEnumerationCodec(enum = this, uint(bits = 3))
 }

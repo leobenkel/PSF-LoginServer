@@ -6,6 +6,7 @@ import scodec.codecs.uint2L
 
 /**
   * Values for the three empires and the neutral/Black Ops group.
+  * TODO: Use sealed trait instead of Enumeration
   */
 object PlanetSideEmpire extends Enumeration {
   type Type = Value

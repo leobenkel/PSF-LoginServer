@@ -18,7 +18,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a `Tuple` containing exo-suit specifications
     */
-  val suits: Map[String, (ExoSuitType.Value, Int)] = Map(
+  private val suits: Map[String, (ExoSuitType.Value, Int)] = Map(
     "standard_issue_armor" -> (ExoSuitType.Standard, 0),
     "lite_armor"           -> (ExoSuitType.Agile, 0),
     "med_armor"            -> (ExoSuitType.Reinforced, 0),
@@ -30,7 +30,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a `Tuple` containing exo-suit specifications
     */
-  val maxSuits: Map[String, (ExoSuitType.Value, Int)] = Map(
+  private val maxSuits: Map[String, (ExoSuitType.Value, Int)] = Map(
     "trhev_antiaircraft"  -> (ExoSuitType.MAX, 1),
     "trhev_antipersonnel" -> (ExoSuitType.MAX, 2),
     "trhev_antivehicular" -> (ExoSuitType.MAX, 3),
@@ -49,7 +49,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  val infantryAmmunition: Map[String, () => Equipment] = Map(
+  private val infantryAmmunition: Map[String, () => Equipment] = Map(
     "9mmbullet"             -> MakeAmmoBox(bullet_9mm),
     "9mmbullet_AP"          -> MakeAmmoBox(bullet_9mm_AP),
     "shotgun_shell"         -> MakeAmmoBox(shotgun_shell),
@@ -72,7 +72,7 @@ object EquipmentTerminalDefinition {
     "pellet_gun_ammo"       -> MakeAmmoBox(pellet_gun_ammo),
     "six_shooter_ammo"      -> MakeAmmoBox(six_shooter_ammo)
   )
-  val maxAmmo: Map[String, () => Equipment] = Map(
+  private val maxAmmo: Map[String, () => Equipment] = Map(
     "dualcycler_ammo"    -> MakeAmmoBox(dualcycler_ammo),
     "pounder_ammo"       -> MakeAmmoBox(pounder_ammo),
     "burster_ammo"       -> MakeAmmoBox(burster_ammo),
@@ -89,7 +89,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  val supportAmmunition: Map[String, () => Equipment] = Map(
+  private val supportAmmunition: Map[String, () => Equipment] = Map(
     "health_canister"  -> MakeAmmoBox(health_canister),
     "armor_canister"   -> MakeAmmoBox(armor_canister),
     "upgrade_canister" -> MakeAmmoBox(upgrade_canister)
@@ -144,7 +144,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  val infantryWeapons: Map[String, () => Equipment] = Map(
+  private val infantryWeapons: Map[String, () => Equipment] = Map(
     "ilc9"             -> MakeTool(ilc9),
     "repeater"         -> MakeTool(repeater),
     "isp"              -> MakeTool(isp), //amp
@@ -192,7 +192,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  val supportWeapons: Map[String, () => Equipment] = Map(
+  private val supportWeapons: Map[String, () => Equipment] = Map(
     "medkit"                 -> MakeKit(medkit),
     "super_medkit"           -> MakeKit(super_medkit),
     "super_armorkit"         -> MakeKit(super_armorkit),
@@ -213,7 +213,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  val bfrArmWeapons : Map[String, () => Equipment] = Map(
+  val bfrArmWeapons: Map[String, () => Equipment] = Map(
     "aphelion_armor_siphon"      -> MakeTool(aphelion_armor_siphon),
     "aphelion_laser"             -> MakeTool(aphelion_laser),
     "aphelion_ntu_siphon"        -> MakeTool(aphelion_ntu_siphon),
@@ -236,7 +236,7 @@ object EquipmentTerminalDefinition {
     * key - an identification string sent by the client
     * value - a curried function that builds the object
     */
-  val bfrGunnerWeapons : Map[String, () => Equipment] = Map(
+  val bfrGunnerWeapons: Map[String, () => Equipment] = Map(
     "aphelion_immolation_cannon"  -> MakeTool(aphelion_immolation_cannon),
     "aphelion_plasma_rocket_pod"  -> MakeTool(aphelion_plasma_rocket_pod),
     "colossus_cluster_bomb_pod"   -> MakeTool(colossus_cluster_bomb_pod),
@@ -245,7 +245,7 @@ object EquipmentTerminalDefinition {
     "peregrine_particle_cannon"   -> MakeTool(peregrine_particle_cannon)
   )
 
-  val bfrAmmunition : Map[String, () => AmmoBox] = Map(
+  val bfrAmmunition: Map[String, () => AmmoBox] = Map(
     "aphelion_laser_ammo"             -> MakeAmmoBox(aphelion_laser_ammo),
     "aphelion_immolation_cannon_ammo" -> MakeAmmoBox(aphelion_immolation_cannon_ammo),
     "aphelion_plasma_rocket_ammo"     -> MakeAmmoBox(aphelion_plasma_rocket_ammo),
@@ -266,12 +266,14 @@ object EquipmentTerminalDefinition {
   /**
     * A single-element `Map` of the one piece of `Equipment` specific to the Router.
     */
-  val routerTerminal: Map[String, () => Equipment] = Map("router_telepad" -> MakeTelepad(router_telepad))
+  private val routerTerminal: Map[String, () => Equipment] = Map("router_telepad" -> MakeTelepad(router_telepad))
 
   /**
     * A single-element `Map` of the one piece of `Equipment` for the Flail.
     */
-  val flailTerminal: Map[String, () => Equipment] = Map("flail_targeting_laser" -> MakeSimpleItem(flail_targeting_laser))
+  private val flailTerminal: Map[String, () => Equipment] = Map(
+    "flail_targeting_laser" -> MakeSimpleItem(flail_targeting_laser)
+  )
 
   /**
     * Create a new `Tool` from provided `EquipmentDefinition` objects.

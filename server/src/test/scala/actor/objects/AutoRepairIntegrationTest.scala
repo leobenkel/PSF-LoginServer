@@ -33,10 +33,10 @@ class AutoRepairFacilityIntegrationTest extends FreedContextActorTest {
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-  val avatarProbe = new TestProbe(system)
-  val catchall = new TestProbe(system).ref
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
+private val avatarProbe = new TestProbe(system)
+private val catchall = new TestProbe(system).ref
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def AvatarEvents = avatarProbe.ref
@@ -44,14 +44,14 @@ class AutoRepairFacilityIntegrationTest extends FreedContextActorTest {
     override def VehicleEvents = catchall
     override def Activity = catchall
   }
-  val building = Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
+private val building = Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
   building.Invalidate()
 
-  val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
   player.Spawn()
-  val weapon = new Tool(GlobalDefinitions.suppressor)
-  val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
-  val silo = new ResourceSilo()
+private val weapon = new Tool(GlobalDefinitions.suppressor)
+private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
+private val silo = new ResourceSilo()
   guid.register(player, number = 1)
   guid.register(weapon, number = 2)
   guid.register(weapon.AmmoSlot.Box, number = 3)
@@ -66,12 +66,12 @@ class AutoRepairFacilityIntegrationTest extends FreedContextActorTest {
   silo.Actor = system.actorOf(Props(classOf[ResourceSiloControl], silo), "test-silo")
   silo.Actor ! "startup"
 
-  val wep_fmode  = weapon.FireMode
-  val wep_prof   = wep_fmode.Add
-  val proj       = weapon.Projectile
-  val proj_prof  = proj.asInstanceOf[DamageProfile]
-  val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-  val resolved = DamageInteraction(
+private val wep_fmode  = weapon.FireMode
+private val wep_prof   = wep_fmode.Add
+private val proj       = weapon.Projectile
+private val proj_prof  = proj.asInstanceOf[DamageProfile]
+private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -80,7 +80,7 @@ class AutoRepairFacilityIntegrationTest extends FreedContextActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate on damage and trade NTU from the facility's resource silo for repairs" in {
@@ -106,10 +106,10 @@ class AutoRepairFacilityIntegrationGiveNtuTest extends FreedContextActorTest {
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-  val avatarProbe = new TestProbe(system)
-  val catchall = new TestProbe(system).ref
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
+private val avatarProbe = new TestProbe(system)
+private val catchall = new TestProbe(system).ref
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def AvatarEvents = avatarProbe.ref
@@ -117,11 +117,11 @@ class AutoRepairFacilityIntegrationGiveNtuTest extends FreedContextActorTest {
     override def VehicleEvents = catchall
     override def Activity = catchall
   }
-  val building = Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
+private val building = Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
   building.Invalidate()
 
-  val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
-  val silo = new ResourceSilo()
+private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
+private val silo = new ResourceSilo()
   guid.register(terminal, number = 4)
   guid.register(silo, number = 5)
   guid.register(building, number = 6)
@@ -162,14 +162,14 @@ class AutoRepairFacilityIntegrationAntGiveNtuTest extends FreedContextActorTest 
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
 private var buildingMap = new TrieMap[Int, Building]()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-  val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-  val ant = Vehicle(GlobalDefinitions.ant)
-  val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
-  val silo = new ResourceSilo()
-  val avatarProbe = new TestProbe(system)
-  val catchall = new TestProbe(system).ref
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
+private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val ant = Vehicle(GlobalDefinitions.ant)
+private val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
+private val silo = new ResourceSilo()
+private val avatarProbe = new TestProbe(system)
+private val catchall = new TestProbe(system).ref
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def AvatarEvents = avatarProbe.ref
@@ -179,7 +179,7 @@ private var buildingMap = new TrieMap[Int, Building]()
     override def Vehicles = List(ant)
     override def Buildings = { buildingMap.toMap }
   }
-  val building = new Building(
+private val building = new Building(
     name = "integ-fac-test-building",
     building_guid = 6,
     map_id = 0,
@@ -197,7 +197,7 @@ private var buildingMap = new TrieMap[Int, Building]()
   guid.register(silo, number = 5)
   guid.register(building, number = 6)
 
-  val maxNtuCap = ant.Definition.MaxNtuCapacitor
+private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   player.Spawn()
   ant.NtuCapacitor = maxNtuCap
   ant.Definition.Initialize(ant, context)
@@ -253,15 +253,15 @@ class AutoRepairFacilityIntegrationTerminalDestroyedTerminalAntTest extends Free
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
 private var buildingMap = new TrieMap[Int, Building]()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-  val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-  val weapon = new Tool(GlobalDefinitions.suppressor)
-  val ant = Vehicle(GlobalDefinitions.ant)
-  val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
-  val silo = new ResourceSilo()
-  val avatarProbe = new TestProbe(system)
-  val catchall = new TestProbe(system).ref
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
+private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val weapon = new Tool(GlobalDefinitions.suppressor)
+private val ant = Vehicle(GlobalDefinitions.ant)
+private val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
+private val silo = new ResourceSilo()
+private val avatarProbe = new TestProbe(system)
+private val catchall = new TestProbe(system).ref
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def AvatarEvents = avatarProbe.ref
@@ -271,7 +271,7 @@ private var buildingMap = new TrieMap[Int, Building]()
     override def Vehicles = List(ant)
     override def Buildings = { buildingMap.toMap }
   }
-  val building = new Building(
+private val building = new Building(
     name = "integ-fac-test-building",
     building_guid = 6,
     map_id = 0,
@@ -291,7 +291,7 @@ private var buildingMap = new TrieMap[Int, Building]()
   guid.register(building, number = 6)
   guid.register(weapon.AmmoSlot.Box, number = 7)
 
-  val maxNtuCap = ant.Definition.MaxNtuCapacitor
+private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   player.Spawn()
   ant.NtuCapacitor = maxNtuCap
   ant.Definition.Initialize(ant, context)
@@ -305,12 +305,12 @@ private var buildingMap = new TrieMap[Int, Building]()
   silo.Actor = system.actorOf(Props(classOf[ResourceSiloControl], silo), "test-silo")
   silo.Actor ! "startup"
 
-  val wep_fmode  = weapon.FireMode
-  val wep_prof   = wep_fmode.Add
-  val proj       = weapon.Projectile
-  val proj_prof  = proj.asInstanceOf[DamageProfile]
-  val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-  val resolved = DamageInteraction(
+private val wep_fmode  = weapon.FireMode
+private val wep_prof   = wep_fmode.Add
+private val proj       = weapon.Projectile
+private val proj_prof  = proj.asInstanceOf[DamageProfile]
+private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -319,7 +319,7 @@ private var buildingMap = new TrieMap[Int, Building]()
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate upon destruction and trade NTU from the silo only when NTU is made available from an ANT" in {
@@ -355,15 +355,15 @@ class AutoRepairFacilityIntegrationTerminalIncompleteRepairTest extends FreedCon
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
 private var buildingMap = new TrieMap[Int, Building]()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-  val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-  val weapon = new Tool(GlobalDefinitions.suppressor)
-  val ant = Vehicle(GlobalDefinitions.ant)
-  val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
-  val silo = new ResourceSilo()
-  val avatarProbe = new TestProbe(system)
-  val catchall = new TestProbe(system).ref
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
+private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val weapon = new Tool(GlobalDefinitions.suppressor)
+private val ant = Vehicle(GlobalDefinitions.ant)
+private val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
+private val silo = new ResourceSilo()
+private val avatarProbe = new TestProbe(system)
+private val catchall = new TestProbe(system).ref
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def AvatarEvents = avatarProbe.ref
@@ -373,7 +373,7 @@ private var buildingMap = new TrieMap[Int, Building]()
     override def Vehicles = List(ant)
     override def Buildings = { buildingMap.toMap }
   }
-  val building = new Building(
+private val building = new Building(
     name = "integ-fac-test-building",
     building_guid = 6,
     map_id = 0,
@@ -393,7 +393,7 @@ private var buildingMap = new TrieMap[Int, Building]()
   guid.register(building, number = 6)
   guid.register(weapon.AmmoSlot.Box, number = 7)
 
-  val maxNtuCap = ant.Definition.MaxNtuCapacitor
+private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   player.Spawn()
   ant.NtuCapacitor = maxNtuCap
   ant.Definition.Initialize(ant, context)
@@ -407,12 +407,12 @@ private var buildingMap = new TrieMap[Int, Building]()
   silo.Actor = system.actorOf(Props(classOf[ResourceSiloControl], silo), "test-silo")
   silo.Actor ! "startup"
 
-  val wep_fmode  = weapon.FireMode
-  val wep_prof   = wep_fmode.Add
-  val proj       = weapon.Projectile
-  val proj_prof  = proj.asInstanceOf[DamageProfile]
-  val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-  val resolved = DamageInteraction(
+private val wep_fmode  = weapon.FireMode
+private val wep_prof   = wep_fmode.Add
+private val proj       = weapon.Projectile
+private val proj_prof  = proj.asInstanceOf[DamageProfile]
+private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -421,7 +421,7 @@ private var buildingMap = new TrieMap[Int, Building]()
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate and trade NTU from the silo; if the ANT stops depositing, auto-repair continues" in {
@@ -470,10 +470,10 @@ class AutoRepairTowerIntegrationTest extends FreedContextActorTest {
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-  val avatarProbe = new TestProbe(system)
-  val catchall = new TestProbe(system).ref
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
+private val avatarProbe = new TestProbe(system)
+private val catchall = new TestProbe(system).ref
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def AvatarEvents = avatarProbe.ref
@@ -481,13 +481,13 @@ class AutoRepairTowerIntegrationTest extends FreedContextActorTest {
     override def VehicleEvents = catchall
     override def Activity = catchall
   }
-  val building = Building.Structure(StructureType.Tower)(name = "integ-twr-test-building", guid = 6, map_id = 0, zone, context)
+private val building = Building.Structure(StructureType.Tower)(name = "integ-twr-test-building", guid = 6, map_id = 0, zone, context)
   building.Invalidate()
 
-  val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
   player.Spawn()
-  val weapon = new Tool(GlobalDefinitions.suppressor)
-  val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
+private val weapon = new Tool(GlobalDefinitions.suppressor)
+private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   guid.register(player, number = 1)
   guid.register(weapon, number = 2)
@@ -499,12 +499,12 @@ class AutoRepairTowerIntegrationTest extends FreedContextActorTest {
   building.Actor ! BuildingActor.SuppliedWithNtu() //artificial
   building.Actor ! BuildingActor.PowerOn() //artificial
 
-  val wep_fmode  = weapon.FireMode
-  val wep_prof   = wep_fmode.Add
-  val proj       = weapon.Projectile
-  val proj_prof  = proj.asInstanceOf[DamageProfile]
-  val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-  val resolved = DamageInteraction(
+private val wep_fmode  = weapon.FireMode
+private val wep_prof   = wep_fmode.Add
+private val proj       = weapon.Projectile
+private val proj_prof  = proj.asInstanceOf[DamageProfile]
+private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -513,7 +513,7 @@ class AutoRepairTowerIntegrationTest extends FreedContextActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate on damage and trade NTU from the tower for repairs" in {
@@ -533,7 +533,7 @@ class AutoRepairTowerIntegrationTest extends FreedContextActorTest {
 }
 
 object AutoRepairIntegrationTest {
-  val terminal_definition = new OrderTerminalDefinition(objId = 612) {
+private val terminal_definition = new OrderTerminalDefinition(objId = 612) {
     Name = "order_terminal"
     MaxHealth = 500
     Damageable = true
@@ -542,7 +542,7 @@ object AutoRepairIntegrationTest {
     RepairIfDestroyed = true
   }
 
-  val slow_terminal_definition = new OrderTerminalDefinition(objId = 612) {
+private val slow_terminal_definition = new OrderTerminalDefinition(objId = 612) {
     Name = "order_terminal"
     MaxHealth = 500
     Damageable = true

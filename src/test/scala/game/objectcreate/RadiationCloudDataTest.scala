@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class RadiationCloudDataTest extends Specification {
-  val string = hex"17 a5000000 e6a5905 35e6e 52141 bf02 00 00 00 2400000"
+private val string = hex"17 a5000000 e6a5905 35e6e 52141 bf02 00 00 00 2400000"
 
   "CaptureFlagData" in {
     "decode" in {

@@ -215,7 +215,7 @@ trait JammableBehavior {
     jammeredStatusTimer.cancel()
   }
 
-  val jammableBehavior: Receive = {
+private val jammableBehavior: Receive = {
     case JammableUnit.Jammered(cause) =>
       TryJammerEffectActivate(JammableObject, cause)
 

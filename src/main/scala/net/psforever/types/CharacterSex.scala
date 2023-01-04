@@ -23,7 +23,7 @@ sealed abstract class CharacterSex(
   * Values for two sexes, Male and Female.
   */
 object CharacterSex extends IntEnum[CharacterSex] {
-  val values = findValues
+private val values = findValues
 
   case object Male extends CharacterSex(
     value = 1,

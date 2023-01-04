@@ -24,8 +24,8 @@ class PacketCodingActor1Test extends ActorTest {
 }
 
 class PacketCodingActor4Test extends ActorTest {
-  val string_hex = RawPacket(hex"2A 9F05 D405 86")
-  val string_obj = ObjectAttachMessage(PlanetSideGUID(1439), PlanetSideGUID(1492), 6)
+private val string_hex = RawPacket(hex"2A 9F05 D405 86")
+private val string_obj = ObjectAttachMessage(PlanetSideGUID(1439), PlanetSideGUID(1492), 6)
 
   "PacketCodingActor" should {
     "translate r-originating game packet into l-facing hexadecimal data" in {
@@ -45,8 +45,8 @@ class PacketCodingActor4Test extends ActorTest {
 }
 
 class PacketCodingActor5Test extends ActorTest {
-  val string_hex = RawPacket(hex"2A 9F05 D405 86")
-  val string_obj = ObjectAttachMessage(PlanetSideGUID(1439), PlanetSideGUID(1492), 6)
+private val string_hex = RawPacket(hex"2A 9F05 D405 86")
+private val string_obj = ObjectAttachMessage(PlanetSideGUID(1439), PlanetSideGUID(1492), 6)
 
   "PacketCodingActor" should {
     "translate l-originating hexadecimal data into r-facing game packet" in {
@@ -69,7 +69,7 @@ class PacketCodingActor5Test extends ActorTest {
 }
 
 class PacketCodingActor6Test extends ActorTest {
-  val string_obj = ObjectAttachMessage(PlanetSideGUID(1439), PlanetSideGUID(1492), 6)
+private val string_obj = ObjectAttachMessage(PlanetSideGUID(1439), PlanetSideGUID(1492), 6)
 
   "PacketCodingActor" should {
     "permit l-originating game packet to pass through as an r-facing game packet" in {
@@ -87,10 +87,10 @@ class PacketCodingActor6Test extends ActorTest {
 }
 
 class PacketCodingActor7Test extends ActorTest {
-  val string_hex = RawPacket(
+private val string_hex = RawPacket(
     hex"0007 5268 0000004D 00000052 0000004D 0000007C 0000004D 0000000000000276 0000000000000275"
   )
-  val string_obj = ControlSync(21096, 0x4d, 0x52, 0x4d, 0x7c, 0x4d, 0x276, 0x275)
+private val string_obj = ControlSync(21096, 0x4d, 0x52, 0x4d, 0x7c, 0x4d, 0x276, 0x275)
 
   "PacketCodingActor" should {
     "translate r-originating control packet into l-facing hexadecimal data" in {
@@ -110,10 +110,10 @@ class PacketCodingActor7Test extends ActorTest {
 }
 
 class PacketCodingActor8Test extends ActorTest {
-  val string_hex = RawPacket(
+private val string_hex = RawPacket(
     hex"0007 5268 0000004D 00000052 0000004D 0000007C 0000004D 0000000000000276 0000000000000275"
   )
-  val string_obj = ControlSync(21096, 0x4d, 0x52, 0x4d, 0x7c, 0x4d, 0x276, 0x275)
+private val string_obj = ControlSync(21096, 0x4d, 0x52, 0x4d, 0x7c, 0x4d, 0x276, 0x275)
 
   "PacketCodingActor" should {
     "translate l-originating hexadecimal data into r-facing control packet" in {
@@ -136,7 +136,7 @@ class PacketCodingActor8Test extends ActorTest {
 }
 
 class PacketCodingActor9Test extends ActorTest {
-  val string_obj = ControlSync(21096, 0x4d, 0x52, 0x4d, 0x7c, 0x4d, 0x276, 0x275)
+private val string_obj = ControlSync(21096, 0x4d, 0x52, 0x4d, 0x7c, 0x4d, 0x276, 0x275)
 
   "PacketCodingActor" should {
     "permit l-originating control packet to pass through as an r-facing control packet" in {
@@ -186,7 +186,7 @@ class PacketCodingActorBTest extends ActorTest {
 }
 
 class PacketCodingActorCTest extends ActorTest {
-  val string_hex =
+private val string_hex =
     hex"D5 0B 00 00 00 01 0A E4  0C 02 48 70 75 72 63 68 61 73 65 5F 65 78 65 6D  70 74 5F 76 73 80 92 70 75 72 63 68 61 73 65 5F  65 78 65 6D 70 74 5F 74 72 80 92 70 75 72 63 68  61 73 65 5F 65 78 65 6D 70 74 5F 6E 63 80 11 00  01 14 A4 04 02 1C 61 6C 6C 6F 77 65 64 85 66 61  6C 73 65 12 00 01 14 A4 04 02 1C 61 6C 6C 6F 77  65 64 85 66 61 6C 73 65 13 00 01 14 A4 04 02 1C  61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 14 00 01  14 A4 04 02 1C 61 6C 6C 6F 77 65 64 85 66 61 6C  73 65 15 00 01 14 A4 04 02 1C 61 6C 6C 6F 77 65  64 85 66 61 6C 73 65 16 00 01 14 A4 04 02 1C 61  6C 6C 6F 77 65 64 85 66 61 6C 73 65 1D 00 15 0A  60 04 02 1C 61 6C 6C 6F 77 65 64 85 66 61 6C 73  65 54 00 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61  6C 73 65 76 00 20 10 E0 61 6C 6C 6F 77 65 64 85  66 61 6C 73 65 87 00 20 10 E0 61 6C 6C 6F 77 65  64 85 66 61 6C 73 65 C7 00 20 10 E0 61 6C 6C 6F  77 65 64 85 66 61 6C 73 65 C8 00 20 10 E0 61 6C  6C 6F 77 65 64 85 66 61 6C 73 65 26 20 20 10 E0  61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 52 20 20  10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 AD  20 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73  65 B0 20 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61  6C 73 65 B9 20 20 10 E0 61 6C 6C 6F 77 65 64 85  66 61 6C 73 65 CE 20 20 10 E0 61 6C 6C 6F 77 65  64 85 66 61 6C 73 65 D6 20 20 10 E0 61 6C 6C 6F  77 65 64 85 66 61 6C 73 65 2C 40 20 10 E0 61 6C  6C 6F 77 65 64 85 66 61 6C 73 65 82 40 20 10 E0  61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 83 40 20  10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 B9  40 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73  65 CA 40 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61  6C 73 65 61 60 20 10 E0 61 6C 6C 6F 77 65 64 85  66 61 6C 73 65 9B 60 20 10 E0 61 6C 6C 6F 77 65  64 85 66 61 6C 73 65 DA 60 20 10 E0 61 6C 6C 6F  77 65 64 85 66 61 6C 73 65 1E 00 15 0A 60 04 02  1C 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 54 00  20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65  76 00 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C  73 65 87 00 20 10 E0 61 6C 6C 6F 77 65 64 85 66  61 6C 73 65 C7 00 20 10 E0 61 6C 6C 6F 77 65 64  85 66 61 6C 73 65 C8 00 20 10 E0 61 6C 6C 6F 77  65 64 85 66 61 6C 73 65 26 20 20 10 E0 61 6C 6C  6F 77 65 64 85 66 61 6C 73 65 52 20 20 10 E0 61  6C 6C 6F 77 65 64 85 66 61 6C 73 65 AD 20 20 10  E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 B0 20  20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65  B9 20 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C  73 65 CE 20 20 10 E0 61 6C 6C 6F 77 65 64 85 66  61 6C 73 65 D6 20 20 10 E0 61 6C 6C 6F 77 65 64  85 66 61 6C 73 65 2C 40 20 10 E0 61 6C 6C 6F 77  65 64 85 66 61 6C 73 65 82 40 20 10 E0 61 6C 6C  6F 77 65 64 85 66 61 6C 73 65 83 40 20 10 E0 61  6C 6C 6F 77 65 64 85 66 61 6C 73 65 B9 40 20 10  E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 CA 40  20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65  61 60 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C  73 65 9B 60 20 10 E0 61 6C 6C 6F 77 65 64 85 66  61 6C 73 65 DA 60 20 10 E0 61 6C 6C 6F 77 65 64  85 66 61 6C 73 65 1F 00 15 0A 60 04 02 1C 61 6C  6C 6F 77 65 64 85 66 61 6C 73 65 54 00 20 10 E0  61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 76 00 20  10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 87  00 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73  65 C7 00 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61  6C 73 65 C8 00 20 10 E0 61 6C 6C 6F 77 65 64 85  66 61 6C 73 65 26 20 20 10 E0 61 6C 6C 6F 77 65  64 85 66 61 6C 73 65 52 20 20 10 E0 61 6C 6C 6F  77 65 64 85 66 61 6C 73 65 AD 20 20 10 E0 61 6C  6C 6F 77 65 64 85 66 61 6C 73 65 B0 20 20 10 E0  61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 B9 20 20  10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 CE  20 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73  65 D6 20 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61  6C 73 65 2C 40 20 10 E0 61 6C 6C 6F 77 65 64 85  66 61 6C 73 65 82 40 20 10 E0 61 6C 6C 6F 77 65  64 85 66 61 6C 73 65 83 40 20 10 E0 61 6C 6C 6F  77 65 64 85 66 61 6C 73 65 B9 40 20 10 E0 61 6C  6C 6F 77 65 64 85 66 61 6C 73 65 CA 40 20 10 E0  61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 61 60 20  10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 9B  60 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73  65 DA 60 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61  6C 73 65 20 00 15 0A 60 04 02 1C 61 6C 6C 6F 77  65 64 85 66 61 6C 73 65 54 00 20 10 E0 61 6C 6C  6F 77 65 64 85 66 61 6C 73 65 76 00 20 10 E0 61  6C 6C 6F 77 65 64 85 66 61 6C 73 65 87 00 20 10  E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 C7 00  20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65  C8 00 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C  73 65 26 20 20 10 E0 61 6C 6C 6F 77 65 64 85 66  61 6C 73 65 52 20 20 10 E0 61 6C 6C 6F 77 65 64  85 66 61 6C 73 65 AD 20 20 10 E0 61 6C 6C 6F 77  65 64 85 66 61 6C 73 65 B0 20 20 10 E0 61 6C 6C  6F 77 65 64 85 66 61 6C 73 65 B9 20 20 10 E0 61  6C 6C 6F 77 65 64 85 66 61 6C 73 65 CE 20 20 10  E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 D6 20  20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65  2C 40 20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C  73 65 82 40 20 10 E0 61 6C 6C 6F 77 65 64 85 66  61 6C 73 65 83 40 20 10 E0 61 6C 6C 6F 77 65 64  85 66 61 6C 73 65 B9 40 20 10 E0 61 6C 6C 6F 77  65 64 85 66 61 6C 73 65 CA 40 20 10 E0 61 6C 6C  6F 77 65 64 85 66 61 6C 73 65 61 60 20 10 E0 61  6C 6C 6F 77 65 64 85 66 61 6C 73 65 9B 60 20 10  E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65 DA 60  20 10 E0 61 6C 6C 6F 77 65 64 85 66 61 6C 73 65"
 
   "PacketCodingActor" should {
@@ -207,7 +207,7 @@ class PacketCodingActorCTest extends ActorTest {
 }
 
 class PacketCodingActorDTest extends ActorTest {
-  val string_obj = PropertyOverrideMessage(
+private val string_obj = PropertyOverrideMessage(
     List(
       GamePropertyScope(
         0,
@@ -480,8 +480,8 @@ class PacketCodingActorHTest extends ActorTest {
 
 class PacketCodingActorITest extends ActorTest {
   import net.psforever.packet.game.objectcreate._
-  val pos: PlacementData = PlacementData(Vector3.Zero, Vector3.Zero)
-  val app: Int => CharacterAppearanceData = CharacterAppearanceData(
+private val pos: PlacementData = PlacementData(Vector3.Zero, Vector3.Zero)
+private val app: Int => CharacterAppearanceData = CharacterAppearanceData(
     BasicCharacterData(
       "IlllIIIlllIlIllIlllIllI",
       PlanetSideEmpire.VS,
@@ -527,10 +527,10 @@ private var char: Option[Int] => DetailedCharacterData = DetailedCharacterData(
     List.empty,
     None
   )
-  val obj = DetailedPlayerData(pos, app, char, InventoryData(Nil), DrawnSlot.None)
+private val obj = DetailedPlayerData(pos, app, char, InventoryData(Nil), DrawnSlot.None)
   //println(s"${PacketCoding.EncodePacket(ObjectCreateDetailedMessage(0x79, PlanetSideGUID(75), obj))}")
-  val pkt = MultiPacketBundle(List(ObjectCreateDetailedMessage(0x79, PlanetSideGUID(75), obj)))
-  val string_hex =
+private val pkt = MultiPacketBundle(List(ObjectCreateDetailedMessage(0x79, PlanetSideGUID(75), obj)))
+private val string_hex =
     hex"00090000186c060000bc84b000000000000000000002040000097049006c006c006c004900490049006c006c006c0049006c0049006c006c0049006c006c006c0049006c006c00490084524000000000000000000000000000000020000007f00703fffffffffffffffffffffffffffffffc000000000000000000000000000000000000000190019000640000000000c800c80000000000000000000000000000000000000001c00042c54686c7000000000000000000000000000000000000000000000000000000000000100000000400e0"
 
   "PacketCodingActor" should {
@@ -595,8 +595,8 @@ class PacketCodingActorJTest extends ActorTest {
 
 class PacketCodingActorKTest extends ActorTest {
   import net.psforever.packet.game.objectcreate._
-  val pos: PlacementData = PlacementData(Vector3.Zero, Vector3.Zero)
-  val aa: Int => CharacterAppearanceA = CharacterAppearanceA(
+private val pos: PlacementData = PlacementData(Vector3.Zero, Vector3.Zero)
+private val aa: Int => CharacterAppearanceA = CharacterAppearanceA(
     BasicCharacterData(
       "IlllIIIlllIlIllIlllIllI",
       PlanetSideEmpire.VS,
@@ -623,7 +623,7 @@ class PacketCodingActorKTest extends ActorTest {
     0,
     65535
   )
-  val ab: (Boolean, Int) => CharacterAppearanceB = CharacterAppearanceB(
+private val ab: (Boolean, Int) => CharacterAppearanceB = CharacterAppearanceB(
     0L,
     "",
     0,
@@ -644,12 +644,12 @@ class PacketCodingActorKTest extends ActorTest {
     None
   )
 
-  val app: Int => CharacterAppearanceData = CharacterAppearanceData(
+private val app: Int => CharacterAppearanceData = CharacterAppearanceData(
     aa,
     ab,
     RibbonBars()
   )
-  val ba: DetailedCharacterA = DetailedCharacterA(
+private val ba: DetailedCharacterA = DetailedCharacterA(
     0L,
     0L,
     0L,
@@ -677,7 +677,7 @@ class PacketCodingActorKTest extends ActorTest {
       Certification.ReinforcedExoSuit
     )
   )
-  val bb: (Long, Option[Int]) => DetailedCharacterB = DetailedCharacterB(
+private val bb: (Long, Option[Int]) => DetailedCharacterB = DetailedCharacterB(
     None,
     Nil,
     Nil,
@@ -700,10 +700,10 @@ class PacketCodingActorKTest extends ActorTest {
     false,
     None
   )
-  val char: Option[Int] => DetailedCharacterData =
+private val char: Option[Int] => DetailedCharacterData =
     (pad_length: Option[Int]) => DetailedCharacterData(ba, bb(ba.bep, pad_length))(pad_length)
-  val obj = DetailedPlayerData(pos, app, char, InventoryData(Nil), DrawnSlot.None)
-  val list = List(
+private val obj = DetailedPlayerData(pos, app, char, InventoryData(Nil), DrawnSlot.None)
+private val list = List(
     ObjectCreateDetailedMessage(0x79, PlanetSideGUID(75), obj),
     ObjectDeleteMessage(PlanetSideGUID(1103), 2),
     ObjectDeleteMessage(PlanetSideGUID(1105), 2),
@@ -743,7 +743,7 @@ class PacketCodingActorKTest extends ActorTest {
 }
 
 class PacketCodingActorLTest extends ActorTest {
-  val string_obj = PropertyOverrideMessage(
+private val string_obj = PropertyOverrideMessage(
     List(
       GamePropertyScope(
         0,

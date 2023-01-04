@@ -9,7 +9,7 @@ import scodec.bits._
 import scodec.codecs.uint16
 
 class SlottedMetaPacketTest extends Specification {
-  val string = hex"00 09 00 00 00194302484C36563130433F" ++
+private val string = hex"00 09 00 00 00194302484C36563130433F" ++
     hex"4C6835316369774A0000000018FABE0C" ++
     hex"00000000000000000000000001000000" ++
     hex"020000006B7BD8288C6469666671756F" ++

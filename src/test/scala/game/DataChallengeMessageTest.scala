@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class DataChallengeMessageTest extends Specification {
-  val string = hex"938673616d706c6501000000"
+private val string = hex"938673616d706c6501000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

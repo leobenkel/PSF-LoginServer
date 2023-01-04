@@ -28,17 +28,17 @@ essentially, treat it more as a generic entity whose object type is repairable
 see GeneratorTest in relation to what the generator does above and beyond that during repair
  */
 class RepairableEntityRepairTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
 
     GUID(guid)
   }
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
-  val gen      = Generator(GlobalDefinitions.generator)                        //guid=2
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val gen      = Generator(GlobalDefinitions.generator)                        //guid=2
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=3
+private val player1 = Player(avatar) //guid=3
   player1.Spawn()
   guid.register(building, 1)
   guid.register(gen, 2)
@@ -48,13 +48,13 @@ class RepairableEntityRepairTest extends ActorTest {
   building.Amenities = gen
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
-  val activityProbe = TestProbe()
-  val avatarProbe   = TestProbe()
-  val buildingProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val avatarProbe   = TestProbe()
+private val buildingProbe = TestProbe()
   zone.Activity = activityProbe.ref
   zone.AvatarEvents = avatarProbe.ref
   building.Actor = buildingProbe.ref
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
   guid.register(tool, 4)
   guid.register(tool.AmmoSlot.Box, 5)
   expectNoMessage(200 milliseconds)
@@ -101,15 +101,15 @@ class RepairableEntityRepairTest extends ActorTest {
 }
 
 class RepairableEntityNotRepairTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
 
     GUID(guid)
   }
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
-  val gen      = Generator(GlobalDefinitions.generator)                        //guid=2
-  val player1 =
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val gen      = Generator(GlobalDefinitions.generator)                        //guid=2
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Spawn()
   guid.register(building, 1)
@@ -120,13 +120,13 @@ class RepairableEntityNotRepairTest extends ActorTest {
   building.Amenities = gen
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
-  val activityProbe = TestProbe()
-  val avatarProbe   = TestProbe()
-  val buildingProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val avatarProbe   = TestProbe()
+private val buildingProbe = TestProbe()
   zone.Activity = activityProbe.ref
   zone.AvatarEvents = avatarProbe.ref
   building.Actor = buildingProbe.ref
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
   guid.register(tool, 4)
   guid.register(tool.AmmoSlot.Box, 5)
   expectNoMessage(200 milliseconds)
@@ -142,17 +142,17 @@ class RepairableEntityNotRepairTest extends ActorTest {
 }
 
 class RepairableAmenityTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
 
     GUID(guid)
   }
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
-  val term     = Terminal(GlobalDefinitions.order_terminal)                    //guid=2
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val term     = Terminal(GlobalDefinitions.order_terminal)                    //guid=2
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=3
+private val player1 = Player(avatar) //guid=3
   player1.Spawn()
   guid.register(building, 1)
   guid.register(term, 2)
@@ -162,14 +162,14 @@ class RepairableAmenityTest extends ActorTest {
   building.Amenities = term
   term.Position = Vector3(1, 0, 0)
   term.Actor = system.actorOf(Props(classOf[TerminalControl], term), "terminal-control")
-  val activityProbe = TestProbe()
-  val avatarProbe   = TestProbe()
-  val buildingProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val avatarProbe   = TestProbe()
+private val buildingProbe = TestProbe()
   zone.Activity = activityProbe.ref
   zone.AvatarEvents = avatarProbe.ref
   building.Actor = buildingProbe.ref
 
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
   guid.register(tool, 4)
   guid.register(tool.AmmoSlot.Box, 5)
   expectNoMessage(200 milliseconds)
@@ -231,33 +231,33 @@ class RepairableAmenityTest extends ActorTest {
 }
 
 class RepairableTurretWeapon extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val building      = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
-  val activityProbe = TestProbe()
-  val avatarProbe   = TestProbe()
-  val vehicleProbe  = TestProbe()
-  val buildingProbe = TestProbe()
+private val building      = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val activityProbe = TestProbe()
+private val avatarProbe   = TestProbe()
+private val vehicleProbe  = TestProbe()
+private val buildingProbe = TestProbe()
   zone.Activity = activityProbe.ref
   zone.AvatarEvents = avatarProbe.ref
   zone.VehicleEvents = vehicleProbe.ref
   building.Actor = buildingProbe.ref
 
-  val turret = new FacilityTurret(GlobalDefinitions.manned_turret) //2, 5, 6
+private val turret = new FacilityTurret(GlobalDefinitions.manned_turret) //2, 5, 6
   turret.Actor = system.actorOf(Props(classOf[FacilityTurretControl], turret), "turret-control")
   turret.Zone = zone
   turret.Position = Vector3(1, 0, 0)
-  val turretWeapon = turret.Weapons.values.head.Equipment.get.asInstanceOf[Tool]
+private val turretWeapon = turret.Weapons.values.head.Equipment.get.asInstanceOf[Tool]
 
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=3
+private val player1 = Player(avatar) //guid=3
   player1.Spawn()
   player1.Position = Vector3(2, 2, 2)
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
 
   guid.register(building, 1)
@@ -269,7 +269,7 @@ class RepairableTurretWeapon extends ActorTest {
   building.Zone = zone
   building.Amenities = turret
 
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //7 & 8
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //7 & 8
   guid.register(tool, 7)
   guid.register(tool.AmmoSlot.Box, 8)
 
@@ -326,25 +326,25 @@ class RepairableTurretWeapon extends ActorTest {
 }
 
 class RepairableVehicleRepair extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
 
-  val atv = Vehicle(GlobalDefinitions.quadassault) //guid=1, 2, 3
+private val atv = Vehicle(GlobalDefinitions.quadassault) //guid=1, 2, 3
   atv.Actor = system.actorOf(Props(classOf[VehicleControl], atv), "vehicle-control")
   atv.Position = Vector3(1, 0, 0)
-  val atvWeapon = atv.Weapons(1).Equipment.get.asInstanceOf[Tool]
+private val atvWeapon = atv.Weapons(1).Equipment.get.asInstanceOf[Tool]
 
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=4
+private val player1 = Player(avatar) //guid=4
   player1.Spawn()
   player1.Position = Vector3(2, 2, 2)
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
 
   guid.register(atv, 1)
@@ -353,7 +353,7 @@ class RepairableVehicleRepair extends ActorTest {
   guid.register(player1, 4)
   atv.Zone = zone
 
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //5 & 6
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //5 & 6
   guid.register(tool, 5)
   guid.register(tool.AmmoSlot.Box, 6)
 
@@ -400,24 +400,24 @@ class RepairableVehicleRestoration extends ActorTest {
   /*
   no messages are dispatched, in this case, because most vehicles are flagged to not be repairable if destroyed
    */
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
 
-  val atv = Vehicle(GlobalDefinitions.quadassault) //guid=1, 2, 3
+private val atv = Vehicle(GlobalDefinitions.quadassault) //guid=1, 2, 3
   atv.Actor = system.actorOf(Props(classOf[VehicleControl], atv), "vehicle-control")
   atv.Position = Vector3(1, 0, 0)
-  val atvWeapon = atv.Weapons(1).Equipment.get.asInstanceOf[Tool]
+private val atvWeapon = atv.Weapons(1).Equipment.get.asInstanceOf[Tool]
 
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=4
   player1.Spawn()
   player1.Position = Vector3(2, 2, 2)
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
 
   guid.register(atv, 1)
@@ -426,7 +426,7 @@ class RepairableVehicleRestoration extends ActorTest {
   guid.register(player1, 4)
   atv.Zone = zone
 
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //5 & 6
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //5 & 6
   guid.register(tool, 5)
   guid.register(tool.AmmoSlot.Box, 6)
 

@@ -7,7 +7,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class ResetSequenceTest extends Specification {
-  val string = hex"01"
+private val string = hex"01"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

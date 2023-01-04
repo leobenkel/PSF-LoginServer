@@ -40,7 +40,7 @@ private var shuttle: Vehicle = _
   def receive: Receive = startUp
 
   /** the HART system is active and ready to handle state changes */
-  val taxiing: Receive = {
+private val taxiing: Receive = {
     case OrbitalShuttlePad.GetShuttle(to) =>
       to ! OrbitalShuttlePad.GiveShuttle(shuttle)
 
@@ -69,7 +69,7 @@ private var shuttle: Vehicle = _
   }
 
   /** wire the pad and shuttle into a zone-scoped service handler */
-  val shuttleTime: Receive = {
+private val shuttleTime: Receive = {
     case Zone.Vehicle.HasSpawned(_, newShuttle: OrbitalShuttle) =>
       shuttle = newShuttle
       pad.shuttle = newShuttle
@@ -97,7 +97,7 @@ private var shuttle: Vehicle = _
     * set up the shuttle information based on the pad to which it belongs;
     * register and add the shuttle as a common vehicle of the said zone
     */
-  val startUp: Receive = {
+private val startUp: Receive = {
     case Service.Startup() =>
       import net.psforever.types.Vector3
       import net.psforever.types.Vector3.DistanceSquared

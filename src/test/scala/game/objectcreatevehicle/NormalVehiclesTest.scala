@@ -9,11 +9,11 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class NormalVehiclesTest extends Specification {
-  val string_fury =
+private val string_fury =
     hex"17 50010000 A79 9D01 FBC1C 12A83 2F06 00 00 21 4400003FC00101140C800C0E40000004048F3600301900000"
-  val string_lightning =
+private val string_lightning =
     hex"17 8b010000 df1 5a00 6c2d7 65535 ca16 00 00 00 4400003fc00101300ad8040c4000000408190b801018000002617402070000000"
-  val string_mediumtransport =
+private val string_mediumtransport =
     hex"17 DA010000 8A2 8301 FBC1C 12A83 2F06 00 00 21 2400003FC079020593F80C2E400000040410148030190000017458050D90000001010401F814064000000"
 
   "Normal vehicles" should {

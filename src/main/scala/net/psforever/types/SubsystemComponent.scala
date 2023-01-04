@@ -6,7 +6,7 @@ import enumeratum.values.{IntEnum, IntEnumEntry}
 sealed abstract class SubsystemComponent(val value: Int) extends IntEnumEntry
 
 object SubsystemComponent extends IntEnum[SubsystemComponent] {
-  val values = findValues
+private val values = findValues
 
   case object SiphonTransferEfficiency extends SubsystemComponent(value = 0)
   case object SiphonTransferRateA extends SubsystemComponent(value = 1)

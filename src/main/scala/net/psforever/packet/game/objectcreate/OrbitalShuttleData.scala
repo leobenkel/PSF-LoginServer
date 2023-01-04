@@ -80,7 +80,7 @@ object OrbitalShuttleData extends Marshallable[OrbitalShuttleData] {
   /**
     * Used when the shuttle is not attached to something else.
     */
-  val codec_pos: Codec[OrbitalShuttleData] = (
+private val codec_pos: Codec[OrbitalShuttleData] = (
     ("pos" | PlacementData.codec) ::
       ("faction" | PlanetSideEmpire.codec) ::
       uintL(22) ::

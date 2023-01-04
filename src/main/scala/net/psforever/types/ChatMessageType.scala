@@ -23,7 +23,7 @@ sealed abstract class ChatMessageType extends EnumEntry {}
 
 object ChatMessageType extends Enum[ChatMessageType] {
 
-  val values: IndexedSeq[ChatMessageType] = findValues
+private val values: IndexedSeq[ChatMessageType] = findValues
 
   case object UNK_0                   extends ChatMessageType // ???
   case object CMT_ALLIANCE            extends ChatMessageType // ??? unused

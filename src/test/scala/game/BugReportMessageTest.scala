@@ -8,7 +8,7 @@ import net.psforever.types.Vector3
 import scodec.bits._
 
 class BugReportMessageTest extends Specification {
-  val string =
+private val string =
     hex"89 03000000 0F000000 8B4465632020322032303039 1 1 0 19 6C511 656B1 7A11 830610062006300 843100320033003400"
 
   "decode" in {

@@ -8,10 +8,10 @@ import net.psforever.types.{SquadWaypoint, Vector3}
 import scodec.bits._
 
 class SquadWaypointEventTest extends Specification {
-  val string_1 = hex"84 82c025d9b6c04000"
-  val string_2 = hex"84 8280000000000100"
-  val string_3 = hex"84 00c03f1e5e808042803f3018f316800008"
-  val string_4 = hex"84 40c03f1e5e80804100000000" //fabricated example
+private val string_1 = hex"84 82c025d9b6c04000"
+private val string_2 = hex"84 8280000000000100"
+private val string_3 = hex"84 00c03f1e5e808042803f3018f316800008"
+private val string_4 = hex"84 40c03f1e5e80804100000000" //fabricated example
 
   "decode (1)" in {
     PacketCoding.decodePacket(string_1).require match {

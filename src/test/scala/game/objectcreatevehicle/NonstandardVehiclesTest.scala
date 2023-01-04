@@ -9,9 +9,9 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class NonstandardVehiclesTest extends Specification {
-  val string_droppod           = hex"17 C1000000 8110B0E00FA9000ACFFFF000000 4400007F83C0900"
-  val string_orbital_shuttle_1 = hex"17 82000000 0901B026904838000001FE0700"
-  val string_orbital_shuttle_2 = hex"17 C3000000 B02670402F5AA14F88C210000604000007F8FF03C0"
+private val string_droppod           = hex"17 C1000000 8110B0E00FA9000ACFFFF000000 4400007F83C0900"
+private val string_orbital_shuttle_1 = hex"17 82000000 0901B026904838000001FE0700"
+private val string_orbital_shuttle_2 = hex"17 C3000000 B02670402F5AA14F88C210000604000007F8FF03C0"
 
   "Nonstandard vehicles" should {
     "decode (droppod)" in {

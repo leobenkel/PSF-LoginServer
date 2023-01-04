@@ -7,7 +7,7 @@ import net.psforever.packet.control._
 import scodec.bits._
 
 class ConnectionCloseTest extends Specification {
-  val string = hex"001D"
+private val string = hex"001D"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

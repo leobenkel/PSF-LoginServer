@@ -12,10 +12,10 @@ import net.psforever.types.{PlanetSideEmpire, Vector3}
 import scala.concurrent.duration._
 
 class InteractsWithZoneEnvironmentTest extends ActorTest {
-  val pool1 = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
-  val pool2 = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 15, 5, 10))
-  val pool3 = Pool(EnvironmentAttribute.Lava, DeepSquare(-1, 15, 10, 10, 5))
-  val testZone = {
+private val pool1 = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
+private val pool2 = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 15, 5, 10))
+private val pool3 = Pool(EnvironmentAttribute.Lava, DeepSquare(-1, 15, 10, 10, 5))
+private val testZone = {
     val testMap = new ZoneMap(name = "test-map") {
       environment = List(pool1, pool2, pool3)
     }

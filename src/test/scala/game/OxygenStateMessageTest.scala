@@ -8,8 +8,8 @@ import net.psforever.types.{OxygenState, PlanetSideGUID}
 import scodec.bits._
 
 class OxygenStateMessageTest extends Specification {
-  val string_self    = hex"78 4b00f430"
-  val string_vehicle = hex"78 4b00f4385037a180"
+private val string_self    = hex"78 4b00f430"
+private val string_vehicle = hex"78 4b00f4385037a180"
 
   "decode (self)" in {
     PacketCoding.decodePacket(string_self).require match {

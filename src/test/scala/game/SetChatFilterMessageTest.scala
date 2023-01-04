@@ -7,8 +7,8 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class SetChatFilterMessageTest extends Specification {
-  val string        = hex"63 05FF80"
-  val string_custom = hex"63 05C180"
+private val string        = hex"63 05FF80"
+private val string_custom = hex"63 05C180"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

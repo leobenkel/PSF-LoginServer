@@ -213,7 +213,7 @@ object PacketHelpers {
     variableSizeBytes(encodedStringSizeWithPad(adjustment), ascii)
 
   /** Variable for the charset that PlanetSide uses for unicode (2 byte unicode) */
-  val utf16 = string(Charset.forName("UTF-16LE"))
+  private val utf16 = string(Charset.forName("UTF-16LE"))
 
   /** Common codec for PlanetSide wchar_t strings (wide strings, UTF-16)
     *

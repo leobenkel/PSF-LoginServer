@@ -5,7 +5,7 @@ import enumeratum.values.{IntEnum, IntEnumEntry}
 sealed abstract class HartSequence(val value: Int) extends IntEnumEntry
 
 object HartSequence extends IntEnum[HartSequence] {
-  val values = findValues
+private val values = findValues
 
   /** no effect, but is used when the shuttle is docked */
   case object State0 extends HartSequence(value = 0)

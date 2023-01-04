@@ -4,6 +4,7 @@ package net.psforever.types
 import net.psforever.packet.PacketHelpers
 import scodec.codecs._
 
+// TODO: Use sealed trait instead of Enumeration
 object TransactionType extends Enumeration {
   type Type = Value
   val Unk0, Learn, // certif term or Buy (v-term)

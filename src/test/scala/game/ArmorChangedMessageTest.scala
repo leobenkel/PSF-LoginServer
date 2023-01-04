@@ -8,7 +8,7 @@ import net.psforever.types.{ExoSuitType, PlanetSideGUID}
 import scodec.bits._
 
 class ArmorChangedMessageTest extends Specification {
-  val string = hex"3E 11 01 4C"
+private val string = hex"3E 11 01 4C"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

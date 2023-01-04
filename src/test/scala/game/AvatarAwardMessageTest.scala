@@ -8,10 +8,10 @@ import net.psforever.types.MeritCommendation
 import scodec.bits._
 
 class AvatarAwardMessageTest extends Specification {
-  val string0 = hex"cf 15010000014000003d0040000000"
-  val string1 = hex"cf 2a010000c717b12a0000"
-  val string2 = hex"cf a6010000e9058cab0080"
-  val string3 = hex"cf 7a010000400000000000"
+private val string0 = hex"cf 15010000014000003d0040000000"
+private val string1 = hex"cf 2a010000c717b12a0000"
+private val string2 = hex"cf a6010000e9058cab0080"
+private val string3 = hex"cf 7a010000400000000000"
 
   "decode (0)" in {
     PacketCoding.decodePacket(string0).require match {

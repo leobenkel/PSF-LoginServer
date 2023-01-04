@@ -78,7 +78,7 @@ private var submergedCondition: Option[OxygenState] = None
   /** assistance for deployable construction, retention of the construction item */
 private var deployablePair: Option[(Deployable, ConstructionItem)] = None
   /** control agency for the player's locker container (dedicated inventory slot #5) */
-  val lockerControlAgent: ActorRef = {
+private val lockerControlAgent: ActorRef = {
     val locker = player.avatar.locker
     locker.Zone = player.Zone
     locker.Actor = context.actorOf(

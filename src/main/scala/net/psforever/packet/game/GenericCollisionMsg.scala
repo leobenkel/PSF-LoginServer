@@ -12,7 +12,7 @@ import shapeless.{::, HNil}
 sealed abstract class CollisionIs(val value: Int) extends IntEnumEntry
 
 object CollisionIs extends IntEnum[CollisionIs] {
-  val values = findValues
+private val values = findValues
 
   case object OfGroundVehicle extends CollisionIs(value = 0)
 

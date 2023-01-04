@@ -1,7 +1,6 @@
 package net.psforever.login.psadmin
 
 import java.net.InetSocketAddress
-
 import akka.actor.typed.receptionist.Receptionist
 import akka.actor.{Actor, ActorRef, Props, Stash, typed}
 import akka.io.Tcp
@@ -11,21 +10,24 @@ import org.json4s.native.Serialization.write
 import scodec.bits._
 import scodec.interop.akka._
 import net.psforever.services._
+
 import scala.collection.mutable.Map
 import akka.actor.typed.scaladsl.adapter._
 
+import scala.collection.mutable
+
 object PsAdminActor {
-  val whiteSpaceRegex = """\s+""".r
+  private val whiteSpaceRegex = """\s+""".r
 }
 
 class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends Actor with Stash {
   private[this] val log = org.log4s.getLogger(self.path.name)
 
-private var cluster: typed.ActorRef[InterstellarClusterService.Command] = null
+  private var cluster: typed.ActorRef[InterstellarClusterService.Command] = null
 
   // val services          = Map[String, ActorRef]()
   // val servicesToResolve = Array("cluster")
-private var buffer = ByteString()
+  private var buffer = ByteString()
 
   implicit val formats = DefaultFormats // for JSON serialization
 
@@ -114,12 +116,12 @@ private var buffer = ByteString()
   }
 
   /// Process a single command
-  def ProcessCommand: Receive = {
+  private def ProcessCommand: Receive = {
     case CommandCall(cmd, args) =>
-      val data = Map[String, Any]()
+      val data = mutable.Map[String, Any]()
 
       if (cmd == "help" || cmd == "?") {
-        if (args.size == 0) {
+        if (args.length == 0) {
           var resp = "PsAdmin command usage\n"
 
           for ((command, info) <- PsAdminCommands.commands) {

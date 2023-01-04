@@ -8,8 +8,8 @@ import net.psforever.types.{PlanetSideGUID, SubsystemComponent}
 import scodec.bits._
 
 class ComponentDamageMessageTest extends Specification {
-  val string_on = hex"d3 8f01 1a000000820000000000202040"
-  val string_off = hex"d3 8f01 1a00000000"
+private val string_on = hex"d3 8f01 1a000000820000000000202040"
+private val string_off = hex"d3 8f01 1a00000000"
 
   "decode (on)" in {
     PacketCoding.decodePacket(string_on).require match {

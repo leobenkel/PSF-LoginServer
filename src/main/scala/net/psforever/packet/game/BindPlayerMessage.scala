@@ -82,7 +82,7 @@ object BindPlayerMessage extends Marshallable[BindPlayerMessage] {
   /**
     * A common variant of this packet.
     */
-  val Standard = BindPlayerMessage(BindStatus.Unbind, "", false, false, SpawnGroup.BoundAMS, 0, 0, Vector3.Zero)
+  private val Standard = BindPlayerMessage(BindStatus.Unbind, "", false, false, SpawnGroup.BoundAMS, 0, 0, Vector3.Zero)
 
   private val spawnGroupCodec = PacketHelpers.createIntEnumCodec(SpawnGroup, uint4)
 

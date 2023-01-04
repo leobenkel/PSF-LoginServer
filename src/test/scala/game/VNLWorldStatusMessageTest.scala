@@ -11,7 +11,7 @@ import scodec.bits._
 
 class VNLWorldStatusMessageTest extends Specification {
   // NOTE: the ServerType is encoded as 0x03 here, but the real planetside server will encode it as 0x04
-  val string =
+private val string =
     hex"0597570065006c0063006f006d006500200074006f00200050006c0061006e00650074005300690064006500210020000186" ++
       hex"67656d696e69" ++ hex"0100 03 00 01459e2540 3775" ++ bin"01".toByteVector
 

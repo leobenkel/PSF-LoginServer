@@ -7,6 +7,7 @@ import scodec.codecs._
 
 object CharacterRequestAction extends Enumeration(0) {
   type Type = Value
+
   val Select, Delete, Unused, Unknown3 = Value
 
   implicit val codec = PacketHelpers.createLongEnumerationCodec(this, uint32L)

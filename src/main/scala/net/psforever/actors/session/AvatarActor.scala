@@ -757,7 +757,7 @@ class AvatarActor(
   private[this] val log                            = org.log4s.getLogger
 private var account: Option[Account]                     = None
 private var session: Option[Session]                     = None
-  val implantTimers: mutable.Map[Int, Cancellable] = mutable.Map()
+private val implantTimers: mutable.Map[Int, Cancellable] = mutable.Map()
 private var staminaRegenTimer: Cancellable               = Default.Cancellable
 private var _avatar: Option[Avatar]                      = None
 private var saveLockerFunc: () => Unit                   = storeNewLocker

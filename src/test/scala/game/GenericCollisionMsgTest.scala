@@ -9,7 +9,7 @@ import scodec.bits._
 
 class GenericCollisionMsgTest extends Specification {
   //TODO find a better test later
-  val string =
+private val string =
     hex"3C 92C00000190000001B2A8010932CEF505C70946F00000000000000000000000017725EBC6D6A058000000000000000000000000000003F8FF45140"
 
   "decode" in {

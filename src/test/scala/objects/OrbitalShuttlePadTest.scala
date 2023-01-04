@@ -24,18 +24,18 @@ import scala.concurrent.duration._
 class OrbitalShuttlePadControlTest extends FreedContextActorTest {
   import akka.actor.typed.scaladsl.adapter._
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
-  val services = ServiceManager.boot(system)
+private val services = ServiceManager.boot(system)
   services ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   services ! ServiceManager.Register(Props[HartService](), "hart")
   expectNoMessage(1000 milliseconds)
 private var buildingMap = new TrieMap[Int, Building]()
-  val vehicles = ListBuffer[Vehicle]()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 20))
+private val vehicles = ListBuffer[Vehicle]()
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 20))
   guid.AddPool("vehicles", (11 to 15).toList)
   guid.AddPool("tools", (16 to 19).toList)
-  val catchall = new TestProbe(system).ref
-  val unops = new UniqueNumberOps(guid, UniqueNumberSetup.AllocateNumberPoolActors(context, guid))
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val catchall = new TestProbe(system).ref
+private val unops = new UniqueNumberOps(guid, UniqueNumberSetup.AllocateNumberPoolActors(context, guid))
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     val transport: ActorRef = context.actorOf(Props(classOf[ZoneVehicleActor], this, vehicles), s"zone-test-vehicles")
 
     override def SetupNumberPools() = {}
@@ -52,7 +52,7 @@ private var buildingMap = new TrieMap[Int, Building]()
     import akka.actor.typed.scaladsl.adapter._
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
-  val building = new Building(
+private val building = new Building(
     name = "test-orbital-building-tr",
     building_guid = 1,
     map_id = 0,
@@ -73,7 +73,7 @@ private var buildingMap = new TrieMap[Int, Building]()
     guid.register(door, index)
   }
 
-  val pad = new OrbitalShuttlePad(GlobalDefinitions.obbasemesh)
+private val pad = new OrbitalShuttlePad(GlobalDefinitions.obbasemesh)
   guid.register(pad, number = 2)
   pad.Actor = system.actorOf(Props(classOf[OrbitalShuttlePadControl], pad), "test-shuttle-pad")
   building.Amenities = pad

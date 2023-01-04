@@ -139,7 +139,7 @@ private var silenceTimer: Cancellable                                     = Defa
     */
 private var ignoredEmoteCooldown: mutable.LongMap[Long]                   = mutable.LongMap[Long]()
 
-  val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.messageAdapter[ChatService.MessageResponse] {
+private val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.messageAdapter[ChatService.MessageResponse] {
     case ChatService.MessageResponse(_session, message, channel) => IncomingMessage(_session, message, channel)
   }
 

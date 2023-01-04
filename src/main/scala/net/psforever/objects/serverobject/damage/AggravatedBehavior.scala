@@ -128,7 +128,7 @@ trait AggravatedBehavior {
     entry
   }
 
-  val aggravatedBehavior: Receive = {
+private val aggravatedBehavior: Receive = {
     case AggravatedBehavior.Aggravate(id, 0) =>
       AggravationCleanup(id)
 

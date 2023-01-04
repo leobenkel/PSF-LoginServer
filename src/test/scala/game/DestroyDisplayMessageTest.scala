@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideEmpire
 import scodec.bits._
 
 class DestroyDisplayMessageTest extends Specification {
-  val string =
+private val string =
     hex"81 87 41006E00670065006C006C006F00 35BCD801 8 F201 9207 0A 0 48004D00460049004300 B18ED901 00" // Angello-VS (???) HMFIC-TR
 
   "decode" in {

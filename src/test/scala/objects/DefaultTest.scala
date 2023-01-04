@@ -45,5 +45,5 @@ class DefaultActorStartedTest extends ActorTest {
 
 object DefaultActorTest {
   //due to being a singleton, the original original value of the Default.Actor is cached here
-  val Original = Default.Actor
+private val Original = Default.Actor
 }

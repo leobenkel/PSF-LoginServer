@@ -8,9 +8,9 @@ import net.psforever.types.Vector3
 import scodec.bits._
 
 class PlayerStateShiftMessageTest extends Specification {
-  val string_short     = hex"BE 68"
-  val string_pos       = hex"BE 95 A0 89 13 91 B8 B0 B7 F0" //orig: ... B0 BF F0
-  val string_posAndVel = hex"BE AE 01 29 CD 59 B9 40 C0 EA D4 00 0F 86 40"
+private val string_short     = hex"BE 68"
+private val string_pos       = hex"BE 95 A0 89 13 91 B8 B0 B7 F0" //orig: ... B0 BF F0
+private val string_posAndVel = hex"BE AE 01 29 CD 59 B9 40 C0 EA D4 00 0F 86 40"
 
   "decode (short)" in {
     PacketCoding.decodePacket(string_short).require match {

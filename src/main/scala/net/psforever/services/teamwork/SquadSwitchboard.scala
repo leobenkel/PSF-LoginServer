@@ -22,7 +22,7 @@ class SquadSwitchboard extends Actor {
     * The message `SquadSwitchboard.Leave` removes the user from this collection.
     * key - unique character id; value - `Actor` reference for that character
     */
-  val UserActorMap: mutable.LongMap[ActorRef] = mutable.LongMap[ActorRef]()
+private val UserActorMap: mutable.LongMap[ActorRef] = mutable.LongMap[ActorRef]()
 
   /**
     * This collection contains the message-sending contact information for would-be squad members.
@@ -31,7 +31,7 @@ class SquadSwitchboard extends Actor {
     * The message `SquadSwitchboard.Leave` removes the user from this collection.
     * key - unique character id; value - `Actor` reference for that character
     */
-  val DelayedJoin: mutable.LongMap[ActorRef] = mutable.LongMap[ActorRef]()
+private val DelayedJoin: mutable.LongMap[ActorRef] = mutable.LongMap[ActorRef]()
 
   /**
     * This collection contains the message-sending contact information for squad observers.
@@ -41,7 +41,7 @@ class SquadSwitchboard extends Actor {
     * The message `SquadSwitchboard.Unwatch` also removes the user from this collection.
     * key - unique character id; value - `Actor` reference for that character
     */
-  val Watchers: mutable.LongMap[ActorRef] = mutable.LongMap[ActorRef]()
+private val Watchers: mutable.LongMap[ActorRef] = mutable.LongMap[ActorRef]()
 
   override def postStop(): Unit = {
     UserActorMap.clear()

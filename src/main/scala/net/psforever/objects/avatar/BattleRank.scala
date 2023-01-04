@@ -85,7 +85,7 @@ case object BattleRank extends IntEnum[BattleRank] {
 
   case object BR25 extends BattleRank(value = 25, experience = 2583441L)
 
-  val values: IndexedSeq[BattleRank] = findValues
+private val values: IndexedSeq[BattleRank] = findValues
 
   /** Find BattleRank variant for given experience value */
   def withExperience(experience: Long): BattleRank = {

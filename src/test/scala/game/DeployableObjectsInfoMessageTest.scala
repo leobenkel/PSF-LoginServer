@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class DeployableObjectsInfoMessageTest extends Specification {
-  val string = hex"76 00 80 00 00 31 85 41 CF D3 7E B3 34 00 E6 30 48" //this was a TRAP @ Ogma, Forseral
+private val string = hex"76 00 80 00 00 31 85 41 CF D3 7E B3 34 00 E6 30 48" //this was a TRAP @ Ogma, Forseral
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

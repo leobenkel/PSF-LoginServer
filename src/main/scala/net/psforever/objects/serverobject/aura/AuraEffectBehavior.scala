@@ -27,7 +27,7 @@ trait AuraEffectBehavior {
 
   def AuraTargetObject: AuraEffectBehavior.Target
 
-  val auraBehavior: Receive = {
+private val auraBehavior: Receive = {
     case AuraEffectBehavior.StartEffect(effect, duration) =>
       StartAuraEffect(effect, duration)
 

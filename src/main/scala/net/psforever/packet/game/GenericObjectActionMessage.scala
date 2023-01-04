@@ -90,5 +90,5 @@ object GenericObjectActionEnum extends Enumeration {
   /** <b>Effect:</b> Capture console displays "Facility hacked by the <Faction> LLU has been spawned." when looked at<br>
     * <b>Target</b>: CaptureTerminal
     */
-  val FlagSpawned = Value(14)
+private val FlagSpawned = Value(14)
 }

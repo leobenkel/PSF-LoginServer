@@ -420,7 +420,7 @@ case object MapInfo extends StringEnum[MapInfo] {
                       MapEnvironment.dim4096MapEdgeKillPlanes
       )
 
-  val values: IndexedSeq[MapInfo] = findValues
+private val values: IndexedSeq[MapInfo] = findValues
 }
 
 object MapEnvironment {

@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class TimeOfDayMessageTest extends Specification {
-  val string = hex"48 00 00 00 47 00 00 20 41"
+private val string = hex"48 00 00 00 47 00 00 20 41"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

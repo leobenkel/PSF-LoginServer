@@ -28,7 +28,7 @@ trait Damageable {
   /** the official mixin hook;
     * `orElse` onto the "control" `Actor` `receive`; or,
     * cite the `originalTakesDamage` protocol during inheritance overrides */
-  val takesDamage: Receive = {
+private val takesDamage: Receive = {
     case Vitality.Damage(damage_func) =>
       val obj = DamageableObject
       if (obj.CanDamage) {

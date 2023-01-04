@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ChangeShortcutBankMessageTest extends Specification {
-  val string = hex"29 4B00 20"
+private val string = hex"29 4B00 20"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

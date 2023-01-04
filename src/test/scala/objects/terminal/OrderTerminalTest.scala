@@ -11,10 +11,10 @@ import net.psforever.types._
 import org.specs2.mutable.Specification
 
 class OrderTerminalTest extends Specification {
-  val avatar = Avatar(0, "test", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player = Player(avatar)
+private val avatar = Avatar(0, "test", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player = Player(avatar)
 
-  val building = new Building(
+private val building = new Building(
     "Building",
     building_guid = 0,
     map_id = 0,
@@ -23,7 +23,7 @@ class OrderTerminalTest extends Specification {
     GlobalDefinitions.building
   )
   building.Faction = PlanetSideEmpire.TR
-  val infantryTerminal = Terminal(GlobalDefinitions.order_terminal)
+private val infantryTerminal = Terminal(GlobalDefinitions.order_terminal)
   infantryTerminal.Owner = building
 
   "General terminal behavior" should {

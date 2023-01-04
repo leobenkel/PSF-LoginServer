@@ -7,8 +7,8 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class ServerVehicleOverrideMsgTest extends Specification {
-  val string1 = hex"4E C0 0C0 00000000 0"
-  val string2 = hex"4E 10 050 0"
+private val string1 = hex"4E C0 0C0 00000000 0"
+private val string2 = hex"4E 10 050 0"
 
   "decode (1)" in {
     PacketCoding.decodePacket(string1).require match {

@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class WeaponDryFireMessageTest extends Specification {
-  val string = hex"52 4C00"
+private val string = hex"52 4C00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class ZoneLockInfoMesageTest extends Specification {
-  val string = hex"DF 1B 00 40"
+private val string = hex"DF 1B 00 40"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

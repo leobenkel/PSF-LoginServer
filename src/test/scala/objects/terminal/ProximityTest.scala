@@ -431,7 +431,7 @@ class ProximityTerminalControlNotStopTest extends ActorTest {
 }
 
 object ProximityTest {
-  val avatarId = new AtomicInteger(0)
+private val avatarId = new AtomicInteger(0)
 
   class SampleTerminal extends Terminal(GlobalDefinitions.dropship_vehicle_terminal) with ProximityUnit
 

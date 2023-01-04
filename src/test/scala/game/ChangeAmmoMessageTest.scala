@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ChangeAmmoMessageTest extends Specification {
-  val string = hex"47 4E00 00000000"
+private val string = hex"47 4E00 00000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

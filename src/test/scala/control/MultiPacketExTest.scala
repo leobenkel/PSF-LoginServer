@@ -7,7 +7,7 @@ import org.specs2.specification.core.Fragment
 import scodec.bits._
 
 class MultiPacketExTest extends Specification {
-  val strings = Vector(
+private val strings = Vector(
     hex"00",
     hex"01 41",
     hex"01 41" ++ hex"02 4142",
@@ -18,7 +18,7 @@ class MultiPacketExTest extends Specification {
     hex"ff ffff 0000 0100" ++ ByteVector.fill(0x00010000)(0x41)
   )
 
-  val packets = Vector(
+private val packets = Vector(
     MultiPacketEx(Vector(ByteVector.empty)),
     MultiPacketEx(Vector(hex"41")),
     MultiPacketEx(Vector(hex"41", hex"4142")),

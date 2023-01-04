@@ -14,7 +14,7 @@ sealed abstract class ProjectileCharacteristics(val value: Int) extends IntEnumE
   * Not really useful outside of `WeaponFireMessage`?
   */
 object ProjectileCharacteristics extends IntEnum[ProjectileCharacteristics] {
-  val values = findValues
+private val values = findValues
 
   /** most common characteristic;
     * utilized for both straight-fire and various arcing projectiles

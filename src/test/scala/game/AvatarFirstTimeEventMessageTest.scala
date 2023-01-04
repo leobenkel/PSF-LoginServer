@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class AvatarFirstTimeEventMessageTest extends Specification {
-  val string = hex"69 4b00 c000 01000000 9e 766973697465645f63657274696669636174696f6e5f7465726d696e616c"
+private val string = hex"69 4b00 c000 01000000 9e 766973697465645f63657274696669636174696f6e5f7465726d696e616c"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

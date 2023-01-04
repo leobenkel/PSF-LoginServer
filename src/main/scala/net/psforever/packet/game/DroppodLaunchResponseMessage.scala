@@ -19,7 +19,7 @@ import scodec.codecs._
 sealed abstract class DroppodError(val value: Int, val message: String) extends IntEnumEntry
 
 object DroppodError extends IntEnum[DroppodError] {
-  val values = findValues
+private val values = findValues
 
   case object ContinentNotAvailable extends DroppodError(
     value = 1,

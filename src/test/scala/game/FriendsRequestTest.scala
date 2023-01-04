@@ -8,7 +8,7 @@ import net.psforever.types.MemberAction
 import scodec.bits._
 
 class FriendsRequestTest extends Specification {
-  val string = hex"72 3 0A0 46004A0048004E004300"
+private val string = hex"72 3 0A0 46004A0048004E004300"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

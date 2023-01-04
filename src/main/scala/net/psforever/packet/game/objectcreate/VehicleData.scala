@@ -14,7 +14,7 @@ import net.psforever.types.DriveState
 object VehicleFormat extends Enumeration {
   type Type = Value
 
-  val Battleframe, BattleframeFlight, Normal, Utility, Variant = Value
+private val Battleframe, BattleframeFlight, Normal, Utility, Variant = Value
 }
 
 /**

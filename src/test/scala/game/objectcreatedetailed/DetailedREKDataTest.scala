@@ -9,7 +9,7 @@ import net.psforever.types.{PlanetSideEmpire, PlanetSideGUID}
 import scodec.bits._
 
 class DetailedREKDataTest extends Specification {
-  val string_rek = hex"18 97000000 2580 6C2 9F05 81 48000002000080000"
+private val string_rek = hex"18 97000000 2580 6C2 9F05 81 48000002000080000"
 
   "DetailedREKData" should {
     "decode" in {

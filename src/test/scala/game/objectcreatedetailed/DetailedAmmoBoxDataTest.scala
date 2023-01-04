@@ -9,7 +9,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class DetailedAmmoBoxDataTest extends Specification {
-  val string_9mm = hex"18 7C000000 2580 0E0 0005 A1 C8000064000"
+private val string_9mm = hex"18 7C000000 2580 0E0 0005 A1 C8000064000"
 
   "DetailedAmmoBoxData" should {
     "decode (9mm)" in {

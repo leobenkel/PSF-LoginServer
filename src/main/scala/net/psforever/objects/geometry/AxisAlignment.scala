@@ -49,7 +49,7 @@ sealed abstract class AxisAlignment3D extends AxisAlignment(Vector3.Zero) {
 }
 
 object AxisAlignment extends Enum[AxisAlignment] {
-  val values: IndexedSeq[AxisAlignment] = findValues
+private val values: IndexedSeq[AxisAlignment] = findValues
 
   /**
     * Geometric entities in the XY-axis.

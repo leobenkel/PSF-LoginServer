@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class TargetingInfoMessageTest extends Specification {
-  val string = hex"50 05 3D10C200 570EFF3C 2406EC00 2B068C00 2A069400"
+private val string = hex"50 05 3D10C200 570EFF3C 2406EC00 2B068C00 2A069400"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

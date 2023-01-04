@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class ZoneForcedCavernConnectionsMessageTest extends Specification {
-  val string = hex"E3200040"
+private val string = hex"E3200040"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

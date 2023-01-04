@@ -15,7 +15,7 @@ trait TransferBehavior {
   def TransferMaterial: TransferContainer.TransferMaterial
   def ChargeTransferObject: TransferContainer
 
-  val transferBehavior: Receive = {
+private val transferBehavior: Receive = {
     case TransferBehavior.Charging(mat) if mat != TransferMaterial =>
       TryStopChargingEvent(ChargeTransferObject)
 

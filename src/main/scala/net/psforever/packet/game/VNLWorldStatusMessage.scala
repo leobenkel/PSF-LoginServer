@@ -14,7 +14,7 @@ import enumeratum.values.{IntEnum, IntEnumEntry}
 
 object WorldStatus extends Enumeration {
   type Type = Value
-  val Up, Down, Locked, Full = Value
+private val Up, Down, Locked, Full = Value
 }
 
 sealed abstract class ServerType(val value: Int, val name: String) extends IntEnumEntry
@@ -25,7 +25,7 @@ object ServerType extends IntEnum[ServerType] {
   case object Released       extends ServerType(3, "released")
   case object ReleasedGemini extends ServerType(4, "released_gemini")
 
-  val values: IndexedSeq[ServerType]    = findValues
+private val values: IndexedSeq[ServerType]    = findValues
   implicit val codec: Codec[ServerType] = PacketHelpers.createIntEnumCodec(this, uint8L)
 }
 

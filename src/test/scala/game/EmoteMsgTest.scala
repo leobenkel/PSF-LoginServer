@@ -8,7 +8,7 @@ import net.psforever.types.{EmoteType, PlanetSideGUID}
 import scodec.bits._
 
 class EmoteMsgTest extends Specification {
-  val string = hex"25 4B00 15"
+private val string = hex"25 4B00 15"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

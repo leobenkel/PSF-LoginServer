@@ -19,7 +19,7 @@ case object Cosmetic extends IntEnum[Cosmetic] {
 
   case object NoHelmet extends Cosmetic(value = 16)
 
-  val values: IndexedSeq[Cosmetic] = findValues
+private val values: IndexedSeq[Cosmetic] = findValues
 
   /** Get enum values from ObjectCreateMessage value */
   def valuesFromObjectCreateValue(value: Int): Set[Cosmetic] = {

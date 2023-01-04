@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class ObjectDeployedMessageTest extends Specification {
-  val string_boomer = hex"86 000086626F6F6D6572040000000100000019000000"
+private val string_boomer = hex"86 000086626F6F6D6572040000000100000019000000"
 
   "decode" in {
     PacketCoding.decodePacket(string_boomer).require match {

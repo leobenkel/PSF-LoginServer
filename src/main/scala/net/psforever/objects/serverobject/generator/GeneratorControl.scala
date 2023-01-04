@@ -69,7 +69,7 @@ private var alarmCooldown: Cancellable   = Default.Cancellable
   def receive: Receive = withNtu
 
   /** behavior that is valid for both "with-ntu" and "without-ntu" */
-  val commonBehavior: Receive =
+private val commonBehavior: Receive =
     checkBehavior
       .orElse(takesDamage)
       .orElse(canBeRepairedByNanoDispenser)

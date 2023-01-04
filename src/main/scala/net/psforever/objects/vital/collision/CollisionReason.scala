@@ -97,7 +97,7 @@ final case class CollisionWithReason(
 object CollisionReason {
   /** The flags for calculating an absence of conventional damage for collision.
     * Damage is considered `Direct`, however, which defines some resistance. */
-  val noDamage = new DamageProperties {
+private val noDamage = new DamageProperties {
     CausesDamageType = DamageType.Direct
   }
 }

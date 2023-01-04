@@ -271,7 +271,7 @@ case object ZoneInfo extends IntEnum[ZoneInfo] {
         map = MapInfo.Map96
       )
 
-  val values: IndexedSeq[ZoneInfo] = findValues
+private val values: IndexedSeq[ZoneInfo] = findValues
 
   def findName(name: String): ZoneInfo = findNameOpt(name).get
 

@@ -7,7 +7,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class SquadMemberEventTest extends Specification {
-  val string = hex"7000e008545180410848006f0066004400070051150800"
+private val string = hex"7000e008545180410848006f0066004400070051150800"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

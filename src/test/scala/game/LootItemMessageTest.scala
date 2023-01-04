@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class LootItemMessageTest extends Specification {
-  val string = hex"6C DD0D 5C14"
+private val string = hex"6C DD0D 5C14"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

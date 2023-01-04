@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class LoadMapMessageTest extends Specification {
-  val string = hex"31 85 6D61703130 83 7A3130 0FA0 19000000 F6 F1 60 86 80"
+private val string = hex"31 85 6D61703130 83 7A3130 0FA0 19000000 F6 F1 60 86 80"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

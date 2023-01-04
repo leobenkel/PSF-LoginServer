@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class DroppodFreefallingMessageTest extends Specification {
-  val string =
+private val string =
     hex"68 220e 00e0b245 00c06145 00a08744 00000000 00000000 ffff79c4 0740b245 22c66145 00608144 00 67 3f 00 00 3f"
 
   "DroppodFreefallingMessage" should {

@@ -8,8 +8,8 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class AvatarVehicleTimerMessageTest extends Specification {
-  val string  = hex"57bd16866d65646b69740500000000"
-  val string2 = hex"57971b84667572794800000080"
+private val string  = hex"57bd16866d65646b69740500000000"
+private val string2 = hex"57971b84667572794800000080"
 
   "decode medkit" in {
     PacketCoding.decodePacket(string).require match {

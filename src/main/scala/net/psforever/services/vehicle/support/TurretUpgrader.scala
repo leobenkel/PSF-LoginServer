@@ -21,7 +21,7 @@ private var task: Cancellable = Default.Cancellable
 
 private var list: List[TurretUpgrader.Entry] = List()
 
-  val sameEntryComparator = new SimilarityComparator[TurretUpgrader.Entry]() {
+private val sameEntryComparator = new SimilarityComparator[TurretUpgrader.Entry]() {
     def Test(entry1: TurretUpgrader.Entry, entry2: TurretUpgrader.Entry): Boolean = {
       entry1.obj == entry2.obj && entry1.zone == entry2.zone && entry1.obj.GUID == entry2.obj.GUID
     }

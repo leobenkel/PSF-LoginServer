@@ -12,9 +12,9 @@ import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success}
 
 class InventoryTest extends Specification {
-  val bullet9mmBox1 = AmmoBox(bullet_9mm)
+private val bullet9mmBox1 = AmmoBox(bullet_9mm)
   bullet9mmBox1.GUID = PlanetSideGUID(1)
-  val bullet9mmBox2 = AmmoBox(bullet_9mm)
+private val bullet9mmBox2 = AmmoBox(bullet_9mm)
   bullet9mmBox2.GUID = PlanetSideGUID(2)
 
   "InventoryDisarrayException" should {

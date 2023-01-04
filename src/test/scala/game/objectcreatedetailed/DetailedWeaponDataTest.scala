@@ -9,8 +9,8 @@ import net.psforever.types.{PlanetSideEmpire, PlanetSideGUID}
 import scodec.bits._
 
 class DetailedWeaponDataTest extends Specification {
-  val string_gauss    = hex"18 DC000000 2580 2C9 B905 82 480000020000C04 1C00C0B0190000078000"
-  val string_punisher = hex"18 27010000 2580 612 a706 82 080000020000c08 1c13a0d01900000780 13a4701a072000000800"
+private val string_gauss    = hex"18 DC000000 2580 2C9 B905 82 480000020000C04 1C00C0B0190000078000"
+private val string_punisher = hex"18 27010000 2580 612 a706 82 080000020000c08 1c13a0d01900000780 13a4701a072000000800"
 
   "DetailedWeaponData" should {
     "decode (gauss)" in {

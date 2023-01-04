@@ -9,7 +9,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class CharacterKnowledgeMessageTest extends Specification {
-  val string = hex"ec cc637a02 45804600720061006e006b0065006e00740061006e006b0003c022dc0008f01800"
+private val string = hex"ec cc637a02 45804600720061006e006b0065006e00740061006e006b0003c022dc0008f01800"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

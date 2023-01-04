@@ -7,7 +7,7 @@ import net.psforever.packet.control._
 import scodec.bits._
 
 class ClientStartTest extends Specification {
-  val string = hex"0001 00000002 00261e27 000001f0"
+private val string = hex"0001 00000002 00261e27 000001f0"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

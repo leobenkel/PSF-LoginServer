@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class BroadcastWarpgateUpdateMessageTest extends Specification {
-  val string = hex"D9 0D 00 01 00 20"
+private val string = hex"D9 0D 00 01 00 20"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

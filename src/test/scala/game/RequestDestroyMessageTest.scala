@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class RequestDestroyMessageTest extends Specification {
-  val string = hex"2D A49C"
+private val string = hex"2D A49C"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {
