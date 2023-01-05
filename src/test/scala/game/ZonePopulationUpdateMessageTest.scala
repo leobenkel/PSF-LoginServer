@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class ZonePopulationUpdateMessageTest extends Specification {
-  val string = hex"B6 0400 9E010000 8A000000 25000000 8A000000 25000000 8A000000 25000000 8A000000 25000000"
+private val string = hex"B6 0400 9E010000 8A000000 25000000 8A000000 25000000 8A000000 25000000 8A000000 25000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

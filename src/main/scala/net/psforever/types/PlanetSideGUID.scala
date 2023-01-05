@@ -1,6 +1,7 @@
 // Copyright (c) 2017-2019 PSForever
 package net.psforever.types
 
+import scodec.Codec
 import scodec.codecs.uint16L
 
 abstract class PlanetSideGUID {
@@ -34,7 +35,7 @@ object PlanetSideGUID {
 
   def unapply(n: PlanetSideGUID): Option[Int] = Some(n.guid)
 
-  implicit val codec = uint16L.xmap[PlanetSideGUID](
+  implicit val codec: Codec[PlanetSideGUID] = uint16L.xmap[PlanetSideGUID](
     n => PlanetSideGUID(n),
     n => n.guid
   )

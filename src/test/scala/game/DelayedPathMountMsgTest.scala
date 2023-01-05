@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class DelayedPathMountMsgTest extends Specification {
-  val string = hex"5a f50583044680"
+private val string = hex"5a f50583044680"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

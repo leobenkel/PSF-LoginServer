@@ -12,7 +12,7 @@ import org.specs2.mutable.Specification
 import akka.actor.typed.scaladsl.adapter._
 
 class AmenityTest extends Specification {
-  val definition = new AmenityDefinition(0) {
+private val definition = new AmenityDefinition(0) {
     //intentionally blank
   }
   class AmenityObject extends Amenity {

@@ -8,7 +8,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class AggravatedDamageMessageTest extends Specification {
-  val string = hex"6a350a0e000000"
+private val string = hex"6a350a0e000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

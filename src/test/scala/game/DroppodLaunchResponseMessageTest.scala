@@ -8,8 +8,8 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class DroppodLaunchResponseMessageTest extends Specification {
-  val string_1 = hex"55 21506000000000000000000000"
-  val string_2 = hex"55 9150605000000000000000000640000000a0000000"
+private val string_1 = hex"55 21506000000000000000000000"
+private val string_2 = hex"55 9150605000000000000000000640000000a0000000"
 
   "DroppodLaunchResponseMessage" should {
     "decode (1)" in {

@@ -29,7 +29,7 @@ import scala.util.Success
 class VehicleSpawnControlLoadVehicle(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
   def LogId = "-loader"
 
-  val railJack = context.actorOf(Props(classOf[VehicleSpawnControlRailJack], pad), s"${context.parent.path.name}-rails")
+private val railJack = context.actorOf(Props(classOf[VehicleSpawnControlRailJack], pad), s"${context.parent.path.name}-rails")
 
 private var temp: Option[VehicleSpawnControl.Order] = None
 

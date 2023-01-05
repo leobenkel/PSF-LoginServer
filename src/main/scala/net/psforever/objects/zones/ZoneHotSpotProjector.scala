@@ -35,11 +35,11 @@ class ZoneHotSpotDisplay(
     dataList: ListBuffer[HotSpotInfo],
     dataBlanking: FiniteDuration
 ) extends Actor {
-  val projector = context.actorOf(
+private val projector = context.actorOf(
     Props(classOf[ZoneHotSpotProjector], zone, outputList, outputBlanking),
     s"${zone.id}-hotspot-projector"
   )
-  val backup =
+private val backup =
     context.actorOf(Props(classOf[ZoneHotSpotHistory], zone, dataList, dataBlanking), s"${zone.id}-hotspot-backup")
 
   def receive: Receive = {

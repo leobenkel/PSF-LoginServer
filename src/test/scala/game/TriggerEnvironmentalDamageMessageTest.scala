@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class TriggerEnvironmentalDamageMessageTest extends Specification {
-  val string = hex"74 a7c44140000000"
+private val string = hex"74 a7c44140000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

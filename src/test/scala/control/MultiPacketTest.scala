@@ -7,7 +7,7 @@ import net.psforever.packet.control._
 import scodec.bits._
 
 class MultiPacketTest extends Specification {
-  val string =
+private val string =
     hex"00 03 04 00 15 13 23 3A 00 09 03 E3 00 19 16 6D 56 05 68 05 40 A0 EF 45 00 15 0E 44 00 A0 A2 41 00 00 0F 88 00 06 E4 C0  60 00 00 00 15 E4 32 40 74 72 61 69 6E 69 6E 67  5F 77 65 61 70 6F 6E 73 30 31 13 BD 68 05 53 F6  EF 90 D1 6E 03 14 FE 78 8C 20 1C C0 00 00 1F 00  09 03 E4 6D 56 05 68 05 40 A0 EF 45 00 15 0E 44 30 89 A1 41 00 00 0F 8A 01 00 04 18 EF 80"
 
   "decode" in {

@@ -8,7 +8,7 @@ import scodec.bits._
 import net.psforever.types.{BailType, PlanetSideGUID}
 
 class DismountVehicleMsgTest extends Specification {
-  val string = hex"0F C609 00"
+private val string = hex"0F C609 00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

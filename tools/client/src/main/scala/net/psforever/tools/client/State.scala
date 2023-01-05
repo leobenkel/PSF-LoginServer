@@ -4,19 +4,9 @@ import enumeratum.{Enum, EnumEntry}
 import net.psforever.packet.PlanetSidePacket
 import net.psforever.packet.control.ServerStart
 import net.psforever.packet.crypto.ServerFinished
-import net.psforever.packet.game.{
-  AvatarDeadStateMessage,
-  CharacterInfoMessage,
-  DeadState,
-  LoginRespMessage,
-  ObjectCreateDetailedMessage,
-  PlayerStateMessage,
-  SetCurrentAvatarMessage,
-  VNLWorldStatusMessage,
-  WorldInformation
-}
+import net.psforever.packet.game._
 import net.psforever.tools.client.State.{Avatar, Connection}
-import net.psforever.types.{PlanetSideEmpire, PlanetSideGUID, Vector3}
+import net.psforever.types._
 
 object State {
   sealed trait Connection extends EnumEntry

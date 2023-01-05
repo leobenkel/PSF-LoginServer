@@ -24,8 +24,7 @@ trait DamagingActivity extends VitalsActivity {
   def data: DamageResult
 }
 
-final case class HealFromKit(kit_def: KitDefinition, amount: Int)
-  extends HealingActivity
+final case class HealFromKit(kit_def: KitDefinition, amount: Int) extends HealingActivity
 
 final case class HealFromEquipment(
     user: PlayerSource,
@@ -33,23 +32,19 @@ final case class HealFromEquipment(
     amount: Int
 ) extends HealingActivity
 
-final case class HealFromTerm(term_def: TerminalDefinition, health: Int, armor: Int)
-  extends HealingActivity {
+final case class HealFromTerm(term_def: TerminalDefinition, health: Int, armor: Int) extends HealingActivity {
   def amount: Int = health + armor
 }
 
-final case class HealFromImplant(implant: ImplantType, health: Int)
-  extends HealingActivity {
+final case class HealFromImplant(implant: ImplantType, health: Int) extends HealingActivity {
   def amount: Int = health
 }
 
-final case class HealFromExoSuitChange(exosuit: ExoSuitType.Value)
-  extends HealingActivity {
+final case class HealFromExoSuitChange(exosuit: ExoSuitType.Value) extends HealingActivity {
   def amount: Int = 0
 }
 
-final case class RepairFromKit(kit_def: KitDefinition, amount: Int)
-    extends HealingActivity()
+final case class RepairFromKit(kit_def: KitDefinition, amount: Int) extends HealingActivity()
 
 final case class RepairFromEquipment(
     user: PlayerSource,
@@ -57,29 +52,21 @@ final case class RepairFromEquipment(
     amount: Int
 ) extends HealingActivity
 
-final case class RepairFromTerm(term_def: TerminalDefinition, amount: Int)
-    extends HealingActivity
+final case class RepairFromTerm(term_def: TerminalDefinition, amount: Int) extends HealingActivity
 
-final case class RepairFromArmorSiphon(siphon_def: ToolDefinition, amount: Int)
-  extends HealingActivity
+final case class RepairFromArmorSiphon(siphon_def: ToolDefinition, amount: Int) extends HealingActivity
 
-final case class VehicleShieldCharge(amount: Int)
-  extends HealingActivity //TODO facility
+final case class VehicleShieldCharge(amount: Int) extends HealingActivity //TODO facility
 
-final case class DamageFrom(data: DamageResult)
-  extends DamagingActivity
+final case class DamageFrom(data: DamageResult) extends DamagingActivity
 
-final case class DamageFromProjectile(data: DamageResult)
-  extends DamagingActivity
+final case class DamageFromProjectile(data: DamageResult) extends DamagingActivity
 
-final case class DamageFromPainbox(data: DamageResult)
-  extends DamagingActivity
+final case class DamageFromPainbox(data: DamageResult) extends DamagingActivity
 
-final case class DamageFromEnvironment(data: DamageResult)
-  extends DamagingActivity
+final case class DamageFromEnvironment(data: DamageResult) extends DamagingActivity
 
-final case class PlayerSuicide(player: PlayerSource)
-  extends DamagingActivity {
+final case class PlayerSuicide(player: PlayerSource) extends DamagingActivity {
   private lazy val result = {
     val out = DamageResult(
       player,
@@ -91,8 +78,7 @@ final case class PlayerSuicide(player: PlayerSource)
   def data: DamageResult = result
 }
 
-final case class DamageFromExplodingEntity(data: DamageResult)
-  extends DamagingActivity
+final case class DamageFromExplodingEntity(data: DamageResult) extends DamagingActivity
 
 /**
   * A vital object can be hurt or damaged or healed or repaired (HDHR).
@@ -148,9 +134,10 @@ trait VitalsHistory {
         vitalsHistory = DamageFromPainbox(result) +: vitalsHistory
       case _: EnvironmentReason =>
         vitalsHistory = DamageFromEnvironment(result) +: vitalsHistory
-      case _ => ;
+      case _ =>
+        ;
         vitalsHistory = DamageFrom(result) +: vitalsHistory
-        if(result.adversarial.nonEmpty) {
+        if (result.adversarial.nonEmpty) {
           lastDamage = Some(result)
         }
     }
@@ -187,11 +174,11 @@ object HealFromKit {
 
 object HealFromEquipment {
   def apply(
-             Target: PlayerSource,
-             user: PlayerSource,
-             amount: Int,
-             equipment_def: EquipmentDefinition
-           ): HealFromEquipment =
+      Target: PlayerSource,
+      user: PlayerSource,
+      amount: Int,
+      equipment_def: EquipmentDefinition
+  ): HealFromEquipment =
     HealFromEquipment(user, equipment_def, amount)
 }
 
@@ -217,11 +204,11 @@ object RepairFromKit {
 
 object RepairFromEquipment {
   def apply(
-             Target: PlayerSource,
-             user: PlayerSource,
-             amount: Int,
-             equipment_def: EquipmentDefinition
-           ) : RepairFromEquipment =
+      Target: PlayerSource,
+      user: PlayerSource,
+      amount: Int,
+      equipment_def: EquipmentDefinition
+  ): RepairFromEquipment =
     RepairFromEquipment(user, equipment_def, amount)
 }
 

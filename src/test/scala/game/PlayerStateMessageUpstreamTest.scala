@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class PlayerStateMessageUpstreamTest extends Specification {
-  val string = hex"BD 4B000 E377BA575B616C640A70004014060110007000000"
+private val string = hex"BD 4B000 E377BA575B616C640A70004014060110007000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

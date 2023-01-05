@@ -7,14 +7,16 @@ import enumeratum.values.{IntEnum, IntEnumEntry}
 import net.psforever.objects.avatar.{BattleRank, Certification, CommandRank}
 import net.psforever.packet.game.ServerType
 import net.psforever.types.ChatMessageType
+import org.log4s.Logger
 import pureconfig.ConfigConvert.viaNonEmptyStringOpt
 import pureconfig.{ConfigConvert, ConfigSource}
+
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 import pureconfig.generic.auto._ // intellij: this is not unused
 
 object Config {
-  private val logger = org.log4s.getLogger
+  private val logger: Logger = org.log4s.getLogger
 
   // prog.home is defined when we are running from SBT pack
   val directory: String = System.getProperty("prog.home") match {

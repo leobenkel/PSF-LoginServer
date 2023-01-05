@@ -22,11 +22,11 @@ import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
 
 class DeployableBehaviorSetupTest extends ActorTest {
-  val eventsProbe = new TestProbe(system)
-  val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
-  val deployableList = new ListBuffer()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
-  val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
+private val eventsProbe = new TestProbe(system)
+private val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
+private val deployableList = new ListBuffer()
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
+private val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools(): Unit = {}
@@ -78,14 +78,14 @@ class DeployableBehaviorSetupTest extends ActorTest {
 }
 
 class DeployableBehaviorSetupOwnedP1Test extends ActorTest {
-  val eventsProbe = new TestProbe(system)
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player = Player(avatar) //guid=3
-  val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
-  val citem = new ConstructionItem(GlobalDefinitions.ace) //guid = 2
-  val deployableList = new ListBuffer()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
-  val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
+private val eventsProbe = new TestProbe(system)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player = Player(avatar) //guid=3
+private val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
+private val citem = new ConstructionItem(GlobalDefinitions.ace) //guid = 2
+private val deployableList = new ListBuffer()
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
+private val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools(): Unit = {}
@@ -124,14 +124,14 @@ class DeployableBehaviorSetupOwnedP1Test extends ActorTest {
 }
 
 class DeployableBehaviorSetupOwnedP2Test extends FreedContextActorTest {
-  val eventsProbe = new TestProbe(system)
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player = Player(avatar) //guid=3
-  val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
-  val citem = new ConstructionItem(GlobalDefinitions.ace) //guid = 2
-  val deployableList = new ListBuffer()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
-  val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
+private val eventsProbe = new TestProbe(system)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player = Player(avatar) //guid=3
+private val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
+private val citem = new ConstructionItem(GlobalDefinitions.ace) //guid = 2
+private val deployableList = new ListBuffer()
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
+private val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools(): Unit = {}
@@ -227,11 +227,11 @@ class DeployableBehaviorSetupOwnedP2Test extends FreedContextActorTest {
 }
 
 class DeployableBehaviorDeconstructTest extends ActorTest {
-  val eventsProbe = new TestProbe(system)
-  val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid = 1
-  val deployableList = new ListBuffer()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
-  val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
+private val eventsProbe = new TestProbe(system)
+private val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid = 1
+private val deployableList = new ListBuffer()
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
+private val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools(): Unit = {}
@@ -276,14 +276,14 @@ class DeployableBehaviorDeconstructTest extends ActorTest {
 }
 
 class DeployableBehaviorDeconstructOwnedTest extends FreedContextActorTest {
-  val eventsProbe = new TestProbe(system)
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player = Player(avatar) //guid=3
-  val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
-  val citem = new ConstructionItem(GlobalDefinitions.ace) //guid = 2
-  val deployableList = new ListBuffer()
-  val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
-  val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
+private val eventsProbe = new TestProbe(system)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player = Player(avatar) //guid=3
+private val jmine = Deployables.Make(DeployedItem.jammer_mine)() //guid=1
+private val citem = new ConstructionItem(GlobalDefinitions.ace) //guid = 2
+private val deployableList = new ListBuffer()
+private val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
+private val zone = new Zone(id = "test", new ZoneMap(name = "test"), zoneNumber = 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools(): Unit = {}

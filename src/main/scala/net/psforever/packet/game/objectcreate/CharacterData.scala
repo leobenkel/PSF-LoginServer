@@ -34,12 +34,12 @@ object ImplantEffects extends Enumeration {
 object UniformStyle extends Enumeration {
   type Type = Value
 
-  val Normal          = Value(0)
-  val FirstUpgrade    = Value(1)
-  val SecondUpgrade   = Value(2)
-  val SecondUpgradeEx = Value(3)
-  val ThirdUpgrade    = Value(4)
-  val ThirdUpgradeEx  = Value(5)
+  val Normal                  = Value(0)
+  val FirstUpgrade            = Value(1)
+  val SecondUpgrade           = Value(2)
+  private val SecondUpgradeEx = Value(3)
+  val ThirdUpgrade            = Value(4)
+  private val ThirdUpgradeEx  = Value(5)
 
   implicit val codec = PacketHelpers.createEnumerationCodec(this, uint(3))
 }

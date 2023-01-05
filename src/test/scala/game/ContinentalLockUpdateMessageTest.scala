@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideEmpire
 import scodec.bits._
 
 class ContinentalLockUpdateMessageTest extends Specification {
-  val string = hex"A8 16 00 40"
+private val string = hex"A8 16 00 40"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

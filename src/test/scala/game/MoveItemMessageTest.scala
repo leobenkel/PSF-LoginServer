@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class MoveItemMessageTest extends Specification {
-  val string = hex"11 4C00 4B00 4B00 0900 0100"
+private val string = hex"11 4C00 4B00 4B00 0900 0100"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

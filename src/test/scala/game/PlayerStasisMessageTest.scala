@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class PlayerStasisMessageTest extends Specification {
-  val string = hex"8A 4B00 80"
+private val string = hex"8A 4B00 80"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

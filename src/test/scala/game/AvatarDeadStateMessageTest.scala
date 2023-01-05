@@ -8,8 +8,8 @@ import net.psforever.types.{PlanetSideEmpire, Vector3}
 import scodec.bits._
 
 class AvatarDeadStateMessageTest extends Specification {
-  val string         = hex"ad3c1260801c12608009f99861fb0741e040000010"
-  val string_invalid = hex"ad3c1260801c12608009f99861fb0741e0400000F0"
+private val string         = hex"ad3c1260801c12608009f99861fb0741e040000010"
+private val string_invalid = hex"ad3c1260801c12608009f99861fb0741e0400000F0"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

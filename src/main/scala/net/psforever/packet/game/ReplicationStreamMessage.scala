@@ -65,8 +65,8 @@ final case class SquadInfo(
     this And SquadInfo(None, None, Some(zone), None, None, None)
   def ZoneId(zone: Option[PlanetSideZoneID]): SquadInfo =
     zone match {
-      case Some(zoneId) => this And SquadInfo(None, None, zone, None, None, None)
-      case None         => SquadInfo(leader, task, zone, size, capacity, squad_guid)
+      case z @ Some(_) => this And SquadInfo(None, None, z, None, None, None)
+      case z @ None    => SquadInfo(leader, task, z, size, capacity, squad_guid)
     }
   def Size(sz: Int): SquadInfo =
     this And SquadInfo(None, None, None, Some(sz), None, None)

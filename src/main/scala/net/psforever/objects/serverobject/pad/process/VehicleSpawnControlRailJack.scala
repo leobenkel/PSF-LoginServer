@@ -27,7 +27,7 @@ import scala.concurrent.duration._
 class VehicleSpawnControlRailJack(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
   def LogId = "-lifter"
 
-  val seatDriver =
+private val seatDriver =
     context.actorOf(Props(classOf[VehicleSpawnControlSeatDriver], pad), s"${context.parent.path.name}-mount")
 
   def receive: Receive = {

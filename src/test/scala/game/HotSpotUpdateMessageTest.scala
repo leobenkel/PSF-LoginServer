@@ -7,10 +7,10 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class HotSpotUpdateMessageTest extends Specification {
-  val stringClear = hex"9F 0500 1 000"
-  val stringOne   = hex"9F 0500 1 010 002E9 00145 80000 0"
-  val stringTwo   = hex"9F 0500 5 020 00D07 008CA 80000 00BEA 004C4 80000"
-  val stringThree = hex"9F 0A00 4 030 00FC8 00F0A 80000 002E9 00BEA 80000 00FC8 00BEA 80000 0"
+private val stringClear = hex"9F 0500 1 000"
+private val stringOne   = hex"9F 0500 1 010 002E9 00145 80000 0"
+private val stringTwo   = hex"9F 0500 5 020 00D07 008CA 80000 00BEA 004C4 80000"
+private val stringThree = hex"9F 0A00 4 030 00FC8 00F0A 80000 002E9 00BEA 80000 00FC8 00BEA 80000 0"
 
   "decode (clear)" in {
     PacketCoding.decodePacket(stringClear).require match {

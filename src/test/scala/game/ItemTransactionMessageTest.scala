@@ -8,9 +8,9 @@ import net.psforever.types.{PlanetSideGUID, TransactionType}
 import scodec.bits._
 
 class ItemTransactionMessageTest extends Specification {
-  val string_buy    = hex"44 4C03 4000110070756E6973686572000000"
-  val string_sell   = hex"44 5303 60001000004E00"
-  val string_forget = hex"44 BA00 600011006861726173736572000000"
+private val string_buy    = hex"44 4C03 4000110070756E6973686572000000"
+private val string_sell   = hex"44 5303 60001000004E00"
+private val string_forget = hex"44 BA00 600011006861726173736572000000"
 
   "decode (buy)" in {
     PacketCoding.decodePacket(string_buy).require match {

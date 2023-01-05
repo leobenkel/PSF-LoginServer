@@ -17,15 +17,16 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 
 class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
-private var task: Cancellable = Default.Cancellable
+  private var task: Cancellable = Default.Cancellable
 
-private var list: List[TurretUpgrader.Entry] = List()
+  private var list: List[TurretUpgrader.Entry] = List()
 
-  val sameEntryComparator = new SimilarityComparator[TurretUpgrader.Entry]() {
-    def Test(entry1: TurretUpgrader.Entry, entry2: TurretUpgrader.Entry): Boolean = {
-      entry1.obj == entry2.obj && entry1.zone == entry2.zone && entry1.obj.GUID == entry2.obj.GUID
+  val sameEntryComparator: SimilarityComparator[TurretUpgrader.Entry] =
+    new SimilarityComparator[TurretUpgrader.Entry]() {
+      def Test(entry1: TurretUpgrader.Entry, entry2: TurretUpgrader.Entry): Boolean = {
+        entry1.obj == entry2.obj && entry1.zone == entry2.zone && entry1.obj.GUID == entry2.obj.GUID
+      }
     }
-  }
 
   /**
     * Sufficiently clean up the current contents of these waiting removal jobs.
@@ -189,17 +190,19 @@ private var list: List[TurretUpgrader.Entry] = List()
         .map(box => GUIDTask.registerEquipment(guid, box))
         .toList
     )
-    TaskWorkflow.execute(TaskBundle(
-      new StraightforwardTask() {
-        private val tasks = oldBoxesTask
+    TaskWorkflow.execute(
+      TaskBundle(
+        new StraightforwardTask() {
+          private val tasks = oldBoxesTask
 
-        def action(): Future[Any] = {
-          tasks.foreach { TaskWorkflow.execute }
-          Future(this)
-        }
-      },
-      newBoxesTask
-    ))
+          def action(): Future[Any] = {
+            tasks.foreach { TaskWorkflow.execute }
+            Future(this)
+          }
+        },
+        newBoxesTask
+      )
+    )
   }
 
   /**

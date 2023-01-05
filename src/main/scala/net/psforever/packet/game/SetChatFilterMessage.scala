@@ -14,7 +14,7 @@ object ChatChannel extends Enumeration {
 
   val Unknown, Tells, Local, Squad, Outfit, Command, Platoon, Broadcast, SquadLeader = Value
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint(7))
+  implicit val codec: Codec[ChatChannel.Value] = PacketHelpers.createEnumerationCodec(this, uint(7))
 }
 
 /**

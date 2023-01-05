@@ -30,7 +30,7 @@ trait CargoBehavior {
     startCargoDismounting(bailed = false)
   }
 
-  val cargoBehavior: Receive = {
+val cargoBehavior: Receive = {
     case CargoBehavior.StartCargoMounting(carrier_guid, mountPoint) =>
       startCargoMounting(carrier_guid, mountPoint)
 

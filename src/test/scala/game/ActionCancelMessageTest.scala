@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ActionCancelMessageTest extends Specification {
-  val string = hex"22 201ee01a10"
+private val string = hex"22 201ee01a10"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -8,7 +8,7 @@ import net.psforever.types.{CharacterSex, CharacterVoice, PlanetSideEmpire}
 import scodec.bits._
 
 class CharacterCreateRequestMessageTest extends Specification {
-  val string = hex"2f 88 54006500730074004300680061007200 320590"
+private val string = hex"2f 88 54006500730074004300680061007200 320590"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

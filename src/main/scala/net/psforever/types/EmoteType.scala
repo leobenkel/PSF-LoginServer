@@ -2,6 +2,7 @@
 package net.psforever.types
 
 import net.psforever.packet.PacketHelpers
+import scodec.Codec
 import scodec.codecs._
 
 object EmoteType extends Enumeration {
@@ -10,5 +11,5 @@ object EmoteType extends Enumeration {
       Laugh, Move, No, // TODO: Double check this one, doesn't seem to have an associated slash command
   Roundup, Salute, Sorry, Spreadout, Thumbsdown = Value
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint8L)
+  implicit val codec: Codec[EmoteType.Value] = PacketHelpers.createEnumerationCodec(this, uint8L)
 }

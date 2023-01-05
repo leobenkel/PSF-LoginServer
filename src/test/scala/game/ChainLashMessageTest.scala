@@ -8,8 +8,8 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class ChainLashMessageTest extends Specification {
-  val string1 = hex"c5 cafe708880df81e910100000043060"
-  val string2 = hex"c5 5282e910100000093050"
+private val string1 = hex"c5 cafe708880df81e910100000043060"
+private val string2 = hex"c5 5282e910100000093050"
 
   "decode (1)" in {
     PacketCoding.decodePacket(string1).require match {

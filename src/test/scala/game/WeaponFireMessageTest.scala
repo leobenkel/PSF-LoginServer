@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class WeaponFireMessageTest extends Specification {
-  val string = hex"34 44130029272F0B5DFD4D4EC5C00009BEF78172003FC0"
+private val string = hex"34 44130029272F0B5DFD4D4EC5C00009BEF78172003FC0"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -31,7 +31,7 @@ class TerminalControl(term: Terminal)
   def RepairableObject = term
   def AutoRepairObject = term
 
-  val commonBehavior: Receive = checkBehavior
+private val commonBehavior: Receive = checkBehavior
     .orElse(takesDamage)
     .orElse(canBeRepairedByNanoDispenser)
     .orElse(autoRepairBehavior)

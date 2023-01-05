@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class GenericObjectActionAtPositionMessageTest extends Specification {
-  val string = hex"d4 d504 09 00060 00110 000e" //faked
+private val string = hex"d4 d504 09 00060 00110 000e" //faked
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

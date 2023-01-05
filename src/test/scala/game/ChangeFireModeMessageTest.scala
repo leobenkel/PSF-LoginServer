@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ChangeFireModeMessageTest extends Specification {
-  val string = hex"46 4C0020"
+private val string = hex"46 4C0020"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

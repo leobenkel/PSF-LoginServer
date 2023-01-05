@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class CommonFieldDataWithPlacementTest extends Specification {
-  val string_boomer = hex"17 A5000000 CA0000F1630938D5A8F1400003F0031100"
+private val string_boomer = hex"17 A5000000 CA0000F1630938D5A8F1400003F0031100"
 
   "Boomer" should {
     "decode" in {

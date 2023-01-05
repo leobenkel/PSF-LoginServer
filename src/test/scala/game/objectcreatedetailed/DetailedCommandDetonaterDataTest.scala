@@ -9,7 +9,7 @@ import net.psforever.types.{PlanetSideEmpire, PlanetSideGUID}
 import scodec.bits._
 
 class DetailedCommandDetonaterDataTest extends Specification {
-  val string_detonater = hex"18 87000000 6506 EA8 7420 80 8000000200008"
+private val string_detonater = hex"18 87000000 6506 EA8 7420 80 8000000200008"
 
   "DetailedCommandDetonaterData" should {
     "decode" in {

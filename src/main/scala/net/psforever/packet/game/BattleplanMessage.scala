@@ -21,7 +21,7 @@ object DiagramActionCode extends Enumeration {
   ActionD,     //opposite of clear?
   StartDrawing, StopDrawing = Value //TODO replace all these with descriptive words
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint4L)
+  implicit val codec: Codec[DiagramActionCode.Value] = PacketHelpers.createEnumerationCodec(this, uint4L)
 }
 
 /**

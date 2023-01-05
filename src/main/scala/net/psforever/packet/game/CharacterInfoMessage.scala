@@ -9,7 +9,7 @@ import scodec.codecs._
 case class PlanetSideZoneID(zoneId: Long)
 
 object PlanetSideZoneID {
-  implicit val codec = uint32L.as[PlanetSideZoneID]
+  implicit val codec: Codec[PlanetSideZoneID] = uint32L.as[PlanetSideZoneID]
 }
 
 /**

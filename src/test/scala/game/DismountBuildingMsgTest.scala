@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class DismountBuildingMsgTest extends Specification {
-  val string = hex"7C 4B00 2E00"
+private val string = hex"7C 4B00 2E00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

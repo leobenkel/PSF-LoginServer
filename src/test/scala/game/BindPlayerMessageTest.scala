@@ -8,10 +8,10 @@ import net.psforever.types.{SpawnGroup, Vector3}
 import scodec.bits._
 
 class BindPlayerMessageTest extends Specification {
-  val string_standard = hex"16028004000000000000000000000000000000"
-  val string_ams      = hex"16 05 8440616D73 08 28000000 00000000 00000 00000 0000"
-  val string_tech     = hex"16 01 8b40746563685f706c616e74 d4 28000000 38000000 00064 012b1 a044"
-  val string_akkan    = hex"16048440616d7388100000001400000214e171a8e33024"
+private val string_standard = hex"16028004000000000000000000000000000000"
+private val string_ams      = hex"16 05 8440616D73 08 28000000 00000000 00000 00000 0000"
+private val string_tech     = hex"16 01 8b40746563685f706c616e74 d4 28000000 38000000 00064 012b1 a044"
+private val string_akkan    = hex"16048440616d7388100000001400000214e171a8e33024"
 
   "decode (standard)" in {
     PacketCoding.decodePacket(string_standard).require match {

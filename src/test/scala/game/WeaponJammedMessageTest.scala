@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class WeaponJammedMessageTest extends Specification {
-  val string = hex"66 4C00"
+private val string = hex"66 4C00"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

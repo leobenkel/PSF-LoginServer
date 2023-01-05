@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class VariantVehiclesTest extends Specification {
-  val string_switchblade =
+private val string_switchblade =
     hex"17 93010000 A7B A201 FBC1C12A832F06000021 4400003FC00001013AD3180C0E4000000408330DC03019000006620406072000000"
 
   "Variant vehicles" should {

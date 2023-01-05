@@ -33,7 +33,7 @@ final case class InventoryData(contents: List[InventoryItem] = List.empty) exten
 }
 
 object InventoryData {
-  final val BaseSize: Long = 10L //8u + 1u + 1u
+  final private val BaseSize: Long = 10L //8u + 1u + 1u
 
   /**
     * The primary `Codec` that parses the common format for an inventory `List`.

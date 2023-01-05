@@ -4,10 +4,10 @@ import scodec.bits.ByteVector
 import scala.collection.mutable.ListBuffer
 
 object Md5Mac {
-  val BLOCKSIZE  = 64
-  val DIGESTSIZE = 16
-  val MACLENGTH  = 16
-  val KEYLENGTH  = 16
+  private val BLOCKSIZE  = 64
+  private val DIGESTSIZE = 16
+  val MACLENGTH          = 16
+  private val KEYLENGTH  = 16
 
   /** Checks if two Message Authentication Codes are the same in constant time,
     * preventing a timing attack for MAC forgery

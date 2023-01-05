@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class ConnectToWorldMessageTest extends Specification {
-  val string = hex"04 8667656D696E69  8C36342E33372E3135382E36393C75"
+private val string = hex"04 8667656D696E69  8C36342E33372E3135382E36393C75"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -11,39 +11,39 @@ import scodec.bits._
 
 class SquadDefinitionActionMessageTest extends Specification {
   //local test data; note that the second field - unk1 - is always blank for now, but that probably changes
-  val string_00 = hex"e7 00 0c0000" //guid: 3
-  val string_03 = hex"E7 0c 0000c0" //index: 3
-  val string_04 = hex"E7 10 0000c0" //index: 3
-  val string_07 =
+private val string_00 = hex"e7 00 0c0000" //guid: 3
+private val string_03 = hex"E7 0c 0000c0" //index: 3
+private val string_04 = hex"E7 10 0000c0" //index: 3
+private val string_07 =
     hex"e7 1c 0000e68043006f0070007300200061006e00640020004d0069006c006900740061007200790020004f006600660069006300650072007300"
-  val string_08 = hex"E7 20 000000"
-  val string_10 = hex"E7 28 000004"                           //index: 1
-  val string_19 = hex"E7 4c 0000218041002d005400650061006d00" //"A-Team"
-  val string_20 = hex"E7 50 0000004000"
-  val string_21 = hex"E7 54 000008"                           //index: 2
-  val string_22 = hex"E7 58 000008"                           //index: 2
-  val string_23 = hex"E7 5c 0000061842004c00550046004f005200" //"BLUFOR", index: 1
-  val string_24 =
+private val string_08 = hex"E7 20 000000"
+private val string_10 = hex"E7 28 000004"                           //index: 1
+private val string_19 = hex"E7 4c 0000218041002d005400650061006d00" //"A-Team"
+private val string_20 = hex"E7 50 0000004000"
+private val string_21 = hex"E7 54 000008"                           //index: 2
+private val string_22 = hex"E7 58 000008"                           //index: 2
+private val string_23 = hex"E7 5c 0000061842004c00550046004f005200" //"BLUFOR", index: 1
+private val string_24 =
     hex"E7 60 000006386b0069006c006c002000620061006400200064007500640065007300" //"kill bad dudes", index: 1
-  val string_25 = hex"E7 64 000004400000800000" //"Anti-Vehicular" (former), "Infiltration Suit" (latter), index: 1
-  val string_26 = hex"E7 68 000000"
-  val string_28 = hex"E7 70 000020"             //On
-  val string_31 = hex"E7 7c 000020"             //On
-  val string_34a =
+private val string_25 = hex"E7 64 000004400000800000" //"Anti-Vehicular" (former), "Infiltration Suit" (latter), index: 1
+private val string_26 = hex"E7 68 000000"
+private val string_28 = hex"E7 70 000020"             //On
+private val string_31 = hex"E7 7c 000020"             //On
+private val string_34a =
     hex"E7 88 00002180420061006400610073007300000000000000040000" //"Badass", Solsar, Any matching position
-  val string_34b =
+private val string_34b =
     hex"E7 88 00002180420061006400610073007300000000000000080000" //"Badass", Hossin, Any matching position
-  val string_34c = hex"E7 88 00002180420061006400610073007300000000000000080080" //"Badass", Hossin, Any position
-  val string_34d =
+private val string_34c = hex"E7 88 00002180420061006400610073007300000000000000080080" //"Badass", Hossin, Any position
+private val string_34d =
     hex"E7 88 00002180420061006400610073007300100000200000080100" //"Badass", Hossin, Some("Anti-Vehicular", "Infiltration Suit")
-  val string_34e =
+private val string_34e =
     hex"E7 88 00002180420061006400610073007300100000200000080180" //"Badass", Hossin, All("Anti-Vehicular", "Infiltration Suit")
-  val string_35 = hex"E7 8c 000000"
-  val string_40 = hex"E7 a0 000004" //index: 1
-  val string_41 = hex"E7 a4 000000"
+private val string_35 = hex"E7 8c 000000"
+private val string_40 = hex"E7 a0 000004" //index: 1
+private val string_41 = hex"E7 a4 000000"
 
-  val string_43      = hex"e7 ac 000000"
-  val string_failure = hex"E7 ff"
+private val string_43      = hex"e7 ac 000000"
+private val string_failure = hex"E7 ff"
 
   "decode (00)" in {
     PacketCoding.decodePacket(string_00).require match {

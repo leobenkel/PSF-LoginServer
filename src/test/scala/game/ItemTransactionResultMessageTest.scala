@@ -9,8 +9,8 @@ import scodec.bits._
 
 class ItemTransactionResultMessageTest extends Specification {
   //these are paried packets come from the same capture
-  val string_request = hex"44 DD 03 40 00 11 40 73 75 70 70 72 65 73 73 6F 72 00 00 00"
-  val string_result  = hex"45 DD 03 50 00"
+private val string_request = hex"44 DD 03 40 00 11 40 73 75 70 70 72 65 73 73 6F 72 00 00 00"
+private val string_result  = hex"45 DD 03 50 00"
   "decode" in {
     PacketCoding.decodePacket(string_result).require match {
       case ItemTransactionResultMessage(terminal_guid, transaction_type, is_success, error_code) =>

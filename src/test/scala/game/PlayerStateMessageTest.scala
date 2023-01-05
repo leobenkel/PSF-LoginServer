@@ -8,10 +8,10 @@ import net.psforever.types._
 import scodec.bits._
 
 class PlayerStateMessageTest extends Specification {
-  val string_short = hex"08 A006 DFD17 B5AEB 380B 0F80002990"
-  val string_mod =
+private val string_short = hex"08 A006 DFD17 B5AEB 380B 0F80002990"
+private val string_mod =
     hex"08 A006 DFD17 B5AEB 380B 0F80002985" //slightly modified from above to demonstrate active booleans
-  val string_vel = hex"08 A006 4DD47 CDB1B 0C0B A8C1A5000403008014A4"
+private val string_vel = hex"08 A006 4DD47 CDB1B 0C0B A8C1A5000403008014A4"
 
   "decode (short)" in {
     PacketCoding.decodePacket(string_short).require match {

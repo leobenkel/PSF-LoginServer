@@ -43,10 +43,10 @@ class ProximityTerminalControl(term: Terminal with ProximityUnit)
   def AutoRepairObject = term
 
 private var terminalAction: Cancellable             = Default.Cancellable
-  val callbacks: mutable.ListBuffer[ActorRef] = new mutable.ListBuffer[ActorRef]()
-  val log                                     = org.log4s.getLogger
+private val callbacks: mutable.ListBuffer[ActorRef] = new mutable.ListBuffer[ActorRef]()
+private val log                                     = org.log4s.getLogger
 
-  val commonBehavior: Receive = checkBehavior
+private val commonBehavior: Receive = checkBehavior
     .orElse(takesDamage)
     .orElse(canBeRepairedByNanoDispenser)
     .orElse(autoRepairBehavior)

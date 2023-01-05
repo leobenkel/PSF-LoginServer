@@ -20,7 +20,7 @@ import org.specs2.mutable.Specification
 import scala.concurrent.duration._
 
 class DoorTest extends Specification {
-  val player = Player(Avatar(0, "test", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val player = Player(Avatar(0, "test", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
 
   "Door" should {
     "construct" in {

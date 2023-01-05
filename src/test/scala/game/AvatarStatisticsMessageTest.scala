@@ -7,8 +7,8 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class AvatarStatisticsMessageTest extends Specification {
-  val string_long = hex"7F 4 00000000 0"
-  val string_complex =
+private val string_long = hex"7F 4 00000000 0"
+private val string_complex =
     hex"7F 01 3C 40 20 00 00 00  C0 00 00 00 00 00 00 00  20 00 00 00 20 00 00 00  40 00 00 00 00 00 00 00  00 00 00 00"
 
   "decode (long)" in {

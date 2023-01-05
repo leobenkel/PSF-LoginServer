@@ -102,15 +102,15 @@ class FacilityTurretControl1Test extends ActorTest {
 }
 
 class FacilityTurretControl2Test extends ActorTest {
-  val player = Player(Avatar(0, "", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-  val obj    = FacilityTurret(GlobalDefinitions.manned_turret)
+private val player = Player(Avatar(0, "", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val obj    = FacilityTurret(GlobalDefinitions.manned_turret)
   obj.GUID = PlanetSideGUID(1)
   obj.Zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
   obj.Actor = system.actorOf(Props(classOf[FacilityTurretControl], obj), "turret-control")
-  val bldg = Building("Building", guid = 0, map_id = 0, Zone.Nowhere, StructureType.Building)
+private val bldg = Building("Building", guid = 0, map_id = 0, Zone.Nowhere, StructureType.Building)
   bldg.Amenities = obj
   bldg.Faction = PlanetSideEmpire.TR
 
@@ -133,11 +133,11 @@ class FacilityTurretControl2Test extends ActorTest {
 }
 
 class FacilityTurretControl3Test extends ActorTest {
-  val player = Player(Avatar(0, "", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-  val obj    = FacilityTurret(GlobalDefinitions.manned_turret)
+private val player = Player(Avatar(0, "", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val obj    = FacilityTurret(GlobalDefinitions.manned_turret)
   obj.GUID = PlanetSideGUID(1)
   obj.Actor = system.actorOf(Props(classOf[FacilityTurretControl], obj), "turret-control")
-  val bldg = Building("Building", guid = 0, map_id = 0, Zone.Nowhere, StructureType.Building)
+private val bldg = Building("Building", guid = 0, map_id = 0, Zone.Nowhere, StructureType.Building)
   bldg.Amenities = obj
 
   "FacilityTurretControl" should {
@@ -159,15 +159,15 @@ class FacilityTurretControl3Test extends ActorTest {
 }
 
 class FacilityTurretControl4Test extends ActorTest {
-  val player = Player(Avatar(0, "", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-  val obj = FacilityTurret(GlobalDefinitions.vanu_sentry_turret)
+private val player = Player(Avatar(0, "", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+private val obj = FacilityTurret(GlobalDefinitions.vanu_sentry_turret)
   obj.GUID = PlanetSideGUID(1)
   obj.Zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
   obj.Actor = system.actorOf(Props(classOf[FacilityTurretControl], obj), "turret-control")
-  val bldg = Building("Building", guid = 0, map_id = 0, Zone.Nowhere, StructureType.Building)
+private val bldg = Building("Building", guid = 0, map_id = 0, Zone.Nowhere, StructureType.Building)
   bldg.Amenities = obj
 
   "FacilityTurretControl" should {
@@ -189,33 +189,33 @@ class FacilityTurretControl4Test extends ActorTest {
 }
 
 class FacilityTurretControlRestorationTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val building      = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
-  val activityProbe = TestProbe()
-  val avatarProbe   = TestProbe()
-  val vehicleProbe  = TestProbe()
-  val buildingProbe = TestProbe()
+private val building      = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val activityProbe = TestProbe()
+private val avatarProbe   = TestProbe()
+private val vehicleProbe  = TestProbe()
+private val buildingProbe = TestProbe()
   zone.Activity = activityProbe.ref
   zone.AvatarEvents = avatarProbe.ref
   zone.VehicleEvents = vehicleProbe.ref
   building.Actor = buildingProbe.ref
 
-  val turret = new FacilityTurret(GlobalDefinitions.manned_turret) //2, 5, 6
+private val turret = new FacilityTurret(GlobalDefinitions.manned_turret) //2, 5, 6
   turret.Actor = system.actorOf(Props(classOf[FacilityTurretControl], turret), "turret-control")
   turret.Zone = zone
   turret.Position = Vector3(1, 0, 0)
-  val turretWeapon = turret.Weapons.values.head.Equipment.get.asInstanceOf[Tool]
+private val turretWeapon = turret.Weapons.values.head.Equipment.get.asInstanceOf[Tool]
 
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=3
+private val player1 = Player(avatar) //guid=3
   player1.Spawn()
   player1.Position = Vector3(2, 2, 2)
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
 
   guid.register(building, 1)
@@ -227,7 +227,7 @@ class FacilityTurretControlRestorationTest extends ActorTest {
   building.Zone = zone
   building.Amenities = turret
 
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //7 & 8
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //7 & 8
   guid.register(tool, 7)
   guid.register(tool.AmmoSlot.Box, 8)
 

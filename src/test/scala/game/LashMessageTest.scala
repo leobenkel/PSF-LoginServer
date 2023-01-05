@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class LashMessageTest extends Specification {
-  val string = hex"4f644a82e2c297a738a1ed0b01b886c0"
+private val string = hex"4f644a82e2c297a738a1ed0b01b886c0"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -9,8 +9,8 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class REKDataTest extends Specification {
-  val string_rek_held    = hex"17 86000000 27086C2350F800800000000000"
-  val string_rek_dropped = hex"17 BF000000 EC20311 85219 7AC1A 2D12 00 00 4E 4000000001800"
+private val string_rek_held    = hex"17 86000000 27086C2350F800800000000000"
+private val string_rek_dropped = hex"17 BF000000 EC20311 85219 7AC1A 2D12 00 00 4E 4000000001800"
 
   "REKData" should {
     "decode (held)" in {

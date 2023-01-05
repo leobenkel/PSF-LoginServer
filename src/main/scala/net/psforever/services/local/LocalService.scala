@@ -26,7 +26,7 @@ class LocalService(zone: Zone) extends Actor {
   )
   private[this] val log = org.log4s.getLogger
 
-  val LocalEvents = new GenericEventBus[LocalServiceResponse]
+private val LocalEvents = new GenericEventBus[LocalServiceResponse]
 
   def receive: Receive = {
     case Service.Join(channel) =>

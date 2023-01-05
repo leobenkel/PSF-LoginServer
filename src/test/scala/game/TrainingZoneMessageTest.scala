@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class TrainingZoneMessageTest extends Specification {
-  val string = hex"75 1300 0000"
+private val string = hex"75 1300 0000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

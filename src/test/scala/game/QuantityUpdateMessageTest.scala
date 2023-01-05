@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class QuantityUpdateMessageTest extends Specification {
-  val string = hex"3D 5300 7B000000"
+private val string = hex"3D 5300 7B000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

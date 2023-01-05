@@ -8,8 +8,8 @@ import net.psforever.types.ChatMessageType
 import scodec.bits._
 
 class ChatMsgTest extends Specification {
-  val string_local = hex"12 1A C000 83610062006300"
-  val string_tell  = hex"12 20 C180640065006600 83610062006300"
+private val string_local = hex"12 1A C000 83610062006300"
+private val string_tell  = hex"12 20 C180640065006600 83610062006300"
 
   "decode" in {
     PacketCoding.decodePacket(string_local).require match {

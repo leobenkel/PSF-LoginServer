@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class PlanetsideAttributeMessageTest extends Specification {
-  val string = hex"2c d9040458000000"
+private val string = hex"2c d9040458000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

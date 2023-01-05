@@ -14,7 +14,7 @@ class VehicleService(zone: Zone) extends Actor {
   private val turretUpgrade: ActorRef = context.actorOf(Props[TurretUpgrader](), s"${zone.id}-turret-upgrade-agent")
   private[this] val log               = org.log4s.getLogger
 
-  val VehicleEvents = new GenericEventBus[VehicleServiceResponse]
+private val VehicleEvents = new GenericEventBus[VehicleServiceResponse]
 
   def receive = {
     case Service.Join(channel) =>

@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class WeaponDelayFireMessageTest extends Specification {
-  val string = hex"88 A3140000"
+private val string = hex"88 A3140000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

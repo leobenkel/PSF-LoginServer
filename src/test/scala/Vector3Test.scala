@@ -3,7 +3,7 @@ import org.specs2.mutable._
 import net.psforever.types.{Angular, Vector3}
 
 class Vector3Test extends Specification {
-  val vec = Vector3(1.3f, -2.6f, 3.9f)
+private val vec = Vector3(1.3f, -2.6f, 3.9f)
 
   "Vector3" should {
     "construct" in {

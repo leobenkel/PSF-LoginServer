@@ -7,8 +7,8 @@ import org.specs2.mutable.Specification
 import scodec.bits._
 
 class CaptureFlagUpdateMessageTest extends Specification with Debug {
-  val stringZero = hex"c0 0a0000"
-  val stringOne = hex"c0 0a0014300018025281dd852830803000"
+private val stringZero = hex"c0 0a0000"
+private val stringOne = hex"c0 0a0014300018025281dd852830803000"
 
   "decode (zero)" in {
     PacketCoding.decodePacket(stringZero).require match {

@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class BeginZoningMessageTest extends Specification {
-  val string = hex"43" //yes, just the opcode
+private val string = hex"43" //yes, just the opcode
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

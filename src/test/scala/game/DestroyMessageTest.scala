@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class DestroyMessageTest extends Specification {
-  val string = hex"0C 74 09 74 09 00 00 06  35 3C FF D7 26 08"
+private val string = hex"0C 74 09 74 09 00 00 06  35 3C FF D7 26 08"
 
   "DestroyMessage" should {
     "decode" in {

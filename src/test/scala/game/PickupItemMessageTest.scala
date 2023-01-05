@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class PickupItemMessageTest extends Specification {
-  val string = hex"36 5600 4B00 00 0000"
+private val string = hex"36 5600 4B00 00 0000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

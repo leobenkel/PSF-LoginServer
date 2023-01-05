@@ -25,13 +25,13 @@ import net.psforever.services.avatar.{AvatarAction, AvatarServiceMessage}
 import scala.concurrent.duration._
 
 class PlayerControlHealTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val player2 =
+private val player2 =
     Player(Avatar(1, "TestCharacter2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=2
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1, player2)
@@ -48,7 +48,7 @@ class PlayerControlHealTest extends ActorTest {
   guid.register(player2.avatar.locker, 6)
   player2.Actor = system.actorOf(Props(classOf[PlayerControl], player2, null), "player2-control")
 
-  val tool = Tool(GlobalDefinitions.medicalapplicator) //guid=3 & 4
+private val tool = Tool(GlobalDefinitions.medicalapplicator) //guid=3 & 4
   guid.register(player1, 1)
   guid.register(player2, 2)
   guid.register(tool, 3)
@@ -110,11 +110,11 @@ class PlayerControlHealTest extends ActorTest {
   }
 }
 class PlayerControlHealSelfTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1)
@@ -127,7 +127,7 @@ class PlayerControlHealSelfTest extends ActorTest {
   guid.register(player1.avatar.locker, 5)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, null), "player1-control")
 
-  val tool = Tool(GlobalDefinitions.medicalapplicator) //guid=3 & 4
+private val tool = Tool(GlobalDefinitions.medicalapplicator) //guid=3 & 4
   guid.register(player1, 1)
   guid.register(tool, 3)
   guid.register(tool.AmmoSlot.Box, 4)
@@ -185,14 +185,14 @@ class PlayerControlHealSelfTest extends ActorTest {
 }
 
 class PlayerControlRepairTest extends ActorTest {
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=1
-  val player2 =
+private val player1 = Player(avatar) //guid=1
+private val player2 =
     Player(Avatar(1, "TestCharacter2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=2
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1, player2)
@@ -209,7 +209,7 @@ class PlayerControlRepairTest extends ActorTest {
   guid.register(player2.avatar.locker, 6)
   player2.Actor = system.actorOf(Props(classOf[PlayerControl], player2, null), "player2-control")
 
-  val tool = Tool(GlobalDefinitions.bank) //guid=3 & 4
+private val tool = Tool(GlobalDefinitions.bank) //guid=3 & 4
   guid.register(player1, 1)
   guid.register(player2, 2)
   guid.register(tool, 3)
@@ -282,12 +282,12 @@ class PlayerControlRepairTest extends ActorTest {
 }
 
 class PlayerControlRepairSelfTest extends ActorTest {
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=1
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val player1 = Player(avatar) //guid=1
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1)
@@ -300,7 +300,7 @@ class PlayerControlRepairSelfTest extends ActorTest {
   guid.register(player1.avatar.locker, 5)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, null), "player1-control")
 
-  val tool = Tool(GlobalDefinitions.bank) //guid=3 & 4
+private val tool = Tool(GlobalDefinitions.bank) //guid=3 & 4
   guid.register(player1, 1)
   guid.register(tool, 3)
   guid.register(tool.AmmoSlot.Box, 4)
@@ -358,14 +358,14 @@ class PlayerControlRepairSelfTest extends ActorTest {
 }
 
 class PlayerControlDamageTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val player2 =
+private val player2 =
     Player(Avatar(1, "TestCharacter2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=2
-  val avatarProbe = TestProbe()
-  val activityProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val avatarProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1, player2)
@@ -381,13 +381,13 @@ class PlayerControlDamageTest extends ActorTest {
   player2.Zone = zone
   player2.Spawn()
   guid.register(player2.avatar.locker, 6)
-  val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player2.Actor = system.actorOf(Props(classOf[PlayerControl], player2, avatarActor), name = "player2-control")
 
-  val tool         = Tool(GlobalDefinitions.suppressor) //guid 3 & 4
-  val projectile   = tool.Projectile
-  val player1Source = PlayerSource(player1)
-  val resolved = DamageInteraction(
+private val tool         = Tool(GlobalDefinitions.suppressor) //guid 3 & 4
+private val projectile   = tool.Projectile
+private val player1Source = PlayerSource(player1)
+private val resolved = DamageInteraction(
     SourceEntry(player2),
     ProjectileReason(
       DamageResolution.Hit,
@@ -404,7 +404,7 @@ class PlayerControlDamageTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   guid.register(player1, 1)
   guid.register(player2, 2)
   guid.register(tool, 3)
@@ -463,14 +463,14 @@ class PlayerControlDamageTest extends ActorTest {
 }
 
 class PlayerControlDeathStandingTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val player2 =
+private val player2 =
     Player(Avatar(1, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=2
-  val avatarProbe = TestProbe()
-  val activityProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val avatarProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1, player2)
@@ -486,13 +486,13 @@ class PlayerControlDeathStandingTest extends ActorTest {
   player2.Zone = zone
   player2.Spawn()
   guid.register(player2.avatar.locker, 6)
-  val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player2.Actor = system.actorOf(Props(classOf[PlayerControl], player2, avatarActor), name = "player2-control")
 
-  val tool         = Tool(GlobalDefinitions.suppressor) //guid 3 & 4
-  val projectile   = tool.Projectile
-  val player1Source = PlayerSource(player1)
-  val resolved = DamageInteraction(
+private val tool         = Tool(GlobalDefinitions.suppressor) //guid 3 & 4
+private val projectile   = tool.Projectile
+private val player1Source = PlayerSource(player1)
+private val resolved = DamageInteraction(
     SourceEntry(player2),
     ProjectileReason(
       DamageResolution.Hit,
@@ -509,7 +509,7 @@ class PlayerControlDeathStandingTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   guid.register(player1, 1)
   guid.register(player2, 2)
   guid.register(tool, 3)
@@ -607,14 +607,14 @@ class PlayerControlDeathStandingTest extends ActorTest {
 }
 
 class PlayerControlDeathSeatedTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val player2 =
+private val player2 =
     Player(Avatar(1, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=2
-  val avatarProbe = TestProbe()
-  val activityProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val avatarProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1, player2)
@@ -630,11 +630,11 @@ class PlayerControlDeathSeatedTest extends ActorTest {
   player2.Zone = zone
   player2.Spawn()
   guid.register(player2.avatar.locker, 6)
-  val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player2.Actor = system.actorOf(Props(classOf[PlayerControl], player2, avatarActor), name = "player2-control")
 
-  val tool         = Tool(GlobalDefinitions.suppressor) //guid 3 & 4
-  val vehicle = Vehicle(GlobalDefinitions.quadstealth) //guid=5
+private val tool         = Tool(GlobalDefinitions.suppressor) //guid 3 & 4
+private val vehicle = Vehicle(GlobalDefinitions.quadstealth) //guid=5
   vehicle.Faction = player2.Faction
 
   guid.register(player1, 1)
@@ -642,9 +642,9 @@ class PlayerControlDeathSeatedTest extends ActorTest {
   guid.register(tool, 3)
   guid.register(tool.AmmoSlot.Box, 4)
   guid.register(vehicle, 7)
-  val projectile   = tool.Projectile
-  val player1Source = PlayerSource(player1)
-  val resolved = DamageInteraction(
+private val projectile   = tool.Projectile
+private val player1Source = PlayerSource(player1)
+private val resolved = DamageInteraction(
     SourceEntry(player2),
     ProjectileReason(
       DamageResolution.Hit,
@@ -661,7 +661,7 @@ class PlayerControlDeathSeatedTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   expectNoMessage(200 milliseconds)
 
   "PlayerControl" should {
@@ -769,12 +769,12 @@ class PlayerControlDeathSeatedTest extends ActorTest {
 }
 
 class PlayerControlInteractWithWaterTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val pool = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
-  val zone = new Zone(
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val pool = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
+private val zone = new Zone(
     id = "test",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -792,7 +792,7 @@ class PlayerControlInteractWithWaterTest extends ActorTest {
   player1.Zone = zone
   player1.Spawn()
   guid.register(player1.avatar.locker, 5)
-  val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, avatarActor), "player1-control")
 
   guid.register(player1, 1)
@@ -823,12 +823,12 @@ class PlayerControlInteractWithWaterTest extends ActorTest {
 }
 
 class PlayerControlStopInteractWithWaterTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val pool = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
-  val zone = new Zone(
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val pool = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
+private val zone = new Zone(
     id = "test",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -846,7 +846,7 @@ class PlayerControlStopInteractWithWaterTest extends ActorTest {
   player1.Zone = zone
   player1.Spawn()
   guid.register(player1.avatar.locker, 5)
-  val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, avatarActor), "player1-control")
 
   guid.register(player1, 1)
@@ -888,12 +888,12 @@ class PlayerControlStopInteractWithWaterTest extends ActorTest {
 }
 
 class PlayerControlInteractWithLavaTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val pool = Pool(EnvironmentAttribute.Lava, DeepSquare(-1, 10, 10, 0, 0))
-  val zone = new Zone(
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val pool = Pool(EnvironmentAttribute.Lava, DeepSquare(-1, 10, 10, 0, 0))
+private val zone = new Zone(
     id = "test-map",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -912,7 +912,7 @@ class PlayerControlInteractWithLavaTest extends ActorTest {
   player1.Zone = zone
   player1.Spawn()
   guid.register(player1.avatar.locker, 5)
-  val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, avatarActor), "player1-control")
 
   guid.register(player1, 1)
@@ -950,12 +950,12 @@ class PlayerControlInteractWithLavaTest extends ActorTest {
 }
 
 class PlayerControlInteractWithDeathTest extends ActorTest {
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-  val avatarProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(15))
-  val pool = Pool(EnvironmentAttribute.Death, DeepSquare(-1, 10, 10, 0, 0))
-  val zone = new Zone(
+private val avatarProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(15))
+private val pool = Pool(EnvironmentAttribute.Death, DeepSquare(-1, 10, 10, 0, 0))
+private val zone = new Zone(
     id = "test-map",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -974,7 +974,7 @@ class PlayerControlInteractWithDeathTest extends ActorTest {
   player1.Zone = zone
   player1.Spawn()
   guid.register(player1.avatar.locker, 5)
-  val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, avatarActor), "player1-control")
 
   guid.register(player1, 1)

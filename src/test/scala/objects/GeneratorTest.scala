@@ -51,40 +51,40 @@ class GeneratorControlConstructTest extends ActorTest {
 }
 
 class GeneratorControlDamageTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(5))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(5))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
-  val activityProbe = TestProbe()
+private val activityProbe = TestProbe()
   zone.Activity = activityProbe.ref
 
-  val gen = Generator(GeneratorTest.generator_definition) //guid=2
+private val gen = Generator(GeneratorTest.generator_definition) //guid=2
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
 
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Position = Vector3(14, 0, 0)                                                                     //<14m from generator; dies
   player1.Spawn()
 
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
   building.Position = Vector3(1, 0, 0)
   building.Zone = zone
   building.Amenities = gen
   building.PlayersInSOI = List(player1)
-  val buildingProbe = TestProbe()
+private val buildingProbe = TestProbe()
   building.Actor = buildingProbe.ref
 
   guid.register(building, 1)
   guid.register(gen, 2)
   guid.register(player1, 3)
 
-  val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
-  val projectile = weapon.Projectile
-  val resolved = DamageInteraction(
+private val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
+private val projectile = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(gen),
     ProjectileReason(
       DamageResolution.Hit,
@@ -101,7 +101,7 @@ class GeneratorControlDamageTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   expectNoMessage(200 milliseconds)
   //we're not testing that the math is correct
 
@@ -134,40 +134,40 @@ class GeneratorControlDamageTest extends ActorTest {
 }
 
 class GeneratorControlCriticalTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(5))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(5))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
-  val activityProbe = TestProbe()
+private val activityProbe = TestProbe()
   zone.Activity = activityProbe.ref
 
-  val gen = Generator(GeneratorTest.generator_definition) //guid=2
+private val gen = Generator(GeneratorTest.generator_definition) //guid=2
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
 
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Position = Vector3(14, 0, 0)                                                                     //<14m from generator; dies
   player1.Spawn()
 
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
   building.Position = Vector3(1, 0, 0)
   building.Zone = zone
   building.Amenities = gen
   building.PlayersInSOI = List(player1)
-  val buildingProbe = TestProbe()
+private val buildingProbe = TestProbe()
   building.Actor = buildingProbe.ref
 
   guid.register(building, 1)
   guid.register(gen, 2)
   guid.register(player1, 3)
 
-  val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
-  val projectile = weapon.Projectile
-  val resolved = DamageInteraction(
+private val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
+private val projectile = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(gen),
     ProjectileReason(
       DamageResolution.Hit,
@@ -184,8 +184,8 @@ class GeneratorControlCriticalTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
-  val halfHealth    = gen.Definition.MaxHealth / 2
+private val applyDamageTo = resolved.calculate()
+private val halfHealth    = gen.Definition.MaxHealth / 2
   expectNoMessage(200 milliseconds)
   //we're not testing that the math is correct
 
@@ -219,41 +219,41 @@ class GeneratorControlCriticalTest extends ActorTest {
 }
 
 class GeneratorControlDestroyedTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(5))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(5))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
-  val activityProbe = TestProbe()
+private val activityProbe = TestProbe()
   zone.Activity = activityProbe.ref
 
-  val gen = Generator(GeneratorTest.generator_definition) //guid=2
+private val gen = Generator(GeneratorTest.generator_definition) //guid=2
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
 
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Position = Vector3(14, 0, 0)                                                                     //<14m from generator; dies
   player1.Spawn()
   player1.Actor = TestProbe().ref
 
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
   building.Position = Vector3(1, 0, 0)
   building.Zone = zone
   building.Amenities = gen
   building.PlayersInSOI = List(player1)
-  val buildingProbe = TestProbe()
+private val buildingProbe = TestProbe()
   building.Actor = buildingProbe.ref
 
   guid.register(building, 1)
   guid.register(gen, 2)
   guid.register(player1, 3)
 
-  val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
-  val projectile = weapon.Projectile
-  val resolved = DamageInteraction(
+private val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
+private val projectile = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(gen),
     ProjectileReason(
       DamageResolution.Hit,
@@ -270,7 +270,7 @@ class GeneratorControlDestroyedTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   expectNoMessage(200 milliseconds)
   //we're not testing that the math is correct
 
@@ -338,37 +338,37 @@ class GeneratorControlDestroyedTest extends ActorTest {
 }
 
 class GeneratorControlKillsTest extends ActorTest {
-  val gen = Generator(GeneratorTest.generator_definition) //guid=2
+private val gen = Generator(GeneratorTest.generator_definition) //guid=2
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
 
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Position = Vector3(14, 0, 0)                                                                     //<14m from generator; dies
   player1.Spawn()
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
-  val player2 =
+private val player2 =
     Player(Avatar(0, "TestCharacter2", PlanetSideEmpire.TR, CharacterSex.Female, 1, CharacterVoice.Mute)) //guid=4
   player2.Position = Vector3(25, 0, 0)                                                                       //>14m from generator; lives
   player2.Spawn()
-  val player2Probe = TestProbe()
+private val player2Probe = TestProbe()
   player2.Actor = player2Probe.ref
 
-  val avatarProbe = TestProbe()
-  val activityProbe = TestProbe()
-  val guid = new NumberPoolHub(new MaxNumberSource(5))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val avatarProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val guid = new NumberPoolHub(new MaxNumberSource(5))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1, player2)
     override def AvatarEvents = avatarProbe.ref
     override def Activity = activityProbe.ref
   }
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
   building.Position = Vector3(1, 0, 0)
   building.Amenities = gen
-  val buildingProbe = TestProbe()
+private val buildingProbe = TestProbe()
   building.Actor = buildingProbe.ref
 
   guid.register(building, 1)
@@ -378,9 +378,9 @@ class GeneratorControlKillsTest extends ActorTest {
   zone.blockMap.addTo(player1)
   zone.blockMap.addTo(player2)
 
-  val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
-  val projectile = weapon.Projectile
-  val resolved = DamageInteraction(
+private val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
+private val projectile = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(gen),
     ProjectileReason(
       DamageResolution.Hit,
@@ -397,7 +397,7 @@ class GeneratorControlKillsTest extends ActorTest {
     ),
     Vector3(2, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   expectNoMessage(200 milliseconds)
   //we're not testing that the math is correct
 
@@ -474,15 +474,15 @@ class GeneratorControlKillsTest extends ActorTest {
 }
 
 class GeneratorControlNotDestroyTwice extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
 
     GUID(guid)
   }
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
-  val gen      = Generator(GeneratorTest.generator_definition)                        //guid=2
-  val player1 =
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val gen      = Generator(GeneratorTest.generator_definition)                        //guid=2
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Spawn()
   guid.register(building, 1)
@@ -493,16 +493,16 @@ class GeneratorControlNotDestroyTwice extends ActorTest {
   building.Amenities = gen
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
-  val activityProbe = TestProbe()
-  val avatarProbe   = TestProbe()
-  val buildingProbe = TestProbe()
+private val activityProbe = TestProbe()
+private val avatarProbe   = TestProbe()
+private val buildingProbe = TestProbe()
   zone.Activity = activityProbe.ref
   zone.AvatarEvents = avatarProbe.ref
   building.Actor = buildingProbe.ref
 
-  val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
-  val projectile = weapon.Projectile
-  val resolved = DamageInteraction(
+private val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
+private val projectile = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(gen),
     ProjectileReason(
       DamageResolution.Hit,
@@ -519,7 +519,7 @@ class GeneratorControlNotDestroyTwice extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   expectNoMessage(200 milliseconds)
   //we're not testing that the math is correct
 
@@ -559,42 +559,42 @@ class GeneratorControlNotDestroyTwice extends ActorTest {
 }
 
 class GeneratorControlNotDamageIfExplodingTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(5))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(5))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
-  val activityProbe = TestProbe()
+private val activityProbe = TestProbe()
   zone.Activity = activityProbe.ref
 
-  val gen = Generator(GeneratorTest.generator_definition) //guid=2
+private val gen = Generator(GeneratorTest.generator_definition) //guid=2
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
 
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Position = Vector3(14, 0, 0)                                                                     //<14m from generator; dies
   player1.Spawn()
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
 
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
   building.Position = Vector3(1, 0, 0)
   building.Zone = zone
   building.Amenities = gen
   building.PlayersInSOI = List(player1)
-  val buildingProbe = TestProbe()
+private val buildingProbe = TestProbe()
   building.Actor = buildingProbe.ref
 
   guid.register(building, 1)
   guid.register(gen, 2)
   guid.register(player1, 3)
 
-  val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
-  val projectile = weapon.Projectile
-  val resolved = DamageInteraction(
+private val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
+private val projectile = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(gen),
     ProjectileReason(
       DamageResolution.Hit,
@@ -611,7 +611,7 @@ class GeneratorControlNotDamageIfExplodingTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
   expectNoMessage(200 milliseconds)
   //we're not testing that the math is correct
 
@@ -658,42 +658,42 @@ class GeneratorControlNotDamageIfExplodingTest extends ActorTest {
 }
 
 class GeneratorControlNotRepairIfExplodingTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(5))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(5))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
-  val activityProbe = TestProbe()
+private val activityProbe = TestProbe()
   zone.Activity = activityProbe.ref
 
-  val gen = Generator(GeneratorTest.generator_definition) //guid=2
+private val gen = Generator(GeneratorTest.generator_definition) //guid=2
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
 
-  val player1 =
+private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=3
   player1.Position = Vector3(14, 0, 0)                                                                     //<14m from generator; dies
   player1.Spawn()
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
 
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
   building.Position = Vector3(1, 0, 0)
   building.Zone = zone
   building.Amenities = gen
   building.PlayersInSOI = List(player1)
-  val buildingProbe = TestProbe()
+private val buildingProbe = TestProbe()
   building.Actor = buildingProbe.ref
 
   guid.register(building, 1)
   guid.register(gen, 2)
   guid.register(player1, 3)
 
-  val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
-  val projectile = weapon.Projectile
-  val resolved = DamageInteraction(
+private val weapon     = Tool(GlobalDefinitions.phoenix) //decimator
+private val projectile = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(gen),
     ProjectileReason(
       DamageResolution.Hit,
@@ -710,9 +710,9 @@ class GeneratorControlNotRepairIfExplodingTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
 
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
   guid.register(tool, 4)
   guid.register(tool.AmmoSlot.Box, 5)
   expectNoMessage(200 milliseconds)
@@ -761,37 +761,37 @@ class GeneratorControlNotRepairIfExplodingTest extends ActorTest {
 }
 
 class GeneratorControlRepairPastRestorePoint extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(5))
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val guid = new NumberPoolHub(new MaxNumberSource(5))
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-  val avatarProbe = TestProbe()
+private val avatarProbe = TestProbe()
   zone.AvatarEvents = avatarProbe.ref
-  val activityProbe = TestProbe()
+private val activityProbe = TestProbe()
   zone.Activity = activityProbe.ref
 
-  val gen = Generator(GeneratorTest.generator_definition) //guid=2
+private val gen = Generator(GeneratorTest.generator_definition) //guid=2
   gen.Position = Vector3(1, 0, 0)
   gen.Actor = system.actorOf(Props(classOf[GeneratorControl], gen), "generator-control")
 
-  val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val avatar = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
     .copy(certifications = Set(Certification.Engineering))
-  val player1 = Player(avatar) //guid=3
+private val player1 = Player(avatar) //guid=3
   player1.Position = Vector3(14, 0, 0)                                                                     //<14m from generator; dies
   player1.Spawn()
-  val player1Probe = TestProbe()
+private val player1Probe = TestProbe()
   player1.Actor = player1Probe.ref
 
-  val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
+private val building = Building("test-building", 1, 1, zone, StructureType.Facility) //guid=1
   building.Position = Vector3(1, 0, 0)
   building.Zone = zone
   building.Amenities = gen
   building.PlayersInSOI = List(player1)
-  val buildingProbe = TestProbe()
+private val buildingProbe = TestProbe()
   building.Actor = buildingProbe.ref
 
-  val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
+private val tool = Tool(GlobalDefinitions.nano_dispenser) //4 & 5
 
   guid.register(building, 1)
   guid.register(gen, 2)

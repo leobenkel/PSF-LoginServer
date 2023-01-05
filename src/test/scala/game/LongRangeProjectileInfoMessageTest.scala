@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class LongRangeProjectileInfoMessageTest extends Specification {
-  val string = hex"c7 d214 006c485fd9c307ed30790f84a0"
+private val string = hex"c7 d214 006c485fd9c307ed30790f84a0"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -21,10 +21,10 @@ import scala.concurrent.duration.DurationInt
 /**
   * Responsible for handling capture flag related lifecycles
   */
-class CaptureFlagManager(zone: Zone) extends Actor{
+class CaptureFlagManager(zone: Zone) extends Actor {
   private[this] val log = org.log4s.getLogger(self.path.name)
 
-private var galaxyService: ActorRef = ActorRef.noSender
+  private var galaxyService: ActorRef = ActorRef.noSender
 
   private var mapUpdateTick: Cancellable = Default.Cancellable
 
@@ -38,7 +38,8 @@ private var galaxyService: ActorRef = ActorRef.noSender
     if (mapUpdateTick.isCancelled) {
       // Start sending map updates periodically
       import scala.concurrent.ExecutionContext.Implicits.global
-      mapUpdateTick = context.system.scheduler.scheduleAtFixedRate(0 seconds, 1 second, self, CaptureFlagManager.MapUpdate())
+      mapUpdateTick =
+        context.system.scheduler.scheduleAtFixedRate(0 seconds, 1 second, self, CaptureFlagManager.MapUpdate())
     }
   }
 
@@ -54,7 +55,7 @@ private var galaxyService: ActorRef = ActorRef.noSender
     }
   }
 
-  val serviceManager = ServiceManager.serviceManager
+  private val serviceManager = ServiceManager.serviceManager
   serviceManager ! Lookup("galaxy")
 
   def receive: Receive = {
@@ -77,11 +78,11 @@ private var galaxyService: ActorRef = ActorRef.noSender
       galaxyService ! GalaxyServiceMessage(GalaxyAction.FlagMapUpdate(CaptureFlagUpdateMessage(zone.Number, flagInfo)))
 
     case CaptureFlagManager.SpawnCaptureFlag(capture_terminal, target, hackingFaction) =>
-      val zone = capture_terminal.Zone
+      val zone   = capture_terminal.Zone
       val socket = capture_terminal.Owner.asInstanceOf[Building].GetFlagSocket.get
 
       // Override CC message when looked at
-        zone.LocalEvents ! LocalServiceMessage(
+      zone.LocalEvents ! LocalServiceMessage(
         zone.id,
         LocalAction.SendGenericObjectActionMessage(
           PlanetSideGUID(-1),
@@ -103,14 +104,16 @@ private var galaxyService: ActorRef = ActorRef.noSender
       socket.captureFlag = flag
       TrackFlag(flag)
 
-      TaskWorkflow.execute(WorldSession.CallBackForTask(
-        GUIDTask.registerObject(socket.Zone.GUID, flag),
-        socket.Zone.LocalEvents,
-        LocalServiceMessage(
-          socket.Zone.id,
-          LocalAction.LluSpawned(PlanetSideGUID(-1), flag)
+      TaskWorkflow.execute(
+        WorldSession.CallBackForTask(
+          GUIDTask.registerObject(socket.Zone.GUID, flag),
+          socket.Zone.LocalEvents,
+          LocalServiceMessage(
+            socket.Zone.id,
+            LocalAction.LluSpawned(PlanetSideGUID(-1), flag)
+          )
         )
-      ))
+      )
 
       // Broadcast chat message for LLU spawn
       val owner = flag.Owner.asInstanceOf[Building]
@@ -118,10 +121,22 @@ private var galaxyService: ActorRef = ActorRef.noSender
 
     case CaptureFlagManager.Captured(flag: CaptureFlag) =>
       // Trigger Install sound
-      flag.Zone.LocalEvents ! LocalServiceMessage(flag.Zone.id, LocalAction.TriggerSound(PlanetSideGUID(-1), TriggeredSound.LLUInstall, flag.Target.CaptureTerminal.get.Position, 20, 0.8000001f))
+      flag.Zone.LocalEvents ! LocalServiceMessage(
+        flag.Zone.id,
+        LocalAction.TriggerSound(
+          PlanetSideGUID(-1),
+          TriggeredSound.LLUInstall,
+          flag.Target.CaptureTerminal.get.Position,
+          20,
+          0.8000001f
+        )
+      )
 
       // Broadcast capture chat message
-      ChatBroadcast(flag.Zone, CaptureFlagChatMessageStrings.CTF_Success(flag.Carrier.get, flag.Owner.asInstanceOf[Building].Name))
+      ChatBroadcast(
+        flag.Zone,
+        CaptureFlagChatMessageStrings.CTF_Success(flag.Carrier.get, flag.Owner.asInstanceOf[Building].Name)
+      )
 
       // Despawn flag
       HandleFlagDespawn(flag)
@@ -133,12 +148,12 @@ private var galaxyService: ActorRef = ActorRef.noSender
             flag.Zone,
             CaptureFlagChatMessageStrings.CTF_Failed_SourceResecured(flag.Owner.asInstanceOf[Building])
           )
-        case CaptureFlagLostReasonEnum.TimedOut  =>
+        case CaptureFlagLostReasonEnum.TimedOut =>
           ChatBroadcast(
             flag.Zone,
             CaptureFlagChatMessageStrings.CTF_Failed_TimedOut(flag.Owner.asInstanceOf[Building].Name, flag.Target)
           )
-        case CaptureFlagLostReasonEnum.Ended     => ; /* no message */
+        case CaptureFlagLostReasonEnum.Ended => ; /* no message */
       }
       HandleFlagDespawn(flag)
 
@@ -147,10 +162,20 @@ private var galaxyService: ActorRef = ActorRef.noSender
 
       flag.Carrier = Some(player)
 
-      continent.LocalEvents ! LocalServiceMessage(continent.id, LocalAction.SendPacket(ObjectAttachMessage(player.GUID, flag.GUID, 252)))
-      continent.LocalEvents ! LocalServiceMessage(continent.id, LocalAction.TriggerSound(PlanetSideGUID(-1), TriggeredSound.LLUPickup, player.Position, 15, volume = 0.8f))
+      continent.LocalEvents ! LocalServiceMessage(
+        continent.id,
+        LocalAction.SendPacket(ObjectAttachMessage(player.GUID, flag.GUID, 252))
+      )
+      continent.LocalEvents ! LocalServiceMessage(
+        continent.id,
+        LocalAction.TriggerSound(PlanetSideGUID(-1), TriggeredSound.LLUPickup, player.Position, 15, volume = 0.8f)
+      )
 
-      ChatBroadcast(flag.Zone, CaptureFlagChatMessageStrings.CTF_FlagPickedUp(player, flag.Owner.asInstanceOf[Building].Name), fanfare = false)
+      ChatBroadcast(
+        flag.Zone,
+        CaptureFlagChatMessageStrings.CTF_FlagPickedUp(player, flag.Owner.asInstanceOf[Building].Name),
+        fanfare = false
+      )
 
     case CaptureFlagManager.DropFlag(flag: CaptureFlag) =>
       flag.Carrier match {
@@ -162,10 +187,17 @@ private var galaxyService: ActorRef = ActorRef.noSender
           flag.Carrier = None
 
           // Send drop packet
-          flag.Zone.LocalEvents ! LocalServiceMessage(flag.Zone.id, LocalAction.SendPacket(ObjectDetachMessage(player.GUID, flag.GUID, player.Position, 0, 0, 0)))
+          flag.Zone.LocalEvents ! LocalServiceMessage(
+            flag.Zone.id,
+            LocalAction.SendPacket(ObjectDetachMessage(player.GUID, flag.GUID, player.Position, 0, 0, 0))
+          )
 
           // Send dropped chat message
-          ChatBroadcast(flag.Zone, CaptureFlagChatMessageStrings.CTF_FlagDropped(player, flag.Owner.asInstanceOf[Building].Name), fanfare = false)
+          ChatBroadcast(
+            flag.Zone,
+            CaptureFlagChatMessageStrings.CTF_FlagDropped(player, flag.Owner.asInstanceOf[Building].Name),
+            fanfare = false
+          )
 
         case None =>
           log.warn("Tried to drop flag but flag has no carrier")
@@ -182,7 +214,7 @@ private var galaxyService: ActorRef = ActorRef.noSender
     // Unregister LLU from clients,
     flag.Zone.LocalEvents ! LocalServiceMessage(flag.Zone.id, LocalAction.LluDespawned(PlanetSideGUID(-1), flag))
     // Then unregister it from the GUID pool
-    TaskWorkflow.execute(GUIDTask.unregisterObject(flag.Zone.GUID,flag))
+    TaskWorkflow.execute(GUIDTask.unregisterObject(flag.Zone.GUID, flag))
   }
 
   private def ChatBroadcast(zone: Zone, message: String, fanfare: Boolean = true): Unit = {
@@ -203,7 +235,11 @@ private var galaxyService: ActorRef = ActorRef.noSender
 }
 
 object CaptureFlagManager {
-  final case class SpawnCaptureFlag(capture_terminal: CaptureTerminal, target: Building, hackingFaction: PlanetSideEmpire.Value)
+  final case class SpawnCaptureFlag(
+      capture_terminal: CaptureTerminal,
+      target: Building,
+      hackingFaction: PlanetSideEmpire.Value
+  )
   final case class PickupFlag(flag: CaptureFlag, player: Player)
   final case class DropFlag(flag: CaptureFlag)
   final case class Captured(flag: CaptureFlag)
@@ -223,30 +259,33 @@ object CaptureFlagChatMessageStrings {
 
   // @CTF_Success=%1 captured %2's LLU for the %3!
   /** {player.Name} captured {owner_name}'s LLU for the {player.Faction}! */
-  def CTF_Success(player: Player, owner_name: String): String = s"@CTF_Success^${player.Name}~^@$owner_name~^@${GetFactionString(player.Faction)}~"
+  def CTF_Success(player: Player, owner_name: String): String =
+    s"@CTF_Success^${player.Name}~^@$owner_name~^@${GetFactionString(player.Faction)}~"
 
   // @CTF_Failed_TimedOut=The %1 failed to deliver %2's LLU to %3 in time!\nHack canceled!
   /** The {target.Faction} failed to deliver {owner_name}'s LLU to {target.Name} in time!\nHack canceled! */
-  def CTF_Failed_TimedOut(owner_name: String, target: Building): String = s"@CTF_Failed_TimedOut^@${GetFactionString(target.Faction)}~^@$owner_name~^@${target.Name}~"
+  def CTF_Failed_TimedOut(owner_name: String, target: Building): String =
+    s"@CTF_Failed_TimedOut^@${GetFactionString(target.Faction)}~^@$owner_name~^@${target.Name}~"
 
   // @CTF_Failed_SourceResecured=The %1 resecured %2!\nThe LLU was lost!
   /** The {owner.Faction} resecured {owner.Name}!\nThe LLU was lost! */
-  def CTF_Failed_SourceResecured(owner: Building): String = s"@CTF_Failed_SourceResecured^@${CaptureFlagChatMessageStrings.GetFactionString(owner.Faction)}~^@${owner.Name}~"
-
-
+  def CTF_Failed_SourceResecured(owner: Building): String =
+    s"@CTF_Failed_SourceResecured^@${CaptureFlagChatMessageStrings.GetFactionString(owner.Faction)}~^@${owner.Name}~"
 
   // @CTF_FlagSpawned=%1 %2 has spawned a LLU.\nIt must be taken to %3 %4's Control Console within %5 minutes or the hack will fail!
   /** {facilityType} {facilityName} has spawned a LLU.\nIt must be taken to {targetFacilityType} {targetFacilityName}'s Control Console within 15 minutes or the hack will fail! */
-  def CTF_FlagSpawned(owner: Building, target: Building): String = s"@CTF_FlagSpawned^@${owner.Definition.Name}~^@${owner.Name}~^@${target.Definition.Name}~^@${target.Name}~^15~"
-
+  def CTF_FlagSpawned(owner: Building, target: Building): String =
+    s"@CTF_FlagSpawned^@${owner.Definition.Name}~^@${owner.Name}~^@${target.Definition.Name}~^@${target.Name}~^15~"
 
   // @CTF_FlagPickedUp=%1 of the %2 picked up %3's LLU
   /** {playerName} of the {faction} picked up {facilityName}'s LLU */
-  def CTF_FlagPickedUp(player: Player, owner_name: String): String = s"@CTF_FlagPickedUp^${player.Name}~^@${CaptureFlagChatMessageStrings.GetFactionString(player.Faction)}~^@$owner_name~"
+  def CTF_FlagPickedUp(player: Player, owner_name: String): String =
+    s"@CTF_FlagPickedUp^${player.Name}~^@${CaptureFlagChatMessageStrings.GetFactionString(player.Faction)}~^@$owner_name~"
 
   // @CTF_FlagDropped=%1 of the %2 dropped %3's LLU
   /** {playerName} of the {faction} dropped {facilityName}'s LLU */
-  def CTF_FlagDropped(player: Player, owner_name: String): String = s"@CTF_FlagDropped^${player.Name}~^@${CaptureFlagChatMessageStrings.GetFactionString(player.Faction)}~^@$owner_name~"
+  def CTF_FlagDropped(player: Player, owner_name: String): String =
+    s"@CTF_FlagDropped^${player.Name}~^@${CaptureFlagChatMessageStrings.GetFactionString(player.Faction)}~^@$owner_name~"
 
   // todo: make private
   private def GetFactionString(faction: PlanetSideEmpire.Value): String = {
@@ -254,7 +293,7 @@ object CaptureFlagChatMessageStrings {
       case PlanetSideEmpire.TR => "TerranRepublic"
       case PlanetSideEmpire.NC => "NewConglomerate"
       case PlanetSideEmpire.VS => "VanuSovereigncy" // Yes, this is wrong. It is like that in packet captures.
-      case _                   => "TerranRepublic" //todo: BO message?
+      case _                   => "TerranRepublic"  //todo: BO message?
     }
   }
 }

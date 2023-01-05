@@ -46,7 +46,7 @@ final case class SuicideReason()
 
 object SuicideReason {
   /** one swift blow that guarantees death */
-  val damageProperties = new DamageProperties {
+private val damageProperties = new DamageProperties {
     Damage0 = 99999
     DamageToHealthOnly = true
     DamageToVehicleOnly = true
@@ -54,7 +54,7 @@ object SuicideReason {
   }
 
   /** damage0, no resisting, quick and simple */
-  val drm = new DamageResistanceModel {
+private val drm = new DamageResistanceModel {
     DamageUsing = DamageCalculations.AgainstExoSuit
     ResistUsing = NoResistanceSelection
     Model = SimpleResolutions.calculate

@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class FrameVehicleStateMessageTest extends Specification {
-  val string = hex"1c b101 087778ad7e62609ddf771beee0647fc6001a0000000000000000"
+private val string = hex"1c b101 087778ad7e62609ddf771beee0647fc6001a0000000000000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

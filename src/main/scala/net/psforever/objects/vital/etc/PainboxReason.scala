@@ -29,7 +29,7 @@ final case class PainboxReason(entity: Painbox) extends DamageReason {
 
 object PainboxReason {
   /** damage0, no resisting, quick and simple */
-  val drm = new DamageResistanceModel {
+private val drm = new DamageResistanceModel {
     DamageUsing = DamageCalculations.AgainstExoSuit
     ResistUsing = NoResistanceSelection
     Model = SimpleResolutions.calculate

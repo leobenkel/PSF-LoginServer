@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class KeepAliveMessageTest extends Specification {
-  val string = hex"BA 0000"
+private val string = hex"BA 0000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

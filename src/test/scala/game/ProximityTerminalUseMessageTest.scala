@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class ProximityTerminalUseMessageTest extends Specification {
-  val string = hex"C3 4B00 A700 80"
+private val string = hex"C3 4B00 A700 80"
   "decode" in {
     PacketCoding.decodePacket(string).require match {
       case ProximityTerminalUseMessage(player_guid, object_guid, unk) =>

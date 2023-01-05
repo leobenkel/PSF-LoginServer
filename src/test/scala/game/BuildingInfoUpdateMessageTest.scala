@@ -8,7 +8,7 @@ import net.psforever.types.{CavernBenefit, LatticeBenefit, PlanetSideEmpire, Pla
 import scodec.bits._
 
 class BuildingInfoUpdateMessageTest extends Specification {
-  val string = hex"a0 04 00 09 00 16 00 00 00 00 80 00 00 00 17 00  00 00 00 00 00 40"
+private val string = hex"a0 04 00 09 00 16 00 00 00 00 80 00 00 00 17 00  00 00 00 00 00 40"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

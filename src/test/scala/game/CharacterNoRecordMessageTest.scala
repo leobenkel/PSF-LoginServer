@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class CharacterNoRecordMessageTest extends Specification {
-  val string = hex"13 00400000" //we have no record of this packet, so here's something fake that works
+private val string = hex"13 00400000" //we have no record of this packet, so here's something fake that works
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -9,10 +9,10 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class WeaponDataTest extends Specification {
-  val string_lasher_held    = hex"17 BB000000 1688569D90B83 880000008082077036032000000"
-  val string_punisher_held  = hex"17 F6000000 0A06612331083 88000000810381383E03200003793287C0E400000"
-  val string_lasher_dropped = hex"17 F4000000 D69020C 99299 85D0A 5F10 00 00 20 400000004041038819018000000"
-  val string_punisher_dropped =
+private val string_lasher_held    = hex"17 BB000000 1688569D90B83 880000008082077036032000000"
+private val string_punisher_held  = hex"17 F6000000 0A06612331083 88000000810381383E03200003793287C0E400000"
+private val string_lasher_dropped = hex"17 F4000000 D69020C 99299 85D0A 5F10 00 00 20 400000004041038819018000000"
+private val string_punisher_dropped =
     hex"17 2F010000 E12A20B 915A9 28C9A 1412 00 00 33 200000004081C1901B01800001BCB5C2E07000000"
 
   "WeaponData" should {

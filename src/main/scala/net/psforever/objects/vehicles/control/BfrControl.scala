@@ -640,7 +640,7 @@ object BfrControl {
 
   private case object VehicleExplosion
 
-  val dimorphics: List[EquipmentHandiness] = {
+private val dimorphics: List[EquipmentHandiness] = {
     import GlobalDefinitions._
     List(
       EquipmentHandiness(aphelion_armor_siphon, aphelion_armor_siphon_left, aphelion_armor_siphon_right),

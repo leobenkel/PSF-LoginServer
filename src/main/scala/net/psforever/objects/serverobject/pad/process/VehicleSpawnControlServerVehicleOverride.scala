@@ -22,7 +22,7 @@ import scala.concurrent.duration._
 class VehicleSpawnControlServerVehicleOverride(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
   def LogId = "-overrider"
 
-  val driverControl =
+private val driverControl =
     context.actorOf(Props(classOf[VehicleSpawnControlDriverControl], pad), s"${context.parent.path.name}-driver")
 
   def receive: Receive = {

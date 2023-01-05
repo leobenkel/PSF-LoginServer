@@ -79,7 +79,7 @@ class ZoneActor(context: ActorContext[ZoneActor.Command], zone: Zone)
   import ctx._
 
   private[this] val log           = org.log4s.getLogger
-  val players: ListBuffer[Player] = ListBuffer()
+private val players: ListBuffer[Player] = ListBuffer()
 
   zone.actor = context.self
   zone.init(context.toClassic)

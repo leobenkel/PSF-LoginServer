@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class CharacterInfoMessageTest extends Specification {
-  val string = hex"14 0F000000 10270000C1D87A024B00265CB08000"
+private val string = hex"14 0F000000 10270000C1D87A024B00265CB08000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

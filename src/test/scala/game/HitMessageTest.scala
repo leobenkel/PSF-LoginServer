@@ -8,8 +8,8 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class HitMessageTest extends Specification {
-  val string_hitgeneric = hex"09 09E9A70200"
-  val string_hitobj     = hex"09 99292705F4B1FB9514585F08BDD3D454CC5EE80300"
+private val string_hitgeneric = hex"09 09E9A70200"
+private val string_hitobj     = hex"09 99292705F4B1FB9514585F08BDD3D454CC5EE80300"
 
   "decode (generic)" in {
     PacketCoding.decodePacket(string_hitgeneric).require match {

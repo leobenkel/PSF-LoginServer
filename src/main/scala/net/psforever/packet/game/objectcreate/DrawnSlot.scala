@@ -12,12 +12,12 @@ package net.psforever.packet.game.objectcreate
 object DrawnSlot extends Enumeration {
   type Type = Value
 
-  val Pistol1 = Value(0)
-  val Pistol2 = Value(1)
+  val Pistol1         = Value(0)
+  private val Pistol2 = Value(1)
   val Rifle1  = Value(2)
-  val Rifle2  = Value(3)
-  val Melee   = Value(4)
-  val None    = Value(7)
+  private val Rifle2  = Value(3)
+  private val Melee   = Value(4)
+  val None            = Value(7)
 
   import net.psforever.packet.PacketHelpers
   import scodec.codecs._

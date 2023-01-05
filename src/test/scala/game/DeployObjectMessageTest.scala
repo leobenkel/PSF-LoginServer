@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class DeployObjectMessageTest extends Specification {
-  val string = hex"5d 740b e8030000 a644b 6e3c6 7e18 00 00 3f 01000000"
+private val string = hex"5d 740b e8030000 a644b 6e3c6 7e18 00 00 3f 01000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

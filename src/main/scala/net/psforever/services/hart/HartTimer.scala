@@ -20,7 +20,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
   */
 class HartTimer(zone: Zone) extends Actor {
   /** since the system is zone-locked, caching this value is fine */
-  val zoneId = zone.id
+private val zoneId = zone.id
   /** all of the paired HART facility amenities and the shuttle housed in that facility (in that order) */
 private var padAndShuttlePairs: List[(PlanetSideGUID, PlanetSideGUID)] = List()
 
@@ -43,13 +43,13 @@ private var lastStartTime: Long = 0
 private var timer: Cancellable = Default.Cancellable
 
   /** a message bus to which all associated orbital shuttle pads are subscribed */
-  val padEvents = new GenericEventBus[HartTimer.Command]
+private val padEvents = new GenericEventBus[HartTimer.Command]
   /** cache common messages */
-  val shuttleDockedInThisZone = HartTimer.ShuttleDocked(zoneId)
-  val shuttleFreeFromDockInThisZone = HartTimer.ShuttleFreeFromDock(zoneId)
+private val shuttleDockedInThisZone = HartTimer.ShuttleDocked(zoneId)
+private val shuttleFreeFromDockInThisZone = HartTimer.ShuttleFreeFromDock(zoneId)
 
   /** the behaviors common to both the inert and active operations of the hart */
-  val commonBehavior: Receive = {
+private val commonBehavior: Receive = {
     case HartTimer.SetEventDurations(_, awayDuration: Long, boardingDuration: Long) =>
       val newSequence = HartEvent.buildEventSequence(awayDuration, boardingDuration)
       if (newSequence.nonEmpty) {

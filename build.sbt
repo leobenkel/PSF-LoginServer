@@ -138,3 +138,6 @@ lazy val docs = (project in file("docs"))
     name := "psforever"
   )
   .aggregate(psforever, server, decodePackets)
+
+
+addCommandAlias("compileAll", ";psforever/Test/compile ;server/Test/compile ;client/Test/compile ;decodePackets/Test/compile")

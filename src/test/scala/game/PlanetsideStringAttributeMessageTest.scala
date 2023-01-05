@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class PlanetsideStringAttributeMessageTest extends Specification {
-  val string = hex"92 fb04 00 90540068006500200042006c00610063006b00200052006100760065006e007300"
+private val string = hex"92 fb04 00 90540068006500200042006c00610063006b00200052006100760065006e007300"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

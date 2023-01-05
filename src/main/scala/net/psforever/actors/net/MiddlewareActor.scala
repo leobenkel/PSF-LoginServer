@@ -168,11 +168,11 @@ private var clientNonce: Long = 0
 
 private var serverMACBuffer: ByteVector = ByteVector.empty
 
-  val random = new SecureRandom()
+private val random = new SecureRandom()
 
 private var crypto: Option[CryptoCoding] = None
 
-  val nextActor: ActorRef[PlanetSidePacket] =
+private val nextActor: ActorRef[PlanetSidePacket] =
     context.spawnAnonymous(next(context.self, sender, connectionId), ActorTags(s"id=$connectionId"))
 
   /** Queue of incoming packets (plus sequence numbers and timestamps) that arrived in the wrong order */
@@ -185,13 +185,13 @@ private var inSequence = -1
 private var inSubslot = -1
 
   /** List of missing subslot numbers and attempts counter */
-  val inSubslotsMissing: mutable.Map[Int, Int] = TrieMap()
+private val inSubslotsMissing: mutable.Map[Int, Int] = TrieMap()
 
   /** Queue of outgoing packets used for bundling and splitting */
-  val outQueue: mutable.Queue[(PlanetSidePacket, BitVector)] = mutable.Queue()
+private val outQueue: mutable.Queue[(PlanetSidePacket, BitVector)] = mutable.Queue()
 
   /** Queue of outgoing packets ready for sending */
-  val outQueueBundled: mutable.Queue[PlanetSidePacket] = mutable.Queue()
+private val outQueueBundled: mutable.Queue[PlanetSidePacket] = mutable.Queue()
 
   /** Latest outbound sequence number;
     * the current sequence is one less than this number
@@ -238,12 +238,12 @@ private var outSubslot = 0
   /**
     * Do not bundle these packets together with other packets
     */
-  val packetsBundledByThemselves: List[PlanetSidePacket => Boolean] = List(
+private val packetsBundledByThemselves: List[PlanetSidePacket => Boolean] = List(
     MiddlewareActor.keepAliveMessageGuard,
     MiddlewareActor.characterInfoMessageGuard
   )
 
-  val smpHistoryLength: Int = 100
+private val smpHistoryLength: Int = 100
 
   /** History of created `SlottedMetaPacket`s.
     * In case the client does not register receiving a packet by checking against packet subslot index numbers,
@@ -253,7 +253,7 @@ private var outSubslot = 0
     * All packets with subslots less than that number have been received or will no longer be requested.
     * The client and server supposedly maintain reciprocating mechanisms.
     */
-  val preparedSlottedMetaPackets: Array[SlottedMetaPacket] = new Array[SlottedMetaPacket](smpHistoryLength)
+private val preparedSlottedMetaPackets: Array[SlottedMetaPacket] = new Array[SlottedMetaPacket](smpHistoryLength)
 private var nextSmpIndex: Int                                    = 0
 private var acceptedSmpSubslot: Int                              = 0
 
@@ -266,22 +266,22 @@ private var timesSubslotMissing: Int = 0
   /** Delay between runs of the packet bundler/resolver timer (ms);
     * 250ms per network update (client upstream), so 10 runs of this bundling code every update
     */
-  val packetProcessorDelay = Config.app.network.middleware.packetBundlingDelay
+private val packetProcessorDelay = Config.app.network.middleware.packetBundlingDelay
 
   /** Timer that handles the bundling and throttling of outgoing packets and resolves disorganized inbound packets */
 private var packetProcessor: Cancellable = Default.Cancellable
 
   /** how long packets that are out of sequential order wait for the missing sequence before being expedited (ms) */
-  val inReorderTimeout = Config.app.network.middleware.inReorderTimeout
+private val inReorderTimeout = Config.app.network.middleware.inReorderTimeout
 
   /** Timer that handles the bundling and throttling of outgoing packets requesting packets with known subslot numbers */
 private var subslotMissingProcessor: Cancellable = Default.Cancellable
 
   /** how long to wait between repeated requests for packets with known missing subslot numbers (ms) */
-  val inSubslotMissingDelay = Config.app.network.middleware.inSubslotMissingDelay
+private val inSubslotMissingDelay = Config.app.network.middleware.inSubslotMissingDelay
 
   /** how many time to repeat the request for a packet with a known missing subslot number */
-  val inSubslotMissingNumberOfAttempts = Config.app.network.middleware.inSubslotMissingAttempts
+private val inSubslotMissingNumberOfAttempts = Config.app.network.middleware.inSubslotMissingAttempts
 
 //formerly, CryptoSessionActor
 
@@ -482,7 +482,7 @@ private var subslotMissingProcessor: Cancellable = Default.Cancellable
       .receiveSignal(onSignal)
   }
 
-  val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[Command]] = {
+private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[Command]] = {
     case (_, PostStop) =>
       context.stop(nextActor)
       if (timesInReorderQueue > 0 || timesSubslotMissing > 0) {

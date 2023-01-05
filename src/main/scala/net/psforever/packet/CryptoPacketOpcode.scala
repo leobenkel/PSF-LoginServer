@@ -6,6 +6,7 @@ import scodec.{Attempt, DecodeResult, Err}
 // This isn't actually used as an opcode (i.e not serialized)
 object CryptoPacketOpcode extends Enumeration {
   type Type = Value
+
   val Ignore, ClientChallengeXchg, ServerChallengeXchg, ClientFinished, ServerFinished = Value
 
   def getPacketDecoder(opcode: CryptoPacketOpcode.Type): BitVector => Attempt[DecodeResult[PlanetSideCryptoPacket]] =

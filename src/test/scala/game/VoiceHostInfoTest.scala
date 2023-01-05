@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class VoiceHostInfoTest extends Specification {
-  val string_info = hex"b2 4b00"
+private val string_info = hex"b2 4b00"
 
   "decode" in {
     PacketCoding.decodePacket(string_info).require match {

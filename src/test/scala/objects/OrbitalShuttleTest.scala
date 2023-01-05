@@ -9,9 +9,9 @@ import net.psforever.types.{CharacterSex, CharacterVoice, PlanetSideEmpire}
 import org.specs2.mutable.Specification
 
 class OrbitalShuttleTest extends Specification {
-  val testAvatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val testAvatar2 = Avatar(1, "TestCharacter2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val testAvatar3 = Avatar(2, "TestCharacter3", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val testAvatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val testAvatar2 = Avatar(1, "TestCharacter2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val testAvatar3 = Avatar(2, "TestCharacter3", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
 
   "OrbitalShuttle" should {
     "construct (proper definition)" in {

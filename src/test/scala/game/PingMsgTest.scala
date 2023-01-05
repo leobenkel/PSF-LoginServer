@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class PingMsgTest extends Specification {
-  val packet = hex"1a 00000000 b0360000"
+private val packet = hex"1a 00000000 b0360000"
 
   "decode" in {
     PacketCoding.decodePacket(packet).require match {

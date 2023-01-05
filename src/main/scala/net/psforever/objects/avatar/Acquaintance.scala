@@ -15,5 +15,5 @@ case class Ignored(
                     name: String = "",
                     online: Boolean = false
                   ) {
-  val faction: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
+private val faction: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
 }

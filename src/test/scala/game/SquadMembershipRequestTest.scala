@@ -9,9 +9,9 @@ import scodec.bits._
 
 class SquadMembershipRequestTest extends Specification {
   //481c897e-b47b-41cc-b7ad-c604606d985e / PSCap-2016-03-18_12-48-12-PM.gcap / Game record 5521 at 662.786844s
-  val string1 = hex"6e015aa7a0224d87a0280000"
+private val string1 = hex"6e015aa7a0224d87a0280000"
   //... / PSCap-2016-06-29_07-49-26-PM (last).gcap / Game record 77 at 9.732430 (found in MultiPacket)
-  val string2 = hex"6E265DD7A02800"
+private val string2 = hex"6E265DD7A02800"
   //TODO find example where player_name field is defined
   //TODO find example where unk field is defined and is a string
 

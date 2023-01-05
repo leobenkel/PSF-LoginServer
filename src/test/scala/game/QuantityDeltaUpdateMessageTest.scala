@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class QuantityDeltaUpdateMessageTest extends Specification {
-  val string = hex"C4 5300 FBFFFFFF"
+private val string = hex"C4 5300 FBFFFFFF"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

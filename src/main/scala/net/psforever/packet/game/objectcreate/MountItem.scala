@@ -27,5 +27,5 @@ object MountItem {
   /**
     * A `Codec` for `0x17` `ObjectCreateMessage` data.
     */
-  val codec: Codec[MountItem] = InternalSlot.codec
+private val codec: Codec[MountItem] = InternalSlot.codec
 }

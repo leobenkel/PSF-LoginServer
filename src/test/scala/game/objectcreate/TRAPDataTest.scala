@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class TRAPDataTest extends Specification {
-  val string_trap = hex"17 BB000000 A8B630A 39FA6 FD666 801C 00 00 00 44C6097F80F00"
+private val string_trap = hex"17 BB000000 A8B630A 39FA6 FD666 801C 00 00 00 44C6097F80F00"
 
   "TRAPData" should {
     "decode" in {

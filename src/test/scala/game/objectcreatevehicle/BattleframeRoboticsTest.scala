@@ -9,8 +9,8 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class BattleframeRoboticsTest extends Specification {
-  val string_aphelion_gunner = hex"17 80 02 00 00 AA 0B F0 15 EB 1C FE C3 30 90 40 00 00 E4 40 00 0F FF F0 00 00 F2 08 18 CC 13 C0 60 B2 00 00 00 10 11 94 2A 00 C0 64 00 00 1A 04 D8 0C 1E 40 00 00 02 02 32 85 60 18 0C 80 00 03 10 99 01 84 C8 00 00 00 40 46 10 CE 03 01 90 00 00"
-  val string_aphelion_flight = hex"17 f6010000 a98 8901 5eb1c fec33 0904 00 00 0e4 40000ffff0000002040866102030390000000808ca1cc0603200000d0140060b20000001011943c00c06400000"
+private val string_aphelion_gunner = hex"17 80 02 00 00 AA 0B F0 15 EB 1C FE C3 30 90 40 00 00 E4 40 00 0F FF F0 00 00 F2 08 18 CC 13 C0 60 B2 00 00 00 10 11 94 2A 00 C0 64 00 00 1A 04 D8 0C 1E 40 00 00 02 02 32 85 60 18 0C 80 00 03 10 99 01 84 C8 00 00 00 40 46 10 CE 03 01 90 00 00"
+private val string_aphelion_flight = hex"17 f6010000 a98 8901 5eb1c fec33 0904 00 00 0e4 40000ffff0000002040866102030390000000808ca1cc0603200000d0140060b20000001011943c00c06400000"
 
   "Battle Frame Robotics" should {
     "decode (aphelion)" in {

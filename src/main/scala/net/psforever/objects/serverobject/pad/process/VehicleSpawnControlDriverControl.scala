@@ -17,7 +17,7 @@ import net.psforever.objects.serverobject.pad.{VehicleSpawnControl, VehicleSpawn
 class VehicleSpawnControlDriverControl(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
   def LogId = "-overrider"
 
-  val finalClear =
+private val finalClear =
     context.actorOf(Props(classOf[VehicleSpawnControlFinalClearance], pad), s"${context.parent.path.name}-final")
 
   def receive: Receive = {

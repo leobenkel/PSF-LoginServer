@@ -8,8 +8,8 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class DamageFeedbackMessageTest extends Specification {
-  val string   = hex"7b 3d842f610b2040000000"
-  val string_2 = hex"7B 5E5826D8001DC0400000"
+private val string   = hex"7b 3d842f610b2040000000"
+private val string_2 = hex"7B 5E5826D8001DC0400000"
 
   "decode (string 1)" in {
     PacketCoding.decodePacket(string).require match {

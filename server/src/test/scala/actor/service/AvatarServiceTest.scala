@@ -106,12 +106,12 @@ class ConcealPlayerTest extends ActorTest {
 
 class EquipmentInHandTest extends ActorTest {
   ServiceManager.boot(system)
-  val service = system.actorOf(Props(classOf[AvatarService], Zone.Nowhere), "release-test-service")
-  val toolDef = GlobalDefinitions.beamer
-  val tool    = Tool(toolDef)
+private val service = system.actorOf(Props(classOf[AvatarService], Zone.Nowhere), "release-test-service")
+private val toolDef = GlobalDefinitions.beamer
+private val tool    = Tool(toolDef)
   tool.GUID = PlanetSideGUID(40)
   tool.AmmoSlots.head.Box.GUID = PlanetSideGUID(41)
-  val pkt = ObjectCreateMessage(
+private val pkt = ObjectCreateMessage(
     toolDef.ObjectId,
     tool.GUID,
     ObjectCreateMessageParent(PlanetSideGUID(11), 2),
@@ -132,13 +132,13 @@ class EquipmentInHandTest extends ActorTest {
 
 class DeployItemTest extends ActorTest {
   ServiceManager.boot(system)
-  val service = system.actorOf(Props(classOf[AvatarService], Zone.Nowhere), "deploy-item-test-service")
-  val objDef  = GlobalDefinitions.motionalarmsensor
-  val obj     = new SensorDeployable(objDef)
+private val service = system.actorOf(Props(classOf[AvatarService], Zone.Nowhere), "deploy-item-test-service")
+private val objDef  = GlobalDefinitions.motionalarmsensor
+private val obj     = new SensorDeployable(objDef)
   obj.Position = Vector3(1, 2, 3)
   obj.Orientation = Vector3(4, 5, 6)
   obj.GUID = PlanetSideGUID(40)
-  val pkt = ObjectCreateMessage(
+private val pkt = ObjectCreateMessage(
     objDef.ObjectId,
     obj.GUID,
     objDef.Packet.ConstructorData(obj).get
@@ -155,14 +155,14 @@ class DeployItemTest extends ActorTest {
 
 class DroptItemTest extends ActorTest {
   ServiceManager.boot(system)
-  val service = system.actorOf(Props(classOf[AvatarService], Zone.Nowhere), "release-test-service")
-  val toolDef = GlobalDefinitions.beamer
-  val tool    = Tool(toolDef)
+private val service = system.actorOf(Props(classOf[AvatarService], Zone.Nowhere), "release-test-service")
+private val toolDef = GlobalDefinitions.beamer
+private val tool    = Tool(toolDef)
   tool.Position = Vector3(1, 2, 3)
   tool.Orientation = Vector3(4, 5, 6)
   tool.GUID = PlanetSideGUID(40)
   tool.AmmoSlots.head.Box.GUID = PlanetSideGUID(41)
-  val pkt = ObjectCreateMessage(
+private val pkt = ObjectCreateMessage(
     toolDef.ObjectId,
     tool.GUID,
     DroppedItemData(
@@ -181,15 +181,15 @@ class DroptItemTest extends ActorTest {
 }
 
 class LoadPlayerTest extends ActorTest {
-  val obj = Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
+private val obj = Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
   obj.GUID = PlanetSideGUID(10)
   obj.Slot(5).Equipment.get.GUID = PlanetSideGUID(11)
-  val c1data = obj.Definition.Packet.DetailedConstructorData(obj).get
-  val pkt1   = ObjectCreateMessage(ObjectClass.avatar, PlanetSideGUID(10), c1data)
-  val parent = ObjectCreateMessageParent(PlanetSideGUID(12), 0)
+private val c1data = obj.Definition.Packet.DetailedConstructorData(obj).get
+private val pkt1   = ObjectCreateMessage(ObjectClass.avatar, PlanetSideGUID(10), c1data)
+private val parent = ObjectCreateMessageParent(PlanetSideGUID(12), 0)
   obj.VehicleSeated = PlanetSideGUID(12)
-  val c2data = obj.Definition.Packet.DetailedConstructorData(obj).get
-  val pkt2   = ObjectCreateMessage(ObjectClass.avatar, PlanetSideGUID(10), parent, c2data)
+private val c2data = obj.Definition.Packet.DetailedConstructorData(obj).get
+private val pkt2   = ObjectCreateMessage(ObjectClass.avatar, PlanetSideGUID(10), parent, c2data)
 
   "AvatarService" should {
     "pass LoadPlayer" in {
@@ -270,7 +270,7 @@ class PlanetsideAttributeTest extends ActorTest {
 }
 
 class PlayerStateTest extends ActorTest {
-  val msg = PlayerStateMessageUpstream(
+private val msg = PlayerStateMessageUpstream(
     PlanetSideGUID(75),
     Vector3(3694.1094f, 2735.4531f, 90.84375f),
     Some(Vector3(4.375f, 2.59375f, 0.0f)),
@@ -335,8 +335,8 @@ class PlayerStateTest extends ActorTest {
 }
 
 class PickupItemTest extends ActorTest {
-  val obj  = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
-  val tool = Tool(GlobalDefinitions.beamer)
+private val obj  = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
+private val tool = Tool(GlobalDefinitions.beamer)
   tool.GUID = PlanetSideGUID(40)
 
   "pass PickUpItem" in {
@@ -361,8 +361,8 @@ class ReloadTest extends ActorTest {
 }
 
 class ChangeAmmoTest extends ActorTest {
-  val ammoDef = GlobalDefinitions.energy_cell
-  val ammoBox = AmmoBox(ammoDef)
+private val ammoDef = GlobalDefinitions.energy_cell
+private val ammoBox = AmmoBox(ammoDef)
 
   "AvatarService" should {
     "pass ChangeAmmo" in {
@@ -400,8 +400,8 @@ class ChangeAmmoTest extends ActorTest {
 }
 
 class ChangeFireModeTest extends ActorTest {
-  val ammoDef = GlobalDefinitions.energy_cell
-  val ammoBox = AmmoBox(ammoDef)
+private val ammoDef = GlobalDefinitions.energy_cell
+private val ammoBox = AmmoBox(ammoDef)
 
   "AvatarService" should {
     "pass ChangeFireMode" in {
@@ -467,7 +467,7 @@ class WeaponDryFireTest extends ActorTest {
 }
 
 class AvatarStowEquipmentTest extends ActorTest {
-  val tool = Tool(GlobalDefinitions.beamer)
+private val tool = Tool(GlobalDefinitions.beamer)
 
   "AvatarService" should {
     "pass StowEquipment" in {
@@ -502,18 +502,18 @@ Frequent pauses to allow everything to sort their messages also helps.
 Even with all this work, the tests have a high chance of failure just due to being asynchronous.
  */
 class AvatarReleaseTest extends FreedContextActorTest {
-  val guid: NumberPoolHub = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val guid: NumberPoolHub = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() : Unit = { }
     GUID(guid)
   }
   zone.init(context)
-  val obj = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
+private val obj = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
   guid.register(obj)
   guid.register(obj.Slot(5).Equipment.get)
   obj.Zone = zone
   obj.Release
-  val subscriber = new TestProbe(system)
+private val subscriber = new TestProbe(system)
 
   "AvatarService" should {
     "pass Release" in {
@@ -553,18 +553,18 @@ class AvatarReleaseTest extends FreedContextActorTest {
 }
 
 class AvatarReleaseEarly1Test extends FreedContextActorTest {
-  val guid: NumberPoolHub = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val guid: NumberPoolHub = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() : Unit = { }
     GUID(guid)
   }
   zone.init(context)
-  val obj = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
+private val obj = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
   guid.register(obj)
   guid.register(obj.Slot(5).Equipment.get)
   obj.Zone = zone
   obj.Release
-  val subscriber = new TestProbe(system)
+private val subscriber = new TestProbe(system)
 
   "AvatarService" should {
     "pass Release" in {
@@ -605,24 +605,24 @@ class AvatarReleaseEarly1Test extends FreedContextActorTest {
 }
 
 class AvatarReleaseEarly2Test extends FreedContextActorTest {
-  val guid: NumberPoolHub = new NumberPoolHub(new MaxNumberSource(15))
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val guid: NumberPoolHub = new NumberPoolHub(new MaxNumberSource(15))
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() : Unit = { }
     GUID(guid)
   }
   zone.init(context)
-  val obj = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
+private val obj = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 1, CharacterVoice.Voice1))
   guid.register(obj)
   guid.register(obj.Slot(5).Equipment.get)
   obj.Zone = zone
   obj.Release
-  val objAlt = Player(
+private val objAlt = Player(
     Avatar(0, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 1, CharacterVoice.Voice1)
   ) //necessary clutter
   objAlt.GUID = PlanetSideGUID(3)
   objAlt.Slot(5).Equipment.get.GUID = PlanetSideGUID(4)
   objAlt.Zone = zone
-  val subscriber = new TestProbe(system)
+private val subscriber = new TestProbe(system)
 
   "AvatarService" should {
     "pass Release" in {

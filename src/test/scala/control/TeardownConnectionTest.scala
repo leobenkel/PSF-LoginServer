@@ -7,7 +7,7 @@ import net.psforever.packet.control._
 import scodec.bits._
 
 class TeardownConnectionTest extends Specification {
-  val string = hex"00 05 02 4F 57 17 00 06"
+private val string = hex"00 05 02 4F 57 17 00 06"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

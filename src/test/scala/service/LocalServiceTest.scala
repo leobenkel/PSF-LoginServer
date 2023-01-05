@@ -108,8 +108,8 @@ class DeployableMapIconTest extends ActorTest {
 }
 
 class DoorClosesTest extends FreedContextActorTest {
-  val probe = new TestProbe(system)
-  val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+private val probe = new TestProbe(system)
+private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() : Unit = { }
   }
   zone.init(context)
@@ -126,7 +126,7 @@ class DoorClosesTest extends FreedContextActorTest {
 
 class HackClearTest extends ActorTest {
   ServiceManager.boot(system)
-  val obj = new PlanetSideServerObject() {
+private val obj = new PlanetSideServerObject() {
     def Faction    = PlanetSideEmpire.NEUTRAL
     def Definition = null
     GUID = PlanetSideGUID(40)
@@ -146,8 +146,8 @@ class HackClearTest extends ActorTest {
 
 class ProximityTerminalEffectOnTest extends ActorTest {
   ServiceManager.boot(system)
-  val service  = system.actorOf(Props(classOf[LocalService], Zone.Nowhere), "l_service")
-  val terminal = new ProximityTerminal(GlobalDefinitions.medical_terminal)
+private val service  = system.actorOf(Props(classOf[LocalService], Zone.Nowhere), "l_service")
+private val terminal = new ProximityTerminal(GlobalDefinitions.medical_terminal)
   terminal.GUID = PlanetSideGUID(1)
 
   "LocalService" should {
@@ -167,8 +167,8 @@ class ProximityTerminalEffectOnTest extends ActorTest {
 
 class ProximityTerminalEffectOffTest extends ActorTest {
   ServiceManager.boot(system)
-  val service  = system.actorOf(Props(classOf[LocalService], Zone.Nowhere), "l_service")
-  val terminal = new ProximityTerminal(GlobalDefinitions.medical_terminal)
+private val service  = system.actorOf(Props(classOf[LocalService], Zone.Nowhere), "l_service")
+private val terminal = new ProximityTerminal(GlobalDefinitions.medical_terminal)
   terminal.GUID = PlanetSideGUID(1)
 
   "LocalService" should {
@@ -215,7 +215,7 @@ class RouterTelepadTransportTest extends ActorTest {
 
 class SetEmpireTest extends ActorTest {
   ServiceManager.boot(system)
-  val obj = new SensorDeployable(GlobalDefinitions.motionalarmsensor)
+private val obj = new SensorDeployable(GlobalDefinitions.motionalarmsensor)
 
   "LocalService" should {
     "pass SetEmpire" in {

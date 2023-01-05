@@ -309,17 +309,17 @@ class ShieldGeneratorDeployableTest extends Specification {
 }
 
 class ExplosiveDeployableJammerTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val eventsProbe = new TestProbe(system)
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val eventsProbe = new TestProbe(system)
 
-  val j_mine = Deployables.Make(DeployedItem.jammer_mine)().asInstanceOf[ExplosiveDeployable] //guid=1
-  val avatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player1 = Player(avatar1) //guid=3
-  val avatar2 = Avatar(0, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player2 = Player(avatar2) //guid=4
-  val weapon = Tool(GlobalDefinitions.jammer_grenade) //guid=5
-  val deployableList = new ListBuffer()
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val j_mine = Deployables.Make(DeployedItem.jammer_mine)().asInstanceOf[ExplosiveDeployable] //guid=1
+private val avatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player1 = Player(avatar1) //guid=3
+private val avatar2 = Avatar(0, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player2 = Player(avatar2) //guid=4
+private val weapon = Tool(GlobalDefinitions.jammer_grenade) //guid=5
+private val deployableList = new ListBuffer()
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools() = {}
@@ -343,10 +343,10 @@ class ExplosiveDeployableJammerTest extends ActorTest {
   j_mine.Faction = PlanetSideEmpire.NC
   j_mine.Actor = system.actorOf(Props(classOf[MineDeployableControl], j_mine), "j-mine-control")
 
-  val jMineSource = SourceEntry(j_mine)
-  val pSource     = PlayerSource(player1)
-  val projectile  = weapon.Projectile
-  val resolved = DamageInteraction(
+private val jMineSource = SourceEntry(j_mine)
+private val pSource     = PlayerSource(player1)
+private val projectile  = weapon.Projectile
+private val resolved = DamageInteraction(
     jMineSource,
     ProjectileReason(
       DamageResolution.Hit,
@@ -355,7 +355,7 @@ class ExplosiveDeployableJammerTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageToJ = resolved.calculate()
+private val applyDamageToJ = resolved.calculate()
 
   "ExplosiveDeployable" should {
     "handle being jammered appropriately (no detonation)" in {
@@ -384,19 +384,19 @@ class ExplosiveDeployableJammerTest extends ActorTest {
 }
 
 class ExplosiveDeployableJammerExplodeTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val eventsProbe = new TestProbe(system)
-  val player1Probe = new TestProbe(system)
-  val player2Probe = new TestProbe(system)
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val eventsProbe = new TestProbe(system)
+private val player1Probe = new TestProbe(system)
+private val player2Probe = new TestProbe(system)
 
-  val h_mine = Deployables.Make(DeployedItem.he_mine)().asInstanceOf[ExplosiveDeployable] //guid=2
-  val avatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player1 = Player(avatar1) //guid=3
-  val avatar2 = Avatar(0, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player2 = Player(avatar2) //guid=4
-  val weapon = Tool(GlobalDefinitions.jammer_grenade) //guid=5
-  val deployableList = new ListBuffer()
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val h_mine = Deployables.Make(DeployedItem.he_mine)().asInstanceOf[ExplosiveDeployable] //guid=2
+private val avatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player1 = Player(avatar1) //guid=3
+private val avatar2 = Avatar(0, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player2 = Player(avatar2) //guid=4
+private val weapon = Tool(GlobalDefinitions.jammer_grenade) //guid=5
+private val deployableList = new ListBuffer()
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools() = {}
@@ -428,9 +428,9 @@ class ExplosiveDeployableJammerExplodeTest extends ActorTest {
   zone.blockMap.addTo(player1)
   zone.blockMap.addTo(player2)
 
-  val pSource     = PlayerSource(player1)
-  val projectile  = weapon.Projectile
-  val resolved = DamageInteraction(
+private val pSource     = PlayerSource(player1)
+private val projectile  = weapon.Projectile
+private val resolved = DamageInteraction(
     SourceEntry(h_mine),
     ProjectileReason(
       DamageResolution.Hit,
@@ -439,7 +439,7 @@ class ExplosiveDeployableJammerExplodeTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageToH = resolved.calculate()
+private val applyDamageToH = resolved.calculate()
 
   "ExplosiveDeployable" should {
     "handle being jammered appropriately (detonation)" in {
@@ -493,19 +493,19 @@ class ExplosiveDeployableJammerExplodeTest extends ActorTest {
 }
 
 class ExplosiveDeployableDestructionTest extends ActorTest {
-  val guid = new NumberPoolHub(new MaxNumberSource(10))
-  val eventsProbe = new TestProbe(system)
-  val player1Probe = new TestProbe(system)
-  val player2Probe = new TestProbe(system)
+private val guid = new NumberPoolHub(new MaxNumberSource(10))
+private val eventsProbe = new TestProbe(system)
+private val player1Probe = new TestProbe(system)
+private val player2Probe = new TestProbe(system)
 
-  val h_mine = Deployables.Make(DeployedItem.he_mine)().asInstanceOf[ExplosiveDeployable] //guid=2
-  val avatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player1 = Player(avatar1) //guid=3
-  val avatar2 = Avatar(0, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)
-  val player2 = Player(avatar2) //guid=4
-  val weapon = Tool(GlobalDefinitions.suppressor) //guid=5
-  val deployableList = new ListBuffer()
-  val zone = new Zone("test", new ZoneMap("test"), 0) {
+private val h_mine = Deployables.Make(DeployedItem.he_mine)().asInstanceOf[ExplosiveDeployable] //guid=2
+private val avatar1 = Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player1 = Player(avatar1) //guid=3
+private val avatar2 = Avatar(0, "TestCharacter2", PlanetSideEmpire.NC, CharacterSex.Male, 0, CharacterVoice.Mute)
+private val player2 = Player(avatar2) //guid=4
+private val weapon = Tool(GlobalDefinitions.suppressor) //guid=5
+private val deployableList = new ListBuffer()
+private val zone = new Zone("test", new ZoneMap("test"), 0) {
     private val deployables = system.actorOf(Props(classOf[ZoneDeployableActor], this, deployableList), name = "test-zone-deployables")
 
     override def SetupNumberPools() = {}
@@ -533,10 +533,10 @@ class ExplosiveDeployableDestructionTest extends ActorTest {
   h_mine.Faction = PlanetSideEmpire.NC
   h_mine.Actor = system.actorOf(Props(classOf[MineDeployableControl], h_mine), "h-mine-control")
 
-  val hMineSource = SourceEntry(h_mine)
-  val pSource     = PlayerSource(player1)
-  val projectile  = weapon.Projectile
-  val resolved = DamageInteraction(
+private val hMineSource = SourceEntry(h_mine)
+private val pSource     = PlayerSource(player1)
+private val projectile  = weapon.Projectile
+private val resolved = DamageInteraction(
     hMineSource,
     ProjectileReason(
       DamageResolution.Hit,
@@ -545,11 +545,11 @@ class ExplosiveDeployableDestructionTest extends ActorTest {
     ),
     Vector3(1, 0, 0)
   )
-  val applyDamageTo = resolved.calculate()
+private val applyDamageTo = resolved.calculate()
 
-  val activityProbe = TestProbe()
-  val avatarProbe   = TestProbe()
-  val localProbe    = TestProbe()
+private val activityProbe = TestProbe()
+private val avatarProbe   = TestProbe()
+private val localProbe    = TestProbe()
 
   "ExplosiveDeployable" should {
     "handle being destroyed" in {

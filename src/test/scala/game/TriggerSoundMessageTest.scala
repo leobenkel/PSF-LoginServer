@@ -8,7 +8,7 @@ import net.psforever.types.Vector3
 import scodec.bits._
 
 class TriggerSoundMessageTest extends Specification {
-  val string = hex"6B 1FD5E1B466DB3858F1FC"
+private val string = hex"6B 1FD5E1B466DB3858F1FC"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

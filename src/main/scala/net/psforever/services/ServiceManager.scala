@@ -33,8 +33,8 @@ class ServiceManager extends Actor {
   private[this] val log = org.log4s.getLogger
 
   private var nextLookupId: Long                               = 0
-  val lookups: mutable.LongMap[RequestEntry]                   = mutable.LongMap()
-  val retainedRequests: mutable.HashMap[String, Set[ActorRef]] = mutable.HashMap()
+private val lookups: mutable.LongMap[RequestEntry]                   = mutable.LongMap()
+private val retainedRequests: mutable.HashMap[String, Set[ActorRef]] = mutable.HashMap()
 
   override def preStart() = {
     log.info("Starting...")

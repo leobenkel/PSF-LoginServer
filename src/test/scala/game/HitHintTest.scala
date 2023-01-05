@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class HitHintTest extends Specification {
-  val string = hex"0A 460B 0100"
+private val string = hex"0A 460B 0100"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

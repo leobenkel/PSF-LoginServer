@@ -2,6 +2,7 @@
 package net.psforever.types
 
 import net.psforever.packet.PacketHelpers
+import scodec.Codec
 import scodec.codecs._
 
 /**
@@ -15,7 +16,7 @@ object GrenadeState extends Enumeration(1) {
   None        //non-actionable state of rest
   = Value
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint8L)
+  implicit val codec: Codec[GrenadeState.Value] = PacketHelpers.createEnumerationCodec(this, uint8L)
 
-  val codec_2u = PacketHelpers.createEnumerationCodec(this, uint2L)
+  val codec_2u: Codec[GrenadeState.Value] = PacketHelpers.createEnumerationCodec(this, uint2L)
 }

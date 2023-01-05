@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class AvatarJumpMessageTest extends Specification {
-  val string = hex"35 80"
+private val string = hex"35 80"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

@@ -303,7 +303,7 @@ class PoolTest extends Specification {
 }
 
 class GantryDenialField extends Specification {
-  val square = DeepSquare(0, 1, 10, 10, 1)
+private val square = DeepSquare(0, 1, 10, 10, 1)
 
   "GantryDenialField" should {
     "always has the environmental attribute of 'GantryDenialField'" in {

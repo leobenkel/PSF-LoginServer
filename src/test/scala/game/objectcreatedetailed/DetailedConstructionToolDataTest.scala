@@ -9,10 +9,10 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class DetailedConstructionToolDataTest extends Specification {
-  val string_ace            = hex"18 87000000 1006 100 C70B 80 8800000200008"
-  val string_boomer_trigger = hex"18 87000000 6304CA8760B 80 C800000200008"
-  val string_telepad        = hex"18 97000000 4f00 f3a e301 80 4a680400000200008"
-  val string_telepad_short  = hex"18 87000000 2a00 f3a 5d01 89 8000000200008"
+private val string_ace            = hex"18 87000000 1006 100 C70B 80 8800000200008"
+private val string_boomer_trigger = hex"18 87000000 6304CA8760B 80 C800000200008"
+private val string_telepad        = hex"18 97000000 4f00 f3a e301 80 4a680400000200008"
+private val string_telepad_short  = hex"18 87000000 2a00 f3a 5d01 89 8000000200008"
 
   "ACE (detailed)" should {
     "decode" in {

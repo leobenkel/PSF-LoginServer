@@ -7,10 +7,10 @@ import net.psforever.packet.control.RelatedA
 import scodec.bits._
 
 class RelatedATest extends Specification {
-  val string0 = hex"00 11 01 04"
-  val string1 = hex"00 12 01 04"
-  val string2 = hex"00 13 01 04"
-  val string3 = hex"00 14 01 04"
+private val string0 = hex"00 11 01 04"
+private val string1 = hex"00 12 01 04"
+private val string2 = hex"00 13 01 04"
+private val string3 = hex"00 14 01 04"
 
   "decode (0)" in {
     PacketCoding.decodePacket(string0).require match {

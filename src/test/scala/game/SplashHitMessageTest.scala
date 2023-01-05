@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class SplashHitMessageTest extends Specification {
-  val string =
+private val string =
     hex"62 7129e72b0c1dd1516ec58000051e01d8371f0100000025803616bb2a9ae50b000008889d00644bdd35454c45c000000400"
 
   "decode" in {

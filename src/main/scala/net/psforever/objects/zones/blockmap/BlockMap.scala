@@ -29,18 +29,18 @@ class BlockMap(fullMapWidth: Int, fullMapHeight: Int, desiredSpanSize: Int) {
     * blocks can not be too small, but also should not be much larger than the width of the representable region
     * a block spanning as wide as the map is an acceptable cap
     */
-  val spanSize: Int = math.min(math.max(10, desiredSpanSize), fullMapWidth)
+private val spanSize: Int = math.min(math.max(10, desiredSpanSize), fullMapWidth)
   /** how many sectors are in a row;
     * the far side sector may run off into un-navigable regions but will always contain a sliver of represented map space,
     * for example, on a 0-10 grid where the span size is 3, the spans will begin at (0, 3, 6, 9)
     * and the last span will only have two-thirds of its region valid;
     * the invalid, not represented regions should be silently ignored
     */
-  val blocksInRow: Int = fullMapWidth / spanSize + (if (fullMapWidth % spanSize > 0) 1 else 0)
+private val blocksInRow: Int = fullMapWidth / spanSize + (if (fullMapWidth % spanSize > 0) 1 else 0)
   /** the sectors / blocks / buckets into which entities that submit themselves are divided;
     * while the represented region need not be square, the sectors are defined as squares
     */
-  val blocks: ListBuffer[Sector] = {
+private val blocks: ListBuffer[Sector] = {
     val horizontal: List[Int] = List.range(0, fullMapWidth, spanSize)
     val vertical: List[Int] = List.range(0, fullMapHeight, spanSize)
     ListBuffer.newBuilder[Sector].addAll(

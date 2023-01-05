@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class InventoryStateMessageTest extends Specification {
-  val string = hex"38 5C0B 00 3C02 B20000000 0"
+private val string = hex"38 5C0B 00 3C02 B20000000 0"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

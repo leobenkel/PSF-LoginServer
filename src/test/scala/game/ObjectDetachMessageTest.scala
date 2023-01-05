@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class ObjectDetachMessageTest extends Specification {
-  val string = hex"27 640B C609 92F76 01D65 F611 00 00 40"
+private val string = hex"27 640B C609 92F76 01D65 F611 00 00 40"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

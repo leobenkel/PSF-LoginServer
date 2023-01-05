@@ -308,7 +308,7 @@ object FirstTimeEvents {
     "visited_monolith_solsar"
   )
 
-  val Gingerman: Set[String] = Set(
+  private val Gingerman: Set[String] = Set(
     "visited_gingerman_atar",
     "visited_gingerman_dahaka",
     "visited_gingerman_hvar",
@@ -321,7 +321,7 @@ object FirstTimeEvents {
     "visited_gingerman_zal"
   )
 
-  val Sled: Set[String] = Set(
+  private val Sled: Set[String] = Set(
     "visited_sled01",
     "visited_sled02",
     "visited_sled04",
@@ -332,7 +332,7 @@ object FirstTimeEvents {
     "visited_sled09"
   )
 
-  val Snowman: Set[String] = Set(
+  private val Snowman: Set[String] = Set(
     "visited_snowman_amerish",
     "visited_snowman_ceryshen",
     "visited_snowman_cyssor",
@@ -344,7 +344,7 @@ object FirstTimeEvents {
     "visited_snowman_solsar"
   )
 
-  val Charlie: Set[String] = Set(
+  private val Charlie: Set[String] = Set(
     "visited_charlie01",
     "visited_charlie02",
     "visited_charlie03",
@@ -356,7 +356,7 @@ object FirstTimeEvents {
     "visited_charlie09"
   )
 
-  val BattleRanks: Set[String] = Set(
+  private val BattleRanks: Set[String] = Set(
     "xpe_battle_rank_1",
     "xpe_battle_rank_2",
     "xpe_battle_rank_3",
@@ -399,7 +399,7 @@ object FirstTimeEvents {
     "xpe_battle_rank_40"
   )
 
-  val CommandRanks: Set[String] = Set(
+  private val CommandRanks: Set[String] = Set(
     "xpe_command_rank_1",
     "xpe_command_rank_2",
     "xpe_command_rank_3",
@@ -407,7 +407,7 @@ object FirstTimeEvents {
     "xpe_command_rank_5"
   )
 
-  val Training: Set[String] = Set(
+  private val Training: Set[String] = Set(
     "training_welcome",
     "training_map",
     "training_hart",
@@ -421,7 +421,7 @@ object FirstTimeEvents {
     "training_implants"
   )
 
-  val OldTraining: Set[String] = Set(
+  private val OldTraining: Set[String] = Set(
     "training_start_tr",
     "training_start_nc",
     "training_start_vs"

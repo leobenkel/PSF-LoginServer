@@ -9,7 +9,7 @@ import org.specs2.mutable._
 import scodec.bits._
 
 class CaptureFlagDataTest extends Specification {
-  val string_captureflag =
+private val string_captureflag =
     hex"17 E5000000 CE8EA10 04A47 B818A FE0E 00 00 0F 24000015000400160B09000" //LLU for Qumu on Amerish
 
   "CaptureFlagData" in {

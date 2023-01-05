@@ -1,9 +1,11 @@
 // Copyright (c) 2017 PSForever
 package net.psforever.packet.game
 
+import net.psforever.packet.GamePacketOpcode.Type
 import net.psforever.packet._
 import net.psforever.types.{PlanetSideGUID, Vector3}
-import scodec.Codec
+import scodec.bits.BitVector
+import scodec.{Attempt, Codec}
 import scodec.codecs._
 
 /**
@@ -29,8 +31,8 @@ final case class VehicleSubStateMessage(
     unk2: Option[List[Boolean]]
 ) extends PlanetSideGamePacket {
   type Packet = VehicleSubStateMessage
-  def opcode = GamePacketOpcode.VehicleSubStateMessage
-  def encode = VehicleSubStateMessage.encode(this)
+  def opcode: Type               = GamePacketOpcode.VehicleSubStateMessage
+  def encode: Attempt[BitVector] = VehicleSubStateMessage.encode(this)
 }
 
 object VehicleSubStateMessage extends Marshallable[VehicleSubStateMessage] {

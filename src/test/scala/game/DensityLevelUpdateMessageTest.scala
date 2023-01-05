@@ -7,7 +7,7 @@ import net.psforever.packet.game._
 import scodec.bits._
 
 class DensityLevelUpdateMessageTest extends Specification {
-  val string = hex"cd 0100 1f4e 000000"
+private val string = hex"cd 0100 1f4e 000000"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

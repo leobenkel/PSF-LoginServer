@@ -8,7 +8,7 @@ import net.psforever.types.{PlanetSideGUID, Vector3}
 import scodec.bits._
 
 class InvalidTerrainMessageTest extends Specification {
-  val string = hex"9a 6c26ce218ddcc922cf8c3c22f0eeaca180"
+private val string = hex"9a 6c26ce218ddcc922cf8c3c22f0eeaca180"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {

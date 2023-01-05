@@ -8,7 +8,7 @@ import net.psforever.types.PlanetSideGUID
 import scodec.bits._
 
 class AvatarImplantMessageTest extends Specification {
-  val string = hex"58 630C 68 80"
+private val string = hex"58 630C 68 80"
 
   "decode" in {
     PacketCoding.decodePacket(string).require match {
