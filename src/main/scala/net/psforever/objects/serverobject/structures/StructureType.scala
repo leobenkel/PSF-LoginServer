@@ -5,7 +5,7 @@ import enumeratum.{EnumEntry, Enum}
 sealed trait StructureType extends EnumEntry
 
 object StructureType extends Enum[StructureType] {
-private val values: IndexedSeq[StructureType] = findValues
+  val values: IndexedSeq[StructureType] = findValues
 
   // technically, a "bridge section"
   case object Bridge extends StructureType

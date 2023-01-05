@@ -18,7 +18,7 @@ sealed abstract class OxygenState extends EnumEntry {}
   * In terms of percentage, progress proceeds towards 100.
   */
 object OxygenState extends Enum[OxygenState] {
-private val values: IndexedSeq[OxygenState] = findValues
+  val values: IndexedSeq[OxygenState] = findValues
 
   case object Recovery    extends OxygenState
   case object Suffocation extends OxygenState

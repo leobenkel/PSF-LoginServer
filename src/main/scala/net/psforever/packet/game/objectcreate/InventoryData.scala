@@ -33,7 +33,7 @@ final case class InventoryData(contents: List[InventoryItem] = List.empty) exten
 }
 
 object InventoryData {
-  final val BaseSize: Long = 10L //8u + 1u + 1u
+  final private val BaseSize: Long = 10L //8u + 1u + 1u
 
   /**
     * The primary `Codec` that parses the common format for an inventory `List`.
@@ -60,10 +60,10 @@ object InventoryData {
   /**
     * A `Codec` for `0x17` `ObjectCreateMessage` data.
     */
-  private val codec: Codec[InventoryData] = codec(InventoryItemData.codec)
+  val codec: Codec[InventoryData] = codec(InventoryItemData.codec)
 
   /**
     * A `Codec` for `0x18` `ObjectCreateDetailedMessage` data.
     */
-  private val codec_detailed: Codec[InventoryData] = codec(InventoryItemData.codec_detailed)
+  val codec_detailed: Codec[InventoryData] = codec(InventoryItemData.codec_detailed)
 }

@@ -13,7 +13,7 @@ import shapeless.{::, HNil}
   */
 object Angular {
   //roll
-  private val codec_roll: Codec[Float] = (
+  val codec_roll: Codec[Float] = (
     ignore(1) ::
       codec_roll(7)
   ).xmap[Float](
@@ -27,7 +27,7 @@ object Angular {
   def codec_roll(bits: Int): Codec[Float] = newcodecs.q_float(0.0f, 360.0f, bits)
 
   //pitch
-  private val codec_pitch: Codec[Float] = (
+  val codec_pitch: Codec[Float] = (
     ignore(1) ::
       codec_pitch(7)
   ).xmap[Float](

@@ -478,7 +478,7 @@ object GlobalDefinitions {
   Equipment (locker_container, kits, ammunition, weapons)
    */
   import net.psforever.packet.game.objectcreate.ObjectClass
-  private val locker_container = new LockerContainerDefinition()
+  val locker_container = new LockerContainerDefinition()
 
   val medkit = KitDefinition(Kits.medkit)
 
@@ -1159,9 +1159,9 @@ object GlobalDefinitions {
 
   val matrix_terminalc = new MatrixTerminalDefinition(519)
 
-  private val spawn_terminal = new MatrixTerminalDefinition(812)
+  val spawn_terminal = new MatrixTerminalDefinition(812)
 
-  private val order_terminal = new OrderTerminalDefinition(612)
+  val order_terminal = new OrderTerminalDefinition(612)
 
   val order_terminala = new OrderTerminalDefinition(613)
 
@@ -1189,7 +1189,7 @@ object GlobalDefinitions {
 
   private val bfr_terminal = new OrderTerminalDefinition(143)
 
-  private val respawn_tube = new SpawnTubeDefinition(732)
+  val respawn_tube = new SpawnTubeDefinition(732)
 
   private val respawn_tube_sanctuary =
     new SpawnTubeDefinition(732) //respawn_tube for sanctuary VT_building_* structures
@@ -1232,11 +1232,11 @@ object GlobalDefinitions {
 
   private val spawnpoint_vehicle = new VehicleSpawnPadDefinition(816)
 
-  private val mb_locker = new LockerDefinition
+  val mb_locker = new LockerDefinition
 
   private val lock_external = new IFFLockDefinition
 
-  private val door = new DoorDefinition(242)
+  val door = new DoorDefinition(242)
 
   private val door_spawn_mb = new DoorDefinition(257)
 
@@ -1248,11 +1248,11 @@ object GlobalDefinitions {
 
   val capture_terminal = new CaptureTerminalDefinition(158) // Base CC
 
-  private val secondary_capture = new CaptureTerminalDefinition(751) // Tower CC
+  val secondary_capture = new CaptureTerminalDefinition(751) // Tower CC
 
-  private val vanu_control_console = new CaptureTerminalDefinition(930) // Cavern CC
+  val vanu_control_console = new CaptureTerminalDefinition(930) // Cavern CC
 
-  private val llm_socket = new CaptureFlagSocketDefinition()
+  val llm_socket = new CaptureFlagSocketDefinition()
 
   private val capture_flag = new CaptureFlagDefinition()
   capture_flag.Packet = new CaptureFlagConverter

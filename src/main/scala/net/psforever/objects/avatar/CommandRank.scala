@@ -19,7 +19,7 @@ case object CommandRank extends IntEnum[CommandRank] {
 
   case object CR5 extends CommandRank(value = 5, experience = 600000L)
 
-private val values: IndexedSeq[CommandRank] = findValues
+  val values: IndexedSeq[CommandRank] = findValues
 
   /** Find CommandRank variant for given experience value */
   def withExperience(experience: Long): CommandRank = {

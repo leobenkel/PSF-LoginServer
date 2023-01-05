@@ -7,18 +7,18 @@ import enumeratum.values.{StringEnum, StringEnumEntry}
 sealed abstract class Hand(val value: String) extends StringEnumEntry
 
 object Handiness extends StringEnum[Hand] {
-private val values = findValues
+  val values: IndexedSeq[Hand] = findValues
 
   case object Generic extends Hand(value = "Generic")
-  case object Left extends Hand(value = "Left")
-  case object Right extends Hand(value = "Right")
+  case object Left    extends Hand(value = "Left")
+  case object Right   extends Hand(value = "Right")
 }
 
 final case class EquipmentHandiness(
-                                      generic: EquipmentDefinition,
-                                      left: EquipmentDefinition,
-                                      right: EquipmentDefinition
-                                    ) {
+    generic: EquipmentDefinition,
+    left: EquipmentDefinition,
+    right: EquipmentDefinition
+) {
   def transform(handiness: Hand): EquipmentDefinition = {
     handiness match {
       case Handiness.Generic => generic

@@ -35,24 +35,24 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
   /**
     * The timer that checks whether entries in the first pool are still eligible for that pool.
     */
-private var firstTask: Cancellable = Default.Cancellable
+  private var firstTask: Cancellable = Default.Cancellable
 
   /**
     * The first pool of objects waiting to be processed for removal.
     */
-private var firstHeap: List[RemoverActor.Entry] = List()
+  private var firstHeap: List[RemoverActor.Entry] = List()
 
   /**
     * The timer that checks whether entries in the second pool are still eligible for that pool.
     */
-private var secondTask: Cancellable = Default.Cancellable
+  private var secondTask: Cancellable = Default.Cancellable
 
   /**
     * The second pool of objects waiting to be processed for removal.
     */
-private var secondHeap: List[RemoverActor.Entry] = List()
+  private var secondHeap: List[RemoverActor.Entry] = List()
 
-private val sameEntryComparator = new SimilarityComparator[RemoverActor.Entry]() {
+  val sameEntryComparator = new SimilarityComparator[RemoverActor.Entry]() {
     def Test(entry1: RemoverActor.Entry, entry2: RemoverActor.Entry): Boolean = {
       entry1.obj == entry2.obj && entry1.zone == entry2.zone && entry1.obj.GUID == entry2.obj.GUID
     }

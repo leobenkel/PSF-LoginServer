@@ -54,7 +54,7 @@ object SquadMembershipRequest extends Marshallable[SquadMembershipRequest] {
       (("player_name" | PacketHelpers.encodedWideStringAligned(4)) >>:~ { pname =>
       conditional(
         request_type == SquadRequestType.Invite,
-        "unk5" | optional(bool, PacketHelpers.encodedWideStringAligned({ if (pname.length == 0) 3 else 7 }))
+        "unk5" | optional(bool, PacketHelpers.encodedWideStringAligned({ if (pname.isEmpty) 3 else 7 }))
       ).hlist
     })
   }).as[SquadMembershipRequest]

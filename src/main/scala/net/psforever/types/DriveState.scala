@@ -18,7 +18,7 @@ object DriveState extends Enumeration {
   private val UNK4     = Value(4)   // to have Xtoolspar working
   private val UNK5     = Value(5)   // to have Xtoolspar working
   private val UNK6     = Value(6)   // to have Xtoolspar working
-  private val State7   = Value(7)   //unknown; not encountered on a vehicle that can deploy; functions like Mobile
+  val State7   = Value(7)   //unknown; not encountered on a vehicle that can deploy; functions like Mobile
   private val State127 = Value(127) //unknown
 
   val Kneeling = Value(-1) //flag bfr kneeling state; should not not encode

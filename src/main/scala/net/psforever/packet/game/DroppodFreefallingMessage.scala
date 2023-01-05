@@ -8,7 +8,8 @@ import scodec.Attempt.Successful
 import scodec.bits.BitVector
 import scodec.{Attempt, Codec}
 import scodec.codecs._
-import shapeless.{::, HNil}
+import shapeless._
+import scodec._
 
 /**
   * Dispatched by the server to trigger a droppod's traditional behavior of plummeting from lower orbit like a rock and
@@ -40,16 +41,16 @@ final case class DroppodFreefallingMessage(
     orientation2: Vector3
 ) extends PlanetSideGamePacket {
   type Packet = DroppodFreefallingMessage
-  def opcode: Type = GamePacketOpcode.DroppodFreefallingMessage
+  def opcode: Type               = GamePacketOpcode.DroppodFreefallingMessage
   def encode: Attempt[BitVector] = DroppodFreefallingMessage.encode(this)
 }
 
 object DroppodFreefallingMessage extends Marshallable[DroppodFreefallingMessage] {
   private val rotation: Codec[Vector3] = (
     Angular.codec_roll ::
-    Angular.codec_pitch ::
-    Angular.codec_yaw()
-    ).narrow[Vector3](
+      Angular.codec_pitch ::
+      Angular.codec_yaw()
+  ).narrow[Vector3](
     {
       case u :: v :: w :: HNil => Successful(Vector3(u, v, w))
     },
@@ -58,10 +59,10 @@ object DroppodFreefallingMessage extends Marshallable[DroppodFreefallingMessage]
 
   implicit val codec: Codec[DroppodFreefallingMessage] = (
     ("guid" | PlanetSideGUID.codec) ::
-    ("pos" | Vector3.codec_float) ::
-    ("vel" | Vector3.codec_float) ::
-    ("pos2" | Vector3.codec_float) ::
-    ("orientation1" | rotation) ::
-    ("orientation2" | rotation)
+      ("pos" | Vector3.codec_float) ::
+      ("vel" | Vector3.codec_float) ::
+      ("pos2" | Vector3.codec_float) ::
+      ("orientation1" | rotation) ::
+      ("orientation2" | rotation)
   ).as[DroppodFreefallingMessage]
 }

@@ -18,5 +18,5 @@ object GrenadeState extends Enumeration(1) {
 
   implicit val codec: Codec[GrenadeState.Value] = PacketHelpers.createEnumerationCodec(this, uint8L)
 
-  private val codec_2u = PacketHelpers.createEnumerationCodec(this, uint2L)
+  val codec_2u: Codec[GrenadeState.Value] = PacketHelpers.createEnumerationCodec(this, uint2L)
 }
