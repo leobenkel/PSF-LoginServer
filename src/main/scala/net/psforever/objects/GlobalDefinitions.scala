@@ -489,13 +489,13 @@ object GlobalDefinitions {
   val super_staminakit = KitDefinition(Kits.super_staminakit) //super stimpak
   init_kit()
 
-  private val melee_ammo = AmmoBoxDefinition(Ammo.melee_ammo)
+  val melee_ammo = AmmoBoxDefinition(Ammo.melee_ammo)
 
-  private val frag_grenade_ammo = AmmoBoxDefinition(Ammo.frag_grenade_ammo)
+  val frag_grenade_ammo = AmmoBoxDefinition(Ammo.frag_grenade_ammo)
 
-  private val plasma_grenade_ammo = AmmoBoxDefinition(Ammo.plasma_grenade_ammo)
+  val plasma_grenade_ammo = AmmoBoxDefinition(Ammo.plasma_grenade_ammo)
 
-  private val jammer_grenade_ammo = AmmoBoxDefinition(Ammo.jammer_grenade_ammo)
+  val jammer_grenade_ammo = AmmoBoxDefinition(Ammo.jammer_grenade_ammo)
 
   val bullet_9mm = AmmoBoxDefinition(Ammo.bullet_9mm)
 
@@ -513,7 +513,7 @@ object GlobalDefinitions {
 
   val maelstrom_ammo = AmmoBoxDefinition(Ammo.maelstrom_ammo)
 
-  private val phoenix_missile = AmmoBoxDefinition(Ammo.phoenix_missile) //decimator missile
+  val phoenix_missile = AmmoBoxDefinition(Ammo.phoenix_missile) //decimator missile
 
   val striker_missile_ammo = AmmoBoxDefinition(Ammo.striker_missile_ammo)
 
@@ -565,11 +565,11 @@ object GlobalDefinitions {
 
   val upgrade_canister = AmmoBoxDefinition(Ammo.upgrade_canister)
 
-  private val trek_ammo = AmmoBoxDefinition(Ammo.trek_ammo)
+  val trek_ammo = AmmoBoxDefinition(Ammo.trek_ammo)
 
   val bullet_35mm = AmmoBoxDefinition(Ammo.bullet_35mm) //liberator nosegun
 
-  private val ancient_ammo_vehicle = AmmoBoxDefinition(Ammo.ancient_ammo_vehicle)
+  val ancient_ammo_vehicle = AmmoBoxDefinition(Ammo.ancient_ammo_vehicle)
 
   val aphelion_laser_ammo = AmmoBoxDefinition(Ammo.aphelion_laser_ammo)
 
@@ -642,13 +642,13 @@ object GlobalDefinitions {
 
   val bullet_150mm = AmmoBoxDefinition(Ammo.bullet_150mm)
 
-  private val phalanx_ammo = AmmoBoxDefinition(Ammo.phalanx_ammo)
+  val phalanx_ammo = AmmoBoxDefinition(Ammo.phalanx_ammo)
 
-  private val spitfire_ammo = AmmoBoxDefinition(Ammo.spitfire_ammo)
+  val spitfire_ammo = AmmoBoxDefinition(Ammo.spitfire_ammo)
 
-  private val spitfire_aa_ammo = AmmoBoxDefinition(Ammo.spitfire_aa_ammo)
+  val spitfire_aa_ammo = AmmoBoxDefinition(Ammo.spitfire_aa_ammo)
 
-  private val energy_gun_ammo = AmmoBoxDefinition(Ammo.energy_gun_ammo)
+  val energy_gun_ammo = AmmoBoxDefinition(Ammo.energy_gun_ammo)
 
   private val armor_siphon_ammo = AmmoBoxDefinition(Ammo.armor_siphon_ammo)
 
@@ -804,123 +804,123 @@ object GlobalDefinitions {
 
   val router_telepad = ConstructionItemDefinition(CItem.router_telepad)
 
-  private val fury_weapon_systema = ToolDefinition(ObjectClass.fury_weapon_systema)
+  val fury_weapon_systema = ToolDefinition(ObjectClass.fury_weapon_systema)
 
-  private val quadassault_weapon_system = ToolDefinition(ObjectClass.quadassault_weapon_system)
+  val quadassault_weapon_system = ToolDefinition(ObjectClass.quadassault_weapon_system)
 
-  private val scythe = ToolDefinition(ObjectClass.scythe) //TODO resolve ammo slot/pool discrepancy
+  val scythe = ToolDefinition(ObjectClass.scythe) //TODO resolve ammo slot/pool discrepancy
 
-  private val chaingun_p = ToolDefinition(ObjectClass.chaingun_p)
+  val chaingun_p = ToolDefinition(ObjectClass.chaingun_p)
 
-  private val skyguard_weapon_system = ToolDefinition(ObjectClass.skyguard_weapon_system)
+  val skyguard_weapon_system = ToolDefinition(ObjectClass.skyguard_weapon_system)
 
-  private val grenade_launcher_marauder = ToolDefinition(ObjectClass.grenade_launcher_marauder)
+  val grenade_launcher_marauder = ToolDefinition(ObjectClass.grenade_launcher_marauder)
 
-  private val advanced_missile_launcher_t = ToolDefinition(ObjectClass.advanced_missile_launcher_t)
+  val advanced_missile_launcher_t = ToolDefinition(ObjectClass.advanced_missile_launcher_t)
 
-  private val flux_cannon_thresher = ToolDefinition(ObjectClass.flux_cannon_thresher)
+  val flux_cannon_thresher = ToolDefinition(ObjectClass.flux_cannon_thresher)
 
-  private val mediumtransport_weapon_systemA = ToolDefinition(ObjectClass.mediumtransport_weapon_systemA)
+  val mediumtransport_weapon_systemA = ToolDefinition(ObjectClass.mediumtransport_weapon_systemA)
 
-  private val mediumtransport_weapon_systemB = ToolDefinition(ObjectClass.mediumtransport_weapon_systemB)
+  val mediumtransport_weapon_systemB = ToolDefinition(ObjectClass.mediumtransport_weapon_systemB)
 
-  private val battlewagon_weapon_systema = ToolDefinition(ObjectClass.battlewagon_weapon_systema)
+  val battlewagon_weapon_systema = ToolDefinition(ObjectClass.battlewagon_weapon_systema)
 
-  private val battlewagon_weapon_systemb = ToolDefinition(ObjectClass.battlewagon_weapon_systemb)
+  val battlewagon_weapon_systemb = ToolDefinition(ObjectClass.battlewagon_weapon_systemb)
 
-  private val battlewagon_weapon_systemc = ToolDefinition(ObjectClass.battlewagon_weapon_systemc)
+  val battlewagon_weapon_systemc = ToolDefinition(ObjectClass.battlewagon_weapon_systemc)
 
-  private val battlewagon_weapon_systemd = ToolDefinition(ObjectClass.battlewagon_weapon_systemd)
+  val battlewagon_weapon_systemd = ToolDefinition(ObjectClass.battlewagon_weapon_systemd)
 
-  private val thunderer_weapon_systema = ToolDefinition(ObjectClass.thunderer_weapon_systema)
+  val thunderer_weapon_systema = ToolDefinition(ObjectClass.thunderer_weapon_systema)
 
-  private val thunderer_weapon_systemb = ToolDefinition(ObjectClass.thunderer_weapon_systemb)
+  val thunderer_weapon_systemb = ToolDefinition(ObjectClass.thunderer_weapon_systemb)
 
-  private val aurora_weapon_systema = ToolDefinition(ObjectClass.aurora_weapon_systema)
+  val aurora_weapon_systema = ToolDefinition(ObjectClass.aurora_weapon_systema)
 
-  private val aurora_weapon_systemb = ToolDefinition(ObjectClass.aurora_weapon_systemb)
+  val aurora_weapon_systemb = ToolDefinition(ObjectClass.aurora_weapon_systemb)
 
-  private val apc_weapon_systema = ToolDefinition(ObjectClass.apc_weapon_systema)
+  val apc_weapon_systema = ToolDefinition(ObjectClass.apc_weapon_systema)
 
-  private val apc_weapon_systemb = ToolDefinition(ObjectClass.apc_weapon_systemb)
+  val apc_weapon_systemb = ToolDefinition(ObjectClass.apc_weapon_systemb)
 
-  private val apc_ballgun_r = ToolDefinition(ObjectClass.apc_ballgun_r)
+  val apc_ballgun_r = ToolDefinition(ObjectClass.apc_ballgun_r)
 
-  private val apc_ballgun_l = ToolDefinition(ObjectClass.apc_ballgun_l)
+  val apc_ballgun_l = ToolDefinition(ObjectClass.apc_ballgun_l)
 
-  private val apc_weapon_systemc_tr = ToolDefinition(ObjectClass.apc_weapon_systemc_tr)
+  val apc_weapon_systemc_tr = ToolDefinition(ObjectClass.apc_weapon_systemc_tr)
 
-  private val apc_weapon_systemd_tr = ToolDefinition(ObjectClass.apc_weapon_systemd_tr)
+  val apc_weapon_systemd_tr = ToolDefinition(ObjectClass.apc_weapon_systemd_tr)
 
-  private val apc_weapon_systemc_nc = ToolDefinition(ObjectClass.apc_weapon_systemc_nc)
+  val apc_weapon_systemc_nc = ToolDefinition(ObjectClass.apc_weapon_systemc_nc)
 
-  private val apc_weapon_systemd_nc = ToolDefinition(ObjectClass.apc_weapon_systemd_nc)
+  val apc_weapon_systemd_nc = ToolDefinition(ObjectClass.apc_weapon_systemd_nc)
 
-  private val apc_weapon_systemc_vs = ToolDefinition(ObjectClass.apc_weapon_systemc_vs)
+  val apc_weapon_systemc_vs = ToolDefinition(ObjectClass.apc_weapon_systemc_vs)
 
-  private val apc_weapon_systemd_vs = ToolDefinition(ObjectClass.apc_weapon_systemd_vs)
+  val apc_weapon_systemd_vs = ToolDefinition(ObjectClass.apc_weapon_systemd_vs)
 
-  private val lightning_weapon_system = ToolDefinition(ObjectClass.lightning_weapon_system)
+  val lightning_weapon_system = ToolDefinition(ObjectClass.lightning_weapon_system)
 
-  private val prowler_weapon_systemA = ToolDefinition(ObjectClass.prowler_weapon_systemA)
+  val prowler_weapon_systemA = ToolDefinition(ObjectClass.prowler_weapon_systemA)
 
-  private val prowler_weapon_systemB = ToolDefinition(ObjectClass.prowler_weapon_systemB)
+  val prowler_weapon_systemB = ToolDefinition(ObjectClass.prowler_weapon_systemB)
 
-  private val vanguard_weapon_system = ToolDefinition(ObjectClass.vanguard_weapon_system)
+  val vanguard_weapon_system = ToolDefinition(ObjectClass.vanguard_weapon_system)
 
-  private val particle_beam_magrider = ToolDefinition(ObjectClass.particle_beam_magrider)
+  val particle_beam_magrider = ToolDefinition(ObjectClass.particle_beam_magrider)
 
-  private val heavy_rail_beam_magrider = ToolDefinition(ObjectClass.heavy_rail_beam_magrider)
+  val heavy_rail_beam_magrider = ToolDefinition(ObjectClass.heavy_rail_beam_magrider)
 
-  private val flail_weapon = ToolDefinition(ObjectClass.flail_weapon)
+  val flail_weapon = ToolDefinition(ObjectClass.flail_weapon)
 
-  private val rotarychaingun_mosquito = ToolDefinition(ObjectClass.rotarychaingun_mosquito)
+  val rotarychaingun_mosquito = ToolDefinition(ObjectClass.rotarychaingun_mosquito)
 
-  private val lightgunship_weapon_system = ToolDefinition(ObjectClass.lightgunship_weapon_system)
+  val lightgunship_weapon_system = ToolDefinition(ObjectClass.lightgunship_weapon_system)
 
-  private val wasp_weapon_system = new ToolDefinition(ObjectClass.wasp_weapon_system)
+  val wasp_weapon_system = new ToolDefinition(ObjectClass.wasp_weapon_system)
 
-  private val liberator_weapon_system = ToolDefinition(ObjectClass.liberator_weapon_system)
+  val liberator_weapon_system = ToolDefinition(ObjectClass.liberator_weapon_system)
 
-  private val liberator_bomb_bay = ToolDefinition(ObjectClass.liberator_bomb_bay)
+  val liberator_bomb_bay = ToolDefinition(ObjectClass.liberator_bomb_bay)
 
-  private val liberator_25mm_cannon = ToolDefinition(ObjectClass.liberator_25mm_cannon)
+  val liberator_25mm_cannon = ToolDefinition(ObjectClass.liberator_25mm_cannon)
 
-  private val vulture_nose_weapon_system = ToolDefinition(ObjectClass.vulture_nose_weapon_system)
+  val vulture_nose_weapon_system = ToolDefinition(ObjectClass.vulture_nose_weapon_system)
 
-  private val vulture_bomb_bay = ToolDefinition(ObjectClass.vulture_bomb_bay)
+  val vulture_bomb_bay = ToolDefinition(ObjectClass.vulture_bomb_bay)
 
-  private val vulture_tail_cannon = ToolDefinition(ObjectClass.vulture_tail_cannon)
+  val vulture_tail_cannon = ToolDefinition(ObjectClass.vulture_tail_cannon)
 
-  private val cannon_dropship_20mm = ToolDefinition(ObjectClass.cannon_dropship_20mm)
+  val cannon_dropship_20mm = ToolDefinition(ObjectClass.cannon_dropship_20mm)
 
-  private val dropship_rear_turret = ToolDefinition(ObjectClass.dropship_rear_turret)
+  val dropship_rear_turret = ToolDefinition(ObjectClass.dropship_rear_turret)
 
-  private val galaxy_gunship_cannon = ToolDefinition(ObjectClass.galaxy_gunship_cannon)
+  val galaxy_gunship_cannon = ToolDefinition(ObjectClass.galaxy_gunship_cannon)
 
-  private val galaxy_gunship_tailgun = ToolDefinition(ObjectClass.galaxy_gunship_tailgun)
+  val galaxy_gunship_tailgun = ToolDefinition(ObjectClass.galaxy_gunship_tailgun)
 
-  private val galaxy_gunship_gun = ToolDefinition(ObjectClass.galaxy_gunship_gun)
+  val galaxy_gunship_gun = ToolDefinition(ObjectClass.galaxy_gunship_gun)
 
-  private val phalanx_sgl_hevgatcan = ToolDefinition(ObjectClass.phalanx_sgl_hevgatcan)
+  val phalanx_sgl_hevgatcan = ToolDefinition(ObjectClass.phalanx_sgl_hevgatcan)
 
-  private val phalanx_avcombo = ToolDefinition(ObjectClass.phalanx_avcombo)
+  val phalanx_avcombo = ToolDefinition(ObjectClass.phalanx_avcombo)
 
-  private val phalanx_flakcombo = ToolDefinition(ObjectClass.phalanx_flakcombo)
+  val phalanx_flakcombo = ToolDefinition(ObjectClass.phalanx_flakcombo)
 
   private val vanu_sentry_turret_weapon = ToolDefinition(ObjectClass.vanu_sentry_turret_weapon)
 
-  private val spitfire_weapon = ToolDefinition(ObjectClass.spitfire_weapon)
+  val spitfire_weapon = ToolDefinition(ObjectClass.spitfire_weapon)
 
-  private val spitfire_aa_weapon = ToolDefinition(ObjectClass.spitfire_aa_weapon)
+  val spitfire_aa_weapon = ToolDefinition(ObjectClass.spitfire_aa_weapon)
 
-  private val energy_gun = ToolDefinition(ObjectClass.energy_gun)
+  val energy_gun = ToolDefinition(ObjectClass.energy_gun)
 
-  private val energy_gun_nc = ToolDefinition(ObjectClass.energy_gun_nc)
+  val energy_gun_nc = ToolDefinition(ObjectClass.energy_gun_nc)
 
-  private val energy_gun_tr = ToolDefinition(ObjectClass.energy_gun_tr)
+  val energy_gun_tr = ToolDefinition(ObjectClass.energy_gun_tr)
 
-  private val energy_gun_vs = ToolDefinition(ObjectClass.energy_gun_vs)
+  val energy_gun_vs = ToolDefinition(ObjectClass.energy_gun_vs)
 
   val aphelion_armor_siphon = ToolDefinition(ObjectClass.aphelion_armor_siphon)
 
@@ -1114,7 +1114,7 @@ object GlobalDefinitions {
   /*
   combat engineering deployables
    */
-  private val boomer = BoomerDeployableDefinition(DeployedItem.boomer)
+  val boomer = BoomerDeployableDefinition(DeployedItem.boomer)
 
   private val he_mine = ExplosiveDeployableDefinition(DeployedItem.he_mine)
 
