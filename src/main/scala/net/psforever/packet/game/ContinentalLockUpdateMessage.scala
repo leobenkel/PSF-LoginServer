@@ -18,8 +18,8 @@ import scodec.codecs._
 final case class ContinentalLockUpdateMessage(continent_id: Int, empire: PlanetSideEmpire.Value)
     extends PlanetSideGamePacket {
   type Packet = ContinentalLockUpdateMessage
-  def opcode = GamePacketOpcode.ContinentalLockUpdateMessage
-  def encode = ContinentalLockUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.ContinentalLockUpdateMessage
+def encode = ContinentalLockUpdateMessage.encode(this)
 }
 
 object ContinentalLockUpdateMessage extends Marshallable[ContinentalLockUpdateMessage] {

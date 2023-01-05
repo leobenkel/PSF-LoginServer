@@ -14,8 +14,8 @@ import scodec.codecs._
   */
 final case class FacilityBenefitShieldChargeRequestMessage(vehicle_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = FacilityBenefitShieldChargeRequestMessage
-  def opcode = GamePacketOpcode.FacilityBenefitShieldChargeRequestMessage
-  def encode = FacilityBenefitShieldChargeRequestMessage.encode(this)
+def opcode = GamePacketOpcode.FacilityBenefitShieldChargeRequestMessage
+def encode = FacilityBenefitShieldChargeRequestMessage.encode(this)
 }
 
 object FacilityBenefitShieldChargeRequestMessage extends Marshallable[FacilityBenefitShieldChargeRequestMessage] {

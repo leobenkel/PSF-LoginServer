@@ -25,7 +25,7 @@ class TrapDeployableDefinition(objectId: Int) extends DeployableDefinition(objec
 }
 
 object TrapDeployableDefinition {
-  def apply(dtype: DeployedItem.Value): TrapDeployableDefinition = {
+def apply(dtype: DeployedItem.Value): TrapDeployableDefinition = {
     new TrapDeployableDefinition(dtype.id)
   }
 }
@@ -35,16 +35,16 @@ class TrapDeployableControl(trap: TrapDeployable)
   with DeployableBehavior
   with DamageableEntity
   with RepairableEntity {
-  def DeployableObject = trap
-  def DamageableObject = trap
-  def RepairableObject = trap
+private def DeployableObject = trap
+private def DamageableObject = trap
+private def RepairableObject = trap
 
   override def postStop(): Unit = {
     super.postStop()
     deployableBehaviorPostStop()
   }
 
-  def receive: Receive =
+def receive: Receive =
     deployableBehavior
       .orElse(takesDamage)
       .orElse(canBeRepairedByNanoDispenser)

@@ -12,9 +12,9 @@ trait CargoBehavior {
   /* gate-keep dismounting behavior so that unit does not try to mount as cargo, or dismount from different vehicle */
   private var isDismounting: Option[PlanetSideGUID] = None
 
-  def CargoObject: Vehicle
+private def CargoObject: Vehicle
 
-  def endAllCargoOperations(): Unit = {
+private def endAllCargoOperations(): Unit = {
     val obj = CargoObject
     val zone = obj.Zone
     zone.GUID(isMounting) match {
@@ -48,7 +48,7 @@ val cargoBehavior: Receive = {
       }
   }
 
-  def startCargoMounting(carrier_guid: PlanetSideGUID, mountPoint: Int): Unit = {
+private def startCargoMounting(carrier_guid: PlanetSideGUID, mountPoint: Int): Unit = {
     val obj = CargoObject
     obj.Zone.GUID(carrier_guid) match {
       case Some(carrier: Vehicle)
@@ -63,7 +63,7 @@ val cargoBehavior: Receive = {
     }
   }
 
-  def startCargoDismounting(bailed: Boolean): Unit = {
+private def startCargoDismounting(bailed: Boolean): Unit = {
     val obj = CargoObject
     obj.Zone.GUID(obj.MountedIn) match {
       case Some(carrier: Vehicle) =>

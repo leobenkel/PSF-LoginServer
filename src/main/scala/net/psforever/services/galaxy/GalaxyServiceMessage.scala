@@ -11,7 +11,7 @@ import net.psforever.types.{PlanetSideEmpire, PlanetSideGUID}
 final case class GalaxyServiceMessage(forChannel: String, actionMessage: GalaxyAction.Action)
 
 object GalaxyServiceMessage {
-  def apply(actionMessage: GalaxyAction.Action): GalaxyServiceMessage = GalaxyServiceMessage("", actionMessage)
+def apply(actionMessage: GalaxyAction.Action): GalaxyServiceMessage = GalaxyServiceMessage("", actionMessage)
 }
 
 object GalaxyAction {

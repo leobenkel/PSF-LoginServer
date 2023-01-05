@@ -45,7 +45,7 @@ final case class SquadInfo(
     * @param info the `SquadInfo` data to be incorporated into this object's data
     * @return a new `SquadInfo` object, combining with two objects' field data
     */
-  def And(info: SquadInfo): SquadInfo = {
+private def And(info: SquadInfo): SquadInfo = {
     SquadInfo(
       leader.orElse(info.leader),
       task.orElse(info.task),
@@ -57,20 +57,20 @@ final case class SquadInfo(
   }
 
   //methods intended to combine the fields of itself and another object
-  def Leader(leader: String): SquadInfo =
+private def Leader(leader: String): SquadInfo =
     this And SquadInfo(Some(leader), None, None, None, None, None)
-  def Task(task: String): SquadInfo =
+private def Task(task: String): SquadInfo =
     this And SquadInfo(None, Some(task), None, None, None, None)
-  def ZoneId(zone: PlanetSideZoneID): SquadInfo =
+private def ZoneId(zone: PlanetSideZoneID): SquadInfo =
     this And SquadInfo(None, None, Some(zone), None, None, None)
-  def ZoneId(zone: Option[PlanetSideZoneID]): SquadInfo =
+private def ZoneId(zone: Option[PlanetSideZoneID]): SquadInfo =
     zone match {
       case z @ Some(_) => this And SquadInfo(None, None, z, None, None, None)
       case z @ None    => SquadInfo(leader, task, z, size, capacity, squad_guid)
     }
-  def Size(sz: Int): SquadInfo =
+private def Size(sz: Int): SquadInfo =
     this And SquadInfo(None, None, None, Some(sz), None, None)
-  def Capacity(cap: Int): SquadInfo =
+private def Capacity(cap: Int): SquadInfo =
     this And SquadInfo(None, None, None, None, Some(cap), None)
 }
 
@@ -127,8 +127,8 @@ final case class SquadListing(index: Int = 255, listing: Option[SquadInfo] = Non
 final case class ReplicationStreamMessage(behavior: Int, behavior2: Option[Int], entries: Vector[SquadListing])
     extends PlanetSideGamePacket {
   type Packet = ReplicationStreamMessage
-  def opcode = GamePacketOpcode.ReplicationStreamMessage
-  def encode = ReplicationStreamMessage.encode(this)
+def opcode = GamePacketOpcode.ReplicationStreamMessage
+def encode = ReplicationStreamMessage.encode(this)
 }
 
 object SquadInfo {
@@ -138,7 +138,7 @@ object SquadInfo {
     */
   final val Blank = SquadInfo()
 
-  def apply(): SquadInfo = SquadInfo(None, None, None, None, None, None)
+def apply(): SquadInfo = SquadInfo(None, None, None, None, None, None)
 
   /**
     * Alternate constructor for `SquadInfo` that ignores the `Option` requirement for the fields.<br>
@@ -151,7 +151,7 @@ object SquadInfo {
     * @param capacity       the maximum number of members that the squad can tolerate
     * @return a `SquadInfo` object
     */
-  def apply(leader: String, task: String, continent_guid: PlanetSideZoneID, size: Int, capacity: Int): SquadInfo = {
+def apply(leader: String, task: String, continent_guid: PlanetSideZoneID, size: Int, capacity: Int): SquadInfo = {
     SquadInfo(Some(leader), Some(task), Some(continent_guid), Some(size), Some(capacity))
   }
 
@@ -167,7 +167,7 @@ object SquadInfo {
     * @param squad_guid     a GUID associated with the squad, used to recover the squad definition
     * @return a `SquadInfo` object
     */
-  def apply(
+def apply(
       leader: String,
       task: String,
       continent_guid: PlanetSideZoneID,
@@ -183,7 +183,7 @@ object SquadInfo {
     * @param leader the name of the squad leader
     * @return a `SquadInfo` object
     */
-  def apply(leader: String): SquadInfo = {
+def apply(leader: String): SquadInfo = {
     SquadInfo(Some(leader), None, None, None, None)
   }
 
@@ -198,7 +198,7 @@ object SquadInfo {
     * @param task   the task the squad is trying to perform
     * @return a `SquadInfo` object
     */
-  def apply(leader: Option[String], task: String): SquadInfo = {
+def apply(leader: Option[String], task: String): SquadInfo = {
     SquadInfo(leader, Some(task), None, None, None)
   }
 
@@ -207,7 +207,7 @@ object SquadInfo {
     * @param continent_guid the continent on which the squad is acting
     * @return a `SquadInfo` object
     */
-  def apply(continent_guid: PlanetSideZoneID): SquadInfo = {
+def apply(continent_guid: PlanetSideZoneID): SquadInfo = {
     SquadInfo(None, None, Some(continent_guid), None, None)
   }
 
@@ -216,7 +216,7 @@ object SquadInfo {
     * @param size     the current size of the squad
     * @return a `SquadInfo` object
     */
-  def apply(size: Int): SquadInfo = {
+def apply(size: Int): SquadInfo = {
     SquadInfo(None, None, None, Some(size), None)
   }
 
@@ -232,7 +232,7 @@ object SquadInfo {
     * @param capacity the maximum number of members that the squad can tolerate, if not `None`
     * @return a `SquadInfo` object
     */
-  def apply(size: Option[Int], capacity: Int): SquadInfo = {
+def apply(size: Option[Int], capacity: Int): SquadInfo = {
     SquadInfo(None, None, None, size, Some(capacity))
   }
 
@@ -679,7 +679,7 @@ object SquadListing {
     * @param info the squad data
     * @return a `SquadListing` object
     */
-  def apply(index: Int, info: SquadInfo): SquadListing = {
+def apply(index: Int, info: SquadInfo): SquadListing = {
     SquadListing(index, Some(info))
   }
 
@@ -730,7 +730,7 @@ object ReplicationStreamMessage extends Marshallable[ReplicationStreamMessage] {
     * @param infos the squad data to be composed into formal list entries
     * @return a `ReplicationStreamMessage` packet object
     */
-  def apply(infos: Iterable[SquadInfo]): ReplicationStreamMessage = {
+def apply(infos: Iterable[SquadInfo]): ReplicationStreamMessage = {
     ReplicationStreamMessage(
       5,
       Some(6),

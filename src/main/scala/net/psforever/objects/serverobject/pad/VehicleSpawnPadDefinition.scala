@@ -18,14 +18,14 @@ class VehicleSpawnPadDefinition(objectId: Int) extends AmenityDefinition(objectI
   // However, it seems these values need to be reversed to turn CCW to CW rotation (e.g. +90 to -90)
   private var vehicle_creation_z_orient_offset = 0f
 
-  def VehicleCreationZOffset: Float       = vehicle_creation_z_offset
-  def VehicleCreationZOrientOffset: Float = vehicle_creation_z_orient_offset
+private def VehicleCreationZOffset: Float       = vehicle_creation_z_offset
+private def VehicleCreationZOrientOffset: Float = vehicle_creation_z_orient_offset
 
-  def VehicleCreationZOffset_=(offset: Float): Float = {
+private def VehicleCreationZOffset_=(offset: Float): Float = {
     vehicle_creation_z_offset = offset
     vehicle_creation_z_offset
   }
-  def VehicleCreationZOrientOffset_=(offset: Float): Float = {
+private def VehicleCreationZOrientOffset_=(offset: Float): Float = {
     vehicle_creation_z_orient_offset = offset
     vehicle_creation_z_orient_offset
   }
@@ -54,7 +54,7 @@ object VehicleSpawnPadDefinition {
     * @param flightVehicle whether the current vehicle being ordered is a flying craft
     * @return a function that describes a region around the vehicle spawn pad
     */
-  def prepareKillBox(
+private def prepareKillBox(
       forwardLimit: Float,
       backLimit: Float,
       sideLimit: Float,
@@ -138,7 +138,7 @@ object VehicleSpawnPadDefinition {
     * @param flightVehicle whether the current vehicle being ordered is a flying craft
     * @return a function that describes a region around the vehicle spawn pad
     */
-  def prepareVanuKillBox(
+private def prepareVanuKillBox(
       radius: Float,
       aboveLimit: Float
   )(
@@ -164,7 +164,7 @@ object VehicleSpawnPadDefinition {
     * @param requiredButUnused required by the function prototype
     * @return a function that describes a region ahead of the battleframe vehicle spawn shed
     */
-  def prepareBfrShedKillBox(
+private def prepareBfrShedKillBox(
       radius: Float,
       aboveLimit: Float
   )(
@@ -193,7 +193,7 @@ object VehicleSpawnPadDefinition {
     * @return `true`, if the two entities are near enough to each other;
     *        `false`, otherwise
     */
-  def cylinderKillBox(
+private def cylinderKillBox(
       origin: Vector3,
       radius: Float,
       aboveLimit: Float

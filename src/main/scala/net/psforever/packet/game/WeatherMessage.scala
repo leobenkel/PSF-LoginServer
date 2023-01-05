@@ -58,8 +58,8 @@ final case class StormInfo(loc: Vector3, intensity: Int, radius: Int)
   */
 final case class WeatherMessage(clouds: List[CloudInfo], storms: List[StormInfo]) extends PlanetSideGamePacket {
   type Packet = WeatherMessage
-  def opcode = GamePacketOpcode.WeatherMessage
-  def encode = WeatherMessage.encode(this)
+def opcode = GamePacketOpcode.WeatherMessage
+def encode = WeatherMessage.encode(this)
 }
 
 object WeatherMessage extends Marshallable[WeatherMessage] {

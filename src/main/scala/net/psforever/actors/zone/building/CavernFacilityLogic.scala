@@ -35,7 +35,7 @@ case object CavernFacilityLogic
     * @param data optional information
     * @return the next behavior for this control agency messaging system
     */
-  def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command] = {
+private def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command] = {
     entity match {
       case terminal: CaptureTerminal =>
         // Notify amenities that listen for CC hack state changes, e.g. wall turrets to dismount seated players
@@ -58,23 +58,23 @@ case object CavernFacilityLogic
     Behaviors.same
   }
 
-  def powerOff(details: BuildingWrapper): Behavior[Command] = {
+private def powerOff(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
-  def powerOn(details: BuildingWrapper): Behavior[Command] = {
+private def powerOn(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
-  def ntuDepleted(details: BuildingWrapper): Behavior[Command] = {
+private def ntuDepleted(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
-  def suppliedWithNtu(details: BuildingWrapper): Behavior[Command] = {
+private def suppliedWithNtu(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
-  def setFactionTo(
+private def setFactionTo(
                     details: BuildingWrapper,
                     faction: PlanetSideEmpire.Value
                   ): Behavior[Command] = {
@@ -84,7 +84,7 @@ case object CavernFacilityLogic
     Behaviors.same
   }
 
-  def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command] = {
+private def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command] = {
     Behaviors.same
   }
 
@@ -95,7 +95,7 @@ case object CavernFacilityLogic
     * @param msg the original message that instigated this upoate
     * @return the next behavior for this control agency messaging system
     */
-  def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command] = {
+private def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command] = {
     import NtuCommand._
     msg match {
       case Request(amount, replyTo) =>

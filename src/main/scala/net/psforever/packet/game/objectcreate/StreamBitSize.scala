@@ -16,7 +16,7 @@ trait StreamBitSize {
     * @return the number of bits necessary to measure an object of this class;
     *         defaults to `0L`
     */
-  def bitsize: Long = 0L
+private def bitsize: Long = 0L
 }
 
 object StreamBitSize {
@@ -28,7 +28,7 @@ object StreamBitSize {
     *              defaults to 8 bits
     * @return the size in bits
     */
-  def stringBitSize(str: String, width: Int = 8): Long = {
+private def stringBitSize(str: String, width: Int = 8): Long = {
     val strlen  = str.length
     val lenSize = if (strlen > 127) 16L else 8L
     lenSize + (strlen * width)

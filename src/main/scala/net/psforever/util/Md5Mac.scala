@@ -14,7 +14,7 @@ object Md5Mac {
     * @param mac1 A MAC value
     * @param mac2 Another MAC value
     */
-  def verifyMac(mac1: ByteVector, mac2: ByteVector): Boolean = {
+private def verifyMac(mac1: ByteVector, mac2: ByteVector): Boolean = {
     var okay = true
 
     // prevent byte by byte guessing
@@ -198,7 +198,7 @@ class Md5Mac(val key: ByteVector) {
     Integer.rotateLeft(r, shift) + b
   }
 
-  def update(bytes: ByteVector) = {
+private def update(bytes: ByteVector) = {
     count += bytes.length
     var length = bytes.length
     buffer.patchInPlace(
@@ -225,7 +225,7 @@ class Md5Mac(val key: ByteVector) {
   /** Perform final hash calculations and reset the state
     * @return the hash
     */
-  def doFinal(length: Int = MACLENGTH): ByteVector = {
+private def doFinal(length: Int = MACLENGTH): ByteVector = {
     val output: ListBuffer[Byte] = ListBuffer.fill(MACLENGTH)(0)
     buffer(position) = 0x80.toByte
     (position + 1 until BLOCKSIZE).foreach(i => buffer(i) = 0)
@@ -253,7 +253,7 @@ class Md5Mac(val key: ByteVector) {
   }
 
   /** Shorthand for `update` and `doFinal` */
-  def updateFinal(bytes: ByteVector, length: Int = MACLENGTH): ByteVector = {
+private def updateFinal(bytes: ByteVector, length: Int = MACLENGTH): ByteVector = {
     update(bytes)
     doFinal(length)
   }

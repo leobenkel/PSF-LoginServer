@@ -19,7 +19,7 @@ import scala.concurrent.duration._
 class AntControl(vehicle: Vehicle)
   extends DeployingVehicleControl(vehicle)
     with AntTransferBehavior {
-  def ChargeTransferObject = vehicle
+private def ChargeTransferObject = vehicle
 
   override def commonEnabledBehavior: Receive = super.commonEnabledBehavior.orElse(antBehavior)
 

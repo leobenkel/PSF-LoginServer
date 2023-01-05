@@ -72,7 +72,7 @@ case class State(
     characters: Seq[CharacterInfoMessage] = Seq(),
     avatar: Avatar = Avatar()
 ) {
-  def update(packet: PlanetSidePacket): State = {
+private def update(packet: PlanetSidePacket): State = {
     (packet match {
       case ServerStart(_, _)                                       => this.copy(connection = Connection.CryptoSetup)
       case ServerFinished(_)                                       => this.copy(connection = Connection.Login)

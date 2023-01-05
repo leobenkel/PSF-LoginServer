@@ -26,7 +26,7 @@ trait ResolutionCalculations {
     * @param data the historical damage information
     * @return a function literal that encapsulates delayed modification instructions for certain objects
     */
-  def calculate(
+private def calculate(
       damages: DamageCalculations.Selector,
       resistances: ResistanceSelection.Format,
       data: DamageInteraction
@@ -37,9 +37,9 @@ object ResolutionCalculations {
   type Output = PlanetSideGameObject with FactionAffinity => DamageResult
   type Form   = (DamageCalculations.Selector, ResistanceSelection.Format, DamageInteraction) => Output
 
-  def NoDamage(data: DamageInteraction)(a: Int, b: Int): Int = 0
+private def NoDamage(data: DamageInteraction)(a: Int, b: Int): Int = 0
 
-  def InfantryDamage(data: DamageInteraction): (Int, Int) => (Int, Int) = {
+private def InfantryDamage(data: DamageInteraction): (Int, Int) => (Int, Int) = {
     data.target match {
       case target: PlayerSource =>
         if(data.cause.source.DamageToHealthOnly) {
@@ -52,7 +52,7 @@ object ResolutionCalculations {
     }
   }
 
-  def DamageToHealthOnly(currentHP: Int)(damages: Int, resistance: Int): (Int, Int) = {
+private def DamageToHealthOnly(currentHP: Int)(damages: Int, resistance: Int): (Int, Int) = {
     if (damages > 0 && currentHP > 0) {
       if(damages > resistance) {
         (damages - resistance, 0)
@@ -64,7 +64,7 @@ object ResolutionCalculations {
     }
   }
 
-  def InfantryDamageAfterResist(currentHP: Int, currentArmor: Int)(damages: Int, resistance: Int): (Int, Int) = {
+private def InfantryDamageAfterResist(currentHP: Int, currentArmor: Int)(damages: Int, resistance: Int): (Int, Int) = {
     if (damages > 0 && currentHP > 0) {
       if (currentArmor <= 0) {
         (damages, 0) //no armor; health damage
@@ -84,7 +84,7 @@ object ResolutionCalculations {
     }
   }
 
-  def MaxDamage(data: DamageInteraction): (Int, Int) => (Int, Int) = {
+private def MaxDamage(data: DamageInteraction): (Int, Int) => (Int, Int) = {
     data.target match {
       case target: PlayerSource =>
         if(data.cause.source.DamageToHealthOnly) {
@@ -97,7 +97,7 @@ object ResolutionCalculations {
     }
   }
 
-  def MaxDamageAfterResist(currentHP: Int, currentArmor: Int)(damages: Int, resistance: Int): (Int, Int) = {
+private def MaxDamageAfterResist(currentHP: Int, currentArmor: Int)(damages: Int, resistance: Int): (Int, Int) = {
     val resistedDam = damages - resistance
     if (resistedDam > 0 && currentHP > 0) {
       if (currentArmor <= 0) {
@@ -119,11 +119,11 @@ object ResolutionCalculations {
     * @param data the historical damage information
     * @return a function literal for dealing with damage values and resistance values together
     */
-  def VehicleDamageAfterResist(data: DamageInteraction): (Int, Int) => Int = {
+private def VehicleDamageAfterResist(data: DamageInteraction): (Int, Int) => Int = {
     VehicleDamageAfterResist
   }
 
-  def VehicleDamageAfterResist(damages: Int, resistance: Int): Int = {
+private def VehicleDamageAfterResist(damages: Int, resistance: Int): Int = {
     if (damages > resistance) {
       damages - resistance
     } else {
@@ -131,12 +131,12 @@ object ResolutionCalculations {
     }
   }
 
-  def NoApplication(damageValue: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def NoApplication(damageValue: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     val sameTarget = SourceEntry(target)
     DamageResult(sameTarget, sameTarget, data)
   }
 
-  def SubtractWithRemainder(current: Int, damage: Int): (Int, Int) = {
+private def SubtractWithRemainder(current: Int, damage: Int): (Int, Int) = {
     val a               = Math.max(0, current - damage)
     val remainingDamage = Math.abs(current - damage - a)
     (a, remainingDamage)
@@ -153,7 +153,7 @@ object ResolutionCalculations {
     * @param data the historical damage information
     * @param target the `Player` object to be affected by these damage values (at some point)
     */
-  def InfantryApplication(damageValues: (Int, Int), data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def InfantryApplication(damageValues: (Int, Int), data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     val targetBefore = SourceEntry(target)
     target match {
       case player: Player if noDoubleLash(player, data) =>
@@ -224,7 +224,7 @@ object ResolutionCalculations {
     * @param data the historical damage information
     * @param target the `Vehicle` object to be affected by these damage values (at some point)
     */
-  def VehicleApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def VehicleApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     val targetBefore = SourceEntry(target)
     target match {
       case vehicle: Vehicle if CanDamage(vehicle, damage, data) =>
@@ -238,7 +238,7 @@ object ResolutionCalculations {
     DamageResult(targetBefore, SourceEntry(target), data)
   }
 
-  def vehicleDamageAfterShieldTest(
+private def vehicleDamageAfterShieldTest(
                                     vehicle: Vehicle,
                                     damage: Int,
                                     ignoreShieldsDamage: Boolean
@@ -258,7 +258,7 @@ object ResolutionCalculations {
     }
   }
 
-  def SimpleApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def SimpleApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     val targetBefore = SourceEntry(target)
     target match {
       case entity: Vitality if CanDamage(entity, damage, data) =>
@@ -268,7 +268,7 @@ object ResolutionCalculations {
     DamageResult(targetBefore, SourceEntry(target), data)
   }
 
-  def ComplexDeployableApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def ComplexDeployableApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     val targetBefore = SourceEntry(target)
     target match {
       case ce: TurretDeployable if CanDamage(ce, damage, data) =>
@@ -300,7 +300,7 @@ object ResolutionCalculations {
     DamageResult(targetBefore, SourceEntry(target), data)
   }
 
-  def WildcardCalculations(data: DamageInteraction): (Int, Int) => Any = {
+private def WildcardCalculations(data: DamageInteraction): (Int, Int) => Any = {
     data.target match {
       case p: PlayerSource =>
         if(p.ExoSuit == ExoSuitType.MAX) MaxDamage(data)
@@ -310,7 +310,7 @@ object ResolutionCalculations {
     }
   }
 
-  def WildcardApplication(damage: Any, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def WildcardApplication(damage: Any, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     target match {
       case _: Player =>
         val dam : (Int, Int) = damage match {
@@ -343,7 +343,7 @@ object ResolutionCalculations {
     }
   }
 
-  def BfrApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def BfrApplication(damage: Int, data: DamageInteraction)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     val targetBefore = SourceEntry(target)
     target match {
       case obj: Vehicle

@@ -5,9 +5,9 @@ import net.psforever.objects.definition.BasicDefinition
 
 trait MountableSpaceDefinition[A]
   extends BasicDefinition {
-  def occupancy: Int
+private def occupancy: Int
 
-  def restriction: MountRestriction[A]
+private def restriction: MountRestriction[A]
 
-  def bailable: Boolean
+private def bailable: Boolean
 }

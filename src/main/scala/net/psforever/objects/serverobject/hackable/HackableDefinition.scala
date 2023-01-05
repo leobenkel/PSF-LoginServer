@@ -5,16 +5,16 @@ class HackableDefinition {
   private var hackable: Boolean = false
   private var magicNumber: Long = 0
 
-  def Hackable: Boolean = hackable
+private def Hackable: Boolean = hackable
 
-  def Hackable_=(state: Boolean): Boolean = {
+private def Hackable_=(state: Boolean): Boolean = {
     hackable = state
     Hackable
   }
 
-  def MagicNumber: Long = magicNumber
+private def MagicNumber: Long = magicNumber
 
-  def MagicNumber_=(magic: Long): Long = {
+private def MagicNumber_=(magic: Long): Long = {
     magicNumber = magic
     MagicNumber
   }

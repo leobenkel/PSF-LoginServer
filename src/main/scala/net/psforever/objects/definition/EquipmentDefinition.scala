@@ -28,14 +28,14 @@ abstract class EquipmentDefinition(objectId: Int) extends ObjectDefinition(objec
 
   def Tile: InventoryTile = tile
 
-  def Tile_=(newTile: InventoryTile): InventoryTile = {
+  private def Tile_=(newTile: InventoryTile): InventoryTile = {
     tile = newTile
     Tile
   }
 
-  def DropOffset: Float = dropOffset
+  private def DropOffset: Float = dropOffset
 
-  def DropOffset(offset: Float): Float = {
+  private def DropOffset(offset: Float): Float = {
     dropOffset = offset
     DropOffset
   }

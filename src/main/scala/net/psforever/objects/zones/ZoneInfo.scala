@@ -273,9 +273,9 @@ case object ZoneInfo extends IntEnum[ZoneInfo] {
 
   val values: IndexedSeq[ZoneInfo] = findValues
 
-  def findName(name: String): ZoneInfo = findNameOpt(name).get
+private def findName(name: String): ZoneInfo = findNameOpt(name).get
 
-  def findNameOpt(name: String): Option[ZoneInfo] =
+private def findNameOpt(name: String): Option[ZoneInfo] =
     values.find(v =>
       v.name.toLowerCase() == name.toLowerCase() || v.aliases.map(_.toLowerCase()).contains(name.toLowerCase())
     )

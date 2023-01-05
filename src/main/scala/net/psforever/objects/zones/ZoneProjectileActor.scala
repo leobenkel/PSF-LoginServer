@@ -32,7 +32,7 @@ private val projectileLifespan: mutable.HashMap[PlanetSideGUID, Cancellable] = n
     projectileList.clear()
   }
 
-  def receive: Receive = {
+def receive: Receive = {
     case ZoneProjectile.Add(filterGuid, projectile) =>
       if (projectile.Definition.ExistsOnRemoteClients) {
         if (projectile.HasGUID) {
@@ -104,7 +104,7 @@ private val projectileLifespan: mutable.HashMap[PlanetSideGUID, Cancellable] = n
     * @param obj the projectile to be registered (a second time?)
     * @return a `TaskBundle` message
     */
-  def reregisterProjectile(filterGuid: PlanetSideGUID, obj: Projectile): TaskBundle = {
+private def reregisterProjectile(filterGuid: PlanetSideGUID, obj: Projectile): TaskBundle = {
     val reg = registerProjectile(filterGuid, obj)
     if (obj.HasGUID) {
       TaskBundle(
@@ -133,7 +133,7 @@ private val projectileLifespan: mutable.HashMap[PlanetSideGUID, Cancellable] = n
     * @param projectileGuid the projectile unique identifier that was assigned by the zone's unique number system
     * @param projectile the projectile being included
     */
-  def loadedRemoteProjectile(
+private def loadedRemoteProjectile(
                               filterGuid: PlanetSideGUID,
                               projectileGuid: PlanetSideGUID,
                               projectile: Projectile
@@ -180,7 +180,7 @@ private val projectileLifespan: mutable.HashMap[PlanetSideGUID, Cancellable] = n
     * @param projectile_guid the globally unique identifier of the projectile
     * @param projectile the projectile
     */
-  def cleanUpRemoteProjectile(projectile_guid: PlanetSideGUID, projectile: Projectile): Unit = {
+private def cleanUpRemoteProjectile(projectile_guid: PlanetSideGUID, projectile: Projectile): Unit = {
     projectileLifespan.remove(projectile_guid) match {
       case Some(c) => c.cancel()
       case _ => ;

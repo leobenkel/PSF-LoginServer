@@ -6,8 +6,8 @@ import scodec.Codec
 
 final case class ConnectionClose() extends PlanetSideControlPacket {
   type Packet = ConnectionClose
-  def opcode = ControlPacketOpcode.ConnectionClose
-  def encode = ConnectionClose.encode(this)
+def opcode = ControlPacketOpcode.ConnectionClose
+def encode = ConnectionClose.encode(this)
 }
 
 object ConnectionClose extends Marshallable[ConnectionClose] {

@@ -300,7 +300,7 @@ object GamePacketOpcode extends Enumeration {
   /// Mapping of packet IDs to decoders. Notice that we are using the @switch annotation which ensures that the Scala
   /// compiler will be able to optimize this as a lookup table (switch statement). Microbenchmarks show a nearly 400x
   /// speedup when using a switch (given the worst case of not finding a decoder)
-  def getPacketDecoder(opcode: GamePacketOpcode.Type): BitVector => Attempt[DecodeResult[PlanetSideGamePacket]] =
+private def getPacketDecoder(opcode: GamePacketOpcode.Type): BitVector => Attempt[DecodeResult[PlanetSideGamePacket]] =
     (opcode.id: @switch) match {
       // OPCODES 0x00-0f
       case 0x00 => noDecoder(Unknown0)

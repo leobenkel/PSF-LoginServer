@@ -22,8 +22,8 @@ import shapeless.{::, HNil}
   */
 final case class DamageWithPositionMessage(unk: Int, pos: Vector3) extends PlanetSideGamePacket {
   type Packet = DamageWithPositionMessage
-  def opcode = GamePacketOpcode.DamageWithPositionMessage
-  def encode = DamageWithPositionMessage.encode(this)
+def opcode = GamePacketOpcode.DamageWithPositionMessage
+def encode = DamageWithPositionMessage.encode(this)
 }
 
 object DamageWithPositionMessage extends Marshallable[DamageWithPositionMessage] {

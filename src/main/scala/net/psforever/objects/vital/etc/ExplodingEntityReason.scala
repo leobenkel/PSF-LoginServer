@@ -30,15 +30,15 @@ final case class ExplodingEntityReason(
                                         damageModel: DamageAndResistance,
                                         instigation: Option[DamageResult]
                                       ) extends DamageReason {
-  def resolution: DamageResolution.Value = DamageResolution.Explosion
+private def resolution: DamageResolution.Value = DamageResolution.Explosion
 
-  def same(test: DamageReason): Boolean = test match {
+private def same(test: DamageReason): Boolean = test match {
     case eer: ExplodingEntityReason => eer.entity eq entity
     case _                          => false
   }
 
   /** lay the blame on that which caused this explosion to occur */
-  def adversary: Option[SourceEntry] = instigation match {
+private def adversary: Option[SourceEntry] = instigation match {
     case Some(prior) => prior.interaction.cause.adversary
     case None         => Some(entity)
   }
@@ -54,7 +54,7 @@ object ExplodingEntityReason {
     * @param instigation what previous event happened, if any, that caused this explosion
     * @return an `ExplodingEntityReason` entity
     */
-  def apply(
+def apply(
              entity: PlanetSideGameObject with FactionAffinity with Vitality,
              damageModel: DamageAndResistance,
              instigation: Option[DamageResult]
@@ -85,7 +85,7 @@ object ExplodingDamageModifiers {
   * @see `DamageModifierFunctions.RadialDegrade`
   */
 case object ExplodingRadialDegrade extends ExplodingDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: ExplodingEntityReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: ExplodingEntityReason): Int = {
     cause.source match {
       case withPosition: DamageWithPosition =>
         val radius    = withPosition.DamageRadius
@@ -111,7 +111,7 @@ case object ExplodingRadialDegrade extends ExplodingDamageModifiers.Mod {
 }
 
 case object ExplosionDamagesOnlyAbove extends ExplodingDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: ExplodingEntityReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: ExplodingEntityReason): Int = {
     if (data.target.Position.z <= data.hitPos.z) {
       damage
     } else {

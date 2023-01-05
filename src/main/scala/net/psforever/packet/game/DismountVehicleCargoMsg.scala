@@ -26,9 +26,9 @@ final case class DismountVehicleCargoMsg(
 ) extends PlanetSideGamePacket {
   type Packet = DismountVehicleCargoMsg
 
-  def opcode = GamePacketOpcode.DismountVehicleCargoMsg
+def opcode = GamePacketOpcode.DismountVehicleCargoMsg
 
-  def encode = DismountVehicleCargoMsg.encode(this)
+def encode = DismountVehicleCargoMsg.encode(this)
 }
 
 object DismountVehicleCargoMsg extends Marshallable[DismountVehicleCargoMsg] {

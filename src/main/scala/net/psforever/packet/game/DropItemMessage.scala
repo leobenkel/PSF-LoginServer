@@ -20,8 +20,8 @@ import scodec.codecs._
   */
 final case class DropItemMessage(item_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = DropItemMessage
-  def opcode = GamePacketOpcode.DropItemMessage
-  def encode = DropItemMessage.encode(this)
+def opcode = GamePacketOpcode.DropItemMessage
+def encode = DropItemMessage.encode(this)
 }
 
 object DropItemMessage extends Marshallable[DropItemMessage] {

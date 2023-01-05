@@ -23,9 +23,9 @@ trait AggravatedBehavior {
   /** ongoing flag to indicate whether the target is being afflicted by any form of aggravated damage */
   private var ongoingAggravated: Boolean = false
 
-  def AggravatedObject: AggravatedBehavior.Target
+private def AggravatedObject: AggravatedBehavior.Target
 
-  def TryAggravationEffectActivate(data: DamageResult): Option[AggravatedDamage] = {
+private def TryAggravationEffectActivate(data: DamageResult): Option[AggravatedDamage] = {
     (data.interaction.cause, data.interaction.cause.source.Aggravated) match {
       case (o: ProjectileReason, Some(damage))
           if data.interaction.cause.source.AllDamageTypes.contains(DamageType.Aggravated) &&
@@ -166,7 +166,7 @@ trait AggravatedBehavior {
     }
   }
 
-  def RemoveAggravatedEntry(id: Long): Aura = {
+private def RemoveAggravatedEntry(id: Long): Aura = {
     entryIdToEntry.remove(id) match {
       case Some(entry) =>
         ongoingAggravated = entryIdToEntry.nonEmpty
@@ -176,7 +176,7 @@ trait AggravatedBehavior {
     }
   }
 
-  def CleanupAggravationTimer(id: Long): Unit = {
+private def CleanupAggravationTimer(id: Long): Unit = {
     //remove and cancel timer
     aggravationToTimer.remove(id) match {
       case Some(timer) => timer.cancel()
@@ -184,18 +184,18 @@ trait AggravatedBehavior {
     }
   }
 
-  def AggravationCleanup(id: Long): Unit = {
+private def AggravationCleanup(id: Long): Unit = {
     RemoveAggravatedEntry(id)
     CleanupAggravationTimer(id)
   }
 
-  def EndAllAggravation(): Unit = {
+private def EndAllAggravation(): Unit = {
     entryIdToEntry.clear()
     aggravationToTimer.values.foreach { _.cancel() }
     aggravationToTimer.clear()
   }
 
-  def AggravatedReaction: Boolean = ongoingAggravated
+private def AggravatedReaction: Boolean = ongoingAggravated
 
   private def PerformAggravation(entry: AggravatedBehavior.Entry, tick: Int = 0): Unit = {
     entry.data.cause match {

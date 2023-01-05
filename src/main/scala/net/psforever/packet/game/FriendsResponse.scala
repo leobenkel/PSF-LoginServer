@@ -39,9 +39,9 @@ final case class FriendsResponse(
 ) extends PlanetSideGamePacket {
   type Packet = FriendsResponse
 
-  def opcode: Type = GamePacketOpcode.FriendsResponse
+def opcode: Type = GamePacketOpcode.FriendsResponse
 
-  def encode: Attempt[BitVector] = FriendsResponse.encode(this)
+def encode: Attempt[BitVector] = FriendsResponse.encode(this)
 }
 
 object Friend extends Marshallable[Friend] {
@@ -61,7 +61,7 @@ object Friend extends Marshallable[Friend] {
 }
 
 object FriendsResponse extends Marshallable[FriendsResponse] {
-  def apply(action: MemberAction.Value, friend: Friend): FriendsResponse = {
+def apply(action: MemberAction.Value, friend: Friend): FriendsResponse = {
     FriendsResponse(action, unk1=0, first_entry=true, last_entry=true, List(friend))
   }
 
@@ -73,7 +73,7 @@ object FriendsResponse extends Marshallable[FriendsResponse] {
     * @param friends a list of `Friend`s
     * @return a list of `FriendResponse` packets
     */
-  def packetSequence(action: MemberAction.Value, friends: List[Friend]): List[FriendsResponse] = {
+private def packetSequence(action: MemberAction.Value, friends: List[Friend]): List[FriendsResponse] = {
     val lists = friends.grouped(15)
     val size = lists.size
     if (size <= 1) {

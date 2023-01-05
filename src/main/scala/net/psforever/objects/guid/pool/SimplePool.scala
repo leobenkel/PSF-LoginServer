@@ -13,22 +13,22 @@ class SimplePool(val numbers: List[Int]) extends NumberPool {
   }
   private var selector: NumberSelector = new StrictInOrderSelector
 
-  def Numbers: List[Int] = numbers
+private def Numbers: List[Int] = numbers
 
-  def Count: Int = 0
+private def Count: Int = 0
 
-  def Selector: NumberSelector = selector
+private def Selector: NumberSelector = selector
 
-  def Selector_=(slctr: NumberSelector): Unit = {
+private def Selector_=(slctr: NumberSelector): Unit = {
     selector = slctr
   }
 
-  def Get(): Try[Int] = {
+private def Get(): Try[Int] = {
     val ary   = numbers.indices.toArray
     val index = selector.Get(ary)
     selector.Return(index, ary) //reset, for the benefit of the selector
     Success(numbers(index))
   }
 
-  def Return(number: Int): Boolean = numbers.indexOf(number) > -1
+private def Return(number: Int): Boolean = numbers.indexOf(number) > -1
 }

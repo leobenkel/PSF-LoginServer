@@ -20,8 +20,8 @@ object CharacterRequestAction extends Enumeration(0) {
 final case class CharacterRequestMessage(charId: Long, action: CharacterRequestAction.Type)
     extends PlanetSideGamePacket {
   type Packet = CharacterRequestMessage
-  def opcode = GamePacketOpcode.CharacterRequestMessage
-  def encode = CharacterRequestMessage.encode(this)
+def opcode = GamePacketOpcode.CharacterRequestMessage
+def encode = CharacterRequestMessage.encode(this)
 }
 
 object CharacterRequestMessage extends Marshallable[CharacterRequestMessage] {

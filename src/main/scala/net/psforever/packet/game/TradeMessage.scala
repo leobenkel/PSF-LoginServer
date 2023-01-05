@@ -8,7 +8,7 @@ import scodec.codecs._
 import shapeless.{::, HNil}
 
 sealed trait Trade {
-  def value: Int
+private def value: Int
 }
 
 final case class NoTrade(value: Int) extends Trade {
@@ -35,28 +35,28 @@ final case class TradeFour(value: Int, unk: Int) extends Trade {
 final case class TradeMessage(trade: Trade)
   extends PlanetSideGamePacket {
   type Packet = TradeMessage
-  def opcode = GamePacketOpcode.TradeMessage
-  def encode = TradeMessage.encode(this)
+def opcode = GamePacketOpcode.TradeMessage
+def encode = TradeMessage.encode(this)
 }
 
 object NoTrade {
-  def apply(): NoTrade = NoTrade(0)
+def apply(): NoTrade = NoTrade(0)
 }
 
 object TradeOne {
-  def apply(unk1: PlanetSideGUID, unk2: PlanetSideGUID, unk3: PlanetSideGUID): TradeOne = TradeOne(1, unk1, unk2, unk3)
+def apply(unk1: PlanetSideGUID, unk2: PlanetSideGUID, unk3: PlanetSideGUID): TradeOne = TradeOne(1, unk1, unk2, unk3)
 }
 
 object TradeTwo {
-  def apply(unk1: PlanetSideGUID, unk2: PlanetSideGUID): TradeTwo = TradeTwo(4, unk1, unk2)
+def apply(unk1: PlanetSideGUID, unk2: PlanetSideGUID): TradeTwo = TradeTwo(4, unk1, unk2)
 }
 
 object TradeThree {
-  def apply(unk: PlanetSideGUID): TradeThree = TradeThree(6, unk)
+def apply(unk: PlanetSideGUID): TradeThree = TradeThree(6, unk)
 }
 
 object TradeFour {
-  def apply(unk: Int): TradeFour = TradeFour(6, unk)
+def apply(unk: Int): TradeFour = TradeFour(6, unk)
 }
 
 object TradeMessage extends Marshallable[TradeMessage] {

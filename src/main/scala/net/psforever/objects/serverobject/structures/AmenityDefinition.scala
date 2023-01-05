@@ -21,10 +21,10 @@ abstract class AmenityDefinition(objectId: Int)
 
   var autoRepair: Option[AutoRepairStats] = None
 
-  def autoRepair_=(auto: AutoRepairStats): Option[AutoRepairStats] = {
+private def autoRepair_=(auto: AutoRepairStats): Option[AutoRepairStats] = {
     autoRepair = Some(auto)
     autoRepair
   }
 
-  def hasAutoRepair: Boolean = autoRepair.nonEmpty
+private def hasAutoRepair: Boolean = autoRepair.nonEmpty
 }

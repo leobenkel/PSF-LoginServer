@@ -109,7 +109,7 @@ class BattleFrameRoboticsConverter extends ObjectCreateConverter[Vehicle]() {
       .toList
   }
 
-  def showBfrShield(obj: Vehicle): Boolean = {
+private def showBfrShield(obj: Vehicle): Boolean = {
     obj.Subsystems(VehicleSubsystemEntry.BattleframeShieldGenerator).get.Enabled && obj.Shields > 0
   }
 }

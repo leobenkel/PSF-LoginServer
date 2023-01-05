@@ -12,6 +12,7 @@ import net.psforever.objects.vital.resolution.{DamageAndResistance, ResolutionCa
   * The base reason does not convey any specific requirements in regards to the interaction being described.
   */
 trait DamageReason {
+
   /**
     * An indication about how the damage was or will be processed.
     */
@@ -58,7 +59,7 @@ trait DamageReason {
     * Specifics about the method of damage, expected as an object class's unique identifier.
     * @return defaults to 0
     */
-  def attribution: Int = 0
+  private def attribution: Int = 0
 
   /**
     * Perform the modified damage value and the basic resistance value allocations
@@ -66,7 +67,7 @@ trait DamageReason {
     * @param data the damaging interaction to be evaluated
     * @return an application function that takes a target and returns a result
     */
-  def calculate(data: DamageInteraction): ResolutionCalculations.Output = {
+  private def calculate(data: DamageInteraction): ResolutionCalculations.Output = {
     damageModel.calculate(data)
   }
 
@@ -77,7 +78,7 @@ trait DamageReason {
     * @param dtype custom damage property for resistance allocation
     * @return an application function that takes a target and returns a result
     */
-  def calculate(data: DamageInteraction, dtype: DamageType.Value): ResolutionCalculations.Output = {
+  private def calculate(data: DamageInteraction, dtype: DamageType.Value): ResolutionCalculations.Output = {
     damageModel.calculate(data, dtype)
   }
 }

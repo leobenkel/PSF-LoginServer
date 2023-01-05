@@ -34,7 +34,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param number the unique number to attempt to retrieve from the `source`
     * @return the object that is assigned to the number
     */
-  def apply(number: PlanetSideGUID): Option[IdentifiableEntity] = this(number.guid)
+def apply(number: PlanetSideGUID): Option[IdentifiableEntity] = this(number.guid)
 
   /**
     * Given a globally unique identifier, return any object registered to it.<br>
@@ -44,9 +44,9 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param number the unique number to attempt to retrieve from the `source`
     * @return the object that is assigned to the number
     */
-  def apply(number: Int): Option[IdentifiableEntity] = source.get(number).orElse(return None).get.Object
+def apply(number: Int): Option[IdentifiableEntity] = source.get(number).orElse(return None).get.Object
 
-  def Numbers: List[Int] = bigpool.keys.map(key => key.toInt).toList
+private def Numbers: List[Int] = bigpool.keys.map(key => key.toInt).toList
 
   /**
     * Create a new number pool with the given label and the given numbers.<br>
@@ -64,7 +64,7 @@ class NumberPoolHub(private val source: NumberSource) {
     *                                  if the pool contains numbers the source does not;
     *                                  if the pool contains numbers from already existing pools
     */
-  def AddPool(name: String, pool: List[Int]): NumberPool = {
+private def AddPool(name: String, pool: List[Int]): NumberPool = {
     if (hash.get(name).isDefined) {
       throw new IllegalArgumentException(s"can not add pool $name - name already known to this hub?")
     }
@@ -97,7 +97,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @return the `List` of numbers that belonged to the pool
     * @throws IllegalArgumentException if the pool doesn't exist or is not removed (removable)
     */
-  def RemovePool(name: String): List[Int] = {
+private def RemovePool(name: String): List[Int] = {
     if (name.equals("generic") || name.equals("")) {
       throw new IllegalArgumentException("can not remove pool - generic or restricted")
     }
@@ -122,7 +122,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param name the name of the pool
     * @return a reference to the number pool, or `None`
     */
-  def GetPool(name: String): Option[NumberPool] =
+private def GetPool(name: String): Option[NumberPool] =
     if (name.equals("")) { None }
     else { hash.get(name) }
 
@@ -130,7 +130,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * na
     * @return na
     */
-  def Pools: mutable.HashMap[String, NumberPool] = hash
+private def Pools: mutable.HashMap[String, NumberPool] = hash
 
   /**
     * Reference a specific number's pool.<br>
@@ -143,7 +143,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param number a number
     * @return the name of the number pool to which this item belongs
     */
-  def WhichPool(number: Int): Option[String] = {
+private def WhichPool(number: Int): Option[String] = {
     val name = bigpool.get(number)
     if (name.contains("")) { None }
     else { name }
@@ -157,7 +157,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param obj an object
     * @return the name of the number pool to which this item belongs
     */
-  def WhichPool(obj: IdentifiableEntity): Option[String] = {
+private def WhichPool(obj: IdentifiableEntity): Option[String] = {
     try {
       val number: Int = obj.GUID.guid
       val entry       = source.get(number)
@@ -174,7 +174,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param obj an object being registered
     * @return the number the was given to the object
     */
-  def register(obj: IdentifiableEntity): Try[Int] = register(obj, "generic")
+private def register(obj: IdentifiableEntity): Try[Int] = register(obj, "generic")
 
   /**
     * Register an object to a specific number if it is available.
@@ -182,7 +182,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param number the number whose assignment is requested
     * @return the number the was given to the object
     */
-  def register(obj: IdentifiableEntity, number: Int): Try[Int] = {
+private def register(obj: IdentifiableEntity, number: Int): Try[Int] = {
     bigpool.get(number.toLong) match {
       case Some(name) =>
         register_GetSpecificNumberFromPool(name, number) match {
@@ -240,7 +240,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param name the local pool name
     * @return the number the was given to the object
     */
-  def register(obj: IdentifiableEntity, name: String): Try[Int] = {
+private def register(obj: IdentifiableEntity, name: String): Try[Int] = {
     if (obj.HasGUID) {
       register_CheckNumberAgainstDesiredPool(obj, name, obj.GUID.guid)
     } else {
@@ -300,7 +300,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param number the number whose assignment is requested
     * @return the monitor for a number
     */
-  def register(number: Int): Try[LoanedKey] = {
+private def register(number: Int): Try[LoanedKey] = {
     WhichPool(number) match {
       case None =>
         import net.psforever.objects.guid.selector.SpecificSelector
@@ -316,7 +316,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param name the local pool name
     * @return the monitor for a number
     */
-  def register(name: String): Try[LoanedKey] = register_GetPool(name)
+private def register(name: String): Try[LoanedKey] = register_GetPool(name)
 
   /**
     * na
@@ -339,7 +339,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param obj an object being unregistered
     * @return the number previously associated with the object
     */
-  def unregister(obj: IdentifiableEntity): Try[Int] = {
+private def unregister(obj: IdentifiableEntity): Try[Int] = {
     unregister_GetPoolFromObject(obj) match {
       case Success(pool) =>
         val number = obj.GUID.guid
@@ -360,7 +360,7 @@ class NumberPoolHub(private val source: NumberSource) {
     *            has a vague default
     * @return the number associated with this object
     */
-  def unregister_GetMonitorFromObject(
+private def unregister_GetMonitorFromObject(
                                        obj: IdentifiableEntity,
                                        msg: String = "can not find this object"
                                      ): Try[Int] = {
@@ -375,7 +375,7 @@ class NumberPoolHub(private val source: NumberSource) {
     }
   }
 
-  def unregister_GetPoolFromObject(obj: IdentifiableEntity): Try[NumberPool] = {
+private def unregister_GetPoolFromObject(obj: IdentifiableEntity): Try[NumberPool] = {
     WhichPool(obj) match {
       case Some(name) =>
         unregister_GetPool(name)
@@ -398,7 +398,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @param number the number previously assigned(?)
     * @return the object, if any, previous associated with the number
     */
-  def unregister(number: Int): Try[Option[IdentifiableEntity]] = {
+private def unregister(number: Int): Try[Option[IdentifiableEntity]] = {
     if (source.test(number)) {
       unregister_GetObjectFromSource(number)
     } else {
@@ -469,7 +469,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @return `true`, if the number is registered; `false`, otherwise
     * @see `isRegistered(Int)`
     */
-  def isRegistered(obj: IdentifiableEntity): Boolean = {
+private def isRegistered(obj: IdentifiableEntity): Boolean = {
     try {
       source.get(obj.GUID.guid) match {
         case Some(monitor) =>
@@ -493,7 +493,7 @@ class NumberPoolHub(private val source: NumberSource) {
     * @return `true`, if the number is registered; `false`, otherwise
     * @see `isRegistered(IdentifiableEntity)`
     */
-  def isRegistered(number: Int): Boolean = {
+private def isRegistered(number: Int): Boolean = {
     source.get(number) match {
       case Some(monitor) =>
         monitor.Policy == AvailabilityPolicy.Leased

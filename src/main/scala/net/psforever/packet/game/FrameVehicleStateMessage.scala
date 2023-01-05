@@ -45,8 +45,8 @@ final case class FrameVehicleStateMessage(
                                            unkA: Long
                                          ) extends PlanetSideGamePacket {
   type Packet = FrameVehicleStateMessage
-  def opcode = GamePacketOpcode.FrameVehicleStateMessage
-  def encode = FrameVehicleStateMessage.encode(this)
+def opcode = GamePacketOpcode.FrameVehicleStateMessage
+def encode = FrameVehicleStateMessage.encode(this)
 }
 
 object FrameVehicleStateMessage extends Marshallable[FrameVehicleStateMessage] {

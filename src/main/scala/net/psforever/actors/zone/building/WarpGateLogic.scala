@@ -17,23 +17,23 @@ case object WarpGateLogic
   extends BuildingLogic {
   import BuildingActor.Command
 
-  def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command] = {
+private def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command] = {
     Behaviors.same
   }
 
-  def powerOff(details: BuildingWrapper): Behavior[Command] = {
+private def powerOff(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
-  def powerOn(details: BuildingWrapper): Behavior[Command] = {
+private def powerOn(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
-  def ntuDepleted(details: BuildingWrapper): Behavior[Command] = {
+private def ntuDepleted(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
-  def suppliedWithNtu(details: BuildingWrapper): Behavior[Command] = {
+private def suppliedWithNtu(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.same
   }
 
@@ -45,7 +45,7 @@ case object WarpGateLogic
     * @param faction the faction affiliation to which the facility will update
     * @return the next behavior for this control agency messaging system
     */
-  def setFactionTo(details: BuildingWrapper, faction: PlanetSideEmpire.Value): Behavior[Command] = {
+private def setFactionTo(details: BuildingWrapper, faction: PlanetSideEmpire.Value): Behavior[Command] = {
     /*
     in reality, the faction of most gates is neutral;
     the ability to move through the gates is determined by empire-related broadcast settings;
@@ -73,7 +73,7 @@ case object WarpGateLogic
     * @param building the neighbor facility that has had its faction changed
     * @return the next behavior for this control agency messaging system
     */
-  def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command] = {
+private def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command] = {
     val warpgate = details.building.asInstanceOf[WarpGate]
     if (warpgate.Active) {
       val local = warpgate.Neighbours.getOrElse(Nil)
@@ -150,7 +150,7 @@ case object WarpGateLogic
     * @param neighborhood a series of buildings of various types
     * @return the discovered warp gate
     */
-  def findNeighborhoodWarpGate(neighborhood: Iterable[Building]): Option[Building] = {
+private def findNeighborhoodWarpGate(neighborhood: Iterable[Building]): Option[Building] = {
     neighborhood.find { _ match { case _: WarpGate => true; case _ => false } }
   }
 
@@ -159,7 +159,7 @@ case object WarpGateLogic
     * @param neighborhood a series of buildings of various types
     * @return the discovered warp gate
     */
-  def findNeighborhoodNormalBuilding(neighborhood: Iterable[Building]): Option[Building] = {
+private def findNeighborhoodNormalBuilding(neighborhood: Iterable[Building]): Option[Building] = {
     neighborhood.find { _ match { case _: WarpGate => false; case _ => true } }
   }
 
@@ -223,7 +223,7 @@ case object WarpGateLogic
     * @param msg the original message that instigated this upoate
     * @return the next behavior for this control agency messaging system
     */
-  def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command] = {
+private def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command] = {
     import NtuCommand._
     msg match {
       case Request(amount, replyTo) =>

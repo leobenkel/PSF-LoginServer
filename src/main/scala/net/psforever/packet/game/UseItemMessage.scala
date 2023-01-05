@@ -58,8 +58,8 @@ final case class UseItemMessage(
     object_id: Long
 ) extends PlanetSideGamePacket {
   type Packet = UseItemMessage
-  def opcode = GamePacketOpcode.UseItemMessage
-  def encode = UseItemMessage.encode(this)
+def opcode = GamePacketOpcode.UseItemMessage
+def encode = UseItemMessage.encode(this)
 }
 
 object UseItemMessage extends Marshallable[UseItemMessage] {

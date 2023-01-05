@@ -87,8 +87,8 @@ final case class OrbitalShuttleTimeMsg(
                                       )
   extends PlanetSideGamePacket {
   type Packet = OrbitalShuttleTimeMsg
-  def opcode = GamePacketOpcode.OrbitalShuttleTimeMsg
-  def encode = OrbitalShuttleTimeMsg.encode(this)
+def opcode = GamePacketOpcode.OrbitalShuttleTimeMsg
+def encode = OrbitalShuttleTimeMsg.encode(this)
 }
 
 object OrbitalShuttleTimeMsg extends Marshallable[OrbitalShuttleTimeMsg] {

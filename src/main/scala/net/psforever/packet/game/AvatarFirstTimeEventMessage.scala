@@ -33,8 +33,8 @@ final case class AvatarFirstTimeEventMessage(
     event_name: String
 ) extends PlanetSideGamePacket {
   type Packet = AvatarFirstTimeEventMessage
-  def opcode = GamePacketOpcode.AvatarFirstTimeEventMessage
-  def encode = AvatarFirstTimeEventMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarFirstTimeEventMessage
+def encode = AvatarFirstTimeEventMessage.encode(this)
 }
 
 object AvatarFirstTimeEventMessage extends Marshallable[AvatarFirstTimeEventMessage] {

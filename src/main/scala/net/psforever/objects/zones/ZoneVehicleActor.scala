@@ -30,7 +30,7 @@ import scala.collection.mutable.ListBuffer
 class ZoneVehicleActor(zone: Zone, vehicleList: ListBuffer[Vehicle]) extends Actor {
   //private[this] val log = org.log4s.getLogger
 
-  def receive: Receive = {
+def receive: Receive = {
     case Zone.Vehicle.Spawn(vehicle) =>
       if (!vehicle.HasGUID) {
         sender() ! Zone.Vehicle.CanNotSpawn(zone, vehicle, "not registered yet")

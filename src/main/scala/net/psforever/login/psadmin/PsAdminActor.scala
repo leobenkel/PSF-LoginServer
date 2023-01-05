@@ -44,7 +44,7 @@ class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends
 
   override def receive = ServiceLookup
 
-  def ServiceLookup: Receive = {
+private def ServiceLookup: Receive = {
     case InterstellarClusterService.InterstellarClusterServiceKey.Listing(listings) =>
       cluster = listings.head
       unstashAll()
@@ -63,7 +63,7 @@ class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends
     case default => stash()
   }
 
-  def ReceiveCommand: Receive = {
+private def ReceiveCommand: Receive = {
     case Tcp.Received(data) =>
       buffer ++= data
 
@@ -103,7 +103,7 @@ class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends
   }
 
   /// Process all buffered commands and stash other ones
-  def ProcessCommands: Receive = {
+private def ProcessCommands: Receive = {
     case c: CommandCall =>
       stash()
       unstashAll()
@@ -191,7 +191,7 @@ class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends
       context.become(ProcessCommands)
   }
 
-  def sendLine(line: String) = {
+private def sendLine(line: String) = {
     ByteVector.encodeUtf8(line + "\n") match {
       case Left(e) =>
         log.error(s"Message encoding failure: $e")

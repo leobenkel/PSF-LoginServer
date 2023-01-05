@@ -9,5 +9,5 @@ trait MountedWeaponsDefinition {
   /* key - mount index (where this weapon attaches during object construction), value - the weapon on an EquipmentSlot */
   protected var weapons: mutable.HashMap[Int, ToolDefinition]      = mutable.HashMap[Int, ToolDefinition]()
 
-  def Weapons: mutable.HashMap[Int, ToolDefinition] = weapons
+private def Weapons: mutable.HashMap[Int, ToolDefinition] = weapons
 }

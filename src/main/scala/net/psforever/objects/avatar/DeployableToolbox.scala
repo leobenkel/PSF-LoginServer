@@ -63,7 +63,7 @@ class DeployableToolbox {
     * @return `true`, if this is the first time and actual "initialization" is performed;
     *         `false`, otherwise
     */
-  def Initialize(certifications: Set[Certification]): Boolean = {
+private def Initialize(certifications: Set[Certification]): Boolean = {
     if (!initialized) {
       DeployableToolbox.UpdateMaxCounts(deployableCounts, categoryCounts, certifications)
       initialized = true
@@ -73,7 +73,7 @@ class DeployableToolbox {
     }
   }
 
-  def UpdateMaxCounts(certifications: Set[Certification]) = {
+private def UpdateMaxCounts(certifications: Set[Certification]) = {
     DeployableToolbox.UpdateMaxCounts(deployableCounts, categoryCounts, certifications)
   }
 
@@ -86,7 +86,7 @@ class DeployableToolbox {
     * @return `true`, if it can be managed under the current conditions;
     *        `false`, otherwise
     */
-  def Accept(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
+private def Accept(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
     Valid(obj) && Available(obj) && !Contains(obj)
   }
 
@@ -97,7 +97,7 @@ class DeployableToolbox {
     * @return `true`, if both category maximum and deployable type maximum are positive non-zero integers;
     *        `false`, otherwise
     */
-  def Valid(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
+private def Valid(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
     deployableCounts(DeployableToolbox.UnifiedType(obj.Definition.Item)).Max > 0 &&
     categoryCounts(obj.Definition.DeployCategory).Max > 0
   }
@@ -110,7 +110,7 @@ class DeployableToolbox {
     * @return `true`, if the deployable can be added to the support lists and counted;
     *        `false`, otherwise
     */
-  def Available(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
+private def Available(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
     deployableCounts(DeployableToolbox.UnifiedType(obj.Definition.Item)).Available() &&
     categoryCounts(obj.Definition.DeployCategory).Available()
   }
@@ -122,7 +122,7 @@ class DeployableToolbox {
     * @return `true`, if the deployable can be found in one of the lists;
     *        `false`, otherwise
     */
-  def Contains(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
+private def Contains(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
     deployableLists(obj.Definition.DeployCategory).contains(obj)
   }
 
@@ -138,7 +138,7 @@ class DeployableToolbox {
     * @return `true`, if the deployable is added;
     *        `false`, otherwise
     */
-  def Add(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
+private def Add(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
     val category  = obj.Definition.DeployCategory
     val dCategory = categoryCounts(category)
     val dType     = deployableCounts(DeployableToolbox.UnifiedType(obj.Definition.Item))
@@ -160,7 +160,7 @@ class DeployableToolbox {
     * @return `true`, if the deployable is added;
     *        `false`, otherwise
     */
-  def AddOverLimit(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
+private def AddOverLimit(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
     val category  = obj.Definition.DeployCategory
     val dCategory = categoryCounts(category)
     val dType     = deployableCounts(DeployableToolbox.UnifiedType(obj.Definition.Item))
@@ -186,7 +186,7 @@ class DeployableToolbox {
     * @return `true`, if the deployable is removed;
     *        `false`, otherwise
     */
-  def Remove(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
+private def Remove(obj: DeployableToolbox.AcceptableDeployable): Boolean = {
     val category    = obj.Definition.DeployCategory
     val deployables = deployableLists(category)
     if (deployables.contains(obj)) {
@@ -205,7 +205,7 @@ class DeployableToolbox {
     * @param obj the example deployable
     * @return any deployable that is found
     */
-  def DisplaceFirst(obj: DeployableToolbox.AcceptableDeployable): Option[DeployableToolbox.AcceptableDeployable] = {
+private def DisplaceFirst(obj: DeployableToolbox.AcceptableDeployable): Option[DeployableToolbox.AcceptableDeployable] = {
     DisplaceFirst(obj, { d => d.Definition.Item == obj.Definition.Item })
   }
 
@@ -219,7 +219,7 @@ class DeployableToolbox {
     * @param rule the testing rule for determining a valid deployable
     * @return any deployable that is found
     */
-  def DisplaceFirst(
+private def DisplaceFirst(
       obj: DeployableToolbox.AcceptableDeployable,
       rule: Deployable => Boolean
   ): Option[DeployableToolbox.AcceptableDeployable] = {
@@ -247,7 +247,7 @@ class DeployableToolbox {
     * @param category the target category
     * @return any deployable that is found
     */
-  def DisplaceFirst(category: DeployableCategory.Value): Option[DeployableToolbox.AcceptableDeployable] = {
+private def DisplaceFirst(category: DeployableCategory.Value): Option[DeployableToolbox.AcceptableDeployable] = {
     val categoryList = deployableLists(category)
     if (categoryList.nonEmpty) {
       val found = categoryList.remove(0)
@@ -264,7 +264,7 @@ class DeployableToolbox {
     * @param filter the example deployable
     * @return a list of globally unique identifiers that should be valid for the current zone
     */
-  def Deployables(filter: DeployableToolbox.AcceptableDeployable): List[PlanetSideGUID] = {
+private def Deployables(filter: DeployableToolbox.AcceptableDeployable): List[PlanetSideGUID] = {
     Deployables(filter.Definition.Item)
   }
 
@@ -273,7 +273,7 @@ class DeployableToolbox {
     * @param filter the type of deployable
     * @return a list of globally unique identifiers that should be valid for the current zone
     */
-  def Deployables(filter: DeployedItem.Value): List[PlanetSideGUID] = {
+private def Deployables(filter: DeployedItem.Value): List[PlanetSideGUID] = {
     deployableLists(Deployable.Category.Of(filter))
       .filter(entry => { entry.Definition.Item == filter })
       .map(_.GUID)
@@ -285,7 +285,7 @@ class DeployableToolbox {
     * @param filter the example deployable
     * @return a list of globally unique identifiers that should be valid for the current zone
     */
-  def Category(filter: DeployableToolbox.AcceptableDeployable): List[PlanetSideGUID] = {
+private def Category(filter: DeployableToolbox.AcceptableDeployable): List[PlanetSideGUID] = {
     Category(filter.Definition.DeployCategory)
   }
 
@@ -294,7 +294,7 @@ class DeployableToolbox {
     * @param filter the type of deployable
     * @return a list of globally unique identifiers that should be valid for the current zone
     */
-  def Category(filter: DeployableCategory.Value): List[PlanetSideGUID] = {
+private def Category(filter: DeployableCategory.Value): List[PlanetSideGUID] = {
     deployableLists(filter).map(_.GUID).toList
   }
 
@@ -303,7 +303,7 @@ class DeployableToolbox {
     * @param item the example deployable
     * @return the current quantity of deployables and the maximum number
     */
-  def CountDeployable(item: DeployedItem.Value): (Int, Int) = {
+private def CountDeployable(item: DeployedItem.Value): (Int, Int) = {
     val dType = deployableCounts(DeployableToolbox.UnifiedType(item))
     (dType.Current, dType.Max)
   }
@@ -313,23 +313,23 @@ class DeployableToolbox {
     * @param item the example deployable
     * @return the current quantity of deployables and the maximum number
     */
-  def CountCategory(item: DeployedItem.Value): (Int, Int) = {
+private def CountCategory(item: DeployedItem.Value): (Int, Int) = {
     val dCat = categoryCounts(Deployable.Category.Of(DeployableToolbox.UnifiedType(item)))
     (dCat.Current, dCat.Max)
   }
 
-  def UpdateUIElement(entry: DeployedItem.Value): List[(Int, Int, Int, Int)] = {
+private def UpdateUIElement(entry: DeployedItem.Value): List[(Int, Int, Int, Int)] = {
     val toEntry     = DeployableToolbox.UnifiedType(entry)
     val (curr, max) = Deployable.UI(toEntry)
     val dType       = deployableCounts(toEntry)
     List((curr, dType.Current, max, dType.Max))
   }
 
-  def UpdateUI(): List[(Int, Int, Int, Int)] = DeployedItem.values.flatMap { value: DeployedItem.Value =>
+private def UpdateUI(): List[(Int, Int, Int, Int)] = DeployedItem.values.flatMap { value: DeployedItem.Value =>
     UpdateUIElement(value)
   }.toList
 
-  def UpdateUI(entry: Certification): List[(Int, Int, Int, Int)] = {
+private def UpdateUI(entry: Certification): List[(Int, Int, Int, Int)] = {
     import Certification._
     entry match {
       case AdvancedHacking =>
@@ -369,7 +369,7 @@ class DeployableToolbox {
     }
   }
 
-  def UpdateUI(certifications: List[Certification]): List[(Int, Int, Int, Int)] = {
+private def UpdateUI(certifications: List[Certification]): List[(Int, Int, Int, Int)] = {
     certifications flatMap UpdateUI
   }
 
@@ -378,7 +378,7 @@ class DeployableToolbox {
     * @param item the deployable type
     * @return a list of globally unique identifiers that should be valid for the current zone
     */
-  def ClearDeployable(item: DeployedItem.Value): List[PlanetSideGUID] = {
+private def ClearDeployable(item: DeployedItem.Value): List[PlanetSideGUID] = {
     val uitem        = DeployableToolbox.UnifiedType(item)
     val category     = Deployable.Category.Of(uitem)
     val categoryList = deployableLists(category)
@@ -396,7 +396,7 @@ class DeployableToolbox {
     * @param item the deployable type belonging to a category
     * @return a list of globally unique identifiers that should be valid for the current zone
     */
-  def ClearCategory(item: DeployedItem.Value): List[PlanetSideGUID] = {
+private def ClearCategory(item: DeployedItem.Value): List[PlanetSideGUID] = {
     val category = Deployable.Category.Of(DeployableToolbox.UnifiedType(item))
     val out      = deployableLists(category).map(_.GUID).toList
     deployableLists(category).clear()
@@ -410,7 +410,7 @@ class DeployableToolbox {
     * Remove all managed deployables.
     * @return a list of globally unique identifiers that should be valid for the current zone
     */
-  def Clear(): List[PlanetSideGUID] = {
+private def Clear(): List[PlanetSideGUID] = {
     val out = deployableLists.values.flatten.map(_.GUID).toList
     deployableLists.values.foreach(_.clear())
     deployableCounts.values.foreach(_.Current = 0)
@@ -461,7 +461,7 @@ object DeployableToolbox {
     * @param item the type of deployable
     * @return the corrected deployable type
     */
-  def UnifiedType(item: DeployedItem.Value): DeployedItem.Value =
+private def UnifiedType(item: DeployedItem.Value): DeployedItem.Value =
     item match {
       case DeployedItem.portable_manned_turret_nc | DeployedItem.portable_manned_turret_tr |
           DeployedItem.portable_manned_turret_vs =>

@@ -75,7 +75,7 @@ object MiddlewareActor {
   //final val MTU: Int = 467
   final val MTU: Int = 440
 
-  def apply(
+def apply(
       socket: ActorRef[Udp.Command],
       sender: InetSocketAddress,
       next: (ActorRef[Command], InetSocketAddress, String) => Behavior[PlanetSidePacket],
@@ -117,7 +117,7 @@ object MiddlewareActor {
     * All packets are bundled by themselves.
     * May as well just waste all of the cycles on your CPU, eh?
     */
-  def allPacketGuard(packet: PlanetSidePacket): Boolean = true
+private def allPacketGuard(packet: PlanetSidePacket): Boolean = true
 
   /**
     * `CharacterInfoMessage` packets are bundled by themselves.<br>
@@ -127,12 +127,12 @@ object MiddlewareActor {
     * which can occur during otherwise careless execution of the character select screen,
     * causes the character options to show blank slots and be unusable.
     */
-  def characterInfoMessageGuard(packet: PlanetSidePacket): Boolean = {
+private def characterInfoMessageGuard(packet: PlanetSidePacket): Boolean = {
     packet.isInstanceOf[CharacterInfoMessage]
   }
 
   /** `KeepAliveMessage` packets are bundled by themselves. They're special. */
-  def keepAliveMessageGuard(packet: PlanetSidePacket): Boolean = {
+private def keepAliveMessageGuard(packet: PlanetSidePacket): Boolean = {
     packet.isInstanceOf[KeepAliveMessage]
   }
 
@@ -204,7 +204,7 @@ private var outSequence = 0
     * The fidelity of the sequence field in packets is 16 bits, so wrap back to 0 after 65535.
     * @return
     */
-  def nextSequence: Int = {
+private def nextSequence: Int = {
     val r = outSequence
     if (outSequence == 0xffff) {
       outSequence = 0
@@ -225,7 +225,7 @@ private var outSubslot = 0
     * The fidelity of the subslot field in `SlottedMetapacket`'s is 16 bits, so wrap back to 0 after 65535.
     * @return
     */
-  def nextSubslot: Int = {
+private def nextSubslot: Int = {
     val r = outSubslot
     if (outSubslot == 0xffff) {
       outSubslot = 0
@@ -285,7 +285,7 @@ private val inSubslotMissingNumberOfAttempts = Config.app.network.middleware.inS
 
 //formerly, CryptoSessionActor
 
-  def start(): Behavior[Command] = {
+private def start(): Behavior[Command] = {
     Behaviors.receiveMessagePartial {
       case Receive(msg) =>
         PacketCoding.unmarshalPacket(msg) match {
@@ -343,7 +343,7 @@ private val inSubslotMissingNumberOfAttempts = Config.app.network.middleware.inS
 
   }
 
-  def cryptoSetup(): Behavior[Command] = {
+private def cryptoSetup(): Behavior[Command] = {
     Behaviors
       .receiveMessagePartial[Command] {
         case Receive(msg) =>
@@ -377,7 +377,7 @@ private val inSubslotMissingNumberOfAttempts = Config.app.network.middleware.inS
       .receiveSignal(onSignal)
   }
 
-  def cryptoFinish(dh: DiffieHellman, clientChallenge: ByteVector, serverChallenge: ByteVector): Behavior[Command] = {
+private def cryptoFinish(dh: DiffieHellman, clientChallenge: ByteVector, serverChallenge: ByteVector): Behavior[Command] = {
     Behaviors
       .receiveMessagePartial[Command] {
         case Receive(msg) =>
@@ -436,7 +436,7 @@ private val inSubslotMissingNumberOfAttempts = Config.app.network.middleware.inS
 
 //formerly, PacketCodingActor
 
-  def active(): Behavior[Command] = {
+private def active(): Behavior[Command] = {
     Behaviors
       .receiveMessage[Command] {
         case Receive(msg) =>
@@ -496,7 +496,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
   }
 
   /** Handle incoming packet */
-  def in(packet: PlanetSidePacket): Behavior[Command] = {
+private def in(packet: PlanetSidePacket): Behavior[Command] = {
     packet match {
       case packet: PlanetSideGamePacket =>
         nextActor ! packet
@@ -568,7 +568,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     }
   }
 
-  def in(packet: Attempt[PlanetSidePacket]): Unit = {
+private def in(packet: Attempt[PlanetSidePacket]): Unit = {
     packet match {
       case Successful(_packet) => in(_packet)
       case Failure(cause)      => log.error(s"Could not decode packet: ${cause.message}")
@@ -576,7 +576,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
   }
 
   /** Handle outgoing packet */
-  def out(packet: PlanetSidePacket): Unit = {
+private def out(packet: PlanetSidePacket): Unit = {
     packet match {
       case packet: KeepAliveMessage =>
         send(packet)
@@ -594,7 +594,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * the bundling and throttling of outgoing packets
     * and the reordering of out-of-sequence incoming packets.
     */
-  def processQueue(): Unit = {
+private def processQueue(): Unit = {
     processOutQueueBundle()
     inReorderQueueFunc()
   }
@@ -607,7 +607,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * Packets that are too big for the MTU must go on to be split into smaller portions that will be wrapped individually.
     * Once queued, the first bundle is dispatched to the network.
     */
-  def processOutQueueBundle(): Unit = {
+private def processOutQueueBundle(): Unit = {
     try {
       if (outQueueBundled.nonEmpty) {
         sendFirstBundle()
@@ -684,7 +684,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @param packet the packet
     * @param sequence the sequence number obtained from the packet
     */
-  def activeNormal(packet: PlanetSidePacket, sequence: Int): Unit = {
+private def activeNormal(packet: PlanetSidePacket, sequence: Int): Unit = {
     if (sequence == inSequence + 1) {
       inSequence = sequence
       in(packet)
@@ -713,7 +713,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @param packet the packet
     * @param sequence the sequence number obtained from the packet
     */
-  def activeWithReordering(packet: PlanetSidePacket, sequence: Int): Unit = {
+private def activeWithReordering(packet: PlanetSidePacket, sequence: Int): Unit = {
     if (sequence == inSequence + 1) {
       inSequence = sequence
       in(packet)
@@ -750,7 +750,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * Set the recorded inbound sequence number to belong to the greatest packet removed from the queue.
     * @see `processInReorderQueueTimeoutOnly`
     */
-  def processInReorderQueue(): Unit = {
+private def processInReorderQueue(): Unit = {
     timesInReorderQueue += 1
     var currentSequence = inSequence
     val currentTime     = System.currentTimeMillis()
@@ -786,7 +786,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * Set the recorded inbound sequence number to belong to the greatest packet removed from the queue.
     * This may run during the scheduled check on the in-order queue after the outbound bundling process.
     */
-  def processInReorderQueueTimeoutOnly(): Unit = {
+private def processInReorderQueueTimeoutOnly(): Unit = {
     timesInReorderQueue += 1
     val currentTime  = System.currentTimeMillis()
     val index        = inReorderQueue.indexWhere { currentTime - _.time > inReorderTimeout.toMillis }
@@ -804,7 +804,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * Otherwise, do work on whatever is at the front of the queue, and do not test again until explicitly requested.
     * Test the queue for more contents after removing content from it.
     */
-  def inReorderQueueTest(): Unit = {
+private def inReorderQueueTest(): Unit = {
     if (inReorderQueue.isEmpty) {
       inReorderQueueFunc = doNothing
       activeSequenceFunc = activeNormal
@@ -837,7 +837,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @see `PacketCoding.decodePacket`
     * @see `RelatedB`
     */
-  def inSubslotNotMissing(slot: Int, subslot: Int, inner: ByteVector): Unit = {
+private def inSubslotNotMissing(slot: Int, subslot: Int, inner: ByteVector): Unit = {
     if (subslot == inSubslot + 1) {
       in(PacketCoding.decodePacket(inner))
       send(RelatedB(slot, subslot))
@@ -866,7 +866,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @see `inSubslotsMissingRequestsFinished`
     * @see `PacketCoding.decodePacket`
     */
-  def inSubslotMissingRequests(slot: Int, subslot: Int, inner: ByteVector): Unit = {
+private def inSubslotMissingRequests(slot: Int, subslot: Int, inner: ByteVector): Unit = {
     if (subslot < inSubslot) {
       inSubslotsMissing.remove(subslot)
       in(PacketCoding.decodePacket(inner))
@@ -888,7 +888,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * resume normal operations when acting upon inbound `SlottedMetaPacket` packets.
     * @param slot the optional slot to report the "first" `RelatedB` in a "while"
     */
-  def inSubslotsMissingRequestsFinished(slot: Int = 0): Unit = {
+private def inSubslotsMissingRequestsFinished(slot: Int = 0): Unit = {
     if (inSubslotsMissing.isEmpty) {
       subslotMissingProcessor.cancel()
       activeSubslotsFunc = inSubslotNotMissing
@@ -905,7 +905,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @see `inSubslotsMissingRequestsFinished`
     * @see `RelatedA`
     */
-  def askForMissingSubslots(): Unit = {
+private def askForMissingSubslots(): Unit = {
     if (subslotMissingProcessor.isCancelled) {
       subslotMissingProcessor = context.system.scheduler.scheduleWithFixedDelay(
         initialDelay = 0.milliseconds,
@@ -934,7 +934,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * Split packets are wrapped in a `HandleGamePacket` and sent as `SlottedMetaPacket4`.
     * The purpose of `SlottedMetaPacket4` may or may not be to indicate a split packet.
     */
-  def splitPacket(packet: BitVector): Seq[PlanetSideControlPacket] = {
+private def splitPacket(packet: BitVector): Seq[PlanetSideControlPacket] = {
     if (packet.length > (MTU - 4) * 8) {
       PacketCoding.encodePacket(HandleGamePacket(packet.bytes)) match {
         case Successful(data) =>
@@ -954,7 +954,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @param data hexadecimal data, the encoded packets to be placed in the SMP
     * @return the packet
     */
-  def smp(slot: Int, data: ByteVector): SlottedMetaPacket = {
+private def smp(slot: Int, data: ByteVector): SlottedMetaPacket = {
     val packet = SlottedMetaPacket(slot, nextSubslot, data)
     preparedSlottedMetaPackets.update(nextSmpIndex, packet)
     nextSmpIndex = (nextSmpIndex + 1) % smpHistoryLength
@@ -968,23 +968,23 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @throws NoSuchElementException if there is no packet to dequeue
     * @see `SlottedMetaPacket`
     */
-  def sendFirstBundle(): Unit = {
+private def sendFirstBundle(): Unit = {
     send(outQueueBundled.dequeue(), Some(nextSequence), crypto)
   }
 
-  def send(packet: PlanetSideControlPacket): ByteVector = {
+private def send(packet: PlanetSideControlPacket): ByteVector = {
     send(packet, if (crypto.isDefined) Some(nextSequence) else None, crypto)
   }
 
-  def send(packet: PlanetSideCryptoPacket): ByteVector = {
+private def send(packet: PlanetSideCryptoPacket): ByteVector = {
     send(packet, Some(nextSequence), crypto)
   }
 
-  def send(packet: PlanetSideGamePacket): ByteVector = {
+private def send(packet: PlanetSideGamePacket): ByteVector = {
     send(packet, Some(nextSequence), crypto)
   }
 
-  def send(packet: PlanetSidePacket, sequence: Option[Int], crypto: Option[CryptoCoding]): ByteVector = {
+private def send(packet: PlanetSidePacket, sequence: Option[Int], crypto: Option[CryptoCoding]): ByteVector = {
     PacketCoding.marshalPacket(packet, sequence, crypto) match {
       case Successful(bits) =>
         val bytes = bits.toByteVector
@@ -1001,7 +1001,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * @param amount the number of bytes
     * @return a random series of bytes
     */
-  def randomBytes(amount: Int): ByteVector = {
+private def randomBytes(amount: Int): ByteVector = {
     val array = Array.ofDim[Byte](amount)
     random.nextBytes(array)
     ByteVector.view(array)
@@ -1011,7 +1011,7 @@ private val onSignal: PartialFunction[(ActorContext[Command], Signal), Behavior[
     * End client-server ops.
     * End messaging capabilities.
     */
-  def connectionClose(): Behavior[Command] = {
+private def connectionClose(): Behavior[Command] = {
     send(ConnectionClose())
     Behaviors.stopped
   }

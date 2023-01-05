@@ -23,7 +23,7 @@ object CavernRotationService {
   val CavernRotationServiceKey: ServiceKey[Command] =
     ServiceKey[CavernRotationService.Command](id = "cavernRotationService")
 
-  def apply(): Behavior[Command] =
+def apply(): Behavior[Command] =
     Behaviors
       .supervise[Command] {
         Behaviors.withStash(100) { buffer =>
@@ -370,7 +370,7 @@ class CavernRotationService(
   /** how long before any given cavern closure that the first closing message is shown (minutes) */
   private val firstClosingWarningAtMinutes: Int = 15
 
-  def start(): Behavior[CavernRotationService.Command] = {
+private def start(): Behavior[CavernRotationService.Command] = {
     Behaviors.receiveMessage {
       case ServiceManagerLookupResult(ServiceManager.LookupResult(request, endpoint)) =>
         request match {
@@ -386,7 +386,7 @@ class CavernRotationService(
     }
   }
 
-  def active(galaxyService: ActorRef): Behavior[CavernRotationService.Command] = {
+private def active(galaxyService: ActorRef): Behavior[CavernRotationService.Command] = {
     Behaviors.receiveMessage {
       case ManageCaverns(zones) =>
         manageCaverns(zones.toSeq)
@@ -438,7 +438,7 @@ class CavernRotationService(
     * @return `true`, if the setup has been completed;
     *        `false`, otherwise
     */
-  def manageCaverns(zones: Seq[Zone]): Boolean = {
+private def manageCaverns(zones: Seq[Zone]): Boolean = {
     if (managedZones.isEmpty) {
       val onlyCaverns = zones.filter { z => z.map.cavern }
       val collectedZones = Config.app.game.cavernRotation.enhancedRotationOrder match {
@@ -487,7 +487,7 @@ class CavernRotationService(
     * na
     * @param sendToSession callback reference
     */
-  def reportRotationOrder(sendToSession: ActorRef): Unit = {
+private def reportRotationOrder(sendToSession: ActorRef): Unit = {
     val zoneStates = managedZones
       .collect {
         case zone =>
@@ -513,7 +513,7 @@ class CavernRotationService(
     * @return `true`, if the target zone is locked when complete;
     *        `false`, otherwise
     */
-  def hurryRotationToZoneLock(zoneid: String, galaxyService: ActorRef): Boolean = {
+private def hurryRotationToZoneLock(zoneid: String, galaxyService: ActorRef): Boolean = {
     //TODO currently, can only switch for 1 active cavern
     if (simultaneousUnlockedZones == 1) {
       if (
@@ -547,7 +547,7 @@ class CavernRotationService(
     * @return `true`, if the target zone is unlocked when complete;
     *        `false`, otherwise
     */
-  def hurryRotationToZoneUnlock(zoneid: String, galaxyService: ActorRef): Boolean = {
+private def hurryRotationToZoneUnlock(zoneid: String, galaxyService: ActorRef): Boolean = {
     //TODO currently, can only switch for 1 active cavern
     if (simultaneousUnlockedZones == 1) {
       if (managedZones(nextToUnlock).zone.id.equals(zoneid)) {
@@ -574,7 +574,7 @@ class CavernRotationService(
   /**
     * @param sendToSession callback reference
     */
-  def sendCavernRotationUpdates(sendToSession: ActorRef): Unit = {
+private def sendCavernRotationUpdates(sendToSession: ActorRef): Unit = {
     val curr                         = System.currentTimeMillis()
     val (lockedZones, unlockedZones) = managedZones.partition(_.locked)
     //borrow GalaxyService response structure, but send to the specific endpoint
@@ -602,7 +602,7 @@ class CavernRotationService(
     *                      should be the reference to `GalaxyService`, hence the literal name
     * @param forcedRotationOverride force a cavern rotation in a case where a closing warning would be displayed instead
     */
-  def hurryNextRotation(
+private def hurryNextRotation(
       galaxyService: ActorRef,
       forcedRotationOverride: Boolean = false
   ): Unit = {
@@ -646,7 +646,7 @@ class CavernRotationService(
     * @param galaxyService callback to update the server and clients;
     *                      should be the reference to `GalaxyService`, hence the literal name
     */
-  def zoneRotationFunc(
+private def zoneRotationFunc(
       galaxyService: ActorRef
   ): Unit = {
     val curr                              = System.currentTimeMillis()
@@ -700,7 +700,7 @@ class CavernRotationService(
     * @param galaxyService callback to update the zone timers;
     *                      should be the reference to `GalaxyService`, hence the literal name
     */
-  def retimeZonesUponForcedRotation(galaxyService: ActorRef): Unit = {
+private def retimeZonesUponForcedRotation(galaxyService: ActorRef): Unit = {
     val curr                 = System.currentTimeMillis()
     val rotationSize         = managedZones.size
     val fullDurationAsMillis = timeToCompleteAllRotationsHours.hours.toMillis
@@ -733,7 +733,7 @@ class CavernRotationService(
     * @param galaxyService callback to update the zone timers;
     *                      should be the reference to `GalaxyService`, hence the literal name
     */
-  def retimeZonesUponForcedAdvancement(
+private def retimeZonesUponForcedAdvancement(
       advanceTimeBy: FiniteDuration,
       galaxyService: ActorRef
   ): Unit = {
@@ -755,7 +755,7 @@ class CavernRotationService(
     * @param duration new time until message display
     * @param counter the counter that indicates the next message to display
     */
-  def lockTimerToDisplayWarning(
+private def lockTimerToDisplayWarning(
       duration: FiniteDuration,
       counter: Int = firstClosingWarningAtMinutes
   ): Unit = {
@@ -767,7 +767,7 @@ class CavernRotationService(
     * Update the timer for the zone switching process.
     * @param duration new time until switching
     */
-  def unlockTimerToSwitchZone(duration: FiniteDuration): Unit = {
+private def unlockTimerToSwitchZone(duration: FiniteDuration): Unit = {
     unlockTimer.cancel()
     unlockTimer = context.scheduleOnce(duration, context.self, SwitchZone)
   }

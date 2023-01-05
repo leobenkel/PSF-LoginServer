@@ -131,14 +131,14 @@ object PointOfInterest {
     * @param map      the map name of the zone (this map is loaded)
     * @param zonename the zone's internal name
     */
-  def apply(alias: String, map: String, zonename: String): PointOfInterest = new PointOfInterest(alias, map, zonename)
+def apply(alias: String, map: String, zonename: String): PointOfInterest = new PointOfInterest(alias, map, zonename)
 
   /**
     * Get a valid `CSRZone`'s information.
     * @param zoneId a name that describes the zone and should be searchable
     * @return the `CSRZone`, or `None`
     */
-  def get(zoneId: String): Option[PointOfInterest] = {
+private def get(zoneId: String): Option[PointOfInterest] = {
     var zId = zoneId.toLowerCase
     if (alias.get(zId).isDefined)
       zId = alias(zId)
@@ -152,7 +152,7 @@ object PointOfInterest {
     * @param locationId a name that describes a known location in the provided `CSRZone` and is searchable
     * @return the coordinates of that location, or None
     */
-  def getWarpLocation(zoneId: String, locationId: String): Option[Vector3] = {
+private def getWarpLocation(zoneId: String, locationId: String): Option[Vector3] = {
     get(zoneId) match {
       case Some(poi) =>
         poi.locations.get(locationId) match {
@@ -169,7 +169,7 @@ object PointOfInterest {
     * @param gateId a name that describes a known warpgate in the provided `CSRZone` and is searchable
     * @return the coordinates of that warpgate, or None
     */
-  def getWarpgate(zone: PointOfInterest, gateId: String): Option[Vector3] = {
+private def getWarpgate(zone: PointOfInterest, gateId: String): Option[Vector3] = {
     zone.gates.get(gateId.toLowerCase)
   }
 
@@ -177,7 +177,7 @@ object PointOfInterest {
     * Get the names for all of the `CSRZones` that can be visited.
     * @return all of the zonenames
     */
-  def list: String = {
+private def list: String = {
     "zone names: z1 - z10, home1 - home3, tzshnc, tzdrnc, tzconc, tzshtr, tzdrtr, tzcotr, tzshvs, tzdrvs, tzcovs, c1 - c6, i1 - i4; zones are also aliased to their continent name"
   }
 
@@ -186,7 +186,7 @@ object PointOfInterest {
     * @param zone the `CSRZone`
     * @return all of the location keys
     */
-  def listLocations(zone: PointOfInterest): String = {
+private def listLocations(zone: PointOfInterest): String = {
     var out: String = "Locations: "
     if (zone.locations.nonEmpty) {
       out += zone.locations.keys.toArray.sorted.mkString(", ")
@@ -200,7 +200,7 @@ object PointOfInterest {
     * @param zone the `CSRZone`
     * @return all of the warpgate keys
     */
-  def listWarpgates(zone: PointOfInterest): String = {
+private def listWarpgates(zone: PointOfInterest): String = {
     var out: String = "Gates: "
     if (zone.gates.isEmpty)
       out += "none"
@@ -214,7 +214,7 @@ object PointOfInterest {
     * @param zone the `CSRZone`
     * @return all of the warpgate and location keys
     */
-  def listAll(zone: PointOfInterest): String = {
+private def listAll(zone: PointOfInterest): String = {
     s"${listWarpgates(zone)} ${listLocations(zone)}"
   }
 
@@ -223,7 +223,7 @@ object PointOfInterest {
     * @param zone the `CSRZone`
     * @return the coordinates of the spawn point
     */
-  def selectRandom(zone: PointOfInterest): Vector3 = {
+private def selectRandom(zone: PointOfInterest): Vector3 = {
     var outlets = zone.locations //random location?
     if (outlets.nonEmpty) {
       return outlets.values.toArray.apply(rand.nextInt(outlets.size))
@@ -240,7 +240,7 @@ object PointOfInterest {
     * All of these keys should be searchable under the `/warp` command.
     * Only the warpgate keys are searchable by the `/zone` command.
     */
-  def setup(): Unit = {
+private def setup(): Unit = {
     zones("z1").gates ++= Map(
       "gate1"    -> Vector3(4150, 7341, 82),
       "gate2"    -> Vector3(5698, 3404, 129),

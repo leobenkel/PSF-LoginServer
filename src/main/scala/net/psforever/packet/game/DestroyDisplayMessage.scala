@@ -55,8 +55,8 @@ final case class DestroyDisplayMessage(
     victim_in_vehicle: Boolean
 ) extends PlanetSideGamePacket {
   type Packet = DestroyDisplayMessage
-  def opcode = GamePacketOpcode.DestroyDisplayMessage
-  def encode = DestroyDisplayMessage.encode(this)
+def opcode = GamePacketOpcode.DestroyDisplayMessage
+def encode = DestroyDisplayMessage.encode(this)
 }
 
 object DestroyDisplayMessage extends Marshallable[DestroyDisplayMessage] {

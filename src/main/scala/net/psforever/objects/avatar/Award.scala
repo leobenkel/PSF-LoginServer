@@ -32,7 +32,7 @@ sealed abstract class Award(
     s"$value must define a base progression rank"
   )
 
-  def alignment: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
+private def alignment: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
 }
 
 sealed abstract class NewConglomerateAward(

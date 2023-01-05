@@ -60,7 +60,7 @@ class UniqueNumberOps(
     * @param poolName the pool from which the entity wants a GUID to be selected
     * @return the anticipation of this activity being completed
     */
-  def Register(
+private def Register(
                 obj: IdentifiableEntity,
                 poolName: String
               ): Future[Any] = {
@@ -86,7 +86,7 @@ class UniqueNumberOps(
     * @param obj the entity to be unassigned its GUID
     * @return the anticipation of this activity being completed
     */
-  def Unregister(obj: IdentifiableEntity): Future[Any] = {
+private def Unregister(obj: IdentifiableEntity): Future[Any] = {
     val result: Promise[Any] = Promise()
     if (obj.HasGUID) {
       val number = obj.GUID.guid
@@ -186,7 +186,7 @@ class UniqueNumberOps(
     * @param pools a mapping created from the `NumberPool`s, to achieve synchronized access
     * @param poolName the pool to which the object is trying to register
     */
-  def registrationProcessRetry(
+private def registrationProcessRetry(
                                 promise: Promise[Any],
                                 exception: Throwable,
                                 obj: IdentifiableEntity,
@@ -387,14 +387,14 @@ object UniqueNumberOps {
 }
 
 class RegisteringException(msg: String) extends Exception(msg) {
-  def this(msg: String, cause: Throwable) = {
+private def this(msg: String, cause: Throwable) = {
     this(msg)
     initCause(cause)
   }
 }
 
 class UnregisteringException(msg: String) extends Exception(msg) {
-  def this(msg: String, cause: Throwable) = {
+private def this(msg: String, cause: Throwable) = {
     this(msg)
     initCause(cause)
   }
@@ -409,7 +409,7 @@ class UnregisteringException(msg: String) extends Exception(msg) {
 class RegisteredToWrongPlaceException(obj: IdentifiableEntity, number: Int)
   extends RuntimeException(s"$obj registered to number $number that is not part of a known or local number pool") {
 
-  def this(obj: IdentifiableEntity, number: Int, cause: Throwable) = {
+private def this(obj: IdentifiableEntity, number: Int, cause: Throwable) = {
     this(obj, number)
     initCause(cause)
   }
@@ -433,7 +433,7 @@ class UniqueNumberSetup(
 
   final def receive: Receive = { case _ => ; }
 
-  def init(): UniqueNumberOps = {
+private def init(): UniqueNumberOps = {
     new UniqueNumberOps(hub, poolActorConversionFunc(context, hub))
   }
 }
@@ -446,7 +446,7 @@ object UniqueNumberSetup {
     * @param context used to create the `NumberPoolActor` instances
     * @return a `Map` of the pool names to the `ActorRef` created from the `NumberPool`
     */
-  def AllocateNumberPoolActors(context: ActorContext, poolSource: NumberPoolHub): Map[String, ActorRef] = {
+private def AllocateNumberPoolActors(context: ActorContext, poolSource: NumberPoolHub): Map[String, ActorRef] = {
     poolSource.Pools
       .map { case (pname, pool) => (pname, context.actorOf(Props(classOf[NumberPoolActor], pool), pname)) }
       .toMap

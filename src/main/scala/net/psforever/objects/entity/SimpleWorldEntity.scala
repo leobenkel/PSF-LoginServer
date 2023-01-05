@@ -8,23 +8,23 @@ class SimpleWorldEntity extends WorldEntity {
   private var orient: Vector3      = Vector3.Zero
   private var vel: Option[Vector3] = None
 
-  def Position: Vector3 = coords
+private def Position: Vector3 = coords
 
-  def Position_=(vec: Vector3): Vector3 = {
+private def Position_=(vec: Vector3): Vector3 = {
     coords = SimpleWorldEntity.validatePositionEntry(vec)
     Position
   }
 
-  def Orientation: Vector3 = orient
+private def Orientation: Vector3 = orient
 
-  def Orientation_=(vec: Vector3): Vector3 = {
+private def Orientation_=(vec: Vector3): Vector3 = {
     orient = SimpleWorldEntity.validateOrientationEntry(vec)
     Orientation
   }
 
-  def Velocity: Option[Vector3] = vel
+private def Velocity: Option[Vector3] = vel
 
-  def Velocity_=(vec: Option[Vector3]): Option[Vector3] = {
+private def Velocity_=(vec: Option[Vector3]): Option[Vector3] = {
     vel = vec
     Velocity
   }
@@ -33,16 +33,16 @@ class SimpleWorldEntity extends WorldEntity {
 }
 
 object SimpleWorldEntity {
-  def validatePositionEntry(vec: Vector3): Vector3 = vec
+private def validatePositionEntry(vec: Vector3): Vector3 = vec
 
-  def validateOrientationEntry(vec: Vector3): Vector3 = {
+private def validateOrientationEntry(vec: Vector3): Vector3 = {
     val x = clampAngle(vec.x)
     val y = clampAngle(vec.y)
     val z = clampAngle(vec.z)
     Vector3(x, y, z)
   }
 
-  def clampAngle(ang: Float): Float = {
+private def clampAngle(ang: Float): Float = {
     var ang2 = ang % 360f
     if (ang2 < 0f) {
       ang2 += 360f

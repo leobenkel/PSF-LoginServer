@@ -25,12 +25,12 @@ class ResourceSiloControl(resourceSilo: ResourceSilo)
     extends Actor
     with FactionAffinityBehavior.Check
     with NtuStorageBehavior {
-  def FactionObject: FactionAffinity = resourceSilo
+private def FactionObject: FactionAffinity = resourceSilo
 
   private[this] val log               = org.log4s.getLogger
 private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
 
-  def receive: Receive = {
+def receive: Receive = {
     case Service.Startup() =>
       resourceSilo.Owner match {
         case building: Building =>
@@ -47,7 +47,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
     case _ => ;
   }
 
-  def Processing: Receive =
+private def Processing: Receive =
     checkBehavior
       .orElse(storageBehavior)
       .orElse {
@@ -92,7 +92,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
         case _ => ;
       }
 
-  def LowNtuWarning(enabled: Boolean): Unit = {
+private def LowNtuWarning(enabled: Boolean): Unit = {
     resourceSilo.LowNtuWarningOn = enabled
     log.trace(s"LowNtuWarning: Silo ${resourceSilo.GUID} low ntu warning set to $enabled")
     val building = resourceSilo.Owner
@@ -103,7 +103,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
     )
   }
 
-  def UpdateChargeLevel(amount: Float): Unit = {
+private def UpdateChargeLevel(amount: Float): Unit = {
     val siloChargeBeforeChange  = resourceSilo.NtuCapacitor
     val siloDisplayBeforeChange = resourceSilo.CapacitorDisplay
     val building                = resourceSilo.Owner.asInstanceOf[Building]
@@ -144,7 +144,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
   /**
     * The silo will agree to offers until its nanite capacitor is completely full.
     */
-  def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {
+private def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {
     sender ! (if (resourceSilo.NtuCapacitor < resourceSilo.MaxNtuCapacitor) {
       Ntu.Request(0, resourceSilo.MaxNtuCapacitor - resourceSilo.NtuCapacitor)
     } else {
@@ -156,7 +156,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
   /**
     * Reset the animation trigger and attempt the stop animation.
     */
-  def StopNtuBehavior(sender: ActorRef): Unit = {
+private def StopNtuBehavior(sender: ActorRef): Unit = {
     panelAnimationFunc = PanelAnimation
     panelAnimationFunc(sender, 0)
   }
@@ -168,7 +168,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
     * @param min    a minimum amount of nanites requested;
     * @param max    the amount of nanites required to not make further requests;
     */
-  def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {
+private def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {
     val originalAmount = resourceSilo.NtuCapacitor
     UpdateChargeLevel(-min)
     sender ! Ntu.Grant(resourceSilo, originalAmount - resourceSilo.NtuCapacitor)
@@ -177,7 +177,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
   /**
     * Accept nanites into the silo capacitor and set the animation state.
     */
-  def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
+private def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
     if (amount != 0) {
       panelAnimationFunc(sender, amount)
       panelAnimationFunc = SkipPanelAnimation
@@ -192,7 +192,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
     * @param trigger if positive, activate the animation;
     *                if negative or zero, disable the animation
     */
-  def PanelAnimation(source: ActorRef, trigger: Float): Unit = {
+private def PanelAnimation(source: ActorRef, trigger: Float): Unit = {
     val currentlyHas = resourceSilo.NtuCapacitor
     // do not let the trigger charge go to waste, but also do not let the silo be filled
     // attempting to return it to the source may sabotage an ongoing transfer process
@@ -224,7 +224,7 @@ private var panelAnimationFunc: (ActorRef, Float) => Unit = PanelAnimation
     * Announce that full-ness to the NTU source.
     * Although called "Skip", an animation that broadcasts the transfer process should be ongoing at the moment.
     */
-  def SkipPanelAnimation(source: ActorRef, trigger: Float): Unit = {
+private def SkipPanelAnimation(source: ActorRef, trigger: Float): Unit = {
     UpdateChargeLevel(trigger)
     // immediate termination of ntu requests
     if (resourceSilo.NtuCapacitor == resourceSilo.MaxNtuCapacitor) {

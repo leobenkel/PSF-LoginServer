@@ -59,8 +59,8 @@ final case class PlayerStateMessage(
     is_cloaked: Boolean = false
 ) extends PlanetSideGamePacket {
   type Packet = PlayerStateMessage
-  def opcode = GamePacketOpcode.PlayerStateMessage
-  def encode = PlayerStateMessage.encode(this)
+def opcode = GamePacketOpcode.PlayerStateMessage
+def encode = PlayerStateMessage.encode(this)
 }
 
 object PlayerStateMessage extends Marshallable[PlayerStateMessage] {

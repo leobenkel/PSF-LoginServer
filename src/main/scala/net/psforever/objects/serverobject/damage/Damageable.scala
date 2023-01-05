@@ -23,7 +23,7 @@ trait Damageable {
     * Needs declaration in lowest implementing code.
     * @return the entity controlled by this actor
     */
-  def DamageableObject: Damageable.Target
+private def DamageableObject: Damageable.Target
 
   /** the official mixin hook;
     * `orElse` onto the "control" `Actor` `receive`; or,
@@ -78,7 +78,7 @@ object Damageable {
     * @return `true`, if the target can be affected;
     *        `false`, otherwise
     */
-  def CanDamage(obj: Vitality with FactionAffinity, damage: Int, data: DamageInteraction): Boolean = {
+private def CanDamage(obj: Vitality with FactionAffinity, damage: Int, data: DamageInteraction): Boolean = {
     val definition = obj.Definition
     (damage > 0 || data.cause.source.Aggravated.nonEmpty) &&
     definition.Damageable &&
@@ -94,7 +94,7 @@ object Damageable {
     * @return `true`, if the target can be affected;
     *        `false`, otherwise
     */
-  def CanJammer(obj: Vitality with FactionAffinity, data: DamageInteraction): Boolean = {
+private def CanJammer(obj: Vitality with FactionAffinity, data: DamageInteraction): Boolean = {
     data.cause.source.HasJammedEffectDuration &&
     obj.isInstanceOf[JammableUnit] &&
     adversarialOrHackableChecks(obj, data)
@@ -119,7 +119,7 @@ object Damageable {
     * @return `true`, if the target can be affected;
     *        `false`, otherwise
     */
-  def CanDamageOrJammer(obj: Vitality with FactionAffinity, damage: Int, data: DamageInteraction): Boolean = {
+private def CanDamageOrJammer(obj: Vitality with FactionAffinity, damage: Int, data: DamageInteraction): Boolean = {
     CanDamage(obj, damage, data) || CanJammer(obj, data)
   }
 
@@ -128,7 +128,7 @@ object Damageable {
     * @param target the entity being damaged
     * @param cause historical information about the damage
     */
-  def DestructionAwareness(target: Damageable.Target, cause: DamageResult): Unit = {
+private def DestructionAwareness(target: Damageable.Target, cause: DamageResult): Unit = {
     target.Destroyed = true
   }
 }

@@ -44,9 +44,9 @@ class ExplosiveDeployableDefinition(private val objectId: Int) extends Deployabl
 
   var triggerRadius: Float = 0f
 
-  def DetonateOnJamming: Boolean = detonateOnJamming
+private def DetonateOnJamming: Boolean = detonateOnJamming
 
-  def DetonateOnJamming_=(detonate: Boolean): Boolean = {
+private def DetonateOnJamming_=(detonate: Boolean): Boolean = {
     detonateOnJamming = detonate
     DetonateOnJamming
   }
@@ -57,7 +57,7 @@ class ExplosiveDeployableDefinition(private val objectId: Int) extends Deployabl
 }
 
 object ExplosiveDeployableDefinition {
-  def apply(dtype: DeployedItem.Value): ExplosiveDeployableDefinition = {
+def apply(dtype: DeployedItem.Value): ExplosiveDeployableDefinition = {
     new ExplosiveDeployableDefinition(dtype.id)
   }
 }
@@ -66,15 +66,15 @@ abstract class ExplosiveDeployableControl(mine: ExplosiveDeployable)
     extends Actor
     with DeployableBehavior
     with Damageable {
-  def DeployableObject = mine
-  def DamageableObject = mine
+private def DeployableObject = mine
+private def DamageableObject = mine
 
   override def postStop(): Unit = {
     super.postStop()
     deployableBehaviorPostStop()
   }
 
-  def commonMineBehavior: Receive =
+private def commonMineBehavior: Receive =
     deployableBehavior
       .orElse(takesDamage)
 
@@ -106,7 +106,7 @@ abstract class ExplosiveDeployableControl(mine: ExplosiveDeployable)
     * @return `true`, if the target can be affected;
     *        `false`, otherwise
     */
-  def CanDetonate(obj: Vitality with FactionAffinity, damage: Int, data: DamageInteraction): Boolean = {
+private def CanDetonate(obj: Vitality with FactionAffinity, damage: Int, data: DamageInteraction): Boolean = {
     !mine.Destroyed && (if (damage == 0 && data.cause.source.SympatheticExplosion) {
                           Damageable.CanDamageOrJammer(mine, damage = 1, data)
                         } else {
@@ -123,7 +123,7 @@ object ExplosiveDeployableControl {
     * @param cause na
     * @param damage na
     */
-  def DamageResolution(target: ExplosiveDeployable, cause: DamageResult, damage: Int): Unit = {
+private def DamageResolution(target: ExplosiveDeployable, cause: DamageResult, damage: Int): Unit = {
     target.History(cause)
     if (cause.interaction.cause.source.SympatheticExplosion) {
       explodes(target, cause)
@@ -153,7 +153,7 @@ object ExplosiveDeployableControl {
     * @param target na
     * @param cause na
     */
-  def explodes(target: Damageable.Target, cause: DamageResult): Unit = {
+private def explodes(target: Damageable.Target, cause: DamageResult): Unit = {
     target.Health = 1 // short-circuit logic in DestructionAwareness
     val zone = target.Zone
     zone.Activity ! Zone.HotSpot.Activity(cause)
@@ -171,7 +171,7 @@ object ExplosiveDeployableControl {
     * @param target na
     * @param cause na
     */
-  def DestructionAwareness(target: ExplosiveDeployable, cause: DamageResult): Unit = {
+private def DestructionAwareness(target: ExplosiveDeployable, cause: DamageResult): Unit = {
     val zone        = target.Zone
     val attribution = DamageableEntity.attributionTo(cause, target.Zone)
     Deployables.AnnounceDestroyDeployable(
@@ -200,7 +200,7 @@ object ExplosiveDeployableControl {
     * @param obj a game entity that explodes
     * @return a function that resolves a potential target as detected
     */
-  def detectionForExplosiveSource(
+private def detectionForExplosiveSource(
       obj: PlanetSideGameObject
   ): (PlanetSideGameObject, PlanetSideGameObject, Float) => Boolean = {
     val up = Vector3.relativeUp(obj.Orientation) //check relativeUp; rotate as little as necessary!
@@ -228,7 +228,7 @@ object ExplosiveDeployableControl {
     * @return `true`, if the target entities are near enough to each other;
     *        `false`, otherwise
     */
-  def detectTarget(
+private def detectTarget(
       g1: VolumetricGeometry,
       up: Vector3
   )(
@@ -252,7 +252,7 @@ object ExplosiveDeployableControl {
 
 class MineDeployableControl(mine: ExplosiveDeployable) extends ExplosiveDeployableControl(mine) {
 
-  def receive: Receive =
+def receive: Receive =
     commonMineBehavior
       .orElse {
         case ExplosiveDeployable.TriggeredBy(obj) =>
@@ -275,7 +275,7 @@ class MineDeployableControl(mine: ExplosiveDeployable) extends ExplosiveDeployab
     setTriggered(testForTriggeringTarget(mine, mine.Definition.triggerRadius), delay = 1000)
   }
 
-  def testForTriggeringTarget(mine: ExplosiveDeployable, range: Float): Option[PlanetSideServerObject] = {
+private def testForTriggeringTarget(mine: ExplosiveDeployable, range: Float): Option[PlanetSideServerObject] = {
     val position = mine.Position
     val faction  = mine.Faction
     val range2   = range * range
@@ -284,7 +284,7 @@ class MineDeployableControl(mine: ExplosiveDeployable) extends ExplosiveDeployab
       .find { thing => thing.Faction != faction && Vector3.DistanceSquared(thing.Position, position) < range2 }
   }
 
-  def setTriggered(instigator: Option[PlanetSideServerObject], delay: Long): Unit = {
+private def setTriggered(instigator: Option[PlanetSideServerObject], delay: Long): Unit = {
     instigator match {
       case Some(_) if isConstructed.contains(true) && setup.isCancelled =>
         //re-use the setup timer here
@@ -294,7 +294,7 @@ class MineDeployableControl(mine: ExplosiveDeployable) extends ExplosiveDeployab
     }
   }
 
-  def explodes(instigator: Option[PlanetSideServerObject]): Unit = {
+private def explodes(instigator: Option[PlanetSideServerObject]): Unit = {
     instigator match {
       case Some(_) =>
         //explosion
@@ -318,7 +318,7 @@ class MineDeployableControl(mine: ExplosiveDeployable) extends ExplosiveDeployab
 object MineDeployableControl {
   private case class Triggered()
 
-  def trippedMineReason(mine: ExplosiveDeployable): TrippedMineReason = {
+private def trippedMineReason(mine: ExplosiveDeployable): TrippedMineReason = {
     val deployableSource = DeployableSource(mine)
     val blame = mine.OwnerName match {
       case Some(name) =>

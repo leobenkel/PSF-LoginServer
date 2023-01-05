@@ -18,17 +18,17 @@ class MaxNumberSource(val max: Int) extends NumberSource {
   private val ary: Array[Key] = Array.ofDim[Key](max + 1)
   (0 to max).foreach(x => { ary(x) = new Key })
 
-  def size: Int = ary.length
+private def size: Int = ary.length
 
-  def countAvailable: Int = ary.count { _.policy == AvailabilityPolicy.Available }
+private def countAvailable: Int = ary.count { _.policy == AvailabilityPolicy.Available }
 
-  def countUsed: Int = ary.count { _.policy == AvailabilityPolicy.Leased }
+private def countUsed: Int = ary.count { _.policy == AvailabilityPolicy.Leased }
 
-  def countDangling: Int = ary.count { key => key.policy == AvailabilityPolicy.Leased && key.obj.isEmpty }
+private def countDangling: Int = ary.count { key => key.policy == AvailabilityPolicy.Leased && key.obj.isEmpty }
 
-  def test(number: Int): Boolean = -1 < number && number < size
+private def test(number: Int): Boolean = -1 < number && number < size
 
-  def get(number: Int): Option[SecureKey] = {
+private def get(number: Int): Option[SecureKey] = {
     if (test(number)) {
       Some(new SecureKey(number, ary(number)))
     } else {
@@ -36,7 +36,7 @@ class MaxNumberSource(val max: Int) extends NumberSource {
     }
   }
 
-  def get(obj: IdentifiableEntity) : Option[SecureKey] = {
+private def get(obj: IdentifiableEntity) : Option[SecureKey] = {
     ary.zipWithIndex.find { case (key, _) =>
       key.obj match {
         case Some(o) => o eq obj
@@ -48,7 +48,7 @@ class MaxNumberSource(val max: Int) extends NumberSource {
     }
   }
 
-  def getAvailable(number: Int): Option[LoanedKey] = {
+private def getAvailable(number: Int): Option[LoanedKey] = {
     var out: Option[LoanedKey] = None
     if (test(number)) {
       val key: Key = ary(number)
@@ -65,7 +65,7 @@ class MaxNumberSource(val max: Int) extends NumberSource {
     * @param number the number
     * @return any object previously using this number
     */
-  def returnNumber(number: Int): Option[IdentifiableEntity] = {
+private def returnNumber(number: Int): Option[IdentifiableEntity] = {
     var out: Option[IdentifiableEntity] = None
     if (test(number)) {
       val existing: Key = ary(number)
@@ -78,7 +78,7 @@ class MaxNumberSource(val max: Int) extends NumberSource {
     out
   }
 
-  def clear(): List[IdentifiableEntity] = {
+private def clear(): List[IdentifiableEntity] = {
     ary.foreach { _.policy = AvailabilityPolicy.Available }
     ary.collect {
       case key if key.obj.nonEmpty =>
@@ -90,7 +90,7 @@ class MaxNumberSource(val max: Int) extends NumberSource {
 }
 
 object MaxNumberSource {
-  def apply(max: Int): MaxNumberSource = {
+def apply(max: Int): MaxNumberSource = {
     new MaxNumberSource(max)
   }
 }

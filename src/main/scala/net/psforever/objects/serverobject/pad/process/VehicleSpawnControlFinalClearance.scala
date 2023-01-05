@@ -21,7 +21,7 @@ import scala.concurrent.duration._
   * @param pad the `VehicleSpawnPad` object being governed
   */
 class VehicleSpawnControlFinalClearance(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
-  def LogId = "-clearer"
+private def LogId = "-clearer"
 
 private var temp: Cancellable = Default.Cancellable
 
@@ -29,7 +29,7 @@ private var temp: Cancellable = Default.Cancellable
     temp.cancel()
   }
 
-  def receive: Receive = {
+def receive: Receive = {
     case order @ VehicleSpawnControl.Order(_, vehicle) =>
       if (!vehicle.Seats(0).isOccupied) {
         //ensure the vacant vehicle is above the trench and the doors

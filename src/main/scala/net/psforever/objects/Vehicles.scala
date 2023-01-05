@@ -28,7 +28,7 @@ object Vehicles {
     * @param player  na
     * @return na
     */
-  def Own(vehicle: Vehicle, player: Player): Option[Vehicle] = Own(vehicle, Some(player))
+private def Own(vehicle: Vehicle, player: Player): Option[Vehicle] = Own(vehicle, Some(player))
 
   /**
     * na
@@ -36,7 +36,7 @@ object Vehicles {
     * @param playerOpt na
     * @return na
     */
-  def Own(vehicle: Vehicle, playerOpt: Option[Player]): Option[Vehicle] = {
+private def Own(vehicle: Vehicle, playerOpt: Option[Player]): Option[Vehicle] = {
     playerOpt match {
       case Some(tplayer) =>
         tplayer.avatar.vehicle = Some(vehicle.GUID)
@@ -60,7 +60,7 @@ object Vehicles {
     * @return the vehicle, if it had a previous owner;
     *         `None`, otherwise
     */
-  def Disown(guid: PlanetSideGUID, vehicle: Vehicle): Option[Vehicle] =
+private def Disown(guid: PlanetSideGUID, vehicle: Vehicle): Option[Vehicle] =
     vehicle.Zone.GUID(vehicle.Owner) match {
       case Some(player: Player) =>
         if (player.avatar.vehicle.contains(guid)) {
@@ -93,7 +93,7 @@ object Vehicles {
     * This is the player side of vehicle ownership removal.
     * @param player the player
     */
-  def Disown(player: Player, zone: Zone): Option[Vehicle] = Disown(player, Some(zone))
+private def Disown(player: Player, zone: Zone): Option[Vehicle] = Disown(player, Some(zone))
 
   /**
     * Disassociate a player from a vehicle that he owns.
@@ -102,7 +102,7 @@ object Vehicles {
     * This is the player side of vehicle ownership removal.
     * @param player the player
     */
-  def Disown(player: Player, zoneOpt: Option[Zone]): Option[Vehicle] = {
+private def Disown(player: Player, zoneOpt: Option[Zone]): Option[Vehicle] = {
     player.avatar.vehicle match {
       case Some(vehicle_guid) =>
         player.avatar.vehicle = None
@@ -124,7 +124,7 @@ object Vehicles {
     * This is the vehicle side of vehicle ownership removal.
     * @param player the player
     */
-  def Disown(player: Player, vehicle: Vehicle): Option[Vehicle] = {
+private def Disown(player: Player, vehicle: Vehicle): Option[Vehicle] = {
     val pguid = player.GUID
     if (vehicle.Owner.contains(pguid)) {
       vehicle.AssignOwnership(None)
@@ -154,7 +154,7 @@ object Vehicles {
     * The most important examples include either the player or the vehicle itself spawning in for the first time.
     * @param vehicle the `Vehicle`
     */
-  def ReloadAccessPermissions(vehicle: Vehicle, toChannel: String): Unit = {
+private def ReloadAccessPermissions(vehicle: Vehicle, toChannel: String): Unit = {
     val vehicle_guid = vehicle.GUID
     (0 to 3).foreach(group => {
       vehicle.Zone.AvatarEvents ! AvatarServiceMessage(
@@ -190,7 +190,7 @@ object Vehicles {
     * @return `true`, if all passengers of the vehicle, and its cargo vehicles, etc., have reported being in the same zone;
     *        `false`, if no manifest entry exists, or if the vehicle is moving to the same zone
     */
-  def AllGatedOccupantsInSameZone(vehicle: Vehicle): Boolean = {
+private def AllGatedOccupantsInSameZone(vehicle: Vehicle): Boolean = {
     val vzone = vehicle.Zone
     vehicle.PreviousGatingManifest() match {
       case Some(manifest) if vzone != manifest.origin =>
@@ -215,7 +215,7 @@ object Vehicles {
     *         `1` is for unique sideways mounting;
     *         `0` is or straight-on mounting, valid for almost all cases
     */
-  def CargoOrientation(vehicle: Vehicle): Int = {
+private def CargoOrientation(vehicle: Vehicle): Int = {
     if (vehicle.Definition == GlobalDefinitions.router || GlobalDefinitions.isBattleFrameVehicle(vehicle.Definition)) {
       1
     } else {
@@ -230,7 +230,7 @@ object Vehicles {
     * @param hacker the one whoi performed the hack and will inherit ownership of the target vehicle
     * @param unk na; used by `HackMessage` as `unk5`
     */
-  def FinishHackingVehicle(target: Vehicle, hacker: Player, unk: Long)(): Unit = {
+private def FinishHackingVehicle(target: Vehicle, hacker: Player, unk: Long)(): Unit = {
     log.info(s"${hacker.Name} has jacked a ${target.Definition.Name}")
     val zone = target.Zone
     // Forcefully dismount any cargo
@@ -313,7 +313,7 @@ object Vehicles {
     }
   }
 
-  def FindANTChargingSource(
+private def FindANTChargingSource(
       obj: TransferContainer,
       ntuChargingTarget: Option[TransferContainer]
   ): Option[TransferContainer] = {
@@ -340,14 +340,14 @@ object Vehicles {
     }
   }
 
-  def FindANTDischargingTarget(
+private def FindANTDischargingTarget(
                                 obj: TransferContainer,
                                 ntuChargingTarget: Option[TransferContainer]
                               ): Option[TransferContainer] = {
     FindResourceSiloToDischargeInto(obj, ntuChargingTarget, radius = 20)
   }
 
-  def FindBfrChargingSource(
+private def FindBfrChargingSource(
                              obj: TransferContainer,
                              ntuChargingTarget: Option[TransferContainer]
                            ): Option[TransferContainer] = {
@@ -373,14 +373,14 @@ object Vehicles {
     }
   }
 
-  def FindBfrDischargingTarget(
+private def FindBfrDischargingTarget(
                                 obj: TransferContainer,
                                 ntuChargingTarget: Option[TransferContainer]
                               ): Option[TransferContainer] = {
     FindResourceSiloToDischargeInto(obj, ntuChargingTarget, radius = 20) //3.6135f?
   }
 
-  def FindResourceSiloToDischargeInto(
+private def FindResourceSiloToDischargeInto(
                                 obj: TransferContainer,
                                 ntuChargingTarget: Option[TransferContainer],
                                 radius: Float
@@ -410,7 +410,7 @@ object Vehicles {
     *
     * @param vehicle the vehicle
     */
-  def BeforeUnloadVehicle(vehicle: Vehicle, zone: Zone): Unit = {
+private def BeforeUnloadVehicle(vehicle: Vehicle, zone: Zone): Unit = {
     vehicle.Definition match {
       case GlobalDefinitions.ams =>
         vehicle.Actor ! Deployment.TryUndeploy(DriveState.Undeploying)
@@ -429,7 +429,7 @@ object Vehicles {
     * @param mountPoint the mount point that indicates a seat
     * @return the position and angle
     */
-  def dismountShuttle(obj: Vehicle, mountPoint: Int): (Vector3, Float) = {
+private def dismountShuttle(obj: Vehicle, mountPoint: Int): (Vector3, Float) = {
     val shuttleAngle = obj.Orientation.z
     val offset = {
       val baseOffset = obj.MountPoints(mountPoint).positionOffset

@@ -11,7 +11,7 @@ import net.psforever.types.{ChatMessageType, PlanetSideEmpire, PlanetSideGUID}
 object ChatService {
   val ChatServiceKey: ServiceKey[Command] = ServiceKey[ChatService.Command]("chatService")
 
-  def apply(): Behavior[Command] =
+def apply(): Behavior[Command] =
     Behaviors.setup { context =>
       context.system.receptionist ! Receptionist.Register(ChatServiceKey, context.self)
       new ChatService(context)

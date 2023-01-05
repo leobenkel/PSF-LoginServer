@@ -25,9 +25,9 @@ final case class HandheldData(data: CommonFieldData, mode: Int, unk: Int) extend
 }
 
 object HandheldData extends Marshallable[HandheldData] {
-  def apply(data: CommonFieldData): HandheldData = HandheldData(data, 0, 0)
+def apply(data: CommonFieldData): HandheldData = HandheldData(data, 0, 0)
 
-  def apply(data: CommonFieldData, mode: Int): HandheldData = HandheldData(data, mode, 0)
+def apply(data: CommonFieldData, mode: Int): HandheldData = HandheldData(data, mode, 0)
 
   implicit val codec: Codec[HandheldData] = (
     ("data" | CommonFieldData.codec) ::

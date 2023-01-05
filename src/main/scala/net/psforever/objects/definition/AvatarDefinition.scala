@@ -20,11 +20,11 @@ class AvatarDefinition(objectId: Int) extends ObjectDefinition(objectId) with Vi
 object AvatarDefinition {
   private val converter = new AvatarConverter()
 
-  def apply(objectId: Int): AvatarDefinition = {
+def apply(objectId: Int): AvatarDefinition = {
     new AvatarDefinition(objectId)
   }
 
-  def apply(avatar: Avatars.Value): AvatarDefinition = {
+def apply(avatar: Avatars.Value): AvatarDefinition = {
     new AvatarDefinition(avatar.id)
   }
 }

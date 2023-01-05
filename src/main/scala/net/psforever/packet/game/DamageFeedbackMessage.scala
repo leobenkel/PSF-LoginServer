@@ -61,12 +61,12 @@ final case class DamageFeedbackMessage(
   assert(unk3a.isEmpty == unk3d.nonEmpty)
 
   type Packet = DamageFeedbackMessage
-  def opcode = GamePacketOpcode.DamageFeedbackMessage
-  def encode = DamageFeedbackMessage.encode(this)
+def opcode = GamePacketOpcode.DamageFeedbackMessage
+def encode = DamageFeedbackMessage.encode(this)
 }
 
 object DamageFeedbackMessage extends Marshallable[DamageFeedbackMessage] {
-  def apply(unk1: Int,
+def apply(unk1: Int,
             unk2: PlanetSideGUID,
             unk3: PlanetSideGUID,
             unk4: Int,

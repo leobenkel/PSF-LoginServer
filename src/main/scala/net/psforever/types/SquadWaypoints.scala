@@ -19,17 +19,17 @@ object WaypointSubtype extends Enumeration {
 sealed trait SquadWaypoint {
 
   /** the index of this kind of waypoint */
-  def value: Int
+private def value: Int
 
   /** the distinction of this kind of waypoint */
-  def subtype: WaypointSubtype.Value
+private def subtype: WaypointSubtype.Value
 }
 
 /**
   * Permanently-defined waypoints known to all squads, set only by the squad leader, accessible by command rank status.
   */
 sealed abstract class StandardWaypoint(override val value: Int) extends SquadWaypoint {
-  def subtype: WaypointSubtype.Value = WaypointSubtype.Squad
+private def subtype: WaypointSubtype.Value = WaypointSubtype.Squad
 }
 
 /**
@@ -47,7 +47,7 @@ sealed abstract class StandardWaypoint(override val value: Int) extends SquadWay
   * @param value the index of the waypoint can be any number five and above
   */
 sealed case class LazeWaypoint(value: Int) extends SquadWaypoint {
-  def subtype: WaypointSubtype.Value = WaypointSubtype.Laze
+private def subtype: WaypointSubtype.Value = WaypointSubtype.Laze
 }
 
 object SquadWaypoint {
@@ -59,7 +59,7 @@ object SquadWaypoint {
     * @param value the index of this kind of waypoint
     * @return a waypoint object
     */
-  def apply(value: Int): SquadWaypoint = {
+def apply(value: Int): SquadWaypoint = {
     if (value < 5) {
       values(value)
     } else {
@@ -69,7 +69,7 @@ object SquadWaypoint {
 
   /** the five squad-specific waypoints */
   //does not include the multitude of possible laze waypoints
-  def values = Seq(One, Two, Three, Four, ExperienceRally)
+private def values = Seq(One, Two, Three, Four, ExperienceRally)
 
   /** the first squad rally */
   case object One extends StandardWaypoint(value = 0)

@@ -42,12 +42,12 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     list = Nil
   }
 
-  def CreateEntry(obj: PlanetSideGameObject, zone: Zone, upgrade: TurretUpgrade.Value, duration: Long) =
+private def CreateEntry(obj: PlanetSideGameObject, zone: Zone, upgrade: TurretUpgrade.Value, duration: Long) =
     TurretUpgrader.Entry(obj, zone, upgrade, duration)
 
-  def InclusionTest(entry: TurretUpgrader.Entry): Boolean = entry.obj.isInstanceOf[FacilityTurret]
+private def InclusionTest(entry: TurretUpgrader.Entry): Boolean = entry.obj.isInstanceOf[FacilityTurret]
 
-  def receive: Receive =
+def receive: Receive =
     entryManagementBehaviors
       .orElse {
         case TurretUpgrader.AddTask(turret, zone, upgrade, duration) =>
@@ -86,7 +86,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
         case _ => ;
       }
 
-  def RetimeFirstTask(now: Long = System.nanoTime): Unit = {
+private def RetimeFirstTask(now: Long = System.nanoTime): Unit = {
     task.cancel()
     if (list.nonEmpty) {
       val short_timeout: FiniteDuration = math.max(1, list.head.duration - (now - list.head.time)) nanoseconds
@@ -95,7 +95,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     }
   }
 
-  def HurrySpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
+private def HurrySpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
     PartitionTargetsFromList(list, targets.map { TurretUpgrader.Entry(_, zone, TurretUpgrade.None, 0) }, zone) match {
       case (Nil, _) =>
         debug(s"no tasks matching the targets $targets have been hurried")
@@ -109,7 +109,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     }
   }
 
-  def HurryAll(): Unit = {
+private def HurryAll(): Unit = {
     trace("all tasks have been hurried")
     task.cancel()
     list.foreach {
@@ -118,7 +118,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     list = Nil
   }
 
-  def ClearSpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
+private def ClearSpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
     PartitionTargetsFromList(list, targets.map { TurretUpgrader.Entry(_, zone, TurretUpgrade.None, 0) }, zone) match {
       case (Nil, _) =>
         debug(s"no tasks matching the targets $targets have been cleared")
@@ -131,7 +131,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     }
   }
 
-  def ClearAll(): Unit = {
+private def ClearAll(): Unit = {
     task.cancel()
     list = Nil
   }
@@ -144,7 +144,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     * and the new boxes that must be registered so the weapon may be introduced into the game world properly.
     * @param entry na
     */
-  def UpgradeTurretAmmo(entry: TurretUpgrader.Entry): Unit = {
+private def UpgradeTurretAmmo(entry: TurretUpgrader.Entry): Unit = {
     val target     = entry.obj.asInstanceOf[FacilityTurret]
     val zone       = entry.zone
     val zoneId     = zone.id
@@ -210,7 +210,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     * @param target the object with mounted weaponry
     * @return all of the internal ammunition objects
     */
-  def AllMountedWeaponMagazines(target: MountedWeapons): Iterable[AmmoBox] = {
+private def AllMountedWeaponMagazines(target: MountedWeapons): Iterable[AmmoBox] = {
     target.Weapons.values
       .map { _.Equipment }
       .collect { case Some(tool: Tool) => tool.AmmoSlots }
@@ -223,7 +223,7 @@ class TurretUpgrader extends SupportActor[TurretUpgrader.Entry] {
     * It is now safe to announce that clients can update to the new weapon.
     * @param entry na
     */
-  def FinishUpgradingTurret(entry: TurretUpgrader.Entry)(): Unit = {
+private def FinishUpgradingTurret(entry: TurretUpgrader.Entry)(): Unit = {
     val target = entry.obj.asInstanceOf[FacilityTurret]
     val zone   = entry.zone
     trace(s"Wall turret finished ${target.Upgrade} upgrade")

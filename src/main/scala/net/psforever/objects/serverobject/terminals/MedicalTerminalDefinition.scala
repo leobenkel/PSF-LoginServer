@@ -13,16 +13,16 @@ class MedicalTerminalDefinition(objectId: Int)
   private var healAmount: Int  = 0
   private var armorAmount: Int = 0
 
-  def HealAmount: Int = healAmount
+private def HealAmount: Int = healAmount
 
-  def HealAmount_=(amount: Int): Int = {
+private def HealAmount_=(amount: Int): Int = {
     healAmount = amount
     HealAmount
   }
 
-  def ArmorAmount: Int = armorAmount
+private def ArmorAmount: Int = armorAmount
 
-  def ArmorAmount_=(amount: Int): Int = {
+private def ArmorAmount_=(amount: Int): Int = {
     armorAmount = amount
     ArmorAmount
   }

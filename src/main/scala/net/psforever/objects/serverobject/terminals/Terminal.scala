@@ -26,11 +26,11 @@ class Terminal(tdef: TerminalDefinition) extends Amenity with Hackable {
 
   //the following fields and related methods are neither finalized nor integrated; GOTO Request
 
-  def Damaged(dam: Int): Unit = {
+private def Damaged(dam: Int): Unit = {
     Health = Math.max(0, Health - dam)
   }
 
-  def Repair(rep: Int): Unit = {
+private def Repair(rep: Int): Unit = {
     Health = Math.min(Health + rep, 100)
   }
 
@@ -46,7 +46,7 @@ class Terminal(tdef: TerminalDefinition) extends Amenity with Hackable {
     * @param msg the original packet carrying the request
     * @return an actionable message that explains what resulted from interacting with this `Terminal`
     */
-  def Request(player: Player, msg: Any): Terminal.Exchange = {
+private def Request(player: Player, msg: Any): Terminal.Exchange = {
     if (Faction == player.Faction || HackedBy.isDefined || Owner.GUID == PlanetSideGUID(0)) {
       tdef.Request(player, msg)
     } else {
@@ -54,7 +54,7 @@ class Terminal(tdef: TerminalDefinition) extends Amenity with Hackable {
     }
   }
 
-  def Definition: TerminalDefinition = tdef
+private def Definition: TerminalDefinition = tdef
 }
 
 object Terminal {
@@ -191,7 +191,7 @@ object Terminal {
     * Overloaded constructor.
     * @param tdef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
     */
-  def apply(tdef: TerminalDefinition): Terminal = {
+def apply(tdef: TerminalDefinition): Terminal = {
     new Terminal(tdef)
   }
 
@@ -206,7 +206,7 @@ object Terminal {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `Terminal` object
     */
-  def Constructor(pos: Vector3, tdef: TerminalDefinition)(id: Int, context: ActorContext): Terminal = {
+private def Constructor(pos: Vector3, tdef: TerminalDefinition)(id: Int, context: ActorContext): Terminal = {
     import akka.actor.Props
 
     val obj = Terminal(tdef)

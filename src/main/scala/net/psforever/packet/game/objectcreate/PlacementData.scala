@@ -30,7 +30,7 @@ object PlacementData extends Marshallable[PlacementData] {
     * @param z the z-coordinate location in the world
     * @return a `PlacementData` object
     */
-  def apply(x: Float, y: Float, z: Float): PlacementData =
+def apply(x: Float, y: Float, z: Float): PlacementData =
     new PlacementData(Vector3(x, y, z), Vector3(0f, 0f, 0f))
 
   /**
@@ -43,7 +43,7 @@ object PlacementData extends Marshallable[PlacementData] {
     * @param yaw the amount of yaw that affects orientation
     * @return a `PlacementData` object
     */
-  def apply(x: Float, y: Float, z: Float, roll: Float, pitch: Float, yaw: Float): PlacementData =
+def apply(x: Float, y: Float, z: Float, roll: Float, pitch: Float, yaw: Float): PlacementData =
     new PlacementData(Vector3(x, y, z), Vector3(roll, pitch, yaw))
 
   /**
@@ -57,7 +57,7 @@ object PlacementData extends Marshallable[PlacementData] {
     * @param vel optional movement data that occurs upon placement
     * @return a `PlacementData` object
     */
-  def apply(x: Float, y: Float, z: Float, roll: Float, pitch: Float, yaw: Float, vel: Vector3): PlacementData =
+def apply(x: Float, y: Float, z: Float, roll: Float, pitch: Float, yaw: Float, vel: Vector3): PlacementData =
     new PlacementData(Vector3(x, y, z), Vector3(roll, pitch, yaw), Some(vel))
 
   implicit val codec: Codec[PlacementData] = (

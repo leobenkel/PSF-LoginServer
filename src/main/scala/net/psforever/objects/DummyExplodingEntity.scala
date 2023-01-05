@@ -36,11 +36,11 @@ class DummyExplodingEntity(
     super.Velocity.orElse(obj.Velocity)
   }
 
-  def Faction: PlanetSideEmpire.Value = faction
+private def Faction: PlanetSideEmpire.Value = faction
 
-  def DamageModel: DamageAndResistance = DummyExplodingEntity.DefaultDamageResistanceModel
+private def DamageModel: DamageAndResistance = DummyExplodingEntity.DefaultDamageResistanceModel
 
-  def Definition: ObjectDefinition with VitalityDefinition = {
+private def Definition: ObjectDefinition with VitalityDefinition = {
     new DefinitionWrappedInVitality(obj.Definition)
   }
 }
@@ -60,5 +60,5 @@ private class DefinitionWrappedInVitality(definition: ObjectDefinition)
 object DummyExplodingEntity {
   final val DefaultDamageResistanceModel = new DamageResistanceModel { }
 
-  def apply(obj: PlanetSideGameObject): DummyExplodingEntity = new DummyExplodingEntity(obj, PlanetSideEmpire.NEUTRAL)
+def apply(obj: PlanetSideGameObject): DummyExplodingEntity = new DummyExplodingEntity(obj, PlanetSideEmpire.NEUTRAL)
 }

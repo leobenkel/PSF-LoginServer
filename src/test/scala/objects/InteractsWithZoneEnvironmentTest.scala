@@ -197,7 +197,7 @@ private val testZone = {
 }
 
 object InteractsWithZoneEnvironmentTest {
-  def testObject(): PlanetSideServerObject with InteractsWithZone = {
+private def testObject(): PlanetSideServerObject with InteractsWithZone = {
     new PlanetSideServerObject
       with InteractsWithZone
       with Vitality {

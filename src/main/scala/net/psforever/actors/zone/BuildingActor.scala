@@ -24,7 +24,7 @@ final case class BuildingControlDetails(
                                        )
 
 object BuildingActor {
-  def apply(zone: Zone, building: Building): Behavior[Command] =
+def apply(zone: Zone, building: Building): Behavior[Command] =
     Behaviors
       .supervise[Command] {
         Behaviors.withStash(capacity = 100) { buffer =>
@@ -80,7 +80,7 @@ object BuildingActor {
     * @param faction faction to which the building is being set
     * @param log wrapped-up log for customized debug information
     */
-  def setFactionTo(
+private def setFactionTo(
                     details: BuildingWrapper,
                     faction: PlanetSideEmpire.Value,
                     log: BuildingWrapper => Logger
@@ -96,7 +96,7 @@ object BuildingActor {
     * @param faction faction to which the building is being set
     * @param log wrapped-up log for customized debug information
     */
-  def setFactionInDatabase(
+private def setFactionInDatabase(
                             details: BuildingWrapper,
                             faction: PlanetSideEmpire.Value,
                             log: BuildingWrapper => Logger
@@ -152,7 +152,7 @@ object BuildingActor {
     * @param faction faction to which the building is being set
     * @param log wrapped-up log for customized debug information
     */
-  def setFactionOnEntity(
+private def setFactionOnEntity(
                           details: BuildingWrapper,
                           faction: PlanetSideEmpire.Value,
                           log: BuildingWrapper => Logger
@@ -174,7 +174,7 @@ class BuildingActor(
 ) {
   import BuildingActor._
 
-  def start(): Behavior[Command] = {
+private def start(): Behavior[Command] = {
     context.system.receptionist ! Receptionist.Find(
       InterstellarClusterService.InterstellarClusterServiceKey,
       context.messageAdapter[Receptionist.Listing](ReceptionistListing)
@@ -186,7 +186,7 @@ class BuildingActor(
     setup(BuildingControlDetails())
   }
 
-  def setup(details: BuildingControlDetails): Behavior[Command] = {
+private def setup(details: BuildingControlDetails): Behavior[Command] = {
     Behaviors.receiveMessage {
       case ReceptionistListing(InterstellarClusterService.InterstellarClusterServiceKey.Listing(listings)) =>
         switchToBehavior(details.copy(interstellarCluster = listings.head))
@@ -203,7 +203,7 @@ class BuildingActor(
     }
   }
 
-  def switchToBehavior(details: BuildingControlDetails): Behavior[Command] = {
+private def switchToBehavior(details: BuildingControlDetails): Behavior[Command] = {
     if (details.galaxyService != null && details.interstellarCluster != null) {
       buffer.unstashAll(active(logic.wrapper(building, context, details)))
     } else {
@@ -211,7 +211,7 @@ class BuildingActor(
     }
   }
 
-  def active(details: BuildingWrapper): Behavior[Command] = {
+private def active(details: BuildingWrapper): Behavior[Command] = {
     Behaviors.receiveMessagePartial {
       case SetFaction(faction) =>
         logic.setFactionTo(details, faction)

@@ -87,7 +87,7 @@ class Player(var avatar: Avatar)
   Destroyed = true //see isAlive
   Player.SuitSetup(this, exosuit)
 
-  def Definition: AvatarDefinition = avatar.definition
+  private def Definition: AvatarDefinition = avatar.definition
 
   def CharId: Long = avatar.id
 
@@ -97,15 +97,15 @@ class Player(var avatar: Avatar)
 
   def Sex: CharacterSex = avatar.sex
 
-  def Head: Int = avatar.head
+  private def Head: Int = avatar.head
 
-  def Voice: CharacterVoice.Value = avatar.voice
+  private def Voice: CharacterVoice.Value = avatar.voice
 
   def isAlive: Boolean = !Destroyed
 
   def isBackpack: Boolean = backpack
 
-  def Spawn(): Boolean = {
+  private def Spawn(): Boolean = {
     if (!isAlive && !isBackpack) {
       Destroyed = false
       Health = Definition.DefaultHealth
@@ -116,35 +116,35 @@ class Player(var avatar: Avatar)
     isAlive
   }
 
-  def Die: Boolean = {
+  private def Die: Boolean = {
     Destroyed = true
     Health = 0
     false
   }
 
-  def Revive: Boolean = {
+  private def Revive: Boolean = {
     Destroyed = false
     Health = Definition.DefaultHealth
     released = false
     true
   }
 
-  def Release: Boolean = {
+  private def Release: Boolean = {
     released = true
     backpack = !isAlive
     true
   }
 
-  def isReleased: Boolean = released
+  private def isReleased: Boolean = released
 
   def Armor: Int = armor
 
-  def Armor_=(assignArmor: Int): Int = {
+  private def Armor_=(assignArmor: Int): Int = {
     armor = math.min(math.max(0, assignArmor), MaxArmor)
     Armor
   }
 
-  def MaxArmor: Int = exosuit.MaxArmor
+  private def MaxArmor: Int = exosuit.MaxArmor
 
   def Capacitor: Float = capacitor
 
@@ -167,8 +167,8 @@ class Player(var avatar: Avatar)
     capacitor
   }
 
-  def CapacitorState: CapacitorStateType.Value = capacitorState
-  def CapacitorState_=(value: CapacitorStateType.Value): CapacitorStateType.Value = {
+  private def CapacitorState: CapacitorStateType.Value = capacitorState
+  private def CapacitorState_=(value: CapacitorStateType.Value): CapacitorStateType.Value = {
     value match {
       case CapacitorStateType.Charging    => capacitorLastChargedMillis = System.currentTimeMillis()
       case CapacitorStateType.Discharging => capacitorLastUsedMillis = System.currentTimeMillis()
@@ -179,10 +179,10 @@ class Player(var avatar: Avatar)
     capacitorState
   }
 
-  def CapacitorLastUsedMillis: Long    = capacitorLastUsedMillis
-  def CapacitorLastChargedMillis: Long = capacitorLastChargedMillis
+  private def CapacitorLastUsedMillis: Long    = capacitorLastUsedMillis
+  private def CapacitorLastChargedMillis: Long = capacitorLastChargedMillis
 
-  def VisibleSlots: Set[Int] =
+  private def VisibleSlots: Set[Int] =
     if (exosuit.SuitType == ExoSuitType.MAX) {
       Set(0)
     } else {
@@ -203,7 +203,7 @@ class Player(var avatar: Avatar)
     }
   }
 
-  def Holsters(): Array[EquipmentSlot] = holsters
+  private def Holsters(): Array[EquipmentSlot] = holsters
 
   /**
     * Transform the holster equipment slots
@@ -212,7 +212,7 @@ class Player(var avatar: Avatar)
     * @see `InventoryItem`
     * @return a list of items that would be found in a proper inventory
     */
-  def HolsterItems(): List[InventoryItem] =
+  private def HolsterItems(): List[InventoryItem] =
     holsters.zipWithIndex
       .collect {
         case (slot: EquipmentSlot, index: Int) =>
@@ -258,9 +258,9 @@ class Player(var avatar: Avatar)
     }
   }
 
-  def FreeHand: EquipmentSlot = freeHand
+  private def FreeHand: EquipmentSlot = freeHand
 
-  def FreeHand_=(item: Option[Equipment]): Option[Equipment] = {
+  private def FreeHand_=(item: Option[Equipment]): Option[Equipment] = {
     if (freeHand.Equipment.isEmpty || item.isEmpty) {
       freeHand.Equipment = item
     }
@@ -318,21 +318,21 @@ class Player(var avatar: Avatar)
     }
   }
 
-  def ResistArmMotion(func: (Player, Int) => Boolean): Unit = {
+  private def ResistArmMotion(func: (Player, Int) => Boolean): Unit = {
     resistArmMotion = func
   }
 
-  def TestArmMotion(): Boolean = {
+  private def TestArmMotion(): Boolean = {
     resistArmMotion(this, drawnSlot)
   }
 
-  def TestArmMotion(slot: Int): Boolean = {
+  private def TestArmMotion(slot: Int): Boolean = {
     resistArmMotion(this, slot)
   }
 
-  def DrawnSlot: Int = drawnSlot
+  private def DrawnSlot: Int = drawnSlot
 
-  def DrawnSlot_=(slot: Int): Int = {
+  private def DrawnSlot_=(slot: Int): Int = {
     if (slot != drawnSlot) {
       if (slot == Player.HandsDownSlot) {
         drawnSlot = slot
@@ -344,59 +344,59 @@ class Player(var avatar: Avatar)
     DrawnSlot
   }
 
-  def LastDrawnSlot: Int = lastDrawnSlot
+  private def LastDrawnSlot: Int = lastDrawnSlot
 
-  def ExoSuit: ExoSuitType.Value    = exosuit.SuitType
-  def ExoSuitDef: ExoSuitDefinition = exosuit
+  def ExoSuit: ExoSuitType.Value            = exosuit.SuitType
+  private def ExoSuitDef: ExoSuitDefinition = exosuit
 
-  def ExoSuit_=(suit: ExoSuitType.Value): Unit = {
+  private def ExoSuit_=(suit: ExoSuitType.Value): Unit = {
     val eSuit = ExoSuitDefinition.Select(suit, Faction)
     exosuit = eSuit
     Player.SuitSetup(this, eSuit)
     ChangeSpecialAbility()
   }
 
-  def Subtract: DamageProfile = exosuit.Subtract
+  private def Subtract: DamageProfile = exosuit.Subtract
 
-  def ResistanceDirectHit: Int = exosuit.ResistanceDirectHit
+  private def ResistanceDirectHit: Int = exosuit.ResistanceDirectHit
 
-  def ResistanceSplash: Int = exosuit.ResistanceSplash
+  private def ResistanceSplash: Int = exosuit.ResistanceSplash
 
-  def ResistanceAggravated: Int = exosuit.ResistanceAggravated
+  private def ResistanceAggravated: Int = exosuit.ResistanceAggravated
 
-  def RadiationShielding: Float = exosuit.RadiationShielding
+  private def RadiationShielding: Float = exosuit.RadiationShielding
 
-  def FacingYawUpper: Float = facingYawUpper
+  private def FacingYawUpper: Float = facingYawUpper
 
-  def FacingYawUpper_=(facing: Float): Float = {
+  private def FacingYawUpper_=(facing: Float): Float = {
     facingYawUpper = facing
     FacingYawUpper
   }
 
   def Crouching: Boolean = crouching
 
-  def Crouching_=(crouched: Boolean): Boolean = {
+  private def Crouching_=(crouched: Boolean): Boolean = {
     crouching = crouched
     Crouching
   }
 
   def Jumping: Boolean = jumping
 
-  def Jumping_=(jumped: Boolean): Boolean = {
+  private def Jumping_=(jumped: Boolean): Boolean = {
     jumping = jumped
     Jumping
   }
 
-  def Cloaked: Boolean = cloaked
+  private def Cloaked: Boolean = cloaked
 
-  def Cloaked_=(isCloaked: Boolean): Boolean = {
+  private def Cloaked_=(isCloaked: Boolean): Boolean = {
     cloaked = isCloaked
     Cloaked
   }
 
-  def AwayFromKeyboard: Boolean = afk
+  private def AwayFromKeyboard: Boolean = afk
 
-  def AwayFromKeyboard_=(away: Boolean): Boolean = {
+  private def AwayFromKeyboard_=(away: Boolean): Boolean = {
     afk = away
     AwayFromKeyboard
   }
@@ -420,9 +420,9 @@ class Player(var avatar: Avatar)
     }
   }
 
-  def UsingSpecial: SpecialExoSuitDefinition.Mode.Value = { gettingSpecial() }
+  private def UsingSpecial: SpecialExoSuitDefinition.Mode.Value = { gettingSpecial() }
 
-  def UsingSpecial_=(state: SpecialExoSuitDefinition.Mode.Value): SpecialExoSuitDefinition.Mode.Value =
+  private def UsingSpecial_=(state: SpecialExoSuitDefinition.Mode.Value): SpecialExoSuitDefinition.Mode.Value =
     usingSpecial(state)
 
   private def DefaultUsingSpecial(state: SpecialExoSuitDefinition.Mode.Value): SpecialExoSuitDefinition.Mode.Value =
@@ -482,18 +482,18 @@ class Player(var avatar: Avatar)
         SpecialExoSuitDefinition.Mode.Normal
     }
 
-  def isAnchored: Boolean =
+  private def isAnchored: Boolean =
     ExoSuit == ExoSuitType.MAX && Faction == PlanetSideEmpire.TR && UsingSpecial == SpecialExoSuitDefinition.Mode.Anchored
 
-  def isOverdrived: Boolean =
+  private def isOverdrived: Boolean =
     ExoSuit == ExoSuitType.MAX && Faction == PlanetSideEmpire.TR && UsingSpecial == SpecialExoSuitDefinition.Mode.Overdrive
 
-  def isShielded: Boolean =
+  private def isShielded: Boolean =
     ExoSuit == ExoSuitType.MAX && Faction == PlanetSideEmpire.NC && UsingSpecial == SpecialExoSuitDefinition.Mode.Shielded
 
-  def AccessingBackpack: Option[PlanetSideGUID] = backpackAccess
+  private def AccessingBackpack: Option[PlanetSideGUID] = backpackAccess
 
-  def AccessingBackpack_=(guid: PlanetSideGUID): Option[PlanetSideGUID] = {
+  private def AccessingBackpack_=(guid: PlanetSideGUID): Option[PlanetSideGUID] = {
     AccessingBackpack = Some(guid)
   }
 
@@ -503,7 +503,7 @@ class Player(var avatar: Avatar)
     * @param guid the player who wishes to access the backpack
     * @return the player who is currently allowed to access the backpack
     */
-  def AccessingBackpack_=(guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
+  private def AccessingBackpack_=(guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
     guid match {
       case None =>
         backpackAccess = None
@@ -520,39 +520,39 @@ class Player(var avatar: Avatar)
     * @param player a player attempting to access this backpack
     * @return `true`, if the `player` is permitted access; `false`, otherwise
     */
-  def CanAccessBackpack(player: Player): Boolean = {
+  private def CanAccessBackpack(player: Player): Boolean = {
     isBackpack && (backpackAccess.isEmpty || backpackAccess.contains(player.GUID))
   }
 
   def VehicleSeated: Option[PlanetSideGUID] = vehicleSeated
 
-  def VehicleSeated_=(guid: PlanetSideGUID): Option[PlanetSideGUID] = VehicleSeated_=(Some(guid))
+  private def VehicleSeated_=(guid: PlanetSideGUID): Option[PlanetSideGUID] = VehicleSeated_=(Some(guid))
 
-  def VehicleSeated_=(guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
+  private def VehicleSeated_=(guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
     vehicleSeated = guid
     VehicleSeated
   }
 
-  def Carrying: Option[SpecialCarry] = carrying
+  private def Carrying: Option[SpecialCarry] = carrying
 
-  def Carrying_=(item: SpecialCarry): Option[SpecialCarry] = {
+  private def Carrying_=(item: SpecialCarry): Option[SpecialCarry] = {
     Carrying
   }
 
-  def Carrying_=(item: Option[SpecialCarry]): Option[SpecialCarry] = {
+  private def Carrying_=(item: Option[SpecialCarry]): Option[SpecialCarry] = {
     Carrying
   }
 
-  def ZoningRequest: Zoning.Method = zoning
+  private def ZoningRequest: Zoning.Method = zoning
 
-  def ZoningRequest_=(request: Zoning.Method): Zoning.Method = {
+  private def ZoningRequest_=(request: Zoning.Method): Zoning.Method = {
     zoning = request
     ZoningRequest
   }
 
-  def DamageModel: DamageResistanceModel = exosuit.asInstanceOf[DamageResistanceModel]
+  private def DamageModel: DamageResistanceModel = exosuit.asInstanceOf[DamageResistanceModel]
 
-  def canEqual(other: Any): Boolean = other.isInstanceOf[Player]
+  private def canEqual(other: Any): Boolean = other.isInstanceOf[Player]
 
   override def equals(other: Any): Boolean =
     other match {
@@ -609,7 +609,7 @@ object Player {
     (0 until 5).foreach(index => { player.Slot(index).Size = eSuit.Holster(index) })
   }
 
-  def Respawn(player: Player): Player = {
+  private def Respawn(player: Player): Player = {
     if (player.Release) {
       val obj = new Player(player.avatar)
       obj.Continent = player.Continent
@@ -619,7 +619,7 @@ object Player {
     }
   }
 
-  def neverRestrict(player: Player, slot: Int): Boolean = {
+  private def neverRestrict(player: Player, slot: Int): Boolean = {
     false
   }
 }

@@ -40,7 +40,7 @@ final case class DroppodData(basic: CommonFieldDataWithPlacement, health: Int, b
 }
 
 object DroppodData extends Marshallable[DroppodData] {
-  def apply(basic: CommonFieldDataWithPlacement): DroppodData = DroppodData(basic, 255, burn = false, unk = false)
+def apply(basic: CommonFieldDataWithPlacement): DroppodData = DroppodData(basic, 255, burn = false, unk = false)
 
   implicit val codec: Codec[DroppodData] = (
     ("basic" | CommonFieldDataWithPlacement.codec) ::

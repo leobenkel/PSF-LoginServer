@@ -11,7 +11,7 @@ import org.specs2.mutable._
 class LoadoutTest extends Specification {
 private val avatar = Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 41, CharacterVoice.Voice1)
 
-  def CreatePlayer(): Player = {
+private def CreatePlayer(): Player = {
     new Player(avatar) {
       Slot(0).Equipment = Tool(beamer)
       Slot(2).Equipment = Tool(suppressor)

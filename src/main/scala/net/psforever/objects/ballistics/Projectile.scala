@@ -73,7 +73,7 @@ private val current: SimpleWorldEntity                   = new SimpleWorldEntity
     * @param value the new quality
     * @return a new `Projectile` entity
     */
-  def quality(value: ProjectileQuality): Projectile = {
+private def quality(value: ProjectileQuality): Projectile = {
     val projectile = Projectile(
       profile,
       tool_def,
@@ -95,19 +95,19 @@ private val current: SimpleWorldEntity                   = new SimpleWorldEntity
   /**
     * Mark the projectile as being "encountered" or "managed" at least once.
     */
-  def Resolve(): Unit = {
+private def Resolve(): Unit = {
     resolved = DamageResolution.Resolved
   }
 
-  def Miss(): Unit = {
+private def Miss(): Unit = {
     resolved = DamageResolution.Missed
   }
 
-  def isResolved: Boolean = resolved == DamageResolution.Resolved || resolved == DamageResolution.Missed
+private def isResolved: Boolean = resolved == DamageResolution.Resolved || resolved == DamageResolution.Missed
 
-  def isMiss: Boolean = resolved == DamageResolution.Missed
+private def isMiss: Boolean = resolved == DamageResolution.Missed
 
-  def Definition = profile
+private def Definition = profile
 }
 
 object Projectile {
@@ -132,7 +132,7 @@ object Projectile {
     * @param shot_angle in which direction the projectile was aimed when it was discharged
     * @return the `Projectile` object
     */
-  def apply(
+def apply(
              profile: ProjectileDefinition,
              tool_def: ToolDefinition,
              fire_mode: FireModeDefinition,
@@ -154,7 +154,7 @@ object Projectile {
     * @param shot_angle in which direction the projectile was aimed when it was discharged
     * @return the `Projectile` object
     */
-  def apply(
+def apply(
              profile: ProjectileDefinition,
              tool_def: ToolDefinition,
              fire_mode: FireModeDefinition,
@@ -166,7 +166,7 @@ object Projectile {
     Projectile(profile, tool_def, fire_mode, SourceEntry(owner), attribute_to, shot_origin, shot_angle, None)
   }
 
-  def apply(
+def apply(
              profile: ProjectileDefinition,
              tool_def: ToolDefinition,
              fire_mode: FireModeDefinition,

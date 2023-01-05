@@ -6,20 +6,20 @@ import net.psforever.types.PlanetSideGUID
 trait MountableEntity {
   private var bailProtection: Boolean = false
 
-  def BailProtection: Boolean = bailProtection
+private def BailProtection: Boolean = bailProtection
 
-  def BailProtection_=(protect: Boolean) = {
+private def BailProtection_=(protect: Boolean) = {
     bailProtection = protect
     BailProtection
   }
 
   private var mountedIn: Option[PlanetSideGUID] = None
 
-  def MountedIn: Option[PlanetSideGUID] = mountedIn
+private def MountedIn: Option[PlanetSideGUID] = mountedIn
 
-  def MountedIn_=(cargo_guid: PlanetSideGUID): Option[PlanetSideGUID] = MountedIn_=(Some(cargo_guid))
+private def MountedIn_=(cargo_guid: PlanetSideGUID): Option[PlanetSideGUID] = MountedIn_=(Some(cargo_guid))
 
-  def MountedIn_=(cargo_guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
+private def MountedIn_=(cargo_guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
     mountedIn = cargo_guid
     MountedIn
   }

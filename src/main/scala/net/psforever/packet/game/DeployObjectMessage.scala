@@ -24,8 +24,8 @@ import shapeless.{::, HNil}
 final case class DeployObjectMessage(object_guid: PlanetSideGUID, unk1: Long, pos: Vector3, orient: Vector3, unk2: Long)
     extends PlanetSideGamePacket {
   type Packet = DeployObjectMessage
-  def opcode: Type = GamePacketOpcode.DeployObjectMessage
-  def encode: Attempt[BitVector] = DeployObjectMessage.encode(this)
+def opcode: Type = GamePacketOpcode.DeployObjectMessage
+def encode: Attempt[BitVector] = DeployObjectMessage.encode(this)
 }
 
 object DeployObjectMessage extends Marshallable[DeployObjectMessage] {

@@ -21,8 +21,8 @@ import scodec.codecs._
   */
 final case class DisconnectMessage(msg: String, unk2: String, unk3: String) extends PlanetSideGamePacket {
   type Packet = DisconnectMessage
-  def opcode = GamePacketOpcode.DisconnectMessage
-  def encode = DisconnectMessage.encode(this)
+def opcode = GamePacketOpcode.DisconnectMessage
+def encode = DisconnectMessage.encode(this)
 }
 
 object DisconnectMessage extends Marshallable[DisconnectMessage] {
@@ -32,7 +32,7 @@ object DisconnectMessage extends Marshallable[DisconnectMessage] {
     * @param msg the displayed message
     * @return a `DisconnectMessage` object
     */
-  def apply(msg: String): DisconnectMessage = {
+def apply(msg: String): DisconnectMessage = {
     new DisconnectMessage(msg, "", "")
   }
 

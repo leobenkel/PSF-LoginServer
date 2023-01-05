@@ -17,7 +17,7 @@ sealed abstract class AxisAlignment(direction: Vector3) extends EnumEntry {
     * @param v the original vector
     * @return the projected vector
     */
-  def asVector3(v: Vector3): Vector3
+private def asVector3(v: Vector3): Vector3
 }
 
 /**
@@ -32,7 +32,7 @@ sealed abstract class AxisAlignment2D(direction: Vector3) extends AxisAlignment(
     * @param b the second value
     * @return the projected vector
     */
-  def asVector3(a: Float, b: Float): Vector3
+private def asVector3(a: Float, b: Float): Vector3
 }
 
 /**
@@ -48,7 +48,7 @@ sealed abstract class AxisAlignment3D extends AxisAlignment(Vector3.Zero) {
     * @param c the third value
     * @return the projected vector
     */
-  def asVector3(a: Float, b: Float, c: Float): Vector3
+private def asVector3(a: Float, b: Float, c: Float): Vector3
 }
 
 object AxisAlignment extends Enum[AxisAlignment] {

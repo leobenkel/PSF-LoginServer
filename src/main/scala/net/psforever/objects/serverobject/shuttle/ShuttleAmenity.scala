@@ -30,7 +30,7 @@ class ShuttleAmenity(shuttle: OrbitalShuttle) extends Amenity {
 
   override def Faction = shuttle.Faction
 
-  def Definition = ShuttleAmenity.definition
+private def Definition = ShuttleAmenity.definition
 }
 
 object ShuttleAmenity {

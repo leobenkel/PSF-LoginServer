@@ -15,28 +15,28 @@ class CaptureFlagSocket(tDef: CaptureFlagSocketDefinition)
   extends Amenity {
   private var spawnedCaptureFlag: Option[CaptureFlag] = None
 
-  def captureFlag: Option[CaptureFlag] = spawnedCaptureFlag
+private def captureFlag: Option[CaptureFlag] = spawnedCaptureFlag
 
-  def captureFlag_=(flag: CaptureFlag): Option[CaptureFlag] = captureFlag_=(Some(flag))
+private def captureFlag_=(flag: CaptureFlag): Option[CaptureFlag] = captureFlag_=(Some(flag))
 
-  def captureFlag_=(flag: Option[CaptureFlag]): Option[CaptureFlag] = {
+private def captureFlag_=(flag: Option[CaptureFlag]): Option[CaptureFlag] = {
     spawnedCaptureFlag = flag
     captureFlag
   }
 
-  def Definition : CaptureFlagSocketDefinition = tDef
+private def Definition : CaptureFlagSocketDefinition = tDef
 }
 
 object CaptureFlagSocket {
-  def apply(tDef: CaptureFlagSocketDefinition) : CaptureFlagSocket = {
+def apply(tDef: CaptureFlagSocketDefinition) : CaptureFlagSocket = {
     new CaptureFlagSocket(tDef)
   }
 
-  def Constructor(pos: Vector3)(id: Int, context: ActorContext) : CaptureFlagSocket = {
+private def Constructor(pos: Vector3)(id: Int, context: ActorContext) : CaptureFlagSocket = {
     Constructor(GlobalDefinitions.llm_socket, pos)(id, context)
   }
 
-  def Constructor(tdef: CaptureFlagSocketDefinition, pos: Vector3)(id: Int, context: ActorContext): CaptureFlagSocket = {
+private def Constructor(tdef: CaptureFlagSocketDefinition, pos: Vector3)(id: Int, context: ActorContext): CaptureFlagSocket = {
     val obj = CaptureFlagSocket(tdef)
     obj.Position = pos
     obj.Actor = context.actorOf(Props(classOf[CaptureFlagSocketControl], obj), s"${obj.Definition.Name}_$id")

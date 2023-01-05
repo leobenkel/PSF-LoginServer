@@ -204,20 +204,20 @@ import scodec.codecs._
 final case class PlanetsideAttributeMessage(guid: PlanetSideGUID, attribute_type: Int, attribute_value: Long)
     extends PlanetSideGamePacket {
   type Packet = PlanetsideAttributeMessage
-  def opcode = GamePacketOpcode.PlanetsideAttributeMessage
-  def encode = PlanetsideAttributeMessage.encode(this)
+def opcode = GamePacketOpcode.PlanetsideAttributeMessage
+def encode = PlanetsideAttributeMessage.encode(this)
 }
 
 object PlanetsideAttributeMessage extends Marshallable[PlanetsideAttributeMessage] {
-  def apply(guid: PlanetSideGUID, attribute_type: Int, attribute_value: Int): PlanetsideAttributeMessage = {
+def apply(guid: PlanetSideGUID, attribute_type: Int, attribute_value: Int): PlanetsideAttributeMessage = {
     PlanetsideAttributeMessage(guid, attribute_type, attribute_value.toLong)
   }
 
-  def apply(guid: PlanetSideGUID, attribute_type: Int, attribute_value: PlanetSideGUID): PlanetsideAttributeMessage = {
+def apply(guid: PlanetSideGUID, attribute_type: Int, attribute_value: PlanetSideGUID): PlanetsideAttributeMessage = {
     PlanetsideAttributeMessage(guid, attribute_type, attribute_value.guid)
   }
 
-  def apply(
+def apply(
       guid: PlanetSideGUID,
       attribute_type: PlanetsideAttributeEnum,
       attribute_value: Int
@@ -225,7 +225,7 @@ object PlanetsideAttributeMessage extends Marshallable[PlanetsideAttributeMessag
     PlanetsideAttributeMessage(guid, attribute_type.id, attribute_value.toLong)
   }
 
-  def apply(
+def apply(
       guid: PlanetSideGUID,
       attribute_type: PlanetsideAttributeEnum,
       attribute_value: Long

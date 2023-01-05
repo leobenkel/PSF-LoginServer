@@ -34,7 +34,7 @@ class SensorDeployableDefinition(private val objectId: Int) extends DeployableDe
 }
 
 object SensorDeployableDefinition {
-  def apply(dtype: DeployedItem.Value): SensorDeployableDefinition = {
+def apply(dtype: DeployedItem.Value): SensorDeployableDefinition = {
     new SensorDeployableDefinition(dtype.id)
   }
 }
@@ -45,17 +45,17 @@ class SensorDeployableControl(sensor: SensorDeployable)
     with JammableBehavior
     with DamageableEntity
     with RepairableEntity {
-  def DeployableObject = sensor
-  def JammableObject   = sensor
-  def DamageableObject = sensor
-  def RepairableObject = sensor
+private def DeployableObject = sensor
+private def JammableObject   = sensor
+private def DamageableObject = sensor
+private def RepairableObject = sensor
 
   override def postStop(): Unit = {
     super.postStop()
     deployableBehaviorPostStop()
   }
 
-  def receive: Receive =
+def receive: Receive =
     deployableBehavior
       .orElse(jammableBehavior)
       .orElse(takesDamage)
@@ -137,7 +137,7 @@ object SensorDeployableControl {
     * @param target na
     * @param attribution na
     */
-  def DestructionAwareness(target: Deployable, attribution: PlanetSideGUID): Unit = {
+private def DestructionAwareness(target: Deployable, attribution: PlanetSideGUID): Unit = {
     Deployables.AnnounceDestroyDeployable(target, Some(1 seconds))
     val zone = target.Zone
     zone.LocalEvents ! LocalServiceMessage(

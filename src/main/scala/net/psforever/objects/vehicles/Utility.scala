@@ -55,20 +55,20 @@ class Utility(util: UtilityType.Value, vehicle: Vehicle) {
     * Access the contained object in this `Utility`.
     * @return the contained `Amenity` object
     */
-  def apply(): Amenity = obj
+def apply(): Amenity = obj
 
   /**
     * Run the setup code that was provided in the object constructor parameters.
     * While it is expected to construct an `Actor`, that is not required.
     * @param context an `ActorContext` potentially useful for the function
     */
-  def Setup(implicit context: ActorContext): Unit = setupFunc(obj, context)
+private def Setup(implicit context: ActorContext): Unit = setupFunc(obj, context)
 
   /**
     * Recover the original value used to initialize this object.
     * @return the type of the `Amenity` object that was created
     */
-  def UtilType: UtilityType.Value = util
+private def UtilType: UtilityType.Value = util
 }
 
 object Utility {
@@ -102,7 +102,7 @@ object Utility {
     * @param vehicle the owner of this object
     * @return a `Utility` object
     */
-  def apply(util: UtilityType.Value, vehicle: Vehicle): Utility = {
+def apply(util: UtilityType.Value, vehicle: Vehicle): Utility = {
     new Utility(util, vehicle)
   }
 
@@ -264,12 +264,12 @@ object Utility {
 }
 
 object InternalTelepadDefinition {
-  def apply(): InternalTelepadDefinition =
+def apply(): InternalTelepadDefinition =
     new InternalTelepadDefinition()
 
-  def SimpleUninitialize(obj: PlanetSideGameObject, context: ActorContext): Unit = {}
+private def SimpleUninitialize(obj: PlanetSideGameObject, context: ActorContext): Unit = {}
 
-  def SimpleUninitialize(obj: PlanetSideServerObject, context: ActorContext): Unit = {
+private def SimpleUninitialize(obj: PlanetSideServerObject, context: ActorContext): Unit = {
     context.stop(obj.Actor)
     obj.Actor = Default.Actor
   }

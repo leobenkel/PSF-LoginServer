@@ -17,15 +17,15 @@ final case class VehicleSource(
     occupants: List[SourceEntry],
     modifiers: ResistanceProfile
 ) extends SourceEntry {
-  override def Name                 = SourceEntry.NameFormat(obj_def.Name)
-  override def Faction              = faction
-  def Definition: VehicleDefinition = obj_def
-  def Health                        = health
-  def Shields                       = shields
-  def Position                      = position
-  def Orientation                   = orientation
-  def Velocity                      = velocity
-  def Modifiers                     = modifiers
+  override def Name                         = SourceEntry.NameFormat(obj_def.Name)
+  override def Faction                      = faction
+  private def Definition: VehicleDefinition = obj_def
+  private def Health                        = health
+  private def Shields                       = shields
+  private def Position                      = position
+  private def Orientation                   = orientation
+  private def Velocity                      = velocity
+  private def Modifiers                     = modifiers
 }
 
 object VehicleSource {
@@ -41,7 +41,7 @@ object VehicleSource {
       obj.Seats.values.map { seat =>
         seat.occupant match {
           case Some(p) => PlayerSource(p)
-          case _ => SourceEntry.None
+          case _       => SourceEntry.None
         }
       }.toList,
       obj.Definition.asInstanceOf[ResistanceProfile]

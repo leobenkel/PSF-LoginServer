@@ -20,7 +20,7 @@ class PainboxControl(painbox: Painbox) extends PoweredAmenityControl {
   private var domain: PainboxControl.Shape = PainboxControl.Unshaped()
   private var disabled                     = false
 
-  def initialStartup(): Unit = {
+private def initialStartup(): Unit = {
     if (painbox.Owner.Continent.matches("c[0-9]")) {
       //are we in a safe zone?
       // todo: handle non-radius painboxes in caverns properly
@@ -67,7 +67,7 @@ class PainboxControl(painbox: Painbox) extends PoweredAmenityControl {
       painboxTick = Default.Cancellable
   }
 
-  def poweredStateLogic: Receive =
+private def poweredStateLogic: Receive =
     commonBehavior
       .orElse {
         case Painbox.Start() if isPowered && !disabled =>
@@ -103,17 +103,17 @@ class PainboxControl(painbox: Painbox) extends PoweredAmenityControl {
         case _ => ;
       }
 
-  def unpoweredStateLogic: Receive =
+private def unpoweredStateLogic: Receive =
     commonBehavior
       .orElse {
         case _ => ;
       }
 
-  def powerTurnOffCallback(): Unit = {
+private def powerTurnOffCallback(): Unit = {
     self ! Painbox.Stop()
   }
 
-  def powerTurnOnCallback(): Unit = {
+private def powerTurnOnCallback(): Unit = {
     painbox.Owner match {
       case b: Building if b.PlayersInSOI.nonEmpty && !disabled =>
         self ! Painbox.Start()

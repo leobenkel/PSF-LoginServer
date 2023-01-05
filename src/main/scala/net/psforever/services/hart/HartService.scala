@@ -18,7 +18,7 @@ class HartService extends Actor {
   /** key - a zone id; value - the manager for that zone's HART system */
 private val zoneTimers: TrieMap[String, ActorRef] = TrieMap[String, ActorRef]()
 
-  def receive: Receive = {
+def receive: Receive = {
     case out : HartTimer.PairWith =>
       val zone = out.zone
       val channel = zone.id

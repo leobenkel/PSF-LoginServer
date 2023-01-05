@@ -47,26 +47,26 @@ final case class HartEventTimeFields(t1: Long, t2: Long, t3: Long)
 sealed trait HartEvent {
 
   /** HART facility and shuttle animation */
-  def u1: HartSequence
+private def u1: HartSequence
 
   /** counter? */
-  def u2: Int
+private def u2: Int
 
   /** starting time on the clock; typically seen on the display */
-  def timeOnClock: Long
+private def timeOnClock: Long
 
   /** for how long this event goes on */
-  def duration: Long
+private def duration: Long
 
   /** are the managed doors for the HART facility locked closed;
     * this is an active state field: `true` - locked right now and `false` - unlocked right now
     */
-  def lockedDoors: Boolean = true
+private def lockedDoors: Boolean = true
 
   /** the shuttle has a unique state to expose to the zone;
     * the state is related to a value in the `Flying` field of a `VehicleStateMessage` packet
     */
-  def shuttleState: Option[ShuttleState.Value]
+private def shuttleState: Option[ShuttleState.Value]
 
   /** how the shuttle and the HART facility interact;
     * this is an active state field:
@@ -74,19 +74,19 @@ sealed trait HartEvent {
     * `Some(false)` - the shuttle has freed itself from the facility's dock right now;
     * `None` - the shuttle is acting freely apart from its facility
     */
-  def docked: Option[Boolean]
+private def docked: Option[Boolean]
 
   /** these fields must be including prior to an update if the shuttle state was not previous known;
     * the primary purpose is to place the shuttle platform at the correct elevation
     */
-  def prerequisiteUpdate: Option[HartEventStateFields]
+private def prerequisiteUpdate: Option[HartEventStateFields]
 
   /**
     * Get the animation state fields for this event.
     * @param time during update requests, the amount of time that has elapsed during the start of this event
     * @return the animation state data
     */
-  def stateFields(time: Option[Long] = None): HartEventStateFields = {
+private def stateFields(time: Option[Long] = None): HartEventStateFields = {
     HartEventStateFields(u1, u2)
   }
 
@@ -95,7 +95,7 @@ sealed trait HartEvent {
     * @param time during update requests, the amount of time that has elapsed during the start of this event
     * @return the time data
     */
-  def timeFields(time: Option[Long] = None): HartEventTimeFields = {
+private def timeFields(time: Option[Long] = None): HartEventTimeFields = {
     HartEventTimeFields(
       time match {
         case Some(t) if timeOnClock > t  => timeOnClock - t
@@ -257,7 +257,7 @@ object HartEvent {
     *                         and is allowing passnegers to board
     * @return the final sequence of events
     */
-  def buildEventSequence(inFlightDuration: Long, boardingDuration: Long): Seq[HartEvent] = {
+private def buildEventSequence(inFlightDuration: Long, boardingDuration: Long): Seq[HartEvent] = {
     val returnDurations = Arrival.duration + ShuttleDockingOps.duration
     val fixedDurations  = ShuttleTakeoffOps.duration + Takeoff.duration + returnDurations
     val full = if (inFlightDuration > fixedDurations) {

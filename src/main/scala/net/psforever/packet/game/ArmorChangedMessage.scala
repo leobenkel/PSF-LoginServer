@@ -30,8 +30,8 @@ import scodec.codecs._
 final case class ArmorChangedMessage(player_guid: PlanetSideGUID, armor: ExoSuitType.Value, subtype: Int)
     extends PlanetSideGamePacket {
   type Packet = ArmorChangedMessage
-  def opcode = GamePacketOpcode.ArmorChangedMessage
-  def encode = ArmorChangedMessage.encode(this)
+def opcode = GamePacketOpcode.ArmorChangedMessage
+def encode = ArmorChangedMessage.encode(this)
 }
 
 object ArmorChangedMessage extends Marshallable[ArmorChangedMessage] {

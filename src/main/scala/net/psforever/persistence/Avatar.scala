@@ -22,7 +22,7 @@ case class Avatar(
     deleted: Boolean = false
 ) {
 
-  def toAvatar: avatar.Avatar =
+private def toAvatar: avatar.Avatar =
     avatar.Avatar(
       id,
       name,

@@ -25,15 +25,15 @@ final case class ChainLashMessage(
     assert(lash_origin_target.nonEmpty, "these fields can not be defined simultaneously - unk1a, unk1b")
   }
   type Packet = ChainLashMessage
-  def opcode = GamePacketOpcode.ChainLashMessage
-  def encode = ChainLashMessage.encode(this)
+def opcode = GamePacketOpcode.ChainLashMessage
+def encode = ChainLashMessage.encode(this)
 }
 
 object ChainLashMessage extends Marshallable[ChainLashMessage] {
-  def apply(lashOrigin : PlanetSideGUID, projectileType : Int, targets : List[PlanetSideGUID]) : ChainLashMessage =
+def apply(lashOrigin : PlanetSideGUID, projectileType : Int, targets : List[PlanetSideGUID]) : ChainLashMessage =
     ChainLashMessage(Some(lashOrigin), None, projectileType, targets)
 
-  def apply(lashOrigin : Vector3, projectileType : Int, targets : List[PlanetSideGUID]) : ChainLashMessage =
+def apply(lashOrigin : Vector3, projectileType : Int, targets : List[PlanetSideGUID]) : ChainLashMessage =
     ChainLashMessage(None, Some(lashOrigin), projectileType, targets)
 
   implicit val codec: Codec[ChainLashMessage] = (

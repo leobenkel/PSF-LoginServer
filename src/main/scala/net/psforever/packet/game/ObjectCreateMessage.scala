@@ -55,8 +55,8 @@ final case class ObjectCreateMessage(
     data: ConstructorData
 ) extends PlanetSideGamePacket {
   type Packet = ObjectCreateMessage
-  def opcode = GamePacketOpcode.ObjectCreateMessage_Duplicate
-  def encode = ObjectCreateMessage.encode(this)
+def opcode = GamePacketOpcode.ObjectCreateMessage_Duplicate
+def encode = ObjectCreateMessage.encode(this)
 }
 
 object ObjectCreateMessage extends Marshallable[ObjectCreateMessage] {
@@ -69,7 +69,7 @@ object ObjectCreateMessage extends Marshallable[ObjectCreateMessage] {
     * @param data the data used to construct this type of object
     * @return an `ObjectCreateMessage`
     */
-  def apply(
+def apply(
       objectClass: Int,
       guid: PlanetSideGUID,
       parentInfo: ObjectCreateMessageParent,
@@ -86,7 +86,7 @@ object ObjectCreateMessage extends Marshallable[ObjectCreateMessage] {
     * @param data the data used to construct this type of object
     * @return an `ObjectCreateMessage`
     */
-  def apply(objectClass: Int, guid: PlanetSideGUID, data: ConstructorData): ObjectCreateMessage = {
+def apply(objectClass: Int, guid: PlanetSideGUID, data: ConstructorData): ObjectCreateMessage = {
     ObjectCreateMessage(ObjectCreateBase.streamLen(None, data), objectClass, guid, None, data)
   }
 

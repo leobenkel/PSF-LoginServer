@@ -32,8 +32,8 @@ final case class ObjectDetectedMessage(
     list: List[PlanetSideGUID]
 ) extends PlanetSideGamePacket {
   type Packet = ObjectDetectedMessage
-  def opcode = GamePacketOpcode.ObjectDetectedMessage
-  def encode = ObjectDetectedMessage.encode(this)
+def opcode = GamePacketOpcode.ObjectDetectedMessage
+def encode = ObjectDetectedMessage.encode(this)
 }
 
 object ObjectDetectedMessage extends Marshallable[ObjectDetectedMessage] {

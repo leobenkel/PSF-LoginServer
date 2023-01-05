@@ -41,8 +41,8 @@ final case class DroppodFreefallingMessage(
     orientation2: Vector3
 ) extends PlanetSideGamePacket {
   type Packet = DroppodFreefallingMessage
-  def opcode: Type               = GamePacketOpcode.DroppodFreefallingMessage
-  def encode: Attempt[BitVector] = DroppodFreefallingMessage.encode(this)
+def opcode: Type               = GamePacketOpcode.DroppodFreefallingMessage
+def encode: Attempt[BitVector] = DroppodFreefallingMessage.encode(this)
 }
 
 object DroppodFreefallingMessage extends Marshallable[DroppodFreefallingMessage] {

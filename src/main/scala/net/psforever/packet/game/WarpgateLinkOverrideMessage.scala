@@ -15,8 +15,8 @@ final case class LinkOverride(
 final case class WarpgateLinkOverrideMessage(links: List[LinkOverride])
   extends PlanetSideGamePacket {
   type Packet = WarpgateLinkOverrideMessage
-  def opcode = GamePacketOpcode.WarpgateLinkOverrideMessage
-  def encode = WarpgateLinkOverrideMessage.encode(this)
+def opcode = GamePacketOpcode.WarpgateLinkOverrideMessage
+def encode = WarpgateLinkOverrideMessage.encode(this)
 }
 
 object WarpgateLinkOverrideMessage extends Marshallable[WarpgateLinkOverrideMessage] {

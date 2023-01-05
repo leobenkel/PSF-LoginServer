@@ -164,7 +164,7 @@ case object Certification extends IntEnum[Certification] {
     *
     * @return the certifications, as a single value
     */
-  def toEncodedLong(certs: Set[Certification]): Long = {
+private def toEncodedLong(certs: Set[Certification]): Long = {
     certs
       .map { cert => math.pow(2, cert.value).toLong }
       .foldLeft(0L)(_ + _)
@@ -180,7 +180,7 @@ case object Certification extends IntEnum[Certification] {
     * @param certs the certifications, as a single value
     * @return the certifications, as a sequence of values
     */
-  def fromEncodedLong(certs: Long): Set[Certification] = {
+private def fromEncodedLong(certs: Long): Set[Certification] = {
     recursiveFromEncodedLong(
       certs,
       Certification.values.map { cert => math.pow(2, cert.value).toLong }.sorted

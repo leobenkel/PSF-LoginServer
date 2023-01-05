@@ -18,7 +18,7 @@ object Tools {
     * @return `true`, if the next cycle of progress should occur;
     *         `false`, otherwise
     */
-  def ChargeFireMode(player: Player, tool: Tool)(progress: Float): Boolean = {
+private def ChargeFireMode(player: Player, tool: Tool)(progress: Float): Boolean = {
     tool.FireMode match {
       case mode: ChargeFireModeDefinition if tool.Magazine > 0 =>
         val magazine = tool.Magazine -= mode.RoundsPerInterval

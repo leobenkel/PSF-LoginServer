@@ -25,7 +25,7 @@ class DoorCloseActor() extends Actor {
   private var openDoors: List[DoorCloseActor.DoorEntry] = Nil
   //private[this] val log = org.log4s.getLogger
 
-  def receive: Receive = {
+def receive: Receive = {
     case DoorCloseActor.DoorIsOpen(door, zone, time) =>
       openDoors = openDoors :+ DoorCloseActor.DoorEntry(door, zone, time)
       if (openDoors.size == 1) { //we were the only entry so the event must be started from scratch

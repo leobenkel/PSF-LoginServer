@@ -49,8 +49,8 @@ final case class ShiftState(unk: Int, pos: Vector3, viewYawLim: Float, vel: Opti
 final case class PlayerStateShiftMessage(state: Option[ShiftState], unk: Option[Int] = None)
     extends PlanetSideGamePacket {
   type Packet = PlayerStateShiftMessage
-  def opcode = GamePacketOpcode.PlayerStateShiftMessage
-  def encode = PlayerStateShiftMessage.encode(this)
+def opcode = GamePacketOpcode.PlayerStateShiftMessage
+def encode = PlayerStateShiftMessage.encode(this)
 }
 
 object ShiftState {
@@ -63,7 +63,7 @@ object ShiftState {
     * @param vel the velocity to apply to to the character at the given position
     * @return a `ShiftState` object
     */
-  def apply(unk: Int, pos: Vector3, viewYawLim: Float, vel: Vector3): ShiftState =
+def apply(unk: Int, pos: Vector3, viewYawLim: Float, vel: Vector3): ShiftState =
     ShiftState(unk, pos, viewYawLim, Some(vel))
 
   /**
@@ -73,7 +73,7 @@ object ShiftState {
     * @param viewYawLim an angle with respect to the horizon towards which the avatar is looking (to some respect)
     * @return a `ShiftState` object
     */
-  def apply(unk: Int, pos: Vector3, viewYawLim: Float): ShiftState =
+def apply(unk: Int, pos: Vector3, viewYawLim: Float): ShiftState =
     ShiftState(unk, pos, viewYawLim, None)
 }
 
@@ -85,7 +85,7 @@ object PlayerStateShiftMessage extends Marshallable[PlayerStateShiftMessage] {
     * @param unk na
     * @return a `PlayerStateShiftMessage` packet
     */
-  def apply(state: ShiftState, unk: Int): PlayerStateShiftMessage =
+def apply(state: ShiftState, unk: Int): PlayerStateShiftMessage =
     PlayerStateShiftMessage(Some(state), Some(unk))
 
   /**
@@ -93,7 +93,7 @@ object PlayerStateShiftMessage extends Marshallable[PlayerStateShiftMessage] {
     * @param state the behaviors to influence the character
     * @return a `PlayerStateShiftMessage` packet
     */
-  def apply(state: ShiftState): PlayerStateShiftMessage =
+def apply(state: ShiftState): PlayerStateShiftMessage =
     PlayerStateShiftMessage(Some(state), None)
 
   /**
@@ -101,7 +101,7 @@ object PlayerStateShiftMessage extends Marshallable[PlayerStateShiftMessage] {
     * @param unk na
     * @return a `PlayerStateShiftMessage` packet
     */
-  def apply(unk: Int): PlayerStateShiftMessage =
+def apply(unk: Int): PlayerStateShiftMessage =
     PlayerStateShiftMessage(None, Some(unk))
 
   private val shift_codec: Codec[ShiftState] = (

@@ -29,8 +29,8 @@ final case class ControlSync(
     field64B: Long
 ) extends PlanetSideControlPacket {
   type Packet = ControlSync
-  def opcode = ControlPacketOpcode.ControlSync
-  def encode = ControlSync.encode(this)
+def opcode = ControlPacketOpcode.ControlSync
+def encode = ControlSync.encode(this)
 }
 
 object ControlSync extends Marshallable[ControlSync] {

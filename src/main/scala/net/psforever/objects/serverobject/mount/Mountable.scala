@@ -20,13 +20,13 @@ trait Mountable {
     * Retrieve a mapping of each mount from its internal index.
     * @return the mapping of index to mount
     */
-  def Seats: Map[Int, Seat] = seats
+private def Seats: Map[Int, Seat] = seats
 
   /**
     * Given a mount's index position, retrieve the internal `Seat` object.
     * @return the specific mount
     */
-  def Seat(seatNumber: Int): Option[Seat] = {
+private def Seat(seatNumber: Int): Option[Seat] = {
     if (seatNumber >= 0 && seatNumber < seats.size) {
       seats.get(seatNumber)
     } else {
@@ -38,14 +38,14 @@ trait Mountable {
     * Retrieve a mapping of each mount from its mount point index.
     * @return the mapping of mount point to mount
     */
-  def MountPoints: Map[Int, MountInfo] = Definition.MountPoints.toMap
+private def MountPoints: Map[Int, MountInfo] = Definition.MountPoints.toMap
 
   /**
     * Given a mount point index, return the associated mount index.
     * @param mountPoint the mount point
     * @return the mount index
     */
-  def GetSeatFromMountPoint(mountPoint: Int): Option[Int] = {
+private def GetSeatFromMountPoint(mountPoint: Int): Option[Int] = {
     MountPoints.get(mountPoint) match {
       case Some(mp) => Some(mp.seatIndex)
       case _        => None
@@ -57,7 +57,7 @@ trait Mountable {
     * @param user the player
     * @return the mount index
     */
-  def PassengerInSeat(user: Player): Option[Int] = recursivePassengerInSeat(seats.iterator, user)
+private def PassengerInSeat(user: Player): Option[Int] = recursivePassengerInSeat(seats.iterator, user)
 
   @tailrec private def recursivePassengerInSeat(iter: Iterator[(Int, Seat)], player: Player): Option[Int] = {
     if (!iter.hasNext) {
@@ -79,9 +79,9 @@ trait Mountable {
     * @see `PlanetSideServerObject.Actor`
     * @return the internal `ActorRef`
     */
-  def Actor: ActorRef //TODO can we enforce this desired association to MountableControl?
+private def Actor: ActorRef //TODO can we enforce this desired association to MountableControl?
 
-  def Definition: MountableDefinition
+private def Definition: MountableDefinition
 }
 
 object Mountable {

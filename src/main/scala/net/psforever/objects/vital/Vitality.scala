@@ -20,22 +20,22 @@ trait Vitality extends VitalsHistory {
     Health
   }
 
-  def DefaultHealth: Int = defaultHealth.getOrElse(Definition.DefaultHealth)
+  private def DefaultHealth: Int = defaultHealth.getOrElse(Definition.DefaultHealth)
 
   def MaxHealth: Int = maxHealth.getOrElse(Definition.MaxHealth)
 
-  def MaxHealth_=(default: Int): Int = MaxHealth_=(Some(default))
+  private def MaxHealth_=(default: Int): Int = MaxHealth_=(Some(default))
 
-  def MaxHealth_=(default: Option[Int]): Int = {
+  private def MaxHealth_=(default: Option[Int]): Int = {
     maxHealth = default
     MaxHealth
   }
 
-  def CanDamage: Boolean = {
+  private def CanDamage: Boolean = {
     Definition.Damageable && Health > 0
   }
 
-  def CanRepair: Boolean = {
+  private def CanRepair: Boolean = {
     Definition.Repairable && Health < MaxHealth && (Health > 0 || Definition.RepairIfDestroyed)
   }
 

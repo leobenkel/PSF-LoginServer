@@ -19,7 +19,7 @@ object CaptureTerminals {
     * @see `HackMessage`
     */
   //TODO add params here depending on which params in HackMessage are important
-  def FinishHackingCaptureConsole(target: CaptureTerminal, hackingPlayer: Player, unk: Long)(): Unit = {
+private def FinishHackingCaptureConsole(target: CaptureTerminal, hackingPlayer: Player, unk: Long)(): Unit = {
     import akka.pattern.ask
 
     import scala.concurrent.duration._

@@ -54,7 +54,7 @@ object Client {
 
   private[this] val log = org.log4s.getLogger
 
-  def main(args: Array[String]): Unit = {
+private def main(args: Array[String]): Unit = {
     val client = new Client("test", "test")
     client.login(new InetSocketAddress("localhost", 51000))
     client.joinWorld(client.state.worlds.head)
@@ -78,7 +78,7 @@ class Client(username: String, password: String) {
   }
 
   private var _state = State()
-  def state: State   = _state
+private def state: State   = _state
 
   private[this] val log = org.log4s.getLogger
 
@@ -139,7 +139,7 @@ private val random                                     = new SecureRandom()
   }
 
   /** Login using given host address */
-  def login(host: InetSocketAddress): Unit = {
+private def login(host: InetSocketAddress): Unit = {
     val sock = new DatagramSocket()
     sock.setSoTimeout(10000)
     sock.connect(host)
@@ -148,7 +148,7 @@ private val random                                     = new SecureRandom()
   }
 
   /** Login using given actor ref */
-  def login(ref: ActorRef[Udp.Message]): Unit = {
+private def login(ref: ActorRef[Udp.Message]): Unit = {
     this.ref = Some(ref)
     login()
   }
@@ -162,7 +162,7 @@ private val random                                     = new SecureRandom()
     disconnect()
   }
 
-  def disconnect(): Unit = {
+private def disconnect(): Unit = {
     send(ConnectionClose()).require
     socket match {
       case Some(socket) => socket.disconnect()
@@ -174,7 +174,7 @@ private val random                                     = new SecureRandom()
   }
 
   /** Join world */
-  def joinWorld(world: WorldInformation): Unit = {
+private def joinWorld(world: WorldInformation): Unit = {
     socket match {
       case Some(_) =>
         val sock = new DatagramSocket()
@@ -189,28 +189,28 @@ private val random                                     = new SecureRandom()
     waitFor[CharacterInfoMessage]().require
   }
 
-  def selectCharacter(charId: Long): Unit = {
+private def selectCharacter(charId: Long): Unit = {
     assert(state.connection == Connection.AvatarSelection)
     send(CharacterRequestMessage(charId, CharacterRequestAction.Select)).require
     waitFor[LoadMapMessage](timeout = 15.seconds).require
   }
 
-  def createCharacter(): Unit = {
+private def createCharacter(): Unit = {
     ???
   }
 
-  def deleteCharacter(charId: Long): Unit = {
+private def deleteCharacter(charId: Long): Unit = {
     ??? // never been tested
     assert(state.connection == Connection.AvatarSelection)
     send(CharacterRequestMessage(charId, CharacterRequestAction.Delete)).require
   }
 
-  def updateAvatar(avatar: State.Avatar): Unit = {
+private def updateAvatar(avatar: State.Avatar): Unit = {
     this._state = this.state.copy(avatar = avatar)
   }
 
   /** Start processing tasks. Must be run after login/joinWorld. */
-  def startTasks(): Unit = {
+private def startTasks(): Unit = {
     scheduler.scheduleAtFixedRate(new Runnable() { override def run(): Unit = tick() }, 0, 250, TimeUnit.MILLISECONDS)
 
     scheduler.scheduleAtFixedRate(
@@ -232,7 +232,7 @@ private val random                                     = new SecureRandom()
   }
 
   /** Stop auto processing tasks. */
-  def stopTasks(): Unit = {
+private def stopTasks(): Unit = {
     scheduler.shutdown()
   }
 
@@ -265,7 +265,7 @@ private val random                                     = new SecureRandom()
   }
 
   /** Process next queued packet */
-  def process(): (State, Option[PlanetSidePacket]) = {
+private def process(): (State, Option[PlanetSidePacket]) = {
     if (inQueue.nonEmpty) {
       val packet = inQueue.dequeue()
       _process(packet)
@@ -276,7 +276,7 @@ private val random                                     = new SecureRandom()
   }
 
   /** Process next queued packet matching predicate */
-  def processFirst(p: PlanetSidePacket => Boolean): (State, Option[PlanetSidePacket]) = {
+private def processFirst(p: PlanetSidePacket => Boolean): (State, Option[PlanetSidePacket]) = {
     if (inQueue.nonEmpty) {
       val packet = inQueue.dequeueFirst(p)
       if (packet.isDefined) {
@@ -327,15 +327,15 @@ private val random                                     = new SecureRandom()
     res
   }
 
-  def send(packet: PlanetSideControlPacket): Attempt[BitVector] = {
+private def send(packet: PlanetSideControlPacket): Attempt[BitVector] = {
     send(packet, if (crypto.isDefined) Some(nextSequence) else None, crypto)
   }
 
-  def send(packet: PlanetSideCryptoPacket): Attempt[BitVector] = {
+private def send(packet: PlanetSideCryptoPacket): Attempt[BitVector] = {
     send(packet, Some(nextSequence), crypto)
   }
 
-  def send(packet: PlanetSideGamePacket): Attempt[BitVector] = {
+private def send(packet: PlanetSideGamePacket): Attempt[BitVector] = {
     send(packet, Some(nextSequence), crypto)
   }
 
@@ -368,7 +368,7 @@ private val random                                     = new SecureRandom()
     }
   }
 
-  def receive(
+def receive(
       cryptoState: CryptoPacketOpcode.Type = CryptoPacketOpcode.Ignore
   ): Seq[Attempt[PlanetSidePacket]] = {
     (socket, ref) match {

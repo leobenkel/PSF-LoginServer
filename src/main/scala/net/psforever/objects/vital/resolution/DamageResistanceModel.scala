@@ -23,13 +23,14 @@ trait DamageAndResistance {
 }
 
 object DamageAndResistance {
+
   /**
     * A pass-through function.
     * @param data garbage in
     * @return garbage out
     */
-  def doNothingFallback(data: DamageInteraction): ResolutionCalculations.Output = {
-    _: Any => DamageResult(data.target, data.target, data)
+  private def doNothingFallback(data: DamageInteraction): ResolutionCalculations.Output = { _: Any =>
+    DamageResult(data.target, data.target, data)
   }
 }
 
@@ -61,21 +62,21 @@ trait DamageResistanceModel extends DamageAndResistance {
   /** the functionality that prepares for damage application actions; required */
   private var model: ResolutionCalculations.Form = NoResolutions.calculate
 
-  def DamageUsing: DamageCalculations.Selector = damageUsing
+  override def DamageUsing: DamageCalculations.Selector = damageUsing
 
   def DamageUsing_=(selector: DamageCalculations.Selector): DamageCalculations.Selector = {
     damageUsing = selector
     DamageUsing
   }
 
-  def ResistUsing: ResistanceSelection = resistUsing
+  override def ResistUsing: ResistanceSelection = resistUsing
 
   def ResistUsing_=(selector: ResistanceSelection): ResistanceSelection = {
     resistUsing = selector
     ResistUsing
   }
 
-  def Model: ResolutionCalculations.Form = model
+  override def Model: ResolutionCalculations.Form = model
 
   def Model_=(selector: ResolutionCalculations.Form): ResolutionCalculations.Form = {
     model = selector
@@ -87,7 +88,7 @@ trait DamageResistanceModel extends DamageAndResistance {
     * @param data the historical damage information
     * @return a function literal that encapsulates delayed modification instructions for certain objects
     */
-  def calculate(data: DamageInteraction): ResolutionCalculations.Output = {
+  override def calculate(data: DamageInteraction): ResolutionCalculations.Output = {
     val res: ResistanceSelection.Format = ResistUsing(data)
     Model(DamageUsing, res, data)
   }
@@ -98,7 +99,7 @@ trait DamageResistanceModel extends DamageAndResistance {
     * @param resolution an explicit damage resolution overriding the one provided
     * @return a function literal that encapsulates delayed modification instructions for certain objects
     */
-  def calculate(data: DamageInteraction, resolution: DamageType.Value): ResolutionCalculations.Output = {
+  override def calculate(data: DamageInteraction, resolution: DamageType.Value): ResolutionCalculations.Output = {
     val res: ResistanceSelection.Format = ResistUsing(resolution)
     Model(DamageUsing, res, data)
   }

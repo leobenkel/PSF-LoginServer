@@ -129,7 +129,7 @@ class VehicleTerminalControl2Test extends ActorTest {
 }
 
 object TerminalControlTest {
-  def SetUpAgents(tdef: TerminalDefinition, faction: PlanetSideEmpire.Value)(implicit
+private def SetUpAgents(tdef: TerminalDefinition, faction: PlanetSideEmpire.Value)(implicit
       system: ActorSystem
   ): (Player, Terminal) = {
     val terminal = Terminal(tdef)

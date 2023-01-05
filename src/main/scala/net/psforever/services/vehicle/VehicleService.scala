@@ -16,7 +16,7 @@ class VehicleService(zone: Zone) extends Actor {
 
 private val VehicleEvents = new GenericEventBus[VehicleServiceResponse]
 
-  def receive = {
+def receive = {
     case Service.Join(channel) =>
       val path = s"/$channel/Vehicle"
       VehicleEvents.subscribe(sender(), path)
@@ -396,7 +396,7 @@ private val VehicleEvents = new GenericEventBus[VehicleServiceResponse]
   }
 
   import net.psforever.objects.serverobject.tube.SpawnTube
-  def AmsSpawnPoints(zone: Zone): List[SpawnTube] = {
+private def AmsSpawnPoints(zone: Zone): List[SpawnTube] = {
     import net.psforever.objects.vehicles.UtilityType
     import net.psforever.objects.GlobalDefinitions
     zone.Vehicles

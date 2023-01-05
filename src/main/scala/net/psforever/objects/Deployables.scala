@@ -58,7 +58,7 @@ object Deployables {
     * @param time length of time that the deployable is allowed to exist in the game world;
     *             `None` indicates the normal un-owned existence time (180 seconds)
     */
-  def AnnounceDestroyDeployable(target: Deployable, time: Option[FiniteDuration]): Unit = {
+private def AnnounceDestroyDeployable(target: Deployable, time: Option[FiniteDuration]): Unit = {
     AnnounceDestroyDeployable(target)
     target.Actor ! Deployable.Deconstruct(time)
   }
@@ -78,7 +78,7 @@ object Deployables {
     * @see `LocalAction.DeployableMapIcon`
     * @param target the deployable that is destroyed
     **/
-  def AnnounceDestroyDeployable(target: Deployable): Unit = {
+private def AnnounceDestroyDeployable(target: Deployable): Unit = {
     val zone = target.Zone
     val events = zone.LocalEvents
     val item = target.Definition.Item
@@ -114,7 +114,7 @@ object Deployables {
     * @return all previously-owned deployables after they have been processed;
     *         boomers are listed before all other deployable types
     */
-  def Disown(zone: Zone, avatar: Avatar, replyTo: ActorRef): List[Deployable] = {
+private def Disown(zone: Zone, avatar: Avatar, replyTo: ActorRef): List[Deployable] = {
     avatar.deployables
       .Clear()
       .map(zone.GUID)
@@ -130,7 +130,7 @@ object Deployables {
     * Initialize the deployables backend information.
     * @param avatar the player's core
     */
-  def InitializeDeployableQuantities(avatar: Avatar): Boolean = {
+private def InitializeDeployableQuantities(avatar: Avatar): Boolean = {
     avatar.deployables.Initialize(avatar.certifications)
   }
 
@@ -138,7 +138,7 @@ object Deployables {
     * Initialize the UI elements for deployables.
     * @param avatar the player's core
     */
-  def InitializeDeployableUIElements(avatar: Avatar): List[(Int, Int, Int, Int)] = {
+private def InitializeDeployableUIElements(avatar: Avatar): List[(Int, Int, Int, Int)] = {
     avatar.deployables.UpdateUI()
   }
 
@@ -153,7 +153,7 @@ object Deployables {
     * @return `true`, if the firemode and ammunition mode of the item is valid;
     *        `false`, otherwise
     */
-  def initializeConstructionItem(
+private def initializeConstructionItem(
                                   certs: Set[Certification],
                                   obj: ConstructionItem
                                 ): Boolean = {
@@ -189,7 +189,7 @@ object Deployables {
     * @return `true`, if the ammunition mode of the item has been changed;
     *        `false`, otherwise
     */
-  def performConstructionItemAmmoChange(
+private def performConstructionItemAmmoChange(
                                          certs: Set[Certification],
                                          obj: ConstructionItem,
                                          originalAmmoIndex: Int
@@ -218,7 +218,7 @@ object Deployables {
     * @return `true`, if the ammunition mode of the item has been changed;
     *        `false`, otherwise
     */
-  def performConstructionItemFireModeChange(
+private def performConstructionItemFireModeChange(
                                              certs: Set[Certification],
                                              obj: ConstructionItem,
                                              originalModeIndex: Int
@@ -244,7 +244,7 @@ object Deployables {
     * @param test the desired certifications
     * @return `true`, if the desired certification requirements are met; `false`, otherwise
     */
-  def constructionItemPermissionComparison(
+private def constructionItemPermissionComparison(
                                             sample: Set[Certification],
                                             test: Set[Certification]
                                           ): Boolean = {

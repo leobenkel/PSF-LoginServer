@@ -17,74 +17,74 @@ class Member {
   private var zoneId: Int       = 0
   private var position: Vector3 = Vector3.Zero
 
-  def Role: String = role
+private def Role: String = role
 
-  def Role_=(title: String): String = {
+private def Role_=(title: String): String = {
     role = title
     Role
   }
 
-  def Orders: String = orders
+private def Orders: String = orders
 
-  def Orders_=(text: String): String = {
+private def Orders_=(text: String): String = {
     orders = text
     Orders
   }
 
-  def Requirements: Set[Certification] = requirements
+private def Requirements: Set[Certification] = requirements
 
-  def Requirements_=(req: Set[Certification]): Set[Certification] = {
+private def Requirements_=(req: Set[Certification]): Set[Certification] = {
     requirements = req
     Requirements
   }
 
-  def Name: String = name
+private def Name: String = name
 
-  def Name_=(moniker: String): String = {
+private def Name_=(moniker: String): String = {
     name = moniker
     Name
   }
 
-  def CharId: Long = charId
+private def CharId: Long = charId
 
-  def CharId_=(id: Long): Long = {
+private def CharId_=(id: Long): Long = {
     charId = id
     CharId
   }
 
-  def Health: Int = health
+private def Health: Int = health
 
-  def Health_=(red: Int): Int = {
+private def Health_=(red: Int): Int = {
     health = red
     Health
   }
 
-  def Armor: Int = armor
+private def Armor: Int = armor
 
-  def Armor_=(blue: Int): Int = {
+private def Armor_=(blue: Int): Int = {
     armor = blue
     Armor
   }
 
-  def ZoneId: Int = zoneId
+private def ZoneId: Int = zoneId
 
-  def ZoneId_=(id: Int): Int = {
+private def ZoneId_=(id: Int): Int = {
     zoneId = id
     ZoneId
   }
 
-  def Position: Vector3 = position
+private def Position: Vector3 = position
 
-  def Position_=(pos: Vector3): Vector3 = {
+private def Position_=(pos: Vector3): Vector3 = {
     position = pos
     Position
   }
 
-  def isAvailable: Boolean = {
+private def isAvailable: Boolean = {
     charId == 0
   }
 
-  def isAvailable(certs: Set[Certification]): Boolean = {
+private def isAvailable(certs: Set[Certification]): Boolean = {
     isAvailable && certs.intersect(requirements) == requirements
   }
 }

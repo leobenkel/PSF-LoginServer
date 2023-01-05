@@ -15,12 +15,12 @@ import net.psforever.objects.serverobject.pad.{VehicleSpawnControl, VehicleSpawn
   * @param pad the `VehicleSpawnPad` object being governed
   */
 class VehicleSpawnControlDriverControl(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
-  def LogId = "-overrider"
+private def LogId = "-overrider"
 
 private val finalClear =
     context.actorOf(Props(classOf[VehicleSpawnControlFinalClearance], pad), s"${context.parent.path.name}-final")
 
-  def receive: Receive = {
+def receive: Receive = {
     case order @ VehicleSpawnControl.Order(driver, vehicle) =>
       trace(s"returning control of ${vehicle.Definition.Name} to its current driver")
       if (vehicle.PassengerInSeat(driver).nonEmpty) {

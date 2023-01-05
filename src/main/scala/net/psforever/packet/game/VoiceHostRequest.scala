@@ -18,8 +18,8 @@ import scodec.codecs._
 final case class VoiceHostRequest(unk: Boolean, player_guid: PlanetSideGUID, data: ByteVector)
     extends PlanetSideGamePacket {
   type Packet = VoiceHostRequest
-  def opcode = GamePacketOpcode.VoiceHostRequest
-  def encode = VoiceHostRequest.encode(this)
+def opcode = GamePacketOpcode.VoiceHostRequest
+def encode = VoiceHostRequest.encode(this)
 }
 
 object VoiceHostRequest extends Marshallable[VoiceHostRequest] {

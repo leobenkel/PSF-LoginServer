@@ -22,8 +22,8 @@ import scodec.codecs._
   */
 final case class ChangeShortcutBankMessage(player_guid: PlanetSideGUID, bank: Int) extends PlanetSideGamePacket {
   type Packet = ChangeShortcutBankMessage
-  def opcode = GamePacketOpcode.ChangeShortcutBankMessage
-  def encode = ChangeShortcutBankMessage.encode(this)
+def opcode = GamePacketOpcode.ChangeShortcutBankMessage
+def encode = ChangeShortcutBankMessage.encode(this)
 }
 
 object ChangeShortcutBankMessage extends Marshallable[ChangeShortcutBankMessage] {

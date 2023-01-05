@@ -25,6 +25,6 @@ object InventoryDisarrayException {
     * @param message the explanation of why the exception was thrown
     * @return an `InventoryDisarrayException` object
     */
-  def apply(message: String, inventory: GridInventory): InventoryDisarrayException =
+def apply(message: String, inventory: GridInventory): InventoryDisarrayException =
     InventoryDisarrayException(message, None.orNull, inventory)
 }

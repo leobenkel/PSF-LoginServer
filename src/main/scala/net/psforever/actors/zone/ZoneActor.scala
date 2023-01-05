@@ -21,7 +21,7 @@ import scala.util.{Failure, Success}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object ZoneActor {
-  def apply(zone: Zone): Behavior[Command] =
+def apply(zone: Zone): Behavior[Command] =
     Behaviors
       .supervise[Command] {
         Behaviors.setup(context => new ZoneActor(context, zone))

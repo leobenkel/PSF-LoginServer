@@ -13,12 +13,12 @@ import scala.collection.mutable
 
 trait MountableBehavior {
   _: Actor =>
-  def MountableObject: PlanetSideServerObject with Mountable
+private def MountableObject: PlanetSideServerObject with Mountable
 
   /** retain the mount point that was used by this occupant to mount */
   private val usedMountPoint: mutable.HashMap[String, Int] = mutable.HashMap()
 
-  def getUsedMountPoint(playerName: String, seatNumber: Int): Int = {
+private def getUsedMountPoint(playerName: String, seatNumber: Int): Int = {
     usedMountPoint
       .remove(playerName)
       .getOrElse {

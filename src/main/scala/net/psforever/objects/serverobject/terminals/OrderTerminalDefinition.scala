@@ -42,16 +42,16 @@ class OrderTerminalDefinition(objId: Int) extends TerminalDefinition(objId) {
     */
   private var sellEquipmentDefault: Boolean = false
 
-  def Tab: mutable.HashMap[Int, Tab] = tabs
+private def Tab: mutable.HashMap[Int, Tab] = tabs
 
-  def SellEquipmentByDefault: Boolean = sellEquipmentDefault
+private def SellEquipmentByDefault: Boolean = sellEquipmentDefault
 
-  def SellEquipmentByDefault_=(sell: Boolean): Boolean = {
+private def SellEquipmentByDefault_=(sell: Boolean): Boolean = {
     sellEquipmentDefault = sell
     SellEquipmentByDefault
   }
 
-  def Request(player: Player, msg: Any): Terminal.Exchange =
+private def Request(player: Player, msg: Any): Terminal.Exchange =
     msg match {
       case message: ItemTransactionMessage =>
         message.transaction_type match {
@@ -108,7 +108,7 @@ object OrderTerminalDefinition {
     *            anticipating a `Terminal` object using this same definition
     * @param context hook to the local `Actor` system
     */
-  def Setup(obj: Amenity, context: ActorContext): Unit = {
+private def Setup(obj: Amenity, context: ActorContext): Unit = {
     import akka.actor.Props
     if (obj.Actor == Default.Actor) {
       obj.Actor = context.actorOf(Props(classOf[TerminalControl], obj), PlanetSideServerObject.UniqueActorName(obj))

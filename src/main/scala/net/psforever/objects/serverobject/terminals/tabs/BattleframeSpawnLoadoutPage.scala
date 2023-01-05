@@ -42,7 +42,7 @@ final case class BattleframeSpawnLoadoutPage(vehicles: Map[String, () => Vehicle
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     sender ! msg
   }
 }

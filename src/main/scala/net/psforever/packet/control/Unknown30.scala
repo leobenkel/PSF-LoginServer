@@ -6,8 +6,8 @@ import scodec.codecs._
 
 final case class Unknown30(clientNonce: Long) extends PlanetSideControlPacket {
   type Packet = Unknown30
-  def opcode = ControlPacketOpcode.Unknown30
-  def encode = Unknown30.encode(this)
+def opcode = ControlPacketOpcode.Unknown30
+def encode = Unknown30.encode(this)
 }
 
 object Unknown30 extends Marshallable[Unknown30] {

@@ -23,27 +23,27 @@ trait BaseDeployableDefinition {
   private var deployTime: Long                   = (1 second).toMillis //ms
   var deployAnimation: DeployAnimation.Value     = DeployAnimation.None
 
-  def Item: DeployedItem.Value
+private def Item: DeployedItem.Value
 
-  def DeployCategory: DeployableCategory.Value = category
+private def DeployCategory: DeployableCategory.Value = category
 
-  def DeployCategory_=(cat: DeployableCategory.Value): DeployableCategory.Value = {
+private def DeployCategory_=(cat: DeployableCategory.Value): DeployableCategory.Value = {
     category = cat
     DeployCategory
   }
 
-  def DeployTime: Long = deployTime
+private def DeployTime: Long = deployTime
 
-  def DeployTime_=(time: FiniteDuration): Long = DeployTime_=(time.toMillis)
+private def DeployTime_=(time: FiniteDuration): Long = DeployTime_=(time.toMillis)
 
-  def DeployTime_=(time: Long): Long = {
+private def DeployTime_=(time: Long): Long = {
     deployTime = time
     DeployTime
   }
 
-  def Initialize(obj: Deployable, context: ActorContext): Unit = {}
+private def Initialize(obj: Deployable, context: ActorContext): Unit = {}
 
-  def Uninitialize(obj: Deployable, context: ActorContext): Unit = {
+private def Uninitialize(obj: Deployable, context: ActorContext): Unit = {
     obj.Actor ! akka.actor.PoisonPill
     obj.Actor = Default.Actor
   }
@@ -62,5 +62,5 @@ abstract class DeployableDefinition(objectId: Int)
   registerAs = "deployables"
   collision.xy = new CollisionXYData(List((0f, 100)))
 
-  def Item: DeployedItem.Value = item
+private def Item: DeployedItem.Value = item
 }

@@ -49,8 +49,8 @@ final case class FavoritesMessage(
     armor_type: Option[Int]
 ) extends PlanetSideGamePacket {
   type Packet = FavoritesMessage
-  def opcode = GamePacketOpcode.FavoritesMessage
-  def encode = FavoritesMessage.encode(this)
+def opcode = GamePacketOpcode.FavoritesMessage
+def encode = FavoritesMessage.encode(this)
 }
 
 object FavoritesMessage extends Marshallable[FavoritesMessage] {
@@ -63,7 +63,7 @@ object FavoritesMessage extends Marshallable[FavoritesMessage] {
     * @param armor the type of exo-suit, if an Infantry loadout
     * @return a `FavoritesMessage` object
     */
-  def apply(
+def apply(
       list: LoadoutType.Value,
       player_guid: PlanetSideGUID,
       line: Int,
@@ -81,7 +81,7 @@ object FavoritesMessage extends Marshallable[FavoritesMessage] {
     * @param label the identifier for this entry
     * @return a `FavoritesMessage` object
     */
-  def apply(list: LoadoutType.Value, player_guid: PlanetSideGUID, line: Int, label: String): FavoritesMessage = {
+def apply(list: LoadoutType.Value, player_guid: PlanetSideGUID, line: Int, label: String): FavoritesMessage = {
     FavoritesMessage(list, player_guid, line, label, None)
   }
 
@@ -93,7 +93,7 @@ object FavoritesMessage extends Marshallable[FavoritesMessage] {
     * @param armor the type of exo-suit
     * @return a `FavoritesMessage` object
     */
-  def Infantry(
+private def Infantry(
                 player_guid: PlanetSideGUID,
                 line: Int,
                 label: String,
@@ -109,7 +109,7 @@ object FavoritesMessage extends Marshallable[FavoritesMessage] {
     * @param label the identifier for this entry
     * @return a `FavoritesMessage` object
     */
-  def Vehicle(
+private def Vehicle(
                player_guid: PlanetSideGUID,
                line: Int,
                label: String
@@ -125,7 +125,7 @@ object FavoritesMessage extends Marshallable[FavoritesMessage] {
     * @param subtype the type of battleframe unit
     * @return a `FavoritesMessage` object
     */
-  def Battleframe(
+private def Battleframe(
                    player_guid: PlanetSideGUID,
                    line: Int,
                    label: String,

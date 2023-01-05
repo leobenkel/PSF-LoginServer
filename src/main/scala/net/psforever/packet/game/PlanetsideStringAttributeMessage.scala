@@ -17,8 +17,8 @@ import scodec.codecs._
 final case class PlanetsideStringAttributeMessage(guid: PlanetSideGUID, string_type: Int, string_value: String)
     extends PlanetSideGamePacket {
   type Packet = PlanetsideStringAttributeMessage
-  def opcode = GamePacketOpcode.PlanetsideStringAttributeMessage
-  def encode = PlanetsideStringAttributeMessage.encode(this)
+def opcode = GamePacketOpcode.PlanetsideStringAttributeMessage
+def encode = PlanetsideStringAttributeMessage.encode(this)
 }
 
 object PlanetsideStringAttributeMessage extends Marshallable[PlanetsideStringAttributeMessage] {

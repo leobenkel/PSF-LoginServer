@@ -8,7 +8,7 @@ class PainboxDefinition(objectId: Int) extends AmenityDefinition(objectId) {
   var sphereOffset             = Vector3.Zero
   var hasNearestDoorDependency = false
 
-  def AlwaysOn: Boolean                 = alwaysOn
-  def SphereOffset: Vector3             = sphereOffset
-  def HasNearestDoorDependency: Boolean = hasNearestDoorDependency
+private def AlwaysOn: Boolean                 = alwaysOn
+private def SphereOffset: Vector3             = sphereOffset
+private def HasNearestDoorDependency: Boolean = hasNearestDoorDependency
 }

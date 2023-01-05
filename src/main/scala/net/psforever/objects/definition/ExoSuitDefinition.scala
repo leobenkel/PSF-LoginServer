@@ -112,7 +112,7 @@ class ExoSuitDefinition(private val suitType: ExoSuitType.Value)
     Permissions
   }
 
-  def Use: ExoSuitDefinition = this
+  private def Use: ExoSuitDefinition = this
 
   override def hashCode(): Int = {
     val state = Seq(suitType)

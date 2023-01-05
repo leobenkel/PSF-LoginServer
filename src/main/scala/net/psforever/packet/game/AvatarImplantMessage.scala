@@ -42,8 +42,8 @@ final case class AvatarImplantMessage(
     status: Int
 ) extends PlanetSideGamePacket {
   type Packet = AvatarImplantMessage
-  def opcode = GamePacketOpcode.AvatarImplantMessage
-  def encode = AvatarImplantMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarImplantMessage
+def encode = AvatarImplantMessage.encode(this)
 }
 
 object AvatarImplantMessage extends Marshallable[AvatarImplantMessage] {

@@ -41,13 +41,13 @@ abstract class VehicleSpawnControlBase(pad: VehicleSpawnPad) extends Actor {
     * Implement this to add a suffix to the identifying name of the logger.
     * @return a special identifier that distinguishes a logger whose name is built of common features
     */
-  def LogId: String
+private def LogId: String
 
   /**
     * Act as if a variable for the logging agent.
     * @return a `Logger` object
     */
-  def log: Logger = GetLogger(LogId)
+private def log: Logger = GetLogger(LogId)
 
   /**
     * A common manner of utilizing the logging agent such that all messages have the same logging level.
@@ -55,5 +55,5 @@ abstract class VehicleSpawnControlBase(pad: VehicleSpawnPad) extends Actor {
     * No important messages should processed by this agent; only consume general vehicle spawn status.
     * @param msg the message
     */
-  def trace(msg: String): Unit = log.trace(msg)
+private def trace(msg: String): Unit = log.trace(msg)
 }

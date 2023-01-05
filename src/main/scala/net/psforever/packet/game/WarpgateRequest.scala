@@ -33,8 +33,8 @@ final case class WarpgateRequest(
     unk2: Int
 ) extends PlanetSideGamePacket {
   type Packet = WarpgateRequest
-  def opcode = GamePacketOpcode.WarpgateRequest
-  def encode = WarpgateRequest.encode(this)
+def opcode = GamePacketOpcode.WarpgateRequest
+def encode = WarpgateRequest.encode(this)
 }
 
 object WarpgateRequest extends Marshallable[WarpgateRequest] {

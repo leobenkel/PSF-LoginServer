@@ -16,14 +16,14 @@ import net.psforever.types.PlanetSideEmpire
   * @see `Zone.MakeReservedObjects`
   */
 class LocalLockerItem extends PlanetSideServerObject {
-  def Faction = PlanetSideEmpire.NEUTRAL
+private def Faction = PlanetSideEmpire.NEUTRAL
 
-  def Definition = LocalLockerItem.local
+private def Definition = LocalLockerItem.local
 }
 
 object LocalLockerItem {
   import net.psforever.objects.definition.ObjectDefinition
-  def local = new ObjectDefinition(0) {
+private def local = new ObjectDefinition(0) {
     Name = "locker-equipment"
     registerAs = "locker-contents"
   }
@@ -34,7 +34,7 @@ object LocalLockerItem {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `LocalProjectile` object
     */
-  def Constructor(id: Int, context: ActorContext): LocalLockerItem = {
+private def Constructor(id: Int, context: ActorContext): LocalLockerItem = {
     new LocalLockerItem()
   }
 }

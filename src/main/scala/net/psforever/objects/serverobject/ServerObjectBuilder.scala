@@ -32,7 +32,7 @@ class ServerObjectBuilder[A <: PlanetSideServerObject](
     private val constructor: ServerObjectBuilder.ConstructorType[A]
 ) {
 
-  def Id: Int = id
+private def Id: Int = id
 
   /**
     * Instantiate and configure the given server object.
@@ -45,7 +45,7 @@ class ServerObjectBuilder[A <: PlanetSideServerObject](
     *             defaults to `null`
     * @return the object that was created and integrated into the `Zone`
     */
-  def Build(implicit context: ActorContext = null, guid: NumberPoolHub = null): A = {
+private def Build(implicit context: ActorContext = null, guid: NumberPoolHub = null): A = {
     val obj: A = constructor(id, context)
     guid.register(obj, id)
     obj
@@ -62,7 +62,7 @@ object ServerObjectBuilder {
     * @tparam A any object that extends from PlanetSideServerObject that will be produced by this class
     * @return a `ServerObjectBuilder` object
     */
-  def apply[A <: PlanetSideServerObject](id: Int, constructor: ConstructorType[A]): ServerObjectBuilder[A] = {
+def apply[A <: PlanetSideServerObject](id: Int, constructor: ConstructorType[A]): ServerObjectBuilder[A] = {
     new ServerObjectBuilder[A](id, constructor)
   }
 }

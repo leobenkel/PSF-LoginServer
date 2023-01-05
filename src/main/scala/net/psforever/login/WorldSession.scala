@@ -51,7 +51,7 @@ object WorldSession {
     * @param item the item being manipulated
     * @return a `Future` that anticipates the resolution to this manipulation
     */
-  def PutEquipmentInInventoryOrDrop(obj: PlanetSideServerObject with Container)(item: Equipment): Future[Any] = {
+private def PutEquipmentInInventoryOrDrop(obj: PlanetSideServerObject with Container)(item: Equipment): Future[Any] = {
     val localContainer = obj
     val localItem      = item
     val result         = ask(localContainer.Actor, Containable.PutItemAway(localItem))
@@ -80,7 +80,7 @@ object WorldSession {
     * @param item the item being manipulated
     * @return a `TaskBundle` object
     */
-  def PutNewEquipmentInInventorySlot(
+private def PutNewEquipmentInInventorySlot(
                                       obj: PlanetSideServerObject with Container
                                     )(item: Equipment, slot: Int): TaskBundle = {
     val localZone = obj.Zone
@@ -112,7 +112,7 @@ object WorldSession {
     * @param item the item being manipulated
     * @return a `TaskBundle` object
     */
-  def PutNewEquipmentInInventoryOrDrop(
+private def PutNewEquipmentInInventoryOrDrop(
       obj: PlanetSideServerObject with Container
   )(item: Equipment): TaskBundle = {
     val localZone = obj.Zone
@@ -150,7 +150,7 @@ object WorldSession {
     * @param slot na
     * @return a `Future` that anticipates the resolution to this manipulation
     */
-  def PutEquipmentInInventorySlot(
+private def PutEquipmentInInventorySlot(
       obj: PlanetSideServerObject with Container
   )(item: Equipment, slot: Int): Future[Any] = {
     val localContainer = obj
@@ -179,7 +179,7 @@ object WorldSession {
     * @param slot where the item will be placed in the container
     * @return a `TaskBundle` object
     */
-  def PutLoadoutEquipmentInInventory(
+private def PutLoadoutEquipmentInInventory(
       obj: PlanetSideServerObject with Container
   )(item: Equipment, slot: Int): TaskBundle = {
     val localZone = obj.Zone
@@ -221,7 +221,7 @@ object WorldSession {
     * @param item the item being manipulated
     * @return a `TaskBundle` object
     */
-  def BuyNewEquipmentPutInInventory(
+private def BuyNewEquipmentPutInInventory(
       obj: PlanetSideServerObject with Container,
       player: Player,
       term: PlanetSideGUID
@@ -294,7 +294,7 @@ object WorldSession {
     * @param slot the slot in which the item will be equipped
     * @return a `TaskBundle` object
     */
-  def HoldNewEquipmentUp(player: Player)(item: Equipment, slot: Int): TaskBundle = {
+private def HoldNewEquipmentUp(player: Player)(item: Equipment, slot: Int): TaskBundle = {
     if (player.VisibleSlots.contains(slot)) {
       val localZone = player.Zone
       TaskBundle(
@@ -307,7 +307,7 @@ object WorldSession {
     }
   }
 
-  def TaskToHoldEquipmentUp(player: Player)(item: Equipment, slot: Int): Task = {
+private def TaskToHoldEquipmentUp(player: Player)(item: Equipment, slot: Int): Task = {
     new StraightforwardTask() {
       private val localPlayer = player
       private val localGUID   = player.GUID
@@ -351,7 +351,7 @@ object WorldSession {
     * @param item the item being collected from off the ground of the container's zone
     * @return a `Future` that anticipates the resolution to this manipulation
     */
-  def PickUpEquipmentFromGround(obj: PlanetSideServerObject with Container)(item: Equipment): Future[Any] = {
+private def PickUpEquipmentFromGround(obj: PlanetSideServerObject with Container)(item: Equipment): Future[Any] = {
     val localZone      = obj.Zone
     val localContainer = obj
     val localItem      = item
@@ -390,7 +390,7 @@ object WorldSession {
     *            expected override from original container's position
     * @return a `Future` that anticipates the resolution to this manipulation
     */
-  def DropEquipmentFromInventory(
+private def DropEquipmentFromInventory(
       obj: PlanetSideServerObject with Container
   )(item: Equipment, pos: Option[Vector3] = None): Future[Any] = {
     val localContainer = obj
@@ -423,7 +423,7 @@ object WorldSession {
     * @param item the item to find and remove from the container
     * @return a `Future` that anticipates the resolution to this manipulation
     */
-  def RemoveOldEquipmentFromInventory(obj: PlanetSideServerObject with Container)(
+private def RemoveOldEquipmentFromInventory(obj: PlanetSideServerObject with Container)(
       item: Equipment
   ): Future[Any] = {
     val localContainer = obj
@@ -459,7 +459,7 @@ object WorldSession {
     * @param slot from which slot the equipment is to be removed
     * @return a `Future` that anticipates the resolution to this manipulation
     */
-  def SellEquipmentFromInventory(
+private def SellEquipmentFromInventory(
       obj: PlanetSideServerObject with Container,
       player: Player,
       term: PlanetSideGUID
@@ -502,7 +502,7 @@ object WorldSession {
     * @param item the item
     * @param dest where in the destination container the item is being placed
     */
-  def ContainableMoveItem(
+private def ContainableMoveItem(
                            toChannel: String,
                            source: PlanetSideServerObject with Container,
                            destination: PlanetSideServerObject with Container,
@@ -545,7 +545,7 @@ object WorldSession {
     * @param item the item
     * @param dest where in the destination container the item is being placed
     */
-  def StowEquipmentInLockerContainer(
+private def StowEquipmentInLockerContainer(
                                       toChannel: String,
                                       source: PlanetSideServerObject with Container,
                                       destination: PlanetSideServerObject with Container,
@@ -637,7 +637,7 @@ object WorldSession {
     * @param item the item
     * @param dest where in the destination container the item is being placed
     */
-  def RemoveEquipmentFromLockerContainer(
+private def RemoveEquipmentFromLockerContainer(
                                           toChannel: String,
                                           source: PlanetSideServerObject with Container,
                                           destination: PlanetSideServerObject with Container,
@@ -755,7 +755,7 @@ object WorldSession {
    * @param log reference to the messaging protocol
    * @return if there was a discovered grenade
    */
-  def QuickSwapToAGrenade(
+private def QuickSwapToAGrenade(
                            tplayer: Player,
                            equipSlot: Int,
                            log: org.log4s.Logger): Boolean = {
@@ -897,7 +897,7 @@ object WorldSession {
    * @param slot slot being switched to (unused here)
    * @return if the motion is restricted
    */
-  def countRestrictAttempts(count: Int)(player: Player, slot: Int): Boolean = {
+private def countRestrictAttempts(count: Int)(player: Player, slot: Int): Boolean = {
     if (count > 0) {
       player.ResistArmMotion(countRestrictAttempts(count - 1))
       true
@@ -915,7 +915,7 @@ object WorldSession {
     * @param terminalMessage how to call the terminal message
     * @return a `Future` that anticipates the resolution to this manipulation
     */
-  def TerminalMessageOnTimeout(future: Future[Any], terminalMessage: Boolean => Unit): Future[Any] = {
+private def TerminalMessageOnTimeout(future: Future[Any], terminalMessage: Boolean => Unit): Future[Any] = {
     future.recover {
       case _: AskTimeoutException =>
         terminalMessage(false)
@@ -933,7 +933,7 @@ object WorldSession {
     * @param transaction what kind of transaction was involved in terminal use
     * @param result the result of that transaction
     */
-  def TerminalResult(guid: PlanetSideGUID, player: Player, transaction: TransactionType.Value)(
+private def TerminalResult(guid: PlanetSideGUID, player: Player, transaction: TransactionType.Value)(
       result: Boolean
   ): Unit = {
     player.Zone.AvatarEvents ! AvatarServiceMessage(
@@ -949,7 +949,7 @@ object WorldSession {
     * @param container the original object that contained the items
     * @param drops the items to be dropped on the ground
     */
-  def DropLeftovers(container: PlanetSideServerObject with Container)(drops: List[InventoryItem]): Unit = {
+private def DropLeftovers(container: PlanetSideServerObject with Container)(drops: List[InventoryItem]): Unit = {
     //drop or retire
     val zone   = container.Zone
     val pos    = container.Position
@@ -971,7 +971,7 @@ object WorldSession {
     *                 defaults to one per entry
     * @return a `List` of all discovered entries totaling approximately the amount requested
     */
-  def FindEquipmentStock(
+private def FindEquipmentStock(
       obj: Container,
       filterTest: Equipment => Boolean,
       desiredAmount: Int,
@@ -995,7 +995,7 @@ object WorldSession {
     * @return the quantity;
     *         always one
     */
-  def DefaultCount(e: Equipment): Int = 1
+private def DefaultCount(e: Equipment): Int = 1
 
   /**
     * The counting function for an item of `AmmoBox`.
@@ -1003,7 +1003,7 @@ object WorldSession {
     * @param e the `Equipment` object
     * @return the quantity
     */
-  def CountAmmunition(e: Equipment): Int = {
+private def CountAmmunition(e: Equipment): Int = {
     e match {
       case a: AmmoBox => a.Capacity
       case _          => 0
@@ -1017,7 +1017,7 @@ object WorldSession {
     * @param e the `Equipment` object
     * @return the quantity
     */
-  def CountGrenades(e: Equipment): Int = {
+private def CountGrenades(e: Equipment): Int = {
     e match {
       case t: Tool => (GlobalDefinitions.isGrenade(t.Definition): Int) * t.Magazine
       case _       => 0
@@ -1030,7 +1030,7 @@ object WorldSession {
     * @param e the `Equipment` object
     * @return `true`, if the object is an `AmmoBox` of the correct ammunition type; `false`, otherwise
     */
-  def FindAmmoBoxThatUses(ammo: Ammo.Value)(e: Equipment): Boolean = {
+private def FindAmmoBoxThatUses(ammo: Ammo.Value)(e: Equipment): Boolean = {
     e match {
       case t: AmmoBox => t.AmmoType == ammo
       case _          => false
@@ -1043,7 +1043,7 @@ object WorldSession {
     * @param e the `Equipment` object
     * @return `true`, if the object is a `Tool` that loads the correct ammunition type; `false`, otherwise
     */
-  def FindToolThatUses(ammo: Ammo.Value)(e: Equipment): Boolean = {
+private def FindToolThatUses(ammo: Ammo.Value)(e: Equipment): Boolean = {
     e match {
       case t: Tool =>
         t.Definition.AmmoTypes.map { _.AmmoType }.contains(ammo)
@@ -1052,7 +1052,7 @@ object WorldSession {
     }
   }
 
-  def CallBackForTask(task: TaskBundle, sendTo: ActorRef, pass: Any): TaskBundle = {
+private def CallBackForTask(task: TaskBundle, sendTo: ActorRef, pass: Any): TaskBundle = {
     TaskBundle(
       new StraightforwardTask() {
         private val localDesc   = task.description()

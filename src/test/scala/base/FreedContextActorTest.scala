@@ -34,7 +34,7 @@ abstract class FreedContextActorTest extends ActorTest {
 private class ContextSensitive extends Actor {
 private var output: ActorRef = ActorRef.noSender
 
-  def receive: Receive = {
+def receive: Receive = {
     case _ =>
       context.become(PassThroughBehavior)
       output = sender()
@@ -48,7 +48,7 @@ private var output: ActorRef = ActorRef.noSender
     * will now refer to whatever was the contact to gain access to it - the test environment.
     * @return something to `become`
     */
-  def PassThroughBehavior: Receive = {
+private def PassThroughBehavior: Receive = {
     case msg => output forward msg
   }
 }

@@ -15,8 +15,8 @@ import net.psforever.types.{BailType, PlanetSideGUID}
 final case class DismountVehicleMsg(player_guid: PlanetSideGUID, bailType: BailType.Value, wasKickedByDriver: Boolean)
     extends PlanetSideGamePacket {
   type Packet = DismountVehicleMsg
-  def opcode = GamePacketOpcode.DismountVehicleMsg
-  def encode = DismountVehicleMsg.encode(this)
+def opcode = GamePacketOpcode.DismountVehicleMsg
+def encode = DismountVehicleMsg.encode(this)
 }
 
 object DismountVehicleMsg extends Marshallable[DismountVehicleMsg] {

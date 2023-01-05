@@ -45,8 +45,8 @@ final case class DisplayedAwardMessage(
     bar: RibbonBarSlot.Value
 ) extends PlanetSideGamePacket {
   type Packet = DisplayedAwardMessage
-  def opcode = GamePacketOpcode.DisplayedAwardMessage
-  def encode = DisplayedAwardMessage.encode(this)
+def opcode = GamePacketOpcode.DisplayedAwardMessage
+def encode = DisplayedAwardMessage.encode(this)
 }
 
 object DisplayedAwardMessage extends Marshallable[DisplayedAwardMessage] {

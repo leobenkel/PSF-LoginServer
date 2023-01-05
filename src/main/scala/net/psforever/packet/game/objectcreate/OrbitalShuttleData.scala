@@ -53,7 +53,7 @@ object OrbitalShuttleData extends Marshallable[OrbitalShuttleData] {
     * @param faction empire the object is affiliated with
     * @return an `OrbitalShuttleData` object
     */
-  def apply(pos: PlacementData, faction: PlanetSideEmpire.Value): OrbitalShuttleData =
+def apply(pos: PlacementData, faction: PlanetSideEmpire.Value): OrbitalShuttleData =
     OrbitalShuttleData(faction, Some(pos))
 
   implicit val codec: Codec[OrbitalShuttleData] = (

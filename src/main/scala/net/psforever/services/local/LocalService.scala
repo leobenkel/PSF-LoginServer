@@ -28,7 +28,7 @@ class LocalService(zone: Zone) extends Actor {
 
 private val LocalEvents = new GenericEventBus[LocalServiceResponse]
 
-  def receive: Receive = {
+def receive: Receive = {
     case Service.Join(channel) =>
       val path = s"/$channel/Local"
       LocalEvents.subscribe(sender(), path)

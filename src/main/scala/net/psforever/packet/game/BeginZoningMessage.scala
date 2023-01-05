@@ -17,8 +17,8 @@ import scodec.Codec
   */
 final case class BeginZoningMessage() extends PlanetSideGamePacket {
   type Packet = BeginZoningMessage
-  def opcode = GamePacketOpcode.BeginZoningMessage
-  def encode = BeginZoningMessage.encode(this)
+def opcode = GamePacketOpcode.BeginZoningMessage
+def encode = BeginZoningMessage.encode(this)
 }
 
 object BeginZoningMessage extends Marshallable[BeginZoningMessage] {

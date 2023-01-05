@@ -58,7 +58,7 @@ final case class Vector3(x: Float, y: Float, z: Float) {
     * @param v the per-element scalars as a `Vector3` object
     * @return a new `Vector3` object
     */
-  def **(v: Vector3): Vector3 = {
+  private def **(v: Vector3): Vector3 = {
     Vector3(x * v.x, y * v.y, z * v.z)
   }
 
@@ -77,7 +77,7 @@ final case class Vector3(x: Float, y: Float, z: Float) {
     * @param ang a rotation angle
     * @return the rotated vector
     */
-  def Rx(ang: Float): Vector3 = Vector3.Rx(this, ang)
+  private def Rx(ang: Float): Vector3 = Vector3.Rx(this, ang)
 
   /**
     * Perform the y-axis rotation of this `Vector3` element where the angle of rotation is assumed in degrees.
@@ -86,7 +86,7 @@ final case class Vector3(x: Float, y: Float, z: Float) {
     * @param ang a rotation angle
     * @return the rotated vector
     */
-  def Ry(ang: Float): Vector3 = Vector3.Ry(this, ang)
+  private def Ry(ang: Float): Vector3 = Vector3.Ry(this, ang)
 
   /**
     * Perform the z-axis rotation of this `Vector3` element where the angle of rotation is assumed in degrees.
@@ -95,7 +95,7 @@ final case class Vector3(x: Float, y: Float, z: Float) {
     * @param ang a rotation angle
     * @return the rotated vector
     */
-  def Rz(ang: Float): Vector3 = Vector3.Rz(this, ang)
+  private def Rz(ang: Float): Vector3 = Vector3.Rz(this, ang)
 }
 
 object Vector3 {
@@ -147,7 +147,7 @@ object Vector3 {
     * @param v the original vector
     * @return the negation of the original vector
     */
-  def neg(v: Vector3): Vector3 = Vector3(-v.x, -v.y, -v.z)
+  private def neg(v: Vector3): Vector3 = Vector3(-v.x, -v.y, -v.z)
 
   /**
     * Calculate the actual distance between two points.
@@ -155,7 +155,7 @@ object Vector3 {
     * @param pos2 the second point
     * @return the distance
     */
-  def Distance(pos1: Vector3, pos2: Vector3): Float = {
+  private def Distance(pos1: Vector3, pos2: Vector3): Float = {
     math.sqrt(DistanceSquared(pos1, pos2)).toFloat
   }
 
@@ -236,7 +236,7 @@ object Vector3 {
     * @param vec2 the second vector
     * @return the cross product
     */
-  def CrossProduct(vec1: Vector3, vec2: Vector3): Vector3 = {
+  private def CrossProduct(vec1: Vector3, vec2: Vector3): Vector3 = {
     Vector3(
       vec1.y * vec2.z - vec2.y * vec1.z,
       vec2.x * vec1.z - vec1.x * vec2.z,
@@ -256,7 +256,7 @@ object Vector3 {
     * @param vec2 the vector projected onto
     * @return the magnitude of the resulting projected vector
     */
-  def ScalarProjection(vec1: Vector3, vec2: Vector3): Float = {
+  private def ScalarProjection(vec1: Vector3, vec2: Vector3): Float = {
     val mag: Float = Magnitude(vec2)
     if (mag == 0f) {
       0f
@@ -276,7 +276,7 @@ object Vector3 {
     * @param vec2 the vector projected onto
     * @return the resulting projected vector
     */
-  def VectorProjection(vec1: Vector3, vec2: Vector3): Vector3 = {
+  private def VectorProjection(vec1: Vector3, vec2: Vector3): Vector3 = {
     Unit(vec2) * ScalarProjection(vec1, vec2)
   }
 
@@ -287,7 +287,7 @@ object Vector3 {
     * @param ang a rotation angle, in degrees
     * @return the rotated vector
     */
-  def Rx(vec: Vector3, ang: Float): Vector3 = Rx(vec, math.toRadians(ang))
+  private def Rx(vec: Vector3, ang: Float): Vector3 = Rx(vec, math.toRadians(ang))
 
   /**
     * Perform the x-axis rotation of a `Vector3` element where the angle of rotation is assumed in radians.
@@ -296,7 +296,7 @@ object Vector3 {
     * @param ang a rotation angle, in radians
     * @return the rotated vector
     */
-  def Rx(vec: Vector3, ang: Double): Vector3 = {
+  private def Rx(vec: Vector3, ang: Double): Vector3 = {
     val cos       = math.cos(ang).toFloat
     val sin       = math.sin(ang).toFloat
     val (x, y, z) = (vec.x, vec.y, vec.z)
@@ -314,7 +314,7 @@ object Vector3 {
     * @param ang a rotation angle, in degrees
     * @return the rotated vector
     */
-  def Ry(vec: Vector3, ang: Float): Vector3 = Ry(vec, math.toRadians(ang))
+  private def Ry(vec: Vector3, ang: Float): Vector3 = Ry(vec, math.toRadians(ang))
 
   /**
     * Perform the y-axis rotation of a `Vector3` element where the angle of rotation is assumed in radians.
@@ -323,7 +323,7 @@ object Vector3 {
     * @param ang a rotation angle, in radians
     * @return the rotated vector
     */
-  def Ry(vec: Vector3, ang: Double): Vector3 = {
+  private def Ry(vec: Vector3, ang: Double): Vector3 = {
     val cos       = math.cos(ang).toFloat
     val sin       = math.sin(ang).toFloat
     val (x, y, z) = (vec.x, vec.y, vec.z)
@@ -341,7 +341,7 @@ object Vector3 {
     * @param ang a rotation angle, in degrees
     * @return the rotated vector
     */
-  def Rz(vec: Vector3, ang: Float): Vector3 = Rz(vec, math.toRadians(ang))
+  private def Rz(vec: Vector3, ang: Float): Vector3 = Rz(vec, math.toRadians(ang))
 
   /**
     * Perform the z-axis rotation of a `Vector3` element where the angle of rotation is assumed in radians.
@@ -350,7 +350,7 @@ object Vector3 {
     * @param ang a rotation angle, in radians
     * @return the rotation vector
     */
-  def Rz(vec: Vector3, ang: Double): Vector3 = {
+  private def Rz(vec: Vector3, ang: Double): Vector3 = {
     val cos       = math.cos(ang).toFloat
     val sin       = math.sin(ang).toFloat
     val (x, y, z) = (vec.x, vec.y, vec.z)
@@ -373,13 +373,13 @@ object Vector3 {
     * @param radians a rotation angle, in radians
     * @return the rotated point
     */
-  def PlanarRotateAroundPoint(point: Vector3, axis: Vector3, radians: Float): Vector3 = {
+  private def PlanarRotateAroundPoint(point: Vector3, axis: Vector3, radians: Float): Vector3 = {
     val cos = math.cos(radians).toFloat
     val sin = math.sin(radians).toFloat
-    val dx = point.x - axis.x
-    val dy = point.y - axis.y
-    val x = cos * dx - sin * dy + axis.x
-    val y = sin * dx + cos * dy + axis.y
+    val dx  = point.x - axis.x
+    val dy  = point.y - axis.y
+    val x   = cos * dx - sin * dy + axis.x
+    val y   = sin * dx + cos * dy + axis.y
     Vector3(
       closeToInsignificance(x),
       closeToInsignificance(y),
@@ -393,7 +393,7 @@ object Vector3 {
     * @param p2 the second point
     * @return the point that is the mean position directly between the first point and the second point
     */
-  def midpoint(p1: Vector3, p2: Vector3): Vector3 = {
+  private def midpoint(p1: Vector3, p2: Vector3): Vector3 = {
     Vector3((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2)
   }
 
@@ -406,7 +406,7 @@ object Vector3 {
     * @return a mathematical vector representing a relative "up" direction
     */
   def relativeUp(orient: Vector3): Vector3 = {
-    relativeUp(orient, Vector3(0,0,1)) //world up
+    relativeUp(orient, Vector3(0, 0, 1)) //world up
   }
 
   /**
@@ -421,7 +421,7 @@ object Vector3 {
     * @param up a mathematical vector representing "up"
     * @return a mathematical vector representing a relative "up" direction
     */
-  def relativeUp(orient: Vector3, up: Vector3): Vector3 = {
+  private def relativeUp(orient: Vector3, up: Vector3): Vector3 = {
     /*
     rotate in Ry using the x-component and rotate in Rx using the y-component
     only Rz is rotated using its corresponding component, and you add 180 clamping to 0-360 degrees

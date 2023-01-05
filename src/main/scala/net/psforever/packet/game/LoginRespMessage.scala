@@ -36,8 +36,8 @@ final case class LoginRespMessage(
     username: String,
     privilege: Long
 ) extends PlanetSideGamePacket {
-  def opcode = GamePacketOpcode.LoginRespMessage
-  def encode = LoginRespMessage.encode(this)
+def opcode = GamePacketOpcode.LoginRespMessage
+def encode = LoginRespMessage.encode(this)
 }
 
 object LoginRespMessage extends Marshallable[LoginRespMessage] {

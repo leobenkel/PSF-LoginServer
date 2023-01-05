@@ -15,7 +15,7 @@ abstract class PlanetSideGUID {
     * @param o an entity
     * @return whether that entity is a `PlanetSideGUID` object
     */
-  def canEqual(o: Any): Boolean = o.isInstanceOf[PlanetSideGUID]
+  private def canEqual(o: Any): Boolean = o.isInstanceOf[PlanetSideGUID]
 
   override def equals(o: Any): Boolean =
     o match {

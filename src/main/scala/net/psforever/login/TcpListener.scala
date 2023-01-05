@@ -24,7 +24,7 @@ private var bytesRecevied       = 0L
 private var bytesSent           = 0L
 private var nextActor: ActorRef = ActorRef.noSender
 
-  def receive = {
+def receive = {
     case Tcp.Bound(local) =>
       log.debug(s"Now listening on TCP:$local")
 
@@ -36,7 +36,7 @@ private var nextActor: ActorRef = ActorRef.noSender
       log.error(s"Unexpected message $default")
   }
 
-  def ready(socket: ActorRef): Receive = {
+private def ready(socket: ActorRef): Receive = {
     case Tcp.Connected(remote, local) =>
       val connection = sender()
       val session    = sessionId

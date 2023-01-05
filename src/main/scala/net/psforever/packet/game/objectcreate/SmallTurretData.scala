@@ -45,7 +45,7 @@ object SmallTurretData extends Marshallable[SmallTurretData] {
     * @param internals data regarding the mounted weapon
     * @return a `SmallTurretData` object
     */
-  def apply(deploy: CommonFieldDataWithPlacement, health: Int, internals: InventoryData): SmallTurretData =
+def apply(deploy: CommonFieldDataWithPlacement, health: Int, internals: InventoryData): SmallTurretData =
     new SmallTurretData(deploy, health, Some(internals))
 
   implicit val codec: Codec[SmallTurretData] = (

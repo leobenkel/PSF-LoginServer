@@ -23,7 +23,7 @@ abstract class TerminalDefinition(objectId: Int) extends AmenityDefinition(objec
     * @param msg the request message
     * @return a message that resolves the transaction
     */
-  def Request(player: Player, msg: Any): Terminal.Exchange
+private def Request(player: Player, msg: Any): Terminal.Exchange
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {}
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {}
 }

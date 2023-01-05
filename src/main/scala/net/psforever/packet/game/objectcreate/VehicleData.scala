@@ -108,7 +108,7 @@ object VehicleData extends Marshallable[VehicleData] {
     * @param cloak if a vehicle (that can cloak) is cloaked
     * @param inventory the seats, mounted weapons, and utilities (such as terminals) that are currently included
     */
-  def apply(
+def apply(
       pos: PlacementData,
       basic: CommonFieldData,
       health: Int,
@@ -129,7 +129,7 @@ object VehicleData extends Marshallable[VehicleData] {
     * @param cloak if a vehicle (that can cloak) is cloaked
     * @param inventory the seats, mounted weapons, and utilities (such as terminals) that are currently included
     */
-  def apply(
+def apply(
       pos: PlacementData,
       basic: CommonFieldData,
       health: Int,
@@ -151,7 +151,7 @@ object VehicleData extends Marshallable[VehicleData] {
     * @param cloak if a vehicle (that can cloak) is cloaked
     * @param inventory the seats, mounted weapons, and utilities (such as terminals) that are currently included
     */
-  def apply(
+def apply(
       pos: PlacementData,
       basic: CommonFieldData,
       health: Int,
@@ -224,7 +224,7 @@ object VehicleData extends Marshallable[VehicleData] {
           .asInstanceOf[Codec[SpecificVehicleData]]
     }
 
-  def codec(vehicle_type: VehicleFormat.Value): Codec[VehicleData] = {
+private def codec(vehicle_type: VehicleFormat.Value): Codec[VehicleData] = {
     import shapeless.::
     (
       ("pos" | PlacementData.codec) >>:~ { pos =>

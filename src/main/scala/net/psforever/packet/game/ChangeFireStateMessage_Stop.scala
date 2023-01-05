@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class ChangeFireStateMessage_Stop(item_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = ChangeFireStateMessage_Stop
-  def opcode = GamePacketOpcode.ChangeFireStateMessage_Stop
-  def encode = ChangeFireStateMessage_Stop.encode(this)
+def opcode = GamePacketOpcode.ChangeFireStateMessage_Stop
+def encode = ChangeFireStateMessage_Stop.encode(this)
 }
 
 object ChangeFireStateMessage_Stop extends Marshallable[ChangeFireStateMessage_Stop] {

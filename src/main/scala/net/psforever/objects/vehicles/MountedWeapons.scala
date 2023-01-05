@@ -8,7 +8,7 @@ trait MountedWeapons {
   this: PlanetSideGameObject =>
   protected var weapons: Map[Int, EquipmentSlot] = Map[Int, EquipmentSlot]()
 
-  def Weapons: Map[Int, EquipmentSlot] = weapons
+private def Weapons: Map[Int, EquipmentSlot] = weapons
 
-  def Definition: MountedWeaponsDefinition
+private def Definition: MountedWeaponsDefinition
 }

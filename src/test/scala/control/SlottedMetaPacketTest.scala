@@ -19,7 +19,7 @@ private val string = hex"00 09 00 00 00194302484C36563130433F" ++
     hex"0069006400650021002000018667656D" ++
     hex"696E690100040001459E2540377540"
 
-  def createMetaPacket(slot: Int, subslot: Int, rest: ByteVector) =
+private def createMetaPacket(slot: Int, subslot: Int, rest: ByteVector) =
     hex"00" ++
       ControlPacketOpcode.codec
         .encode(

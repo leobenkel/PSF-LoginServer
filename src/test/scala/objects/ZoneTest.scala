@@ -25,7 +25,7 @@ import net.psforever.services.ServiceManager
 import scala.concurrent.duration._
 
 class ZoneTest extends Specification {
-  def test(a: String, b: Int, c: Int, d: Zone, e: ActorContext): Building = {
+private def test(a: String, b: Int, c: Int, d: Zone, e: ActorContext): Building = {
     Building.NoBuilding
   }
 
@@ -673,5 +673,5 @@ private val zone = new Zone("test", new ZoneMap("test-map"), 0) { override def S
 
 object ZoneTest {
 private val testNum          = new AtomicInteger(1)
-  def TestName: String = s"test${testNum.getAndIncrement()}"
+private def TestName: String = s"test${testNum.getAndIncrement()}"
 }

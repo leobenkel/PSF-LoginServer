@@ -11,13 +11,13 @@ import net.psforever.types.Vector3
   * Common base for reporting damage for reasons of collisions.
   */
 trait CausedByColliding extends DamageReason {
-  def resolution: DamageResolution.Value = DamageResolution.Collision
+private def resolution: DamageResolution.Value = DamageResolution.Collision
 
-  def source: DamageProperties = CollisionReason.noDamage
+private def source: DamageProperties = CollisionReason.noDamage
 
-  def velocity: Vector3
+private def velocity: Vector3
 
-  def fall: Float
+private def fall: Float
 }
 
 /**
@@ -32,7 +32,7 @@ final case class CollisionReason(
     fall: Float,
     damageModel: DamageAndResistance
 ) extends CausedByColliding {
-  def same(test: DamageReason): Boolean =
+private def same(test: DamageReason): Boolean =
     test match {
       case cr: CollisionReason => cr.velocity == velocity && math.abs(cr.fall - fall) < 0.05f
       case _                   => false
@@ -57,7 +57,7 @@ final case class CollisionWithReason(
     cause: CollisionReason,
     collidedWith: SourceEntry
 ) extends CausedByColliding {
-  def same(test: DamageReason): Boolean =
+private def same(test: DamageReason): Boolean =
     test match {
       case cr: CollisionWithReason =>
         cr.cause.same(cause) && cr.collidedWith == collidedWith
@@ -65,11 +65,11 @@ final case class CollisionWithReason(
         false
     }
 
-  def velocity: Vector3 = cause.velocity
+private def velocity: Vector3 = cause.velocity
 
-  def fall: Float = cause.fall
+private def fall: Float = cause.fall
 
-  def damageModel: DamageAndResistance = cause.damageModel
+private def damageModel: DamageAndResistance = cause.damageModel
 
   override def adversary: Option[SourceEntry] = {
     collidedWith match {

@@ -15,14 +15,14 @@ import net.psforever.types.PlanetSideEmpire
   *       `Projectile.RangeUID`
   */
 class LocalProjectile extends PlanetSideServerObject {
-  def Faction = PlanetSideEmpire.NEUTRAL
+private def Faction = PlanetSideEmpire.NEUTRAL
 
-  def Definition = LocalProjectile.local
+private def Definition = LocalProjectile.local
 }
 
 object LocalProjectile {
   import net.psforever.objects.definition.ObjectDefinition
-  def local = new ObjectDefinition(0) {
+private def local = new ObjectDefinition(0) {
     Name = "projectile"
     registerAs = "projectiles"
   }
@@ -33,7 +33,7 @@ object LocalProjectile {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `LocalProjectile` object
     */
-  def Constructor(id: Int, context: ActorContext): LocalProjectile = {
+private def Constructor(id: Int, context: ActorContext): LocalProjectile = {
     new LocalProjectile()
   }
 }

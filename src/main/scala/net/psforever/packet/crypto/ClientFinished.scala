@@ -14,12 +14,12 @@ final case class ClientFinished(
                                  challengeResult: ByteVector
                                ) extends PlanetSideCryptoPacket {
   type Packet = ClientFinished
-  def opcode = CryptoPacketOpcode.ClientFinished
-  def encode = ClientFinished.encode(this)
+def opcode = CryptoPacketOpcode.ClientFinished
+def encode = ClientFinished.encode(this)
 }
 
 object ClientFinished extends Marshallable[ClientFinished] {
-  def apply(pubKey: ByteVector, challengeResult: ByteVector): ClientFinished =
+def apply(pubKey: ByteVector, challengeResult: ByteVector): ClientFinished =
     ClientFinished(16, pubKey, challengeResult)
 
   implicit val codec: Codec[ClientFinished] = (

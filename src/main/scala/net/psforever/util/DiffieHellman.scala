@@ -16,7 +16,7 @@ case class DiffieHellman(p: Array[Byte], g: Array[Byte]) {
   val publicKey: Array[Byte] = bytes(_g.modPow(privateKey, _p))
 
   /** Agree on shared key */
-  def agree(otherKey: Array[Byte]): Array[Byte] = {
+private def agree(otherKey: Array[Byte]): Array[Byte] = {
     bytes(BigInt(1, otherKey).modPow(privateKey, _p))
   }
 

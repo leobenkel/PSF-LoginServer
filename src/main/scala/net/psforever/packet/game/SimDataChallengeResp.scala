@@ -14,8 +14,8 @@ import scodec.codecs._
   */
 final case class SimDataChallengeResp(unk1: List[Long], unk2: List[Long], unk3: Boolean) extends PlanetSideGamePacket {
   type Packet = SimDataChallengeResp
-  def opcode: GamePacketOpcode.Value = GamePacketOpcode.SimDataChallengeResp
-  def encode: Attempt[BitVector]     = SimDataChallengeResp.encode(this)
+def opcode: GamePacketOpcode.Value = GamePacketOpcode.SimDataChallengeResp
+def encode: Attempt[BitVector]     = SimDataChallengeResp.encode(this)
 }
 
 object SimDataChallengeResp extends Marshallable[SimDataChallengeResp] {

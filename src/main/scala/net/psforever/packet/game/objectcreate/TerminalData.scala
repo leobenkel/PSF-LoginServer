@@ -17,6 +17,6 @@ object TerminalData {
     * @param terminal the `TerminalData`
     * @return an `InternalSlot` object
     */
-  def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, terminal: CommonFieldData): InternalSlot =
+def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, terminal: CommonFieldData): InternalSlot =
     InternalSlot(cls, guid, parentSlot, terminal)
 }

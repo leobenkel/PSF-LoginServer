@@ -22,18 +22,18 @@ final case class PlayerSource(
     jumping: Boolean,
     modifiers: ResistanceProfile
 ) extends SourceEntry {
-  override def Name    = name
-  override def Faction = faction
-  override def CharId  = char_id
-  def Definition       = obj_def
-  def ExoSuit          = exosuit
-  def Seated           = seated
-  def Health           = health
-  def Armor            = armor
-  def Position         = position
-  def Orientation      = orientation
-  def Velocity         = velocity
-  def Modifiers        = modifiers
+  override def Name       = name
+  override def Faction    = faction
+  override def CharId     = char_id
+  private def Definition  = obj_def
+  def ExoSuit             = exosuit
+  private def Seated      = seated
+  private def Health      = health
+  private def Armor       = armor
+  private def Position    = position
+  private def Orientation = orientation
+  private def Velocity    = velocity
+  private def Modifiers   = modifiers
 }
 
 object PlayerSource {

@@ -78,7 +78,7 @@ object SpecialEmp {
     * @param target a game object that is affected by the EMP
     * @return a `DamageInteraction` object
     */
-  def createEmpInteraction(
+private def createEmpInteraction(
                             empEffect: DamageWithPosition,
                             position: Vector3
                           )
@@ -106,7 +106,7 @@ object SpecialEmp {
     * @param faction the affinity of the EMP
     * @return a function that determines if two game entities are near enough to each other
     */
-  def prepareDistanceCheck(
+private def prepareDistanceCheck(
                      owner: PlanetSideGameObject,
                      position: Vector3,
                      faction: PlanetSideEmpire.Value
@@ -137,7 +137,7 @@ object SpecialEmp {
     * @return `true`, if the two entities are near enough to each other;
     *        `false`, otherwise
     */
-  def distanceCheck(
+private def distanceCheck(
                      proxy: PlanetSideGameObject
                    )
                    (
@@ -160,7 +160,7 @@ object SpecialEmp {
     *         the first list is `PlanetSideServerObject` entities with `Vitality`;
     *         since only boomer explosives are returned, this second list can be ignored
     */
-  def findAllBoomers(
+private def findAllBoomers(
                       range: Float
                     )
                     (

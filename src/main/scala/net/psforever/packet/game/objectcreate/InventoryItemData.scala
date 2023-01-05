@@ -16,7 +16,7 @@ object InventoryItemData {
     * @param obj the data used as representation of the object to be constructed
     * @return an `InventoryItemData` object
     */
-  def apply(objClass: Int, guid: PlanetSideGUID, slot: Int, obj: ConstructorData): InventoryItem =
+def apply(objClass: Int, guid: PlanetSideGUID, slot: Int, obj: ConstructorData): InventoryItem =
     InternalSlot(objClass, guid, slot, obj)
 
   /**

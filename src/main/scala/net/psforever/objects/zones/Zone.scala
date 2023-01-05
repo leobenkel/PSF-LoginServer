@@ -183,7 +183,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * When the zone has completed initializing, this will be the future.
     * @see `init(ActorContext)`
     */
-  def ZoneInitialized(): Future[Boolean] = zoneInitialized.future
+  private def ZoneInitialized(): Future[Boolean] = zoneInitialized.future
 
   /**
     * Establish the basic accessible conditions necessary for a functional `Zone`.<br>
@@ -203,7 +203,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * @see `ZoneActor.ZoneSetupCheck`
     * @param context a reference to an `ActorContext` necessary for `Props`
     */
-  def init(implicit context: ActorContext): Unit = {
+  private def init(implicit context: ActorContext): Unit = {
     if (unops == null) {
       SetupNumberPools()
       context.actorOf(Props(classOf[UniqueNumberSys], this, this.guid), s"zone-$id-uns")
@@ -236,7 +236,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     }
   }
 
-  def validate(): Unit = {
+  private def validate(): Unit = {
     implicit val log: Logger = org.log4s.getLogger(s"zone/$id/sanity")
 
     //check bases
@@ -328,7 +328,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * @return `true` if the object was discovered and validates correctly;
     *         `false` if the object failed any tests
     */
-  def validateObject(
+  private def validateObject(
       objectGuid: Int,
       test: PlanetSideGameObject => Boolean,
       description: String
@@ -347,9 +347,9 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     }
   }
 
-  def SetupNumberPools(): Unit = { /* override to tailor to suit requirements of zone */ }
+  private def SetupNumberPools(): Unit = { /* override to tailor to suit requirements of zone */ }
 
-  def findSpawns(
+  private def findSpawns(
       faction: PlanetSideEmpire.Value,
       spawnGroups: Seq[SpawnGroup]
   ): List[(AmenityOwner, Iterable[SpawnPoint])] = {
@@ -406,7 +406,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
 
   }
 
-  def findNearestSpawnPoints(
+  private def findNearestSpawnPoints(
       faction: PlanetSideEmpire.Value,
       location: Vector3,
       spawnGroups: Seq[SpawnGroup]
@@ -427,14 +427,14 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     *
     * @return the abstract index position of this `Zone`
     */
-  def Number: Int = zoneNumber
+  private def Number: Int = zoneNumber
 
   /**
     * The globally unique identifier system ensures that concurrent requests do not clash.
     * A clash is merely when the same number is produced more than once by the same system due to concurrent requests.
     * @return reference to the globally unique identifier system
     */
-  def GUID: UniqueNumberOps = unops
+  private def GUID: UniqueNumberOps = unops
 
   /**
     * Replace the current globally unique identifier support structure with a new one.
@@ -443,7 +443,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * A warning will be issued.
     * @return synchronized reference to the globally unique identifier system
     */
-  def GUID(hub: NumberPoolHub): Boolean = {
+  private def GUID(hub: NumberPoolHub): Boolean = {
     if (actor == null && guid.Pools.values.foldLeft(0)(_ + _.Count) == 0) {
       import org.fusesource.jansi.Ansi.Color.RED
       import org.fusesource.jansi.Ansi.ansi
@@ -469,7 +469,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * @return `true`, if the new pool is created;
     *        `false`, if the new pool can not be created because the system has already been started
     */
-  def AddPool(name: String, pool: Seq[Int]): Option[NumberPool] = {
+  private def AddPool(name: String, pool: Seq[Int]): Option[NumberPool] = {
     if (unops == null) {
       guid.AddPool(name, pool.toList) match {
         case _: Exception => None
@@ -488,7 +488,7 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * @return `true`, if the pool is un-made;
     *        `false`, if the pool can not be removed (because the system has already been started?)
     */
-  def RemovePool(name: String): Boolean = {
+  private def RemovePool(name: String): Boolean = {
     if (unops == null) {
       guid.RemovePool(name).nonEmpty
     } else {
@@ -538,13 +538,13 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * The `List` of items (`Equipment`) dropped by players on the ground and can be collected again.
     * @return the `List` of `Equipment`
     */
-  def EquipmentOnGround: List[Equipment] = equipmentOnGround.toList
+  private def EquipmentOnGround: List[Equipment] = equipmentOnGround.toList
 
-  def DeployableList: List[Deployable] = constructions.toList
+  private def DeployableList: List[Deployable] = constructions.toList
 
-  def Vehicles: List[Vehicle] = vehicles.toList
+  private def Vehicles: List[Vehicle] = vehicles.toList
 
-  def Players: List[Avatar] = players.values.flatten.map(_.avatar).toList
+  private def Players: List[Avatar] = players.values.flatten.map(_.avatar).toList
 
   def LivePlayers: List[Player] = players.values.flatten.toList
 
@@ -558,29 +558,29 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     *      `Zone.GetItemOnGround`<br>
     *      `Zone.ItemFromGround`
     */
-  def Ground: ActorRef = ground
+  private def Ground: ActorRef = ground
 
-  def Deployables: ActorRef = deployables
+  private def Deployables: ActorRef = deployables
 
-  def Projectile: ActorRef = projectiles
+  private def Projectile: ActorRef = projectiles
 
-  def Projectiles: List[Projectile] = projectileList.toList
+  private def Projectiles: List[Projectile] = projectileList.toList
 
-  def Transport: ActorRef = transport
+  private def Transport: ActorRef = transport
 
-  def Population: ActorRef = population
+  private def Population: ActorRef = population
 
-  def Buildings: Map[Int, Building] = buildings
+  private def Buildings: Map[Int, Building] = buildings
 
-  def Building(id: Int): Option[Building] = {
+  private def Building(id: Int): Option[Building] = {
     buildings.get(id)
   }
 
-  def Building(name: String): Option[Building] = {
+  private def Building(name: String): Option[Building] = {
     buildings.values.find(_.Name == name)
   }
 
-  def BuildingByMapId(map_id: Int): Option[Building] = {
+  private def BuildingByMapId(map_id: Int): Option[Building] = {
     buildings.values.find(_.MapId == map_id)
   }
 
@@ -588,21 +588,21 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     lattice
   }
 
-  def AddIntercontinentalLatticeLink(bldgA: Building, bldgB: Building): Graph[Building, UnDiEdge] = {
+  private def AddIntercontinentalLatticeLink(bldgA: Building, bldgB: Building): Graph[Building, UnDiEdge] = {
     if ((this eq bldgA.Zone) && (bldgA.Zone ne bldgB.Zone)) {
       lattice ++= Set(bldgA ~ bldgB)
     }
     Lattice
   }
 
-  def RemoveIntercontinentalLatticeLink(bldgA: Building, bldgB: Building): Graph[Building, UnDiEdge] = {
+  private def RemoveIntercontinentalLatticeLink(bldgA: Building, bldgB: Building): Graph[Building, UnDiEdge] = {
     if ((this eq bldgA.Zone) && (bldgA.Zone ne bldgB.Zone)) {
       lattice --= Set(bldgA ~ bldgB)
     }
     Lattice
   }
 
-  def zipLinePaths: List[ZipLinePath] = map.zipLinePaths
+  private def zipLinePaths: List[ZipLinePath] = map.zipLinePaths
 
   private def BuildLocalObjects(implicit context: ActorContext, guid: NumberPoolHub): Unit = {
     map.localObjects.foreach({ builderObject =>
@@ -734,11 +734,11 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
       .foreach { SpawnGroups }
   }
 
-  def SpawnGroups(): Map[Building, List[SpawnPoint]] = spawnGroups
+  private def SpawnGroups(): Map[Building, List[SpawnPoint]] = spawnGroups
 
-  def SpawnGroups(building: Building): List[SpawnPoint] = SpawnGroups(building.MapId)
+  private def SpawnGroups(building: Building): List[SpawnPoint] = SpawnGroups(building.MapId)
 
-  def SpawnGroups(buildingId: Int): List[SpawnPoint] = {
+  private def SpawnGroups(buildingId: Int): List[SpawnPoint] = {
     spawnGroups.find({ case (building, _) => building.MapId == buildingId }) match {
       case Some((_, list)) =>
         list
@@ -747,14 +747,14 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     }
   }
 
-  def SpawnGroups(spawns: (Building, List[SpawnPoint])): Map[Building, List[SpawnPoint]] = {
+  private def SpawnGroups(spawns: (Building, List[SpawnPoint])): Map[Building, List[SpawnPoint]] = {
     val (building, points)                     = spawns
     val entry: Map[Building, List[SpawnPoint]] = PairMap(building -> points)
     spawnGroups = spawnGroups ++ entry
     entry
   }
 
-  def PopulateBlockMap(): Unit = {
+  private def PopulateBlockMap(): Unit = {
     vehicles.foreach { vehicle => blockMap.addTo(vehicle) }
     buildings.values.foreach { building =>
       blockMap.addTo(building)
@@ -763,19 +763,19 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     map.environment.foreach { env => blockMap.addTo(env) }
   }
 
-  def StartPlayerManagementSystems(): Unit = {
+  private def StartPlayerManagementSystems(): Unit = {
     soi ! SOI.Start()
   }
 
-  def StopPlayerManagementSystems(): Unit = {
+  private def StopPlayerManagementSystems(): Unit = {
     soi ! SOI.Stop()
   }
 
-  def Activity: ActorRef = projector
+  private def Activity: ActorRef = projector
 
-  def HotSpots: List[HotSpotInfo] = hotSpotListDuplicate(hotspots).toList
+  private def HotSpots: List[HotSpotInfo] = hotSpotListDuplicate(hotspots).toList
 
-  def HotSpotData: List[HotSpotInfo] = hotSpotListDuplicate(hotspotHistory).toList
+  private def HotSpotData: List[HotSpotInfo] = hotSpotListDuplicate(hotspotHistory).toList
 
   private def hotSpotListDuplicate(data: ListBuffer[HotSpotInfo]): ListBuffer[HotSpotInfo] = {
     val out = data map { info =>
@@ -791,17 +791,17 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     out
   }
 
-  def HotSpotCoordinateFunction: Vector3 => Vector3 = hotspotCoordinateFunc
+  private def HotSpotCoordinateFunction: Vector3 => Vector3 = hotspotCoordinateFunc
 
-  def HotSpotCoordinateFunction_=(func: Vector3 => Vector3): Vector3 => Vector3 = {
+  private def HotSpotCoordinateFunction_=(func: Vector3 => Vector3): Vector3 => Vector3 = {
     hotspotCoordinateFunc = func
     Activity ! ZoneHotSpotProjector.UpdateMappingFunction()
     HotSpotCoordinateFunction
   }
 
-  def HotSpotTimeFunction: (SourceEntry, SourceEntry) => FiniteDuration = hotspotTimeFunc
+  private def HotSpotTimeFunction: (SourceEntry, SourceEntry) => FiniteDuration = hotspotTimeFunc
 
-  def HotSpotTimeFunction_=(
+  private def HotSpotTimeFunction_=(
       func: (SourceEntry, SourceEntry) => FiniteDuration
   ): (SourceEntry, SourceEntry) => FiniteDuration = {
     hotspotTimeFunc = func
@@ -825,31 +825,31 @@ class Zone(val id: String, val map: ZoneMap, zoneNumber: Int) {
     * - `ZonePopulationUpdateMessage`
     * @return the `Zone` object
     */
-  def ClientInitialization(): Zone = this
+  private def ClientInitialization(): Zone = this
 
   def AvatarEvents: ActorRef = avatarEvents
 
-  def LocalEvents: ActorRef = localEvents
+  private def LocalEvents: ActorRef = localEvents
 
-  def VehicleEvents: ActorRef = vehicleEvents
+  private def VehicleEvents: ActorRef = vehicleEvents
 
   //mainly for testing
-  def Activity_=(bus: ActorRef): ActorRef = {
+  private def Activity_=(bus: ActorRef): ActorRef = {
     projector = bus
     Activity
   }
 
-  def AvatarEvents_=(bus: ActorRef): ActorRef = {
+  private def AvatarEvents_=(bus: ActorRef): ActorRef = {
     avatarEvents = bus
     AvatarEvents
   }
 
-  def LocalEvents_=(bus: ActorRef): ActorRef = {
+  private def LocalEvents_=(bus: ActorRef): ActorRef = {
     localEvents = bus
     LocalEvents
   }
 
-  def VehicleEvents_=(bus: ActorRef): ActorRef = {
+  private def VehicleEvents_=(bus: ActorRef): ActorRef = {
     vehicleEvents = bus
     VehicleEvents
   }
@@ -1154,7 +1154,7 @@ object Zone {
     * just fail.
     * @return the discovered faction-aligned cavern facility
     */
-  def findConnectedCavernFacility(building: Building): Option[Building] = {
+  private def findConnectedCavernFacility(building: Building): Option[Building] = {
     if (building.Zone.map.cavern) {
       None
     } else {
@@ -1262,7 +1262,7 @@ object Zone {
     * @return a list of affected entities;
     *         only mostly complete due to the exclusion of objects whose damage resolution is different than usual
     */
-  def serverSideDamage(
+  private def serverSideDamage(
       zone: Zone,
       source: PlanetSideGameObject with FactionAffinity with Vitality,
       createInteraction: (
@@ -1304,7 +1304,7 @@ object Zone {
     * @return a list of affected entities;
     *         only mostly complete due to the exclusion of objects whose damage resolution is different than usual
     */
-  def serverSideDamage(
+  private def serverSideDamage(
       zone: Zone,
       source: PlanetSideGameObject with FactionAffinity with Vitality,
       properties: DamageWithPosition,
@@ -1339,7 +1339,7 @@ object Zone {
     * @param damagePropertiesBySource information about the effect/damage
     * @return a list of affected entities
     */
-  def findAllTargets(
+  private def findAllTargets(
       zone: Zone,
       source: PlanetSideGameObject with Vitality,
       damagePropertiesBySource: DamageWithPosition
@@ -1358,7 +1358,7 @@ object Zone {
     * @param damagePropertiesBySource information about the effect/damage
     * @return a list of affected entities
     */
-  def findAllTargets(
+  private def findAllTargets(
       sourcePosition: Vector3
   )(
       zone: Zone,
@@ -1377,7 +1377,7 @@ object Zone {
     * @param damagePropertiesBySource information about the effect/damage
     * @return a list of affected entities
     */
-  def findAllTargets(
+  private def findAllTargets(
       zone: Zone,
       sourcePosition: Vector3,
       damagePropertiesBySource: DamageWithPosition
@@ -1404,7 +1404,7 @@ object Zone {
     * @param target a game object that is affected by the explosion
     * @return a `DamageInteraction` object
     */
-  def explosionDamage(
+  private def explosionDamage(
       instigation: Option[DamageResult]
   )(
       source: PlanetSideGameObject with FactionAffinity with Vitality,
@@ -1419,7 +1419,7 @@ object Zone {
     * @param target a game object that is affected by the explosion
     * @return a `DamageInteraction` object
     */
-  def explosionDamage(
+  private def explosionDamage(
       instigation: Option[DamageResult],
       explosionPosition: Vector3
   )(
@@ -1473,7 +1473,7 @@ object Zone {
     * @param g2 the geometric representation of a game entity
     * @return the crude distance between the two geometric representations
     */
-  def distanceCheck(g1: VolumetricGeometry, g2: VolumetricGeometry): Float = {
+  private def distanceCheck(g1: VolumetricGeometry, g2: VolumetricGeometry): Float = {
     val dir    = Vector3.Unit(g2.center.asVector3 - g1.center.asVector3)
     val point1 = g1.pointOnOutside(dir).asVector3
     val point2 = g2.pointOnOutside(Vector3.neg(dir)).asVector3

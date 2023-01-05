@@ -32,8 +32,8 @@ import scodec.codecs._
   */
 final case class TrainingZoneMessage(zone: PlanetSideGUID, unk: Int = 0) extends PlanetSideGamePacket {
   type Packet = TrainingZoneMessage
-  def opcode = GamePacketOpcode.TrainingZoneMessage
-  def encode = TrainingZoneMessage.encode(this)
+def opcode = GamePacketOpcode.TrainingZoneMessage
+def encode = TrainingZoneMessage.encode(this)
 }
 
 object TrainingZoneMessage extends Marshallable[TrainingZoneMessage] {

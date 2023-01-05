@@ -23,8 +23,8 @@ import scodec.codecs._
 final case class MountVehicleMsg(player_guid: PlanetSideGUID, vehicle_guid: PlanetSideGUID, entry_point: Int)
     extends PlanetSideGamePacket {
   type Packet = MountVehicleMsg
-  def opcode = GamePacketOpcode.MountVehicleMsg
-  def encode = MountVehicleMsg.encode(this)
+def opcode = GamePacketOpcode.MountVehicleMsg
+def encode = MountVehicleMsg.encode(this)
 }
 
 object MountVehicleMsg extends Marshallable[MountVehicleMsg] {

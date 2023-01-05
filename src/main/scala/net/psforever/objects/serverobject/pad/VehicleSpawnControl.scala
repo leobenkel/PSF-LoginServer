@@ -54,7 +54,7 @@ private var trackedOrder: Option[VehicleSpawnControl.Order] = None
   /** how to process either the first order or every subsequent order */
 private var handleOrderFunc: VehicleSpawnPad.VehicleOrder => Unit = NewTasking
 
-  def LogId = ""
+private def LogId = ""
 
   /**
     * The first chained action of the vehicle spawning process.
@@ -62,7 +62,7 @@ private var handleOrderFunc: VehicleSpawnPad.VehicleOrder => Unit = NewTasking
 private val concealPlayer =
     context.actorOf(Props(classOf[VehicleSpawnControlConcealPlayer], pad), s"${context.parent.path.name}-conceal")
 
-  def FactionObject: FactionAffinity = pad
+private def FactionObject: FactionAffinity = pad
 
   import akka.actor.SupervisorStrategy._
   override val supervisorStrategy = {
@@ -78,7 +78,7 @@ private val concealPlayer =
     queueManagement.cancel()
   }
 
-  def receive: Receive =
+def receive: Receive =
     checkBehavior.orElse {
       case msg @ VehicleSpawnPad.VehicleOrder(player, vehicle, _) =>
         trace(s"order from ${player.Name} for a ${vehicle.Definition.Name} received")
@@ -158,7 +158,7 @@ private val concealPlayer =
     * All orders accepted in the meantime will be queued and a note about priority will be issued.
     * @param order the order being accepted
     */
-  def NewTasking(order: VehicleSpawnPad.VehicleOrder): Unit = {
+private def NewTasking(order: VehicleSpawnPad.VehicleOrder): Unit = {
     handleOrderFunc = QueuedTasking
     ProcessOrder(Some(order))
   }
@@ -168,7 +168,7 @@ private val concealPlayer =
     * all orders accepted in the meantime will be queued and a note about priority will be issued.
     * @param order the order being accepted
     */
-  def QueuedTasking(order: VehicleSpawnPad.VehicleOrder): Unit = {
+private def QueuedTasking(order: VehicleSpawnPad.VehicleOrder): Unit = {
     val name = order.player.Name
     if (trackedOrder match {
       case Some(tracked) =>
@@ -219,14 +219,14 @@ private val concealPlayer =
   /**
     * Select the next available queued order and begin processing it.
     */
-  def SelectOrder(): Unit = ProcessOrder(SelectFirstOrder())
+private def SelectOrder(): Unit = ProcessOrder(SelectFirstOrder())
 
   /**
     * Select the next-available queued order if there is no current order being fulfilled.
     * If the queue has been exhausted, set functionality to prepare to accept the next order as a "first order."
     * @return the next-available order
     */
-  def SelectFirstOrder(): Option[VehicleSpawnPad.VehicleOrder] = {
+private def SelectFirstOrder(): Option[VehicleSpawnPad.VehicleOrder] = {
     trackedOrder match {
       case None =>
         val (completeOrder, remainingOrders): (Option[VehicleSpawnPad.VehicleOrder], List[VehicleSpawnPad.VehicleOrder]) =
@@ -255,7 +255,7 @@ private val concealPlayer =
     * @param order the order being accepted;
     *              `None`, if no order found or submitted
     */
-  def ProcessOrder(order: Option[VehicleSpawnPad.VehicleOrder]): Unit = {
+private def ProcessOrder(order: Option[VehicleSpawnPad.VehicleOrder]): Unit = {
     periodicReminder.cancel()
     order match {
       case Some(_order) =>
@@ -282,7 +282,7 @@ private val concealPlayer =
     * either start a periodic examination of those credentials until the queue has been emptied or
     * cancel a running periodic examination if the queue is already empty.
     */
-  def queueManagementTask(): Unit = {
+private def queueManagementTask(): Unit = {
     if (orders.nonEmpty) {
       orders = orderCredentialsCheck(orders).toList
       if (queueManagement.isCancelled) {
@@ -306,7 +306,7 @@ private val concealPlayer =
     * @param recipients the original list of orders
     * @return the list of still-acceptable orders
     */
-  def orderCredentialsCheck(recipients: Iterable[VehicleSpawnPad.VehicleOrder]): Iterable[VehicleSpawnPad.VehicleOrder] = {
+private def orderCredentialsCheck(recipients: Iterable[VehicleSpawnPad.VehicleOrder]): Iterable[VehicleSpawnPad.VehicleOrder] = {
     recipients
       .map { order =>
         (order, VehicleSpawnControl.validateOrderCredentials(order.terminal, order.player, order.vehicle))
@@ -328,7 +328,7 @@ private val concealPlayer =
     * @param blockedOrder the previous order whose vehicle is blocking the spawn pad from operating
     * @param recipients all of the other customers who will be receiving the message
     */
-  def BlockedReminder(blockedOrder: VehicleSpawnControl.Order, recipients: Seq[VehicleSpawnPad.VehicleOrder]): Unit = {
+private def BlockedReminder(blockedOrder: VehicleSpawnControl.Order, recipients: Seq[VehicleSpawnPad.VehicleOrder]): Unit = {
     val user = blockedOrder.vehicle
       .Seats(0).occupant
       .orElse(pad.Zone.GUID(blockedOrder.vehicle.Owner))
@@ -358,14 +358,14 @@ private val concealPlayer =
     * Cancel this vehicle order and inform the person who made it, if possible.
     * @param entry the order being cancelled
     */
-  def CancelOrder(entry: VehicleSpawnControl.Order, msg: Option[String]): Unit = {
+private def CancelOrder(entry: VehicleSpawnControl.Order, msg: Option[String]): Unit = {
     CancelOrder(entry.vehicle, entry.driver, msg)
   }
   /**
     * Cancel this vehicle order and inform the person who made it, if possible.
     * @param entry the order being cancelled
     */
-  def CancelOrder(entry: VehicleSpawnPad.VehicleOrder, msg: Option[String]): Unit = {
+private def CancelOrder(entry: VehicleSpawnPad.VehicleOrder, msg: Option[String]): Unit = {
     CancelOrder(entry.vehicle, entry.player, msg)
   }
   /**
@@ -373,7 +373,7 @@ private val concealPlayer =
     * @param vehicle the vehicle from the order being cancelled
     * @param player the player who would driver the vehicle from the order being cancelled
     */
-  def CancelOrder(vehicle: Vehicle, player: Player, msg: Option[String]): Unit = {
+private def CancelOrder(vehicle: Vehicle, player: Player, msg: Option[String]): Unit = {
     if (vehicle.Seats.values.count(_.isOccupied) == 0) {
       VehicleSpawnControl.DisposeSpawnedVehicle(vehicle, player, pad.Zone)
       pad.Zone.VehicleEvents ! VehicleSpawnPad.PeriodicReminder(player.Name, VehicleSpawnPad.Reminders.Cancelled, msg)
@@ -453,7 +453,7 @@ object VehicleSpawnControl {
     * @return whether or not a cancellation message is associated with these entry details,
     *         explaining why the order should be cancelled
     */
-  def validateOrderCredentials(
+private def validateOrderCredentials(
                                 inZoneThing: PlanetSideGameObject with WorldEntity with ZoneAware,
                                 player: Player,
                                 vehicle: Vehicle,
@@ -502,7 +502,7 @@ object VehicleSpawnControl {
     * @param player the player who would own the vehicle being disposed
     * @param zone the zone in which the vehicle is registered (should be located)
     */
-  def DisposeSpawnedVehicle(vehicle: Vehicle, player: Player, zone: Zone): Unit = {
+private def DisposeSpawnedVehicle(vehicle: Vehicle, player: Player, zone: Zone): Unit = {
     DisposeVehicle(vehicle, zone)
     zone.VehicleEvents ! VehicleSpawnPad.RevealPlayer(player.GUID)
   }
@@ -512,7 +512,7 @@ object VehicleSpawnControl {
     * @param vehicle the vehicle being disposed
     * @param zone the zone in which the vehicle is registered (should be located)
     */
-  def DisposeVehicle(vehicle: Vehicle, zone: Zone): Unit = {
+private def DisposeVehicle(vehicle: Vehicle, zone: Zone): Unit = {
     if (zone.Vehicles.contains(vehicle)) { //already added to zone
       vehicle.Actor ! Vehicle.Deconstruct(Some(0.seconds))
     } else { //just registered to zone

@@ -420,7 +420,7 @@ object EquipmentTerminalDefinition {
     *       `TerminalDefinition.MakeConstructionItem`<br>
     *       `TerminalDefinition.MakeKit`
     */
-  def BuildSimplifiedPattern(entry: Loadout.Simplification): Equipment = {
+private def BuildSimplifiedPattern(entry: Loadout.Simplification): Equipment = {
     import net.psforever.objects.loadouts.Loadout._
     entry match {
       case obj: ShorthandTool =>
@@ -461,7 +461,7 @@ object EquipmentTerminalDefinition {
     * @param msg the original packet carrying the request
     * @return an actionable message that explains how to process the request
     */
-  def Buy(
+private def Buy(
       page0Stock: Map[String, () => Equipment],
       page2Stock: Map[String, () => Equipment],
       exosuits: Map[String, (ExoSuitType.Value, Int)]

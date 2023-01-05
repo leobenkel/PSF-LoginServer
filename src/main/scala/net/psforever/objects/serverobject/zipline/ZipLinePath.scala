@@ -7,7 +7,7 @@ case class ZipLinePath(
     private val isTeleporter: Boolean,
     private val zipLinePoints: List[Vector3]
 ) {
-  def PathId: Integer              = pathId
-  def IsTeleporter: Boolean        = isTeleporter
-  def ZipLinePoints: List[Vector3] = zipLinePoints
+private def PathId: Integer              = pathId
+private def IsTeleporter: Boolean        = isTeleporter
+private def ZipLinePoints: List[Vector3] = zipLinePoints
 }

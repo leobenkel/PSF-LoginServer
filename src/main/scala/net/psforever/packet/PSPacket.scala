@@ -82,7 +82,7 @@ object PlanetSidePacketFlags extends Marshallable[PlanetSidePacketFlags] {
 object PacketHelpers {
 
   /** Used in certain instances where Codec defintions are stubbed out */
-  def emptyCodec[T](instance: T) = {
+  private def emptyCodec[T](instance: T) = {
     def to(pkt: T)    = HNil
     def from(a: HNil) = instance
     Codec[HNil].xmap[T](from, to)
@@ -130,12 +130,12 @@ object PacketHelpers {
     * NOTE: enumerations in scala can't be represented by more than an Int anyways, so this conversion shouldn't matter.
     * This is only to overload createEnumerationCodec to work with uint32[L] codecs (which are Long)
     */
-  def createLongEnumerationCodec[E <: Enumeration](enum: E, storageCodec: Codec[Long]): Codec[E#Value] = {
+  private def createLongEnumerationCodec[E <: Enumeration](enum: E, storageCodec: Codec[Long]): Codec[E#Value] = {
     createEnumerationCodec(enum, storageCodec.xmap[Int](_.toInt, _.toLong))
   }
 
   /** Create a Codec for enumeratum's IntEnum type */
-  def createIntEnumCodec[E <: IntEnumEntry](enum: IntEnum[E], storageCodec: Codec[Int]): Codec[E] = {
+  private def createIntEnumCodec[E <: IntEnumEntry](enum: IntEnum[E], storageCodec: Codec[Int]): Codec[E] = {
     type Struct = Int :: HNil
     val struct: Codec[Struct] = storageCodec.hlist
 
@@ -156,12 +156,12 @@ object PacketHelpers {
     struct.narrow[E](from, to)
   }
 
-  def createLongIntEnumCodec[E <: IntEnumEntry](enum: IntEnum[E], storageCodec: Codec[Long]): Codec[E] = {
+  private def createLongIntEnumCodec[E <: IntEnumEntry](enum: IntEnum[E], storageCodec: Codec[Long]): Codec[E] = {
     createIntEnumCodec(enum, storageCodec.xmap[Int](_.toInt, _.toLong))
   }
 
   /** Create a Codec for enumeratum's Enum type */
-  def createEnumCodec[E <: EnumEntry](enum: Enum[E], storageCodec: Codec[Int]): Codec[E] = {
+  private def createEnumCodec[E <: EnumEntry](enum: Enum[E], storageCodec: Codec[Int]): Codec[E] = {
     type Struct = Int :: HNil
     val struct: Codec[Struct] = storageCodec.hlist
 
@@ -196,7 +196,7 @@ object PacketHelpers {
         if (a > 0x7f) Left(a) else Right(a)
     )
 
-  private def encodedStringSizeWithPad(pad: Int): Codec[Int] = encodedStringSize <~ ignore(pad)
+  def encodedStringSizeWithPad(pad: Int): Codec[Int] = encodedStringSize <~ ignore(pad)
 
   /** Codec for how PlanetSide represents strings on the wire */
   def encodedString: Codec[String] = variableSizeBytes(encodedStringSize, ascii)
@@ -241,7 +241,7 @@ object PacketHelpers {
     )
 
   // TODO: make the function below work as there are places it should be used
-  /*private def encodedStringSizeWithLimit(limit : Int) : Codec[Int] = {
+  /*def encodedStringSizeWithLimit(limit : Int) : Codec[Int] = {
     either(bool, uint(15), uint(7)).
       exmap[Int](
         (a : Either[Int, Int]) => {
@@ -262,7 +262,7 @@ object PacketHelpers {
         }
     )
   }
-  def encodedStringWithLimit(limit : Int) : Codec[String] = variableSizeBytes(encodedStringSizeWithLimit(limit), ascii)
+def encodedStringWithLimit(limit : Int) : Codec[String] = variableSizeBytes(encodedStringSizeWithLimit(limit), ascii)
    */
 
   /**
@@ -276,7 +276,7 @@ object PacketHelpers {
     * @see codec\package.scala, listOfN
     * @return a codec that works on a List of A
     */
-  def listOfNAligned[A](countCodec: Codec[Long], alignment: Int, valueCodec: Codec[A]): Codec[List[A]] = {
+  private def listOfNAligned[A](countCodec: Codec[Long], alignment: Int, valueCodec: Codec[A]): Codec[List[A]] = {
     countCodec
       .flatZip { count => new AlignedListCodec(countCodec, valueCodec, alignment, Some(count)) }
       .narrow[List[A]](
@@ -304,7 +304,7 @@ object PacketHelpers {
     * @see codec\package.scala, provides
     * @return a codec that works on a List of A but excludes the size from the encoding
     */
-  def listOfNSized[A](size: Long, codec: Codec[A]): Codec[List[A]] =
+  private def listOfNSized[A](size: Long, codec: Codec[A]): Codec[List[A]] =
     PacketHelpers.listOfNAligned(provide(if (size < 0) 0 else size), 0, codec)
 
   /**
@@ -316,7 +316,7 @@ object PacketHelpers {
     * @param target codec that decodes the value
     * @return `Codec` that behaves the same as `target` but resets the contents of the vector as if `Codec` were never applied
     */
-  def peek[A](target: Codec[A]): Codec[A] =
+  private def peek[A](target: Codec[A]): Codec[A] =
     new Codec[A] {
       def sizeBound            = target.sizeBound
       def encode(a: A)         = Attempt.Successful(BitVector.empty)
@@ -372,7 +372,7 @@ private class AlignedListCodec[A](
     * @param buffer the encoded bits in the `List`, preceded by the alignment bits
     * @return the decoded `List`
     */
-  def decode(buffer: BitVector) = {
+  def decode(buffer: BitVector): Attempt[DecodeResult[List[A]]] = {
     val lim = Option(if (limit.isDefined) limit.get.asInstanceOf[Int] else 0) //TODO potentially unsafe size conversion
     Decoder.decodeCollect[List, A](valueCodec, lim)(buffer.drop(alignment))
   }
@@ -383,7 +383,7 @@ private class AlignedListCodec[A](
     * Unchanged from original.
     * @return the size as calculated by the size of each element for each element
     */
-  def sizeBound =
+  def sizeBound: SizeBound =
     limit match {
       case None      => SizeBound.unknown
       case Some(lim) => valueCodec.sizeBound * lim

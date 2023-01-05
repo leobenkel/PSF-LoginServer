@@ -65,7 +65,7 @@ private val commonBehavior: Receive = {
   }
 
   /** behaviors that are valid while no sequence of events is defined; the hart is inert */
-  def grounded: Receive = commonBehavior
+private def grounded: Receive = commonBehavior
     .orElse {
       case HartTimer.PairWith(_, pad, shuttle, from) =>
         pairWith(pad, shuttle, from)
@@ -74,7 +74,7 @@ private val commonBehavior: Receive = {
     }
 
   /** behaviors that are valid after a sequence of events is defined; the hart is active */
-  def flightsScheduled: Receive = commonBehavior
+private def flightsScheduled: Receive = commonBehavior
     .orElse {
       case HartTimer.PairWith(_, pad, shuttle, from) =>
         pairWith(pad, shuttle, from)
@@ -132,14 +132,14 @@ private val commonBehavior: Receive = {
       case _ => ;
     }
 
-  def receive: Receive = grounded
+def receive: Receive = grounded
 
-  def pairWith(pad: PlanetSideGUID, shuttle: PlanetSideGUID, from: ActorRef): Unit = {
+private def pairWith(pad: PlanetSideGUID, shuttle: PlanetSideGUID, from: ActorRef): Unit = {
     padEvents.subscribe(from, to = "")
     padAndShuttlePairs = (padAndShuttlePairs :+ (pad, shuttle)).distinct
   }
 
-  def nextEvent(next: Int): Unit = {
+private def nextEvent(next: Int): Unit = {
     val currEvent = sequence(sequenceIndex)
     val event = sequence(next)
     sequenceIndex = next
@@ -187,7 +187,7 @@ object HartTimer {
     * @param time how long has the current event in th sequence been occurring
     * @return the `OrbitalShuttleEvent` data
     */
-  def analyzeEvent(
+private def analyzeEvent(
                     event: HartEvent,
                     padAndShuttlePairs: List[(PlanetSideGUID, PlanetSideGUID)],
                     time: Option[Long] = None

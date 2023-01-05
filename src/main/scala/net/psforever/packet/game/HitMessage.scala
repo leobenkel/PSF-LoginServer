@@ -18,8 +18,8 @@ final case class HitMessage(
     unk4: Option[Int]
 ) extends PlanetSideGamePacket {
   type Packet = HitMessage
-  def opcode = GamePacketOpcode.HitMessage
-  def encode = HitMessage.encode(this)
+def opcode = GamePacketOpcode.HitMessage
+def encode = HitMessage.encode(this)
 }
 
 object HitMessage extends Marshallable[HitMessage] {

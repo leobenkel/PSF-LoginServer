@@ -16,7 +16,7 @@ final case class Adversarial(attacker: SourceEntry, defender: SourceEntry, imple
   * The outcome of the damage interaction, after all the numbers have been processed and properly applied.
   */
 final case class DamageResult(targetBefore: SourceEntry, targetAfter: SourceEntry, interaction: DamageInteraction) {
-  def adversarial: Option[Adversarial] = {
+private def adversarial: Option[Adversarial] = {
     interaction.adversarial match {
       case Some(adversarial) => Some(Adversarial(adversarial.attacker, targetAfter, adversarial.implement))
       case None =>              None

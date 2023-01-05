@@ -21,8 +21,8 @@ final case class TargetRequest(target_guid: PlanetSideGUID, unk: Boolean)
   */
 final case class TargetingImplantRequest(target_list: List[TargetRequest]) extends PlanetSideGamePacket {
   type Packet = TargetingImplantRequest
-  def opcode = GamePacketOpcode.TargetingImplantRequest
-  def encode = TargetingImplantRequest.encode(this)
+def opcode = GamePacketOpcode.TargetingImplantRequest
+def encode = TargetingImplantRequest.encode(this)
 }
 
 object TargetingImplantRequest extends Marshallable[TargetingImplantRequest] {

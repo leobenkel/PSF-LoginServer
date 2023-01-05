@@ -18,9 +18,9 @@ final case class Rectangle(top: Float, right: Float, base: Float, left: Float, i
   assert(right > left, s"right needs to be greater than left - $right > $left")
   assert(top > base, s"top needs to be greater than base - $top > $base")
 
-  def center: Point = Point((right + left) * 0.5f, (top + base) * 0.5f, inPlane)
+private def center: Point = Point((right + left) * 0.5f, (top + base) * 0.5f, inPlane)
 
-  def moveCenter(point: geometry.Point): Rectangle = {
+private def moveCenter(point: geometry.Point): Rectangle = {
     point match {
       case p: Point if inPlane == p.inPlane =>
         val halfWidth = (right - left) * 0.5f
@@ -41,6 +41,6 @@ object Rectangle {
     * @param left the nearest "horizontal" coordinate
     * @return a `Rectangle` entity
     */
-  def apply(top: Float, right: Float, base: Float, left: Float): Rectangle =
+def apply(top: Float, right: Float, base: Float, left: Float): Rectangle =
     Rectangle(top, right, base, left, AxisAlignment.XY)
 }

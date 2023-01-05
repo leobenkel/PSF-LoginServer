@@ -11,8 +11,8 @@ import scodec.codecs._
   */
 final case class ActionResultMessage(successful: Boolean, errorCode: Option[Long]) extends PlanetSideGamePacket {
   type Packet = ActionResultMessage
-  def opcode = GamePacketOpcode.ActionResultMessage
-  def encode = ActionResultMessage.encode(this)
+def opcode = GamePacketOpcode.ActionResultMessage
+def encode = ActionResultMessage.encode(this)
 }
 
 object ActionResultMessage extends Marshallable[ActionResultMessage] {
@@ -21,14 +21,14 @@ object ActionResultMessage extends Marshallable[ActionResultMessage] {
     * A message where the result is always a pass.
     * @return an `ActionResultMessage` object
     */
-  def Pass: ActionResultMessage = ActionResultMessage(true, None)
+private def Pass: ActionResultMessage = ActionResultMessage(true, None)
 
   /**
     * A message where the result is always a failure.
     * @param error the error code
     * @return an `ActionResultMessage` object
     */
-  def Fail(error: Long): ActionResultMessage = ActionResultMessage(false, Some(error))
+private def Fail(error: Long): ActionResultMessage = ActionResultMessage(false, Some(error))
 
   implicit val codec: Codec[ActionResultMessage] = (
     ("successful" | bool) >>:~ { res =>

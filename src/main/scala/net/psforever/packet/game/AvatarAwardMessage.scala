@@ -11,8 +11,8 @@ import shapeless.{::, HNil}
   * Base class for all merit commendation advancement stages.
   */
 sealed trait AwardOption {
-  def value: Long
-  def completion: Long
+private def value: Long
+private def completion: Long
 }
 /**
   * Display this award's development progress.
@@ -30,7 +30,7 @@ final case class AwardProgress(value: Long, completion: Long) extends AwardOptio
   */
 final case class AwardQualificationProgress(value: Long) extends AwardOption {
   /** zero'd as the value is not reported here */
-  def completion: Long = 0L
+private def completion: Long = 0L
 }
 /**
   * Display this award as completed.
@@ -39,7 +39,7 @@ final case class AwardQualificationProgress(value: Long) extends AwardOption {
   */
 final case class AwardCompletion(value: Long) extends AwardOption {
   /** same as the parameter value */
-  def completion: Long = value
+private def completion: Long = value
 }
 
 /**
@@ -72,12 +72,12 @@ final case class AvatarAwardMessage(
                                    )
   extends PlanetSideGamePacket {
   type Packet = AvatarAwardMessage
-  def opcode = GamePacketOpcode.AvatarAwardMessage
-  def encode = AvatarAwardMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarAwardMessage
+def encode = AvatarAwardMessage.encode(this)
 }
 
 object AvatarAwardMessage extends Marshallable[AvatarAwardMessage] {
-  def apply(meritCommendation: MeritCommendation.Value, state: AwardOption):AvatarAwardMessage =
+def apply(meritCommendation: MeritCommendation.Value, state: AwardOption):AvatarAwardMessage =
     AvatarAwardMessage(meritCommendation, state, unk = 0)
 
   private val qualification_codec: Codec[AwardOption] = {

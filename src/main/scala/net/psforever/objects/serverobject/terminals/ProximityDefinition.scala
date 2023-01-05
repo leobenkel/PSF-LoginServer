@@ -23,27 +23,27 @@ trait ProximityDefinition {
   private val targetValidation: mutable.HashMap[EffectTarget.Category.Value, PlanetSideGameObject => Boolean] =
     new mutable.HashMap[EffectTarget.Category.Value, PlanetSideGameObject => Boolean]()
 
-  def Interval: FiniteDuration = interval
+private def Interval: FiniteDuration = interval
 
-  def Interval_=(amount: Int): FiniteDuration = {
+private def Interval_=(amount: Int): FiniteDuration = {
     Interval_=(Duration(amount, "milliseconds"))
   }
 
-  def Interval_=(amount: FiniteDuration): FiniteDuration = {
+private def Interval_=(amount: FiniteDuration): FiniteDuration = {
     interval = amount
     Interval
   }
 
-  def UseRadius: Float = useRadius
+private def UseRadius: Float = useRadius
 
-  def UseRadius_=(radius: Float): Float = {
+private def UseRadius_=(radius: Float): Float = {
     useRadius = radius
     UseRadius
   }
 
-  def TargetValidation: mutable.HashMap[EffectTarget.Category.Value, PlanetSideGameObject => Boolean] = targetValidation
+private def TargetValidation: mutable.HashMap[EffectTarget.Category.Value, PlanetSideGameObject => Boolean] = targetValidation
 
-  def Validations: Seq[PlanetSideGameObject => Boolean] = {
+private def Validations: Seq[PlanetSideGameObject => Boolean] = {
     targetValidation.headOption match {
       case Some(_) =>
         targetValidation.values.toSeq

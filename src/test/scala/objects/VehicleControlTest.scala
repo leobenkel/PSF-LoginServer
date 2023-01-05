@@ -1072,7 +1072,7 @@ object VehicleControlTest {
   private val avatar1 = Avatar(0, "test1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
   private val avatar2 = Avatar(1, "test2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
 
-  def checkCanNotMount(probe: TestProbe, id: String): Unit = {
+private def checkCanNotMount(probe: TestProbe, id: String): Unit = {
     val reply = probe.receiveOne(Duration.create(250, "ms"))
     reply match {
       case msg: Mountable.MountMessages =>
@@ -1082,7 +1082,7 @@ object VehicleControlTest {
     }
   }
 
-  def checkCanMount(probe: TestProbe, id: String): Unit = {
+private def checkCanMount(probe: TestProbe, id: String): Unit = {
     val reply = probe.receiveOne(Duration.create(250, "ms"))
     reply match {
       case msg: Mountable.MountMessages =>

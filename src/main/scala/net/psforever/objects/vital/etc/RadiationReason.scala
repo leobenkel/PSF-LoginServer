@@ -22,18 +22,18 @@ final case class RadiationReason(
                                    damageModel: DamageAndResistance,
                                    radiationShielding: Float
                                  ) extends DamageReason {
-  def resolution: DamageResolution.Value = DamageResolution.Radiation
+private def resolution: DamageResolution.Value = DamageResolution.Radiation
 
-  def source: DamageProperties = projectile.profile
+private def source: DamageProperties = projectile.profile
 
-  def same(test: DamageReason): Boolean = {
+private def same(test: DamageReason): Boolean = {
     test match {
       case o: RadiationReason => o.projectile.id == projectile.id //can only be another projectile with the same uid
       case _ => false
     }
   }
 
-  def adversary: Option[SourceEntry] = Some(projectile.owner)
+private def adversary: Option[SourceEntry] = Some(projectile.owner)
 
   override def unstructuredModifiers: List[DamageModifiers.Mod] = List(ShieldAgainstRadiation)
 
@@ -58,7 +58,7 @@ object RadiationDamageModifiers {
   * determine by how much the traversed armor's shielding reduces the damage.
   */
 case object ShieldAgainstRadiation extends RadiationDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: RadiationReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: RadiationReason): Int = {
     if (data.resolution == DamageResolution.Radiation) {
       data.target match {
         case _: PlayerSource =>
@@ -78,7 +78,7 @@ case object ShieldAgainstRadiation extends RadiationDamageModifiers.Mod {
   * where the specific damage component is `Splash`.
   */
 case object InfantryAggravatedRadiation extends RadiationDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: RadiationReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: RadiationReason): Int = {
     ProjectileDamageModifierFunctions.baseAggravatedFormula(
       DamageResolution.Radiation,
       DamageType.Splash
@@ -93,7 +93,7 @@ case object InfantryAggravatedRadiation extends RadiationDamageModifiers.Mod {
   * This is called "burning" regardless of what the active aura effect actually is.
   */
 case object InfantryAggravatedRadiationBurn extends RadiationDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: RadiationReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: RadiationReason): Int = {
     ProjectileDamageModifierFunctions.baseAggravatedBurnFormula(
       DamageResolution.Radiation,
       DamageType.Splash

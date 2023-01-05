@@ -4,17 +4,18 @@ package net.psforever.objects.zones
 import net.psforever.objects.serverobject.PlanetSideServerObject
 import net.psforever.objects.zones.blockmap.SectorPopulation
 
-trait InteractsWithZone
-  extends PlanetSideServerObject {
+trait InteractsWithZone extends PlanetSideServerObject {
+
   /** interactions for this particular entity is allowed */
   private var _allowInteraction: Boolean = true
+
   /** maximum interaction range used to generate the commonly tested sector */
   private var interactionRange: Float = 0.1f
 
   /**
     * If the interactive permissions of this entity change.
     */
-  def allowInteraction: Boolean = _allowInteraction
+  private def allowInteraction: Boolean = _allowInteraction
 
   /**
     * If the interactive permissions of this entity change,
@@ -22,14 +23,14 @@ trait InteractsWithZone
     * @param permit whether or not interaction is permitted
     * @return whether or not interaction is permitted
     */
-  def allowInteraction_=(permit: Boolean): Boolean = {
+  private def allowInteraction_=(permit: Boolean): Boolean = {
     val before = _allowInteraction
     _allowInteraction = permit
     if (before != permit) {
       if (permit) {
         doInteractions()
       } else {
-        interactions.foreach ( _.resetInteraction(target = this) )
+        interactions.foreach(_.resetInteraction(target = this))
       }
     }
     _allowInteraction
@@ -45,25 +46,25 @@ trait InteractsWithZone
     interactions
   }
 
-  def interaction(): List[ZoneInteraction] = interactions
+  private def interaction(): List[ZoneInteraction] = interactions
 
-  def getInteractionSector(): SectorPopulation = {
+  private def getInteractionSector(): SectorPopulation = {
     this.Zone.blockMap.sector(this.Position, interactionRange)
   }
 
-  def doInteractions(): Unit = {
+  private def doInteractions(): Unit = {
     val sector = getInteractionSector()
     //println(sector.environmentList.map { _.attribute }.mkString(" "))
     interactions.foreach { _.interaction(sector, target = this) }
   }
 
-  def zoneInteractions(): Unit = {
+  private def zoneInteractions(): Unit = {
     if (_allowInteraction) {
       doInteractions()
     }
   }
 
-  def resetInteractions(): Unit = {
+  private def resetInteractions(): Unit = {
     interactions.foreach { _.resetInteraction(target = this) }
   }
 }
@@ -76,6 +77,7 @@ trait ZoneInteractionType
   * @see `Zone`
   */
 trait ZoneInteraction {
+
   /**
     * A categorical descriptor for this interaction.
     */

@@ -15,8 +15,8 @@ import scodec.codecs._
 final case class ActionCancelMessage(player_guid: PlanetSideGUID, object_guid: PlanetSideGUID, unk: Int)
     extends PlanetSideGamePacket {
   type Packet = ActionCancelMessage
-  def opcode = GamePacketOpcode.ActionCancelMessage
-  def encode = ActionCancelMessage.encode(this)
+def opcode = GamePacketOpcode.ActionCancelMessage
+def encode = ActionCancelMessage.encode(this)
 }
 
 object ActionCancelMessage extends Marshallable[ActionCancelMessage] {

@@ -43,7 +43,7 @@ object WeaponData extends Marshallable[WeaponData] {
     * @param ammo the ammunition object
     * @return a `WeaponData` object
     */
-  def apply(
+def apply(
       unk1: Int,
       unk2: Int,
       cls: Int,
@@ -79,7 +79,7 @@ object WeaponData extends Marshallable[WeaponData] {
     * @param ammo the ammunition object
     * @return a `WeaponData` object
     */
-  def apply(
+def apply(
       unk1: Int,
       unk2: Int,
       fire_mode: Int,
@@ -121,7 +121,7 @@ object WeaponData extends Marshallable[WeaponData] {
     * @param ammo2 the second ammunition object
     * @return a `WeaponData` object
     */
-  def apply(
+def apply(
       unk1: Int,
       unk2: Int,
       fire_mode: Int,

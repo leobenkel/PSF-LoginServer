@@ -12,7 +12,7 @@ object IFFLocks {
     *
     * @param lock the `IFFLock` object that has been resecured
     */
-  def FinishResecuringIFFLock(lock: IFFLock)(): Unit = {
+private def FinishResecuringIFFLock(lock: IFFLock)(): Unit = {
     val zone = lock.Zone
     lock.Zone.LocalEvents ! LocalServiceMessage(
       zone.id,

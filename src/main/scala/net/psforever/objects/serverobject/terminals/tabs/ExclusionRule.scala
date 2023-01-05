@@ -21,7 +21,7 @@ trait ExclusionRule {
     * @return `true`, if the item qualifies this test and should be excluded;
     *        `false` if the item did not pass the test and can be included
     */
-  def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean
+private def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean
 }
 
 /**
@@ -30,7 +30,7 @@ trait ExclusionRule {
   * @param illegalSubtype the banned exo-suit subtype
   */
 final case class NoExoSuitRule(illegalSuit: ExoSuitType.Value, illegalSubtype: Int = 0) extends ExclusionRule {
-  def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
+private def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
     obj match {
       case exosuit: ExoSuitType.Value                 => exosuit == illegalSuit
       case (exosuit: ExoSuitType.Value, subtype: Int) => exosuit == illegalSuit && subtype == illegalSubtype
@@ -44,7 +44,7 @@ final case class NoExoSuitRule(illegalSuit: ExoSuitType.Value, illegalSubtype: I
   * @param illegalDefinition the definition entry for the specific type of equipment
   */
 final case class NoEquipmentRule(illegalDefinition: EquipmentDefinition) extends ExclusionRule {
-  def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
+private def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
     obj match {
       case equipment: Equipment => equipment.Definition eq illegalDefinition
       case _                    => false
@@ -56,7 +56,7 @@ final case class NoEquipmentRule(illegalDefinition: EquipmentDefinition) extends
   * Do not allow cavern equipment.
   */
 case object NoCavernEquipmentRule extends ExclusionRule {
-  def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
+private def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
     obj match {
       case equipment: Equipment => GlobalDefinitions.isCavernWeapon(equipment.Definition)
       case _                    => false
@@ -69,7 +69,7 @@ case object NoCavernEquipmentRule extends ExclusionRule {
   * only if the facility is subject to the benefit of an appropriate cavern perk.
   */
 case object CavernEquipmentQuestion extends ExclusionRule {
-  def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
+private def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
     obj match {
       case equipment: Equipment =>
         import net.psforever.objects.serverobject.structures.Building
@@ -95,7 +95,7 @@ case object CavernEquipmentQuestion extends ExclusionRule {
   * @param illegalDefinition the definition entry for the specific type of vehicle
   */
 final case class NoVehicleRule(illegalDefinition: VehicleDefinition) extends ExclusionRule {
-  def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
+private def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
     obj match {
       case vehicleDef: VehicleDefinition => vehicleDef eq illegalDefinition
       case _                => false
@@ -108,7 +108,7 @@ final case class NoVehicleRule(illegalDefinition: VehicleDefinition) extends Exc
   * only if the facility is subject to the benefit of an appropriate cavern perk.
   */
 case object CavernVehicleQuestion extends ExclusionRule {
-  def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
+private def checkRule(player: Player, msg: ItemTransactionMessage, obj: Any): Boolean = {
     obj match {
       case vehicle: Vehicle =>
         import net.psforever.objects.serverobject.structures.Building

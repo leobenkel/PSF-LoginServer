@@ -35,12 +35,12 @@ class ProximityTerminalControl(term: Terminal with ProximityUnit)
     with DamageableAmenity
     with RepairableAmenity
     with AmenityAutoRepair {
-  def FactionObject    = term
-  def HackableObject   = term
-  def TerminalObject   = term
-  def DamageableObject = term
-  def RepairableObject = term
-  def AutoRepairObject = term
+private def FactionObject    = term
+private def HackableObject   = term
+private def TerminalObject   = term
+private def DamageableObject = term
+private def RepairableObject = term
+private def AutoRepairObject = term
 
 private var terminalAction: Cancellable             = Default.Cancellable
 private val callbacks: mutable.ListBuffer[ActorRef] = new mutable.ListBuffer[ActorRef]()
@@ -58,7 +58,7 @@ private val commonBehavior: Receive = checkBehavior
         log.warn(s"unexpected format for CommonMessages.Unuse in this context")
     }
 
-  def poweredStateLogic: Receive =
+private def poweredStateLogic: Receive =
     commonBehavior
       .orElse(hackableBehavior)
       .orElse {
@@ -117,7 +117,7 @@ private val commonBehavior: Receive = checkBehavior
         case _ =>
       }
 
-  def unpoweredStateLogic : Receive = commonBehavior
+private def unpoweredStateLogic : Receive = commonBehavior
     .orElse {
       case CommonMessages.Use(_, _) =>
         log.warn(s"unexpected format for CommonMessages.Use in this context")
@@ -142,7 +142,7 @@ private val commonBehavior: Receive = checkBehavior
     isPowered && super.tryAutoRepair()
   }
 
-  def Use(target: PlanetSideGameObject, zone: String, callback: ActorRef): Unit = {
+private def Use(target: PlanetSideGameObject, zone: String, callback: ActorRef): Unit = {
     val hadNoUsers = term.NumberUsers == 0
     if (term.AddUser(target)) {
       log.trace(s"ProximityTerminal.Use: unit ${term.Definition.Name}@${term.GUID.guid} will act on $target")
@@ -166,7 +166,7 @@ private val commonBehavior: Receive = checkBehavior
     }
   }
 
-  def Unuse(target: PlanetSideGameObject, zone: String): Unit = {
+private def Unuse(target: PlanetSideGameObject, zone: String): Unit = {
     val whereTarget   = term.Targets.indexWhere(_ eq target)
     val previousUsers = term.NumberUsers
     val hadUsers      = previousUsers > 0
@@ -188,7 +188,7 @@ private val commonBehavior: Receive = checkBehavior
     }
   }
 
-  def powerTurnOffCallback() : Unit = {
+private def powerTurnOffCallback() : Unit = {
     stopAutoRepair()
     //clear effect callbacks
     terminalAction.cancel()
@@ -203,7 +203,7 @@ private val commonBehavior: Receive = checkBehavior
     }
   }
 
-  def powerTurnOnCallback() : Unit = {
+private def powerTurnOnCallback() : Unit = {
     tryAutoRepair()
   }
 
@@ -219,7 +219,7 @@ object ProximityTerminalControl {
     * @param terminal the proximity-based unit
     * @param target the object being affected by the unit
     */
-  def selectAndTryProximityUnitBehavior(
+private def selectAndTryProximityUnitBehavior(
                                    callback: ActorRef,
                                    terminal: Terminal with ProximityUnit,
                                    target: PlanetSideGameObject
@@ -240,7 +240,7 @@ object ProximityTerminalControl {
     * @param unit the medical terminal
     * @param target the player being healed
     */
-  def HealthAndArmorTerminal(unit: Terminal with ProximityUnit, target: Player): Boolean = {
+private def HealthAndArmorTerminal(unit: Terminal with ProximityUnit, target: Player): Boolean = {
     val medDef     = unit.Definition.asInstanceOf[MedicalTerminalDefinition]
     val healAmount = medDef.HealAmount
     val healthFull: Boolean = if (healAmount != 0 && target.Health < target.MaxHealth) {
@@ -267,7 +267,7 @@ object ProximityTerminalControl {
     *                    10 by default
     * @return whether the player can be repaired for any more health points
     */
-  def HealAction(tplayer: Player, healValue: Int = 10): Boolean = {
+private def HealAction(tplayer: Player, healValue: Int = 10): Boolean = {
     tplayer.Health = tplayer.Health + healValue
     val zone = tplayer.Zone
     zone.AvatarEvents ! AvatarServiceMessage(
@@ -285,7 +285,7 @@ object ProximityTerminalControl {
     *                    10 by default
     * @return whether the player can be repaired for any more armor points
     */
-  def ArmorRepairAction(tplayer: Player, repairValue: Int = 10): Boolean = {
+private def ArmorRepairAction(tplayer: Player, repairValue: Int = 10): Boolean = {
     tplayer.Armor = tplayer.Armor + repairValue
     val zone = tplayer.Zone
     zone.AvatarEvents ! AvatarServiceMessage(
@@ -302,7 +302,7 @@ object ProximityTerminalControl {
     * @param unit the terminal
     * @param target the vehicle being repaired
     */
-  def VehicleRepairTerminal(unit: Terminal with ProximityUnit, target: Vehicle): Boolean = {
+private def VehicleRepairTerminal(unit: Terminal with ProximityUnit, target: Vehicle): Boolean = {
     val medDef     = unit.Definition.asInstanceOf[MedicalTerminalDefinition]
     val healAmount = medDef.HealAmount
     val maxHealth = target.MaxHealth
@@ -334,7 +334,7 @@ object ProximityTerminalControl {
     * @param unit the terminal
     * @param target the player with weapons being recharged
     */
-  def WeaponRechargeTerminal(unit: Terminal with ProximityUnit, target: Player): Boolean = {
+private def WeaponRechargeTerminal(unit: Terminal with ProximityUnit, target: Player): Boolean = {
     val result = WeaponsBeingRechargedWithSomeAmmunition(
       unit.Definition.asInstanceOf[WeaponRechargeTerminalDefinition].AmmoAmount,
       target.Holsters().map { _.Equipment }.flatten.toIterable ++ target.Inventory.Items.map { _.obj }
@@ -360,7 +360,7 @@ object ProximityTerminalControl {
     * @param unit the terminal
     * @param target the vehicle with weapons being recharged
     */
-  def WeaponRechargeTerminal(unit: Terminal with ProximityUnit, target: Vehicle): Boolean = {
+private def WeaponRechargeTerminal(unit: Terminal with ProximityUnit, target: Vehicle): Boolean = {
     val result = WeaponsBeingRechargedWithSomeAmmunition(
       unit.Definition.asInstanceOf[WeaponRechargeTerminalDefinition].AmmoAmount,
       target.Weapons.values.collect { case e if e.Equipment.nonEmpty => e.Equipment.get }
@@ -386,7 +386,7 @@ object ProximityTerminalControl {
     *                  weapons whose ammo will be increased will be isolated
     * @return na
     */
-  def WeaponsBeingRechargedWithSomeAmmunition(
+private def WeaponsBeingRechargedWithSomeAmmunition(
                                                ammoAdded: Int,
                                                equipment: Iterable[Equipment]
                                              ): Iterable[(Tool, Iterable[Tool.FireModeSlot])] = {
@@ -405,7 +405,7 @@ object ProximityTerminalControl {
     * @param slots the vehicle with weapons being recharged
     * @return ammunition slots that were affected
     */
-  def WeaponAmmoRecharge(
+private def WeaponAmmoRecharge(
                           ammoAdded: Int,
                           slots: List[Tool.FireModeSlot]
                         ): List[Tool.FireModeSlot] = {

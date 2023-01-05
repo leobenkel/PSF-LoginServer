@@ -14,27 +14,27 @@ import scala.concurrent.duration._
   */
 trait VehicleCapacitance {
   _: Actor =>
-  def CapacitanceObject: Vehicle
+private def CapacitanceObject: Vehicle
 
   protected var capacitor = Default.Cancellable
 
   startCapacitorTimer()
 
-  def capacitanceStop(): Unit = {
+private def capacitanceStop(): Unit = {
     capacitor.cancel()
   }
 
-  def capacitanceStopAndBlank(): Unit = {
+private def capacitanceStopAndBlank(): Unit = {
     capacitor.cancel()
     capacitor = Default.Cancellable
   }
 
-  def capacitancePostStop(): Unit = {
+private def capacitancePostStop(): Unit = {
     capacitanceStopAndBlank()
     CapacitanceObject.Capacitor = 0
   }
 
-  def capacitorBehavior: Receive = {
+private def capacitorBehavior: Receive = {
     case VehicleCapacitance.CapacitorCharge(amount) =>
       capacitorCharge(amount)
   }

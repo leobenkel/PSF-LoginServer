@@ -19,11 +19,11 @@ final case class RelatedA(slot: Int, subslot: Int) extends PlanetSideControlPack
     throw new IllegalArgumentException(s"slot number is out of range - $slot")
   }
 
-  def opcode = {
+def opcode = {
     val base = ControlPacketOpcode.RelatedA0.id
     ControlPacketOpcode(base + slot)
   }
-  def encode = RelatedA.encode(this).map(vect => vect.drop(8))
+def encode = RelatedA.encode(this).map(vect => vect.drop(8))
 }
 
 object RelatedA extends Marshallable[RelatedA] {
@@ -32,7 +32,7 @@ object RelatedA extends Marshallable[RelatedA] {
       ("subslot" | uint16) // the slot is big endian. see 0x00A42F76
   ).as[RelatedA]
 
-  def decodeWithOpcode(slot: ControlPacketOpcode.Value)(bits: BitVector) = {
+private def decodeWithOpcode(slot: ControlPacketOpcode.Value)(bits: BitVector) = {
     decode(ControlPacketOpcode.codec.encode(slot).require ++ bits)
   }
 }

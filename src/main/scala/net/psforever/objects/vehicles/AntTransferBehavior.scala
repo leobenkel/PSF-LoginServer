@@ -23,13 +23,13 @@ private var ntuChargingTick     = Default.Cancellable
   findChargeTargetFunc    = Vehicles.FindANTChargingSource
   findDischargeTargetFunc = Vehicles.FindANTDischargingTarget
 
-  def TransferMaterial = Ntu.Nanites
+private def TransferMaterial = Ntu.Nanites
 
-  def ChargeTransferObject: Vehicle with NtuContainer
+private def ChargeTransferObject: Vehicle with NtuContainer
 
-  def antBehavior: Receive = storageBehavior.orElse(transferBehavior)
+private def antBehavior: Receive = storageBehavior.orElse(transferBehavior)
 
-  def ActivatePanelsForChargingEvent(vehicle: NtuContainer): Unit = {
+private def ActivatePanelsForChargingEvent(vehicle: NtuContainer): Unit = {
     val obj = ChargeTransferObject
     val zone = obj.Zone
     zone.VehicleEvents ! VehicleServiceMessage(
@@ -39,7 +39,7 @@ private var ntuChargingTick     = Default.Cancellable
   }
 
   /** Charging */
-  def StartNtuChargingEvent(vehicle: NtuContainer): Unit = {
+private def StartNtuChargingEvent(vehicle: NtuContainer): Unit = {
     val obj = ChargeTransferObject
     val zone = obj.Zone
     zone.VehicleEvents ! VehicleServiceMessage(
@@ -48,7 +48,7 @@ private var ntuChargingTick     = Default.Cancellable
     ) // orb particle effect on
   }
 
-  def UpdateNtuUI(vehicle: Vehicle with NtuContainer): Unit = {
+private def UpdateNtuUI(vehicle: Vehicle with NtuContainer): Unit = {
     if (vehicle.Seats.values.exists(_.isOccupied)) {
       val display = scala.math.ceil(vehicle.NtuCapacitorScaled).toLong
       vehicle.Zone.VehicleEvents ! VehicleServiceMessage(
@@ -58,7 +58,7 @@ private var ntuChargingTick     = Default.Cancellable
     }
   }
 
-  def HandleChargingEvent(target: TransferContainer): Boolean = {
+private def HandleChargingEvent(target: TransferContainer): Boolean = {
     ntuChargingTick.cancel()
     val obj = ChargeTransferObject
     //log.trace(s"NtuCharging: Vehicle $guid is charging NTU capacitor.")
@@ -90,14 +90,14 @@ private var ntuChargingTick     = Default.Cancellable
     }
   }
 
-  def ReceiveAndDepositUntilFull(vehicle: Vehicle, amount: Float): Boolean = {
+private def ReceiveAndDepositUntilFull(vehicle: Vehicle, amount: Float): Boolean = {
     val isNotFull = (vehicle.NtuCapacitor += amount) < vehicle.Definition.MaxNtuCapacitor
     UpdateNtuUI(vehicle)
     isNotFull
   }
 
   /** Discharging */
-  def HandleDischargingEvent(target: TransferContainer): Boolean = {
+private def HandleDischargingEvent(target: TransferContainer): Boolean = {
     //log.trace(s"NtuDischarging: Vehicle $guid is discharging NTU into silo $silo_guid")
     val obj = ChargeTransferObject
     if (obj.NtuCapacitor > 0 && obj.DeploymentState == DriveState.Deployed) {
@@ -118,21 +118,21 @@ private var ntuChargingTick     = Default.Cancellable
     }
   }
 
-  def NoCharge(): Unit = {}
+private def NoCharge(): Unit = {}
 
-  def InitialCharge(): Unit = {
+private def InitialCharge(): Unit = {
     panelAnimationFunc = NoCharge
     val obj = ChargeTransferObject
     ActivatePanelsForChargingEvent(obj)
     StartNtuChargingEvent(obj)
   }
 
-  def InitialDischarge(): Unit = {
+private def InitialDischarge(): Unit = {
     panelAnimationFunc = NoCharge
     ActivatePanelsForChargingEvent(ChargeTransferObject)
   }
 
-  def WithdrawAndTransmit(vehicle: Vehicle, maxRequested: Float): Any = {
+private def WithdrawAndTransmit(vehicle: Vehicle, maxRequested: Float): Any = {
     val chargeable      = ChargeTransferObject
     var chargeToDeposit = Math.min(Math.min(chargeable.NtuCapacitor, 100), maxRequested)
     chargeable.NtuCapacitor -= chargeToDeposit
@@ -176,11 +176,11 @@ private var ntuChargingTick     = Default.Cancellable
     }
   }
 
-  def StopNtuBehavior(sender: ActorRef): Unit = TryStopChargingEvent(ChargeTransferObject)
+private def StopNtuBehavior(sender: ActorRef): Unit = TryStopChargingEvent(ChargeTransferObject)
 
-  def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {}
+private def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {}
 
-  def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {
+private def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {
     val chargeable = ChargeTransferObject
     if (chargeable.DeploymentState == DriveState.Deployed && transferEvent == TransferBehavior.Event.Discharging) {
       val chargeToDeposit = if (min == 0) {
@@ -203,7 +203,7 @@ private var ntuChargingTick     = Default.Cancellable
     }
   }
 
-  def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
+private def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
     val obj = ChargeTransferObject
     if (obj.DeploymentState == DriveState.Deployed &&
         transferEvent == TransferBehavior.Event.Charging &&

@@ -1443,7 +1443,7 @@ object GlobalDefinitions {
     * @param faction the faction
     * @return the `ToolDefinition` for the melee weapon
     */
-  def StandardMelee(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def StandardMelee(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => chainblade
       case PlanetSideEmpire.NC      => magcutter
@@ -1473,7 +1473,7 @@ object GlobalDefinitions {
     * @return thr `AmmoBoxDefinition` for the pistol's ammo
     * @see `GlobalDefinitions.StandardPistol`
     */
-  def StandardPistolAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def StandardPistolAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => bullet_9mm
       case PlanetSideEmpire.NC      => shotgun_shell
@@ -1488,7 +1488,7 @@ object GlobalDefinitions {
     * @param faction the faction
     * @return the `ToolDefinition` for the pistol
     */
-  def MediumPistol(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def MediumPistol(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => anniversary_guna
       case PlanetSideEmpire.NC      => anniversary_gun
@@ -1503,7 +1503,7 @@ object GlobalDefinitions {
     * @param faction the faction
     * @return the `ToolDefinition` for the rifle
     */
-  def MediumRifle(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def MediumRifle(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => cycler
       case PlanetSideEmpire.NC      => gauss
@@ -1519,7 +1519,7 @@ object GlobalDefinitions {
     * @return thr `AmmoBoxDefinition` for the rifle's ammo
     * @see `GlobalDefinitions.MediumRifle`
     */
-  def MediumRifleAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def MediumRifleAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => bullet_9mm
       case PlanetSideEmpire.NC      => bullet_9mm
@@ -1535,7 +1535,7 @@ object GlobalDefinitions {
     * @return thr `AmmoBoxDefinition` for the rifle's ammo
     * @see `GlobalDefinitions.MediumRifle`
     */
-  def MediumRifleAPAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def MediumRifleAPAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => bullet_9mm_AP
       case PlanetSideEmpire.NC      => bullet_9mm_AP
@@ -1550,7 +1550,7 @@ object GlobalDefinitions {
     * @param faction the faction
     * @return the `ToolDefinition` for the rifle
     */
-  def HeavyRifle(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def HeavyRifle(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => mini_chaingun
       case PlanetSideEmpire.NC      => r_shotgun
@@ -1566,7 +1566,7 @@ object GlobalDefinitions {
     * @return thr `AmmoBoxDefinition` for the rifle's ammo
     * @see `GlobalDefinitions.HeavyRifle`
     */
-  def HeavyRifleAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def HeavyRifleAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => bullet_9mm
       case PlanetSideEmpire.NC      => shotgun_shell
@@ -1582,7 +1582,7 @@ object GlobalDefinitions {
     * @return thr `AmmoBoxDefinition` for the rifle's ammo
     * @see `GlobalDefinitions.HeavyRifle`
     */
-  def HeavyRifleAPAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def HeavyRifleAPAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => bullet_9mm_AP
       case PlanetSideEmpire.NC      => shotgun_shell_AP
@@ -1596,7 +1596,7 @@ object GlobalDefinitions {
     * @param faction the faction
     * @return the `ToolDefinition` for the launcher
     */
-  def AntiVehicularLauncher(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def AntiVehicularLauncher(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => striker
       case PlanetSideEmpire.NC      => hunterseeker
@@ -1612,7 +1612,7 @@ object GlobalDefinitions {
     * @return thr `AmmoBoxDefinition` for the launcher's ammo
     * @see `GlobalDefinitions.AntiVehicular`
     */
-  def AntiVehicularAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def AntiVehicularAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => striker_missile_ammo
       case PlanetSideEmpire.NC      => hunter_seeker_missile
@@ -1621,7 +1621,7 @@ object GlobalDefinitions {
     }
   }
 
-  def MAXArms(subtype: Int, faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def MAXArms(subtype: Int, faction: PlanetSideEmpire.Value): ToolDefinition = {
     if (subtype == 1) {
       AA_MAX(faction)
     } else if (subtype == 2) {
@@ -1633,7 +1633,7 @@ object GlobalDefinitions {
     }
   }
 
-  def isMaxArms(tdef: ToolDefinition): Boolean = {
+  private def isMaxArms(tdef: ToolDefinition): Boolean = {
     tdef match {
       case `trhev_dualcycler` | `nchev_scattercannon` | `vshev_quasar` | `trhev_pounder` | `nchev_falcon` |
           `vshev_comet` | `trhev_burster` | `nchev_sparrow` | `vshev_starfire` =>
@@ -1643,7 +1643,7 @@ object GlobalDefinitions {
     }
   }
 
-  def AI_MAX(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def AI_MAX(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => trhev_dualcycler
       case PlanetSideEmpire.NC      => nchev_scattercannon
@@ -1652,7 +1652,7 @@ object GlobalDefinitions {
     }
   }
 
-  def AI_MAXAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def AI_MAXAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => dualcycler_ammo
       case PlanetSideEmpire.NC      => scattercannon_ammo
@@ -1661,7 +1661,7 @@ object GlobalDefinitions {
     }
   }
 
-  def AV_MAX(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def AV_MAX(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => trhev_pounder
       case PlanetSideEmpire.NC      => nchev_falcon
@@ -1670,7 +1670,7 @@ object GlobalDefinitions {
     }
   }
 
-  def AV_MAXAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def AV_MAXAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => pounder_ammo
       case PlanetSideEmpire.NC      => falcon_ammo
@@ -1679,7 +1679,7 @@ object GlobalDefinitions {
     }
   }
 
-  def AA_MAX(faction: PlanetSideEmpire.Value): ToolDefinition = {
+  private def AA_MAX(faction: PlanetSideEmpire.Value): ToolDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => trhev_burster
       case PlanetSideEmpire.NC      => nchev_sparrow
@@ -1688,7 +1688,7 @@ object GlobalDefinitions {
     }
   }
 
-  def AA_MAXAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
+  private def AA_MAXAmmo(faction: PlanetSideEmpire.Value): AmmoBoxDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => burster_ammo
       case PlanetSideEmpire.NC      => sparrow_ammo
@@ -1697,7 +1697,7 @@ object GlobalDefinitions {
     }
   }
 
-  def PortableMannedTurret(faction: PlanetSideEmpire.Value): TurretDeployableDefinition = {
+  private def PortableMannedTurret(faction: PlanetSideEmpire.Value): TurretDeployableDefinition = {
     faction match {
       case PlanetSideEmpire.TR      => portable_manned_turret_tr
       case PlanetSideEmpire.NC      => portable_manned_turret_nc
@@ -1712,7 +1712,7 @@ object GlobalDefinitions {
     * @param edef the `EquipmentDefinition` of the item
     * @return `true`, if it is a grenade-type weapon; `false`, otherwise
     */
-  def isGrenade(edef: EquipmentDefinition): Boolean = {
+  private def isGrenade(edef: EquipmentDefinition): Boolean = {
     edef match {
       case `frag_grenade` | `jammer_grenade` | `plasma_grenade` | `dynomite` =>
         true
@@ -1727,7 +1727,7 @@ object GlobalDefinitions {
     * @param edef the `EquipmentDefinition` of the item
     * @return `true`, if it is a grenade-type weapon; `false`, otherwise
     */
-  def isGrenadePack(edef: EquipmentDefinition): Boolean = {
+  private def isGrenadePack(edef: EquipmentDefinition): Boolean = {
     edef match {
       case `frag_cartridge` | `jammer_cartridge` | `plasma_cartridge` =>
         true
@@ -1743,7 +1743,7 @@ object GlobalDefinitions {
     * @param edef the `EquipmentDefinition` of the item
     * @return the faction alignment, or `Neutral`
     */
-  def isFactionWeapon(edef: EquipmentDefinition): PlanetSideEmpire.Value = {
+  private def isFactionWeapon(edef: EquipmentDefinition): PlanetSideEmpire.Value = {
     edef match {
       case `chainblade` | `repeater` | `anniversary_guna` | `cycler` | `mini_chaingun` | `striker` |
           `trhev_dualcycler` | `trhev_pounder` | `trhev_burster` =>
@@ -1765,7 +1765,7 @@ object GlobalDefinitions {
     * @param edef the `EquipmentDefinition` of the item
     * @return the faction alignment, or `Neutral`
     */
-  def isFactionEquipment(edef: EquipmentDefinition): PlanetSideEmpire.Value = {
+  private def isFactionEquipment(edef: EquipmentDefinition): PlanetSideEmpire.Value = {
     edef match {
       case `chainblade` | `repeater` | `anniversary_guna` | `cycler` | `mini_chaingun` | `striker` |
           `striker_missile_ammo` | `trhev_dualcycler` | `trhev_pounder` | `trhev_burster` | `dualcycler_ammo` |
@@ -1790,7 +1790,7 @@ object GlobalDefinitions {
     * @param edef the `EquipmentDefinition` of the item
     * @return `true`, if it is; otherwise, `false`
     */
-  def isCavernWeapon(edef: EquipmentDefinition): Boolean = {
+  private def isCavernWeapon(edef: EquipmentDefinition): Boolean = {
     edef match {
       case `spiker` | `maelstrom` | `radiator` => true
       case _                                   => false
@@ -1802,7 +1802,7 @@ object GlobalDefinitions {
     * @param edef the `EquipmentDefinition` of the item
     * @return `true`, if it is; otherwise, `false`
     */
-  def isCavernEquipment(edef: EquipmentDefinition): Boolean = {
+  private def isCavernEquipment(edef: EquipmentDefinition): Boolean = {
     edef match {
       case `spiker` | `maelstrom` | `radiator` | `ancient_ammo_combo` | `maelstrom_ammo` => true
       case _                                                                             => false
@@ -1814,7 +1814,7 @@ object GlobalDefinitions {
     * @param vdef the `VehicleDefinition` of the item
     * @return `true`, if it is; otherwise, `false`
     */
-  def isCavernVehicle(vdef: VehicleDefinition): Boolean = {
+  private def isCavernVehicle(vdef: VehicleDefinition): Boolean = {
     vdef match {
       case `router` | `switchblade` | `flail` => true
       case _                                  => false
@@ -1828,7 +1828,7 @@ object GlobalDefinitions {
     * @param edef the `EquipmentDefinition` of the item
     * @return `true`, if it is; otherwise, `false`
     */
-  def isSpecialEquipment(edef: EquipmentDefinition): Boolean = {
+  private def isSpecialEquipment(edef: EquipmentDefinition): Boolean = {
     edef match {
       case `super_medkit` | `super_armorkit` | `super_staminakit` | `katana` =>
         true
@@ -1844,7 +1844,7 @@ object GlobalDefinitions {
     * @return `true`, if the definition represents a battle frame robotics weapon;
     *         `false`, otherwise
     */
-  def isBattleFrameWeapon(tdef: EquipmentDefinition): Boolean = {
+  private def isBattleFrameWeapon(tdef: EquipmentDefinition): Boolean = {
     isBattleFrameWeaponForVS(tdef) || isBattleFrameWeaponForTR(tdef) || isBattleFrameWeaponForNC(tdef)
   }
 
@@ -1855,7 +1855,7 @@ object GlobalDefinitions {
     * @return `true`, if a battle frame robotics weapon and associated with the given faction;
     *         `false`, otherwise
     */
-  def isBattleFrameWeapon(tdef: EquipmentDefinition, faction: PlanetSideEmpire.Value): Boolean = {
+  private def isBattleFrameWeapon(tdef: EquipmentDefinition, faction: PlanetSideEmpire.Value): Boolean = {
     faction match {
       case PlanetSideEmpire.VS =>
         isBattleFrameWeaponForVS(tdef)
@@ -1868,7 +1868,7 @@ object GlobalDefinitions {
     }
   }
 
-  def isBattleFrameArmorSiphon(edef: EquipmentDefinition): Boolean = {
+  private def isBattleFrameArmorSiphon(edef: EquipmentDefinition): Boolean = {
     edef match {
       case `aphelion_armor_siphon` | `aphelion_armor_siphon_left` | `aphelion_armor_siphon_right` |
           `colossus_armor_siphon` | `colossus_armor_siphon_left` | `colossus_armor_siphon_right` |
@@ -1879,7 +1879,7 @@ object GlobalDefinitions {
     }
   }
 
-  def isBattleFrameNTUSiphon(edef: EquipmentDefinition): Boolean = {
+  private def isBattleFrameNTUSiphon(edef: EquipmentDefinition): Boolean = {
     edef match {
       case `aphelion_ntu_siphon` | `aphelion_ntu_siphon_left` | `aphelion_ntu_siphon_right` | `colossus_ntu_siphon` |
           `colossus_ntu_siphon_left` | `colossus_ntu_siphon_right` | `peregrine_ntu_siphon` |
@@ -1896,7 +1896,7 @@ object GlobalDefinitions {
     * @return `true`, if a battle frame robotics weapon and associated with the given faction;
     *         `false`, otherwise
     */
-  def isBattleFrameWeaponForVS(tdef: EquipmentDefinition): Boolean = {
+  private def isBattleFrameWeaponForVS(tdef: EquipmentDefinition): Boolean = {
     tdef match {
       case `aphelion_armor_siphon` | `aphelion_armor_siphon_left` | `aphelion_armor_siphon_right` | `aphelion_laser` |
           `aphelion_laser_left` | `aphelion_laser_right` | `aphelion_ntu_siphon` | `aphelion_ntu_siphon_left` |
@@ -1915,7 +1915,7 @@ object GlobalDefinitions {
     * @return `true`, if a battle frame robotics weapon and associated with the given faction;
     *         `false`, otherwise
     */
-  def isBattleFrameWeaponForTR(tdef: EquipmentDefinition): Boolean = {
+  private def isBattleFrameWeaponForTR(tdef: EquipmentDefinition): Boolean = {
     tdef match {
       case `colossus_armor_siphon` | `colossus_armor_siphon_left` | `colossus_armor_siphon_right` | `colossus_burster` |
           `colossus_burster_left` | `colossus_burster_right` | `colossus_chaingun` | `colossus_chaingun_left` |
@@ -1934,7 +1934,7 @@ object GlobalDefinitions {
     * @return `true`, if a battle frame robotics weapon and associated with the given faction;
     *         `false`, otherwise
     */
-  def isBattleFrameWeaponForNC(tdef: EquipmentDefinition): Boolean = {
+  private def isBattleFrameWeaponForNC(tdef: EquipmentDefinition): Boolean = {
     tdef match {
       case `peregrine_armor_siphon` | `peregrine_armor_siphon_left` | `peregrine_armor_siphon_right` |
           `peregrine_dual_machine_gun` | `peregrine_dual_machine_gun_left` | `peregrine_dual_machine_gun_right` |
@@ -1969,7 +1969,7 @@ object GlobalDefinitions {
     * @param vdef the `VehicleDefinition` of the vehicle
     * @return `true`, if it can; `false`, otherwise
     */
-  def isHoverVehicle(vdef: VehicleDefinition): Boolean = {
+  private def isHoverVehicle(vdef: VehicleDefinition): Boolean = {
     vdef match {
       case `twomanhoverbuggy` | `magrider` | `router` | `flail` =>
         true
@@ -1983,7 +1983,7 @@ object GlobalDefinitions {
     * @param vdef the `VehicleDefinition` of the vehicle
     * @return `true`, if it is; `false`, otherwise
     */
-  def isBattleFrameVehicle(vdef: VehicleDefinition): Boolean = {
+  private def isBattleFrameVehicle(vdef: VehicleDefinition): Boolean = {
     isBattleFrameGunnerVehicle(vdef) || isBattleFrameFlightVehicle(vdef)
   }
 
@@ -1993,7 +1993,7 @@ object GlobalDefinitions {
     * @param vdef the `VehicleDefinition` of the vehicle
     * @return `true`, if it is; `false`, otherwise
     */
-  def isBattleFrameGunnerVehicle(vdef: VehicleDefinition): Boolean = {
+  private def isBattleFrameGunnerVehicle(vdef: VehicleDefinition): Boolean = {
     vdef match {
       case `colossus_gunner` | `peregrine_gunner` | `aphelion_gunner` =>
         true
@@ -2009,7 +2009,7 @@ object GlobalDefinitions {
     * @param vdef the `VehicleDefinition` of the vehicle
     * @return `true`, if it is; `false`, otherwise
     */
-  def isBattleFrameFlightVehicle(vdef: VehicleDefinition): Boolean = {
+  private def isBattleFrameFlightVehicle(vdef: VehicleDefinition): Boolean = {
     vdef match {
       case `colossus_flight` | `peregrine_flight` | `aphelion_flight` =>
         true
@@ -2023,7 +2023,7 @@ object GlobalDefinitions {
     * @param vdef the `VehicleDefinition` of the vehicle
     * @return `true`, if it is; `false`, otherwise
     */
-  def canStationaryRotate(vdef: VehicleDefinition): Boolean = {
+  private def canStationaryRotate(vdef: VehicleDefinition): Boolean = {
     if (isFlightVehicle(vdef) || isHoverVehicle(vdef)) {
       true
     } else {
@@ -2060,7 +2060,7 @@ object GlobalDefinitions {
     * @param projectile the original projectile
     * @return the damage proxy projectiles, if they can be produced
     */
-  def getDamageProxy(projectile: Projectile, hitPosition: Vector3): List[Projectile] = {
+  private def getDamageProxy(projectile: Projectile, hitPosition: Vector3): List[Projectile] = {
     projectile.Definition.DamageProxy
       .flatMap { uoid =>
         ((uoid: @switch) match {

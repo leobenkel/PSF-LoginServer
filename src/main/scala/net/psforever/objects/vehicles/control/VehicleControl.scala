@@ -60,23 +60,23 @@ class VehicleControl(vehicle: Vehicle)
   //make control actors belonging to utilities when making control actor belonging to vehicle
   vehicle.Utilities.foreach { case (_, util) => util.Setup }
 
-  def MountableObject = vehicle
+private def MountableObject = vehicle
 
-  def JammableObject = vehicle
+private def JammableObject = vehicle
 
-  def FactionObject = vehicle
+private def FactionObject = vehicle
 
-  def DamageableObject = vehicle
+private def DamageableObject = vehicle
 
-  def SiphonableObject = vehicle
+private def SiphonableObject = vehicle
 
-  def RepairableObject = vehicle
+private def RepairableObject = vehicle
 
-  def ContainerObject = vehicle
+private def ContainerObject = vehicle
 
-  def InteractiveObject = vehicle
+private def InteractiveObject = vehicle
 
-  def CargoObject = vehicle
+private def CargoObject = vehicle
 
   SetInteraction(EnvironmentAttribute.Water, doInteractingWithWater)
   SetInteraction(EnvironmentAttribute.Lava, doInteractingWithLava)
@@ -99,7 +99,7 @@ class VehicleControl(vehicle: Vehicle)
   /** ... */
   private var passengerRadiationCloudTimer: Cancellable = Default.Cancellable
 
-  def receive: Receive = Enabled
+def receive: Receive = Enabled
 
   override def postStop(): Unit = {
     super.postStop()
@@ -114,7 +114,7 @@ class VehicleControl(vehicle: Vehicle)
     endAllCargoOperations()
   }
 
-  def commonEnabledBehavior: Receive =
+private def commonEnabledBehavior: Receive =
     checkBehavior
       .orElse(attributeBehavior)
       .orElse(jammableBehavior)
@@ -241,7 +241,7 @@ class VehicleControl(vehicle: Vehicle)
         case _ => ;
       }
 
-  def commonDisabledBehavior: Receive =
+private def commonDisabledBehavior: Receive =
     checkBehavior
       .orElse {
         case msg @ Mountable.TryDismount(_, seat_num, _) =>
@@ -270,7 +270,7 @@ class VehicleControl(vehicle: Vehicle)
         case _ => ;
       }
 
-  def commonDeleteBehavior: Receive =
+private def commonDeleteBehavior: Receive =
     checkBehavior
       .orElse {
         case VehicleControl.Deletion() =>
@@ -303,7 +303,7 @@ class VehicleControl(vehicle: Vehicle)
     super.mountTest(obj, seatNumber, user)
   }
 
-  def mountCleanup(mount_point: Int, user: Player): Unit = {
+private def mountCleanup(mount_point: Int, user: Player): Unit = {
     val obj = MountableObject
     obj.PassengerInSeat(user) match {
       case Some(seatNumber) =>
@@ -335,7 +335,7 @@ class VehicleControl(vehicle: Vehicle)
     vehicle.DeploymentState == DriveState.Deployed || super.dismountTest(obj, seatNumber, user)
   }
 
-  def dismountCleanup(seatBeingDismounted: Int): Unit = {
+private def dismountCleanup(seatBeingDismounted: Int): Unit = {
     val obj = MountableObject
     // Reset velocity to zero when driver dismounts, to allow jacking/repair if vehicle was moving slightly before dismount
     if (!obj.Seats(0).isOccupied) {
@@ -372,7 +372,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def PrepareForDisabled(kickPassengers: Boolean): Unit = {
+private def PrepareForDisabled(kickPassengers: Boolean): Unit = {
     val guid   = vehicle.GUID
     val zone   = vehicle.Zone
     val zoneId = zone.id
@@ -404,7 +404,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def PrepareForDeletion(): Unit = {
+private def PrepareForDeletion(): Unit = {
     decaying = false
     val zone = vehicle.Zone
     //cancel jammed behavior
@@ -424,7 +424,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def LoseOwnership(): Unit = {
+private def LoseOwnership(): Unit = {
     val obj = MountableObject
     Vehicles.Disown(obj.GUID, obj)
     if (
@@ -442,7 +442,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def GainOwnership(player: Player): Unit = {
+private def GainOwnership(player: Player): Unit = {
     val obj = MountableObject
     Vehicles.Disown(obj.GUID, obj)
     Vehicles.Own(obj, player) match {
@@ -453,7 +453,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def MessageDeferredCallback(msg: Any): Unit = {
+private def MessageDeferredCallback(msg: Any): Unit = {
     msg match {
       case Containable.MoveItem(_, item, _) =>
         //momentarily put item back where it was originally
@@ -470,7 +470,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
+private def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
     val zone = ContainerObject.Zone
     zone.VehicleEvents ! VehicleServiceMessage(
       self.toString,
@@ -478,7 +478,7 @@ class VehicleControl(vehicle: Vehicle)
     )
   }
 
-  def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
+private def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
     val obj     = ContainerObject
     val oguid   = obj.GUID
     val zone    = obj.Zone
@@ -511,7 +511,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
+private def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
     val obj       = ContainerObject
     val zone      = obj.Zone
     val toChannel = if (obj.VisibleSlots.contains(fromSlot)) zone.id else self.toString
@@ -521,9 +521,9 @@ class VehicleControl(vehicle: Vehicle)
     )
   }
 
-  def permitTerminalMessage(player: Player, msg: ItemTransactionMessage): Boolean = true
+private def permitTerminalMessage(player: Player, msg: ItemTransactionMessage): Boolean = true
 
-  def handleTerminalMessageVehicleLoadout(
+private def handleTerminalMessageVehicleLoadout(
       player: Player,
       definition: VehicleDefinition,
       weapons: List[InventoryItem],
@@ -566,14 +566,14 @@ class VehicleControl(vehicle: Vehicle)
   }
 
   //make certain vehicles don't charge shields too quickly
-  def canChargeShields(): Boolean = {
+private def canChargeShields(): Boolean = {
     val func: VitalsActivity => Boolean =
       VehicleControl.LastShieldChargeOrDamage(System.currentTimeMillis(), vehicle.Definition)
     vehicle.Health > 0 && vehicle.Shields < vehicle.MaxShields &&
     !vehicle.History.exists(func)
   }
 
-  def chargeShields(amount: Int): Unit = {
+private def chargeShields(amount: Int): Unit = {
     if (canChargeShields()) {
       vehicle.History(VehicleShieldCharge(VehicleSource(vehicle), amount))
       vehicle.Shields = vehicle.Shields + amount
@@ -596,7 +596,7 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithWater(
+private def doInteractingWithWater(
       obj: PlanetSideServerObject,
       body: PieceOfEnvironment,
       data: Option[OxygenStateTarget]
@@ -638,7 +638,7 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param targets recipients of the information
     */
-  def doInteractingWithWaterToTargets(
+private def doInteractingWithWaterToTargets(
       percentage: Float,
       body: PieceOfEnvironment,
       targets: Iterable[PlanetSideServerObject]
@@ -655,7 +655,7 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithLava(
+private def doInteractingWithLava(
       obj: PlanetSideServerObject,
       body: PieceOfEnvironment,
       data: Option[OxygenStateTarget]
@@ -689,7 +689,7 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithDeath(
+private def doInteractingWithDeath(
       obj: PlanetSideServerObject,
       body: PieceOfEnvironment,
       data: Option[OxygenStateTarget]
@@ -712,7 +712,7 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithMovementTrigger(
+private def doInteractingWithMovementTrigger(
       obj: PlanetSideServerObject,
       body: PieceOfEnvironment,
       data: Option[OxygenStateTarget]
@@ -728,7 +728,7 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def stopInteractingWithWater(
+private def stopInteractingWithWater(
       obj: PlanetSideServerObject,
       body: PieceOfEnvironment,
       data: Option[OxygenStateTarget]
@@ -765,7 +765,7 @@ class VehicleControl(vehicle: Vehicle)
     * @param body the environment
     * @param targets recipients of the information
     */
-  def stopInteractingWithWaterToTargets(
+private def stopInteractingWithWaterToTargets(
       percentage: Float,
       body: PieceOfEnvironment,
       targets: Iterable[PlanetSideServerObject]
@@ -790,7 +790,7 @@ class VehicleControl(vehicle: Vehicle)
     * update the visual progress element (progress bar) that is visible to the recipient's client.
     * @param player the recipient of this ui update
     */
-  def updateZoneInteractionProgressUI(player: Player): Unit = {
+private def updateZoneInteractionProgressUI(player: Player): Unit = {
     submergedCondition match {
       case Some(OxygenState.Suffocation) =>
         interactWith match {
@@ -902,7 +902,7 @@ class VehicleControl(vehicle: Vehicle)
     }
   }
 
-  def vehicleSubsystemMessages(messages: List[PlanetSideGamePacket]): Unit = {
+private def vehicleSubsystemMessages(messages: List[PlanetSideGamePacket]): Unit = {
     val zone   = vehicle.Zone
     val zoneid = zone.id
     val events = zone.VehicleEvents
@@ -936,7 +936,7 @@ object VehicleControl {
     * @return `true`, if the shield charge would be blocked;
     *        `false`, otherwise
     */
-  def LastShieldChargeOrDamage(now: Long, vdef: VehicleDefinition)(act: VitalsActivity): Boolean = {
+private def LastShieldChargeOrDamage(now: Long, vdef: VehicleDefinition)(act: VitalsActivity): Boolean = {
     act match {
       case dact: DamagingActivity   => now - dact.time < vdef.ShieldDamageDelay  //damage delays next charge
       case vsc: VehicleShieldCharge => now - vsc.time < vdef.ShieldPeriodicDelay //previous charge delays next

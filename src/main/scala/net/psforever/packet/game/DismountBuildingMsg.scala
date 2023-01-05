@@ -16,8 +16,8 @@ import scodec.codecs._
 final case class DismountBuildingMsg(player_guid: PlanetSideGUID, building_guid: PlanetSideGUID)
     extends PlanetSideGamePacket {
   type Packet = DismountBuildingMsg
-  def opcode = GamePacketOpcode.DismountBuildingMsg
-  def encode = DismountBuildingMsg.encode(this)
+def opcode = GamePacketOpcode.DismountBuildingMsg
+def encode = DismountBuildingMsg.encode(this)
 }
 
 object DismountBuildingMsg extends Marshallable[DismountBuildingMsg] {

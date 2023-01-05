@@ -19,7 +19,7 @@ import net.psforever.types.Vector3
   * @param idef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
   */
 class IFFLock(private val idef: IFFLockDefinition) extends Amenity with Hackable {
-  def Definition: IFFLockDefinition = idef
+private def Definition: IFFLockDefinition = idef
   HackSound = TriggeredSound.HackDoor
   HackEffectDuration = Array(60, 180, 300, 360)
   HackDuration = Array(5, 3, 1, 1)
@@ -47,7 +47,7 @@ class IFFLock(private val idef: IFFLockDefinition) extends Amenity with Hackable
     ret
   }
 
-  def Outwards: Vector3 = outwards
+private def Outwards: Vector3 = outwards
 }
 
 object IFFLock {
@@ -55,7 +55,7 @@ object IFFLock {
 
   final case class DoorOpenResponse(requestee: PlanetSideServerObject)
 
-  def testLock(lock: IFFLock)(target: PlanetSideServerObject, door: Door): Boolean = {
+private def testLock(lock: IFFLock)(target: PlanetSideServerObject, door: Door): Boolean = {
     lock.Actor ! IFFLock.DoorOpenRequest(target, door, door.Actor)
     false
   }
@@ -64,7 +64,7 @@ object IFFLock {
     * Overloaded constructor.
     * @param idef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
     */
-  def apply(idef: IFFLockDefinition): IFFLock = {
+def apply(idef: IFFLockDefinition): IFFLock = {
     new IFFLock(idef)
   }
 
@@ -79,7 +79,7 @@ object IFFLock {
     * @param outwards_direction a vector used to determine which direction is inside/outside for the linked door
     * @return the `IFFLock` object
     */
-  def Constructor(pos: Vector3, outwards_direction: Vector3)(id: Int, context: ActorContext): IFFLock = {
+private def Constructor(pos: Vector3, outwards_direction: Vector3)(id: Int, context: ActorContext): IFFLock = {
     import akka.actor.Props
     import net.psforever.objects.GlobalDefinitions
 

@@ -63,7 +63,7 @@ class MDCPropagatingExecutionContextWrapper(wrapped: ExecutionContext)
 }
 
 object MDCPropagatingExecutionContextWrapper {
-  def apply(wrapped: ExecutionContext): MDCPropagatingExecutionContextWrapper = {
+def apply(wrapped: ExecutionContext): MDCPropagatingExecutionContextWrapper = {
     new MDCPropagatingExecutionContextWrapper(wrapped)
   }
 }

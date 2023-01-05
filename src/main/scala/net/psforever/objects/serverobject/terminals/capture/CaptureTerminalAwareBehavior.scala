@@ -10,7 +10,7 @@ import net.psforever.services.vehicle.{VehicleAction, VehicleServiceMessage}
   * @see CaptureTerminalAware
   */
 trait CaptureTerminalAwareBehavior {
-  def CaptureTerminalAwareObject: Amenity with CaptureTerminalAware
+private def CaptureTerminalAwareObject: Amenity with CaptureTerminalAware
 
   protected val captureTerminalAwareBehaviour: Receive = {
     case CaptureTerminalAwareBehavior.TerminalStatusChanged(terminal, isResecured) =>

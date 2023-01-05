@@ -82,7 +82,7 @@ object IdentifiableEntity {
     * @throws `NoGUIDException` always
     * @return never returns
     */
-  def getWhenNoGUID(o: IdentifiableEntity): PlanetSideGUID = {
+  private def getWhenNoGUID(o: IdentifiableEntity): PlanetSideGUID = {
     throw new NoGUIDException(s"did not initialize this object $o with a valid global identifier")
   }
 
@@ -95,7 +95,7 @@ object IdentifiableEntity {
     * @param guid the valid GUID to assign
     * @return the GUID
     */
-  def setWhenNoGUID(o: IdentifiableEntity, guid: PlanetSideGUID): PlanetSideGUID = {
+  private def setWhenNoGUID(o: IdentifiableEntity, guid: PlanetSideGUID): PlanetSideGUID = {
     o.current = guid
     o.guidValid = true
     o.guidAccessor = getWhenValidGUID
@@ -108,7 +108,7 @@ object IdentifiableEntity {
     * @param o the entity
     * @return the entity's GUID
     */
-  def getWhenValidGUID(o: IdentifiableEntity): PlanetSideGUID = o.current
+  private def getWhenValidGUID(o: IdentifiableEntity): PlanetSideGUID = o.current
 
   /**
     * The entity is in a condition where it can not be assigned the new valid GUID.
@@ -119,7 +119,7 @@ object IdentifiableEntity {
     * @throws `AssigningGUIDException` always
     * @return never returns
     */
-  def setWhenValidGUID(o: IdentifiableEntity, guid: PlanetSideGUID): PlanetSideGUID = {
+  private def setWhenValidGUID(o: IdentifiableEntity, guid: PlanetSideGUID): PlanetSideGUID = {
     throw new AssigningGUIDException("attempting to set GUID to already valid object; try invalidating it", o, guid)
   }
 }

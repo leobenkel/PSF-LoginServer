@@ -58,7 +58,7 @@ class CaptureFlagManager(zone: Zone) extends Actor {
   private val serviceManager = ServiceManager.serviceManager
   serviceManager ! Lookup("galaxy")
 
-  def receive: Receive = {
+def receive: Receive = {
     case LookupResult("galaxy", endpoint) =>
       galaxyService = endpoint
 
@@ -259,32 +259,32 @@ object CaptureFlagChatMessageStrings {
 
   // @CTF_Success=%1 captured %2's LLU for the %3!
   /** {player.Name} captured {owner_name}'s LLU for the {player.Faction}! */
-  def CTF_Success(player: Player, owner_name: String): String =
+private def CTF_Success(player: Player, owner_name: String): String =
     s"@CTF_Success^${player.Name}~^@$owner_name~^@${GetFactionString(player.Faction)}~"
 
   // @CTF_Failed_TimedOut=The %1 failed to deliver %2's LLU to %3 in time!\nHack canceled!
   /** The {target.Faction} failed to deliver {owner_name}'s LLU to {target.Name} in time!\nHack canceled! */
-  def CTF_Failed_TimedOut(owner_name: String, target: Building): String =
+private def CTF_Failed_TimedOut(owner_name: String, target: Building): String =
     s"@CTF_Failed_TimedOut^@${GetFactionString(target.Faction)}~^@$owner_name~^@${target.Name}~"
 
   // @CTF_Failed_SourceResecured=The %1 resecured %2!\nThe LLU was lost!
   /** The {owner.Faction} resecured {owner.Name}!\nThe LLU was lost! */
-  def CTF_Failed_SourceResecured(owner: Building): String =
+private def CTF_Failed_SourceResecured(owner: Building): String =
     s"@CTF_Failed_SourceResecured^@${CaptureFlagChatMessageStrings.GetFactionString(owner.Faction)}~^@${owner.Name}~"
 
   // @CTF_FlagSpawned=%1 %2 has spawned a LLU.\nIt must be taken to %3 %4's Control Console within %5 minutes or the hack will fail!
   /** {facilityType} {facilityName} has spawned a LLU.\nIt must be taken to {targetFacilityType} {targetFacilityName}'s Control Console within 15 minutes or the hack will fail! */
-  def CTF_FlagSpawned(owner: Building, target: Building): String =
+private def CTF_FlagSpawned(owner: Building, target: Building): String =
     s"@CTF_FlagSpawned^@${owner.Definition.Name}~^@${owner.Name}~^@${target.Definition.Name}~^@${target.Name}~^15~"
 
   // @CTF_FlagPickedUp=%1 of the %2 picked up %3's LLU
   /** {playerName} of the {faction} picked up {facilityName}'s LLU */
-  def CTF_FlagPickedUp(player: Player, owner_name: String): String =
+private def CTF_FlagPickedUp(player: Player, owner_name: String): String =
     s"@CTF_FlagPickedUp^${player.Name}~^@${CaptureFlagChatMessageStrings.GetFactionString(player.Faction)}~^@$owner_name~"
 
   // @CTF_FlagDropped=%1 of the %2 dropped %3's LLU
   /** {playerName} of the {faction} dropped {facilityName}'s LLU */
-  def CTF_FlagDropped(player: Player, owner_name: String): String =
+private def CTF_FlagDropped(player: Player, owner_name: String): String =
     s"@CTF_FlagDropped^${player.Name}~^@${CaptureFlagChatMessageStrings.GetFactionString(player.Faction)}~^@$owner_name~"
 
   // todo: make private

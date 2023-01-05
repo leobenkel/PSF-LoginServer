@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class ClientStart(clientNonce: Long) extends PlanetSideControlPacket {
   type Packet = ClientStart
-  def opcode = ControlPacketOpcode.ClientStart
-  def encode = ClientStart.encode(this)
+def opcode = ControlPacketOpcode.ClientStart
+def encode = ClientStart.encode(this)
 }
 
 object ClientStart extends Marshallable[ClientStart] {

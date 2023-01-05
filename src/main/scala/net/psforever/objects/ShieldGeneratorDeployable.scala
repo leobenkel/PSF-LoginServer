@@ -38,10 +38,10 @@ class ShieldGeneratorControl(gen: ShieldGeneratorDeployable)
     with JammableBehavior
     with DamageableEntity
     with RepairableEntity {
-  def DeployableObject = gen
-  def JammableObject   = gen
-  def DamageableObject = gen
-  def RepairableObject = gen
+private def DeployableObject = gen
+private def JammableObject   = gen
+private def DamageableObject = gen
+private def RepairableObject = gen
   deletionType = 1 //from DeployableBehavior
 
   override def postStop(): Unit = {
@@ -49,7 +49,7 @@ class ShieldGeneratorControl(gen: ShieldGeneratorDeployable)
     deployableBehaviorPostStop()
   }
 
-  def receive: Receive =
+def receive: Receive =
     deployableBehavior
       .orElse(jammableBehavior)
       .orElse(takesDamage)
@@ -155,7 +155,7 @@ object ShieldGeneratorControl {
     * @param cause na
     * @param damageToShields na
     */
-  def DamageAwareness(target: ShieldGeneratorDeployable, cause: DamageResult, damageToShields: Boolean): Unit = {
+private def DamageAwareness(target: ShieldGeneratorDeployable, cause: DamageResult, damageToShields: Boolean): Unit = {
     //shields
     if (damageToShields) {
       val zone = target.Zone
@@ -171,7 +171,7 @@ object ShieldGeneratorControl {
     * @param target na
     * @param attribution na
     */
-  def DestructionAwareness(target: Deployable, attribution: PlanetSideGUID): Unit = {
+private def DestructionAwareness(target: Deployable, attribution: PlanetSideGUID): Unit = {
     Deployables.AnnounceDestroyDeployable(target, None)
   }
 }

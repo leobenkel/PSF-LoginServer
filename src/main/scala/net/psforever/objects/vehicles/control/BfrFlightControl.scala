@@ -14,7 +14,7 @@ import net.psforever.types.Vector3
 class BfrFlightControl(vehicle: Vehicle)
   extends BfrControl(vehicle)
   with VehicleCapacitance {
-  def CapacitanceObject: Vehicle = vehicle
+private def CapacitanceObject: Vehicle = vehicle
 
 private var flying: Option[Boolean] = None
 

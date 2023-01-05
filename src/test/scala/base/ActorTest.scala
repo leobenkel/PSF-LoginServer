@@ -44,7 +44,7 @@ object ActorTest {
     * @param sys what to poll
     * @return a list of messages
     */
-  def receiveMultiple(n: Int, timeout: FiniteDuration, sys: TestKit): List[Any] = {
+def receiveMultiple(n: Int, timeout: FiniteDuration, sys: TestKit): List[Any] = {
     assert(0 < n, s"number of expected messages must be positive non-zero integer - $n")
     val out = {
       val msgs = mutable.ListBuffer[Any]()

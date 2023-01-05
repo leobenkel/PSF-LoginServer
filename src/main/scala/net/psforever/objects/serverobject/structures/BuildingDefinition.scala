@@ -13,16 +13,16 @@ class BuildingDefinition(objectId: Int)
   private var latBenefit: LatticeBenefit = LatticeBenefit.None
   private var cavBenefit: CavernBenefit = CavernBenefit.None
 
-  def LatticeLinkBenefit: LatticeBenefit = latBenefit
+private def LatticeLinkBenefit: LatticeBenefit = latBenefit
 
-  def LatticeLinkBenefit_=(bfit: LatticeBenefit): CaptureBenefit = {
+private def LatticeLinkBenefit_=(bfit: LatticeBenefit): CaptureBenefit = {
     latBenefit = bfit
     LatticeLinkBenefit
   }
 
-  def CavernLinkBenefit: CavernBenefit = cavBenefit
+private def CavernLinkBenefit: CavernBenefit = cavBenefit
 
-  def CavernLinkBenefit_=(cfit: CavernBenefit): CavernBenefit = {
+private def CavernLinkBenefit_=(cfit: CavernBenefit): CavernBenefit = {
     cavBenefit = cfit
     CavernLinkBenefit
   }

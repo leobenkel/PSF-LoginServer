@@ -15,13 +15,13 @@ trait Deployment {
 
   private var deployState: DriveState.Value = DriveState.Mobile
 
-  def DeployTime: Int = 0 //ms
+private def DeployTime: Int = 0 //ms
 
-  def UndeployTime: Int = 0 //ms
+private def UndeployTime: Int = 0 //ms
 
-  def DeploymentState: DriveState.Value = deployState
+private def DeploymentState: DriveState.Value = deployState
 
-  def DeploymentState_=(to_deploy_state: DriveState.Value): DriveState.Value = {
+private def DeploymentState_=(to_deploy_state: DriveState.Value): DriveState.Value = {
     deployState = to_deploy_state
     DeploymentState
   }
@@ -85,7 +85,7 @@ object Deployment {
     * @param from_state the original deployment state
     * @return the deployment state that is being transitioned
     */
-  def NextState(from_state: DriveState.Value): DriveState.Value = {
+private def NextState(from_state: DriveState.Value): DriveState.Value = {
     from_state match {
       case DriveState.Mobile      => DriveState.Deploying
       case DriveState.Deploying   => DriveState.Deployed
@@ -100,7 +100,7 @@ object Deployment {
     * @param state the state to check
     * @return yes, if it is a valid state; otherwise, false
     */
-  def CheckForDeployState(state: DriveState.Value): Boolean =
+private def CheckForDeployState(state: DriveState.Value): Boolean =
     state == DriveState.Deploying || state == DriveState.Deployed
 
   /**
@@ -108,10 +108,10 @@ object Deployment {
     * @param state the state to check
     * @return yes, if it is a valid state; otherwise, false
     */
-  def CheckForUndeployState(state: DriveState.Value): Boolean =
+private def CheckForUndeployState(state: DriveState.Value): Boolean =
     state == DriveState.Undeploying || state == DriveState.Mobile || state == DriveState.State7
 
-  def AngleCheck(obj: Deployment.DeploymentObject): Boolean = {
+private def AngleCheck(obj: Deployment.DeploymentObject): Boolean = {
     obj.Orientation.x <= 30 || obj.Orientation.x >= 330
   }
 }

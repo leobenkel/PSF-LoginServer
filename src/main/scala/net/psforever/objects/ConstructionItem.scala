@@ -26,46 +26,46 @@ class ConstructionItem(private val cItemDef: ConstructionItemDefinition)
   private var fireModeIndex: Int = 0
   private val ammoTypeIndices: Array[Int] = Array.fill[Int](cItemDef.Modes.size)(elem = 0)
 
-  def FireModeIndex: Int = fireModeIndex
+private def FireModeIndex: Int = fireModeIndex
 
-  def FireModeIndex_=(index: Int): Int = {
+private def FireModeIndex_=(index: Int): Int = {
     fireModeIndex = index % Definition.Modes.length
     FireModeIndex
   }
 
-  def FireMode: ConstructionFireMode = Definition.Modes(fireModeIndex)
+private def FireMode: ConstructionFireMode = Definition.Modes(fireModeIndex)
 
-  def NextFireMode: ConstructionFireMode = {
+private def NextFireMode: ConstructionFireMode = {
     FireModeIndex = FireModeIndex + 1
     FireMode
   }
 
-  def AmmoTypeIndex: Int = ammoTypeIndices(fireModeIndex)
+private def AmmoTypeIndex: Int = ammoTypeIndices(fireModeIndex)
 
-  def AmmoTypeIndex_=(index: Int): Int = {
+private def AmmoTypeIndex_=(index: Int): Int = {
     ammoTypeIndices(fireModeIndex) = index % FireMode.Deployables.length
     AmmoTypeIndex
   }
 
-  def AmmoType: DeployedItem.Value = FireMode.Deployables(AmmoTypeIndex)
+private def AmmoType: DeployedItem.Value = FireMode.Deployables(AmmoTypeIndex)
 
-  def NextAmmoType: DeployedItem.Value = {
+private def NextAmmoType: DeployedItem.Value = {
     AmmoTypeIndex = AmmoTypeIndex + 1
     FireMode.Deployables(AmmoTypeIndex)
   }
 
-  def ModePermissions: Set[Certification] = FireMode.Permissions(AmmoTypeIndex)
+private def ModePermissions: Set[Certification] = FireMode.Permissions(AmmoTypeIndex)
 
-  def resetAmmoTypes(): Unit = {
+private def resetAmmoTypes(): Unit = {
     ammoTypeIndices.indices.foreach { index => ammoTypeIndices.update(index, 0) }
   }
 
-  def Definition: ConstructionItemDefinition = cItemDef
+private def Definition: ConstructionItemDefinition = cItemDef
 }
 
 
 object ConstructionItem {
-  def apply(cItemDef: ConstructionItemDefinition): ConstructionItem = {
+def apply(cItemDef: ConstructionItemDefinition): ConstructionItem = {
     new ConstructionItem(cItemDef)
   }
 }

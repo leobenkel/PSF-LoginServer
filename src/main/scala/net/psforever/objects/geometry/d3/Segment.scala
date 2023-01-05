@@ -18,18 +18,18 @@ final case class Segment(p1: Point, p2: Point)
     * The center point of a segment is a position that is equally in between both endpoints.
     * @return a point
     */
-  def center: Point = Point((p2.asVector3 + p1.asVector3) * 0.5f)
+private def center: Point = Point((p2.asVector3 + p1.asVector3) * 0.5f)
 
-  def moveCenter(point: geometry.Point): Geometry3D = {
+private def moveCenter(point: geometry.Point): Geometry3D = {
     Segment(
       Point(point.asVector3 - Vector3.Unit(d) * Vector3.Magnitude(d) * 0.5f),
       d
     )
   }
 
-  def d: Vector3 = p2.asVector3 - p1.asVector3
+private def d: Vector3 = p2.asVector3 - p1.asVector3
 
-  def asLine: Line = Line(p1, Vector3.Unit(d))
+private def asLine: Line = Line(p1, Vector3.Unit(d))
 }
 
 object Segment {
@@ -44,7 +44,7 @@ object Segment {
     * @param bz the 'z' coordinate of a destination position
     * @return a `Segment` entity
     */
-  def apply(ax: Float, ay: Float, az: Float, bx: Float, by: Float, bz: Float): Segment = {
+def apply(ax: Float, ay: Float, az: Float, bx: Float, by: Float, bz: Float): Segment = {
     Segment(Point(ax, ay, az), Point(bx, by, bz))
   }
 
@@ -53,7 +53,7 @@ object Segment {
     * @param p the point of origin
     * @param d the direction and distance (of the second point)
     */
-  def apply(p: Point, d: Vector3): Segment = {
+def apply(p: Point, d: Vector3): Segment = {
     Segment(p, Point(p.x + d.x, p.y + d.y, p.z + d.z))
   }
 
@@ -65,7 +65,7 @@ object Segment {
     * @param d the direction
     * @return a `Segment` entity
     */
-  def apply(x: Float, y: Float, z: Float, d: Vector3): Segment = {
+def apply(x: Float, y: Float, z: Float, d: Vector3): Segment = {
     Segment(Point(x, y, z), Point(x + d.x, y + d.y, z + d.z))
   }
 }

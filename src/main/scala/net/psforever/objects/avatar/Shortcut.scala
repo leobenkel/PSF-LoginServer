@@ -28,7 +28,7 @@ object Shortcut {
    * @return equivalent packet form of the `Shortcut`
    * @throws `AssertionError` if an implant is not named
    */
-  def convert(shortcut: Shortcut): GameShortcut = {
+private def convert(shortcut: Shortcut): GameShortcut = {
     shortcut.tile match {
       case "medkit"         => GameShortcut.Medkit()
       case "shortcut_macro" => GameShortcut.Macro(shortcut.effect1, shortcut.effect2)
@@ -43,7 +43,7 @@ object Shortcut {
    * @return `true`, if the forms of `Shortcut` are equivalent;
    *         `false`, otherwise
    */
-  def equals(a: Shortcut, b: GameShortcut): Boolean = {
+private def equals(a: Shortcut, b: GameShortcut): Boolean = {
     a.purpose == b.code && typeEquals(a, b)
   }
   /**
@@ -53,7 +53,7 @@ object Shortcut {
    * @return `true`, if the forms of `Shortcut` are equivalent;
    *         `false`, otherwise
    */
-  def equals(b: GameShortcut, a: Shortcut): Boolean = {
+private def equals(b: GameShortcut, a: Shortcut): Boolean = {
     a.purpose == b.code && typeEquals(a, b)
   }
 

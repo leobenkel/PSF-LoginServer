@@ -16,7 +16,7 @@ trait SpawnPoint {
     * but, this makes it visible to a `SpawnPoint` object without casting.
     * @see `Identifiable.GUID`
     */
-  def GUID: PlanetSideGUID
+private def GUID: PlanetSideGUID
 
   /**
     * An element of the contract of `PlanetSideServerObject`;
@@ -24,7 +24,7 @@ trait SpawnPoint {
     * @see `WorldEntity.GUID`
     * @see `SpecificPoint`
     */
-  def Position: Vector3
+private def Position: Vector3
 
   /**
     * An element of the contract of `PlanetSideServerObject`;
@@ -32,7 +32,7 @@ trait SpawnPoint {
     * @see `WorldEntity.GUID`
     * @see `SpecificPoint`
     */
-  def Orientation: Vector3
+private def Orientation: Vector3
 
   /**
     * An element of an unspoken contract with `Amenity`.
@@ -41,7 +41,7 @@ trait SpawnPoint {
     * This should generally be themselves.
     * @see `Amenity.Owner`
     */
-  def Owner: PlanetSideServerObject
+private def Owner: PlanetSideServerObject
 
   /**
     * An element of the contract of `PlanetSideServerObject`;
@@ -49,9 +49,9 @@ trait SpawnPoint {
     * @see `PlanetSideGameObject.Definition`
     * @see `SpecificPoint`
     */
-  def Definition: ObjectDefinition with SpawnPointDefinition
+private def Definition: ObjectDefinition with SpawnPointDefinition
 
-  def isOffline: Boolean = psso.Destroyed
+def isOffline: Boolean = psso.Destroyed
 
   /**
     * Determine a specific position and orientation in which to spawn the target.
@@ -59,7 +59,7 @@ trait SpawnPoint {
     *         the first represents the game world position of spawning;
     *         the second represents the game world direction of spawning
     */
-  def SpecificPoint(target: PlanetSideGameObject): (Vector3, Vector3) = {
+private def SpecificPoint(target: PlanetSideGameObject): (Vector3, Vector3) = {
     psso.Definition match {
       case d: SpawnPointDefinition =>
         d.SpecificPoint(this, target)
@@ -70,15 +70,15 @@ trait SpawnPoint {
 }
 
 object SpawnPoint {
-  def Default(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = (obj.Position, obj.Orientation)
+private def Default(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = (obj.Position, obj.Orientation)
 
-  def Tube(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) =
+private def Tube(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) =
     (
       obj.Position + Vector3.z(1.5f),
       obj.Orientation.xy + Vector3.z(obj.Orientation.z + 90 % 360)
     )
 
-  def AMS(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
+private def AMS(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
     //position the player alongside either of the AMS's terminals, facing away from it
     val ori  = obj.Orientation
     val side = if (System.currentTimeMillis() % 2 == 0) 1 else -1              //right | left
@@ -126,7 +126,7 @@ object SpawnPoint {
     }
   }
 
-  def Gate(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
+private def Gate(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
     val (pos, ori) = metaGate(obj, target, innerRadius = 10f)
     (
       target.Definition match {
@@ -137,7 +137,7 @@ object SpawnPoint {
     )
   }
 
-  def CavernGate(innerRadius: Float)(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
+private def CavernGate(innerRadius: Float)(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
     val (a, b) = metaGate(obj, target, innerRadius)
     target match {
       case v: Vehicle if GlobalDefinitions.isFlightVehicle(v.Definition) =>
@@ -150,7 +150,7 @@ object SpawnPoint {
     }
   }
 
-  def SmallGate(innerRadius: Float, flightlessZOffset: Float)(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
+private def SmallGate(innerRadius: Float, flightlessZOffset: Float)(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = {
     val (a, b) = metaGate(obj, target, innerRadius)
     target match {
       case v: Vehicle if GlobalDefinitions.isFlightVehicle(v.Definition) =>
@@ -167,23 +167,23 @@ trait SpawnPointDefinition {
   private var noWarp: Option[mutable.Set[VehicleDefinition]]                         = None
   private var spawningFunc: (SpawnPoint, PlanetSideGameObject) => (Vector3, Vector3) = SpawnPoint.Default
 
-  def UseRadius: Float = radius
+private def UseRadius: Float = radius
 
-  def UseRadius_=(rad: Float): Float = {
+private def UseRadius_=(rad: Float): Float = {
     radius = rad
     UseRadius
   }
 
-  def Delay: Long = delay
+private def Delay: Long = delay
 
-  def Delay_=(toDelay: Long): Long = {
+private def Delay_=(toDelay: Long): Long = {
     delay = toDelay
     Delay
   }
 
-  def VehicleAllowance: Boolean = noWarp.isDefined
+private def VehicleAllowance: Boolean = noWarp.isDefined
 
-  def VehicleAllowance_=(allow: Boolean): Boolean = {
+private def VehicleAllowance_=(allow: Boolean): Boolean = {
     if (allow && noWarp.isEmpty) {
       noWarp = Some(mutable.Set.empty[VehicleDefinition])
     } else if (!allow && noWarp.isDefined) {
@@ -192,15 +192,15 @@ trait SpawnPointDefinition {
     VehicleAllowance
   }
 
-  def NoWarp: mutable.Set[VehicleDefinition] = {
+private def NoWarp: mutable.Set[VehicleDefinition] = {
     noWarp.getOrElse(mutable.Set.empty[VehicleDefinition])
   }
 
-  def SpecificPointFunc: (SpawnPoint, PlanetSideGameObject) => (Vector3, Vector3) = spawningFunc
+private def SpecificPointFunc: (SpawnPoint, PlanetSideGameObject) => (Vector3, Vector3) = spawningFunc
 
-  def SpecificPointFunc_=(func: (SpawnPoint, PlanetSideGameObject) => (Vector3, Vector3)): Unit = {
+private def SpecificPointFunc_=(func: (SpawnPoint, PlanetSideGameObject) => (Vector3, Vector3)): Unit = {
     spawningFunc = func
   }
 
-  def SpecificPoint(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = spawningFunc(obj, target)
+private def SpecificPoint(obj: SpawnPoint, target: PlanetSideGameObject): (Vector3, Vector3) = spawningFunc(obj, target)
 }

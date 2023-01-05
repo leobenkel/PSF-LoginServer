@@ -18,7 +18,7 @@ import net.psforever.types.PlanetSideGUID
   * @param spDef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
   */
 class VehicleSpawnPad(spDef: VehicleSpawnPadDefinition) extends Amenity {
-  def Definition: VehicleSpawnPadDefinition = spDef
+private def Definition: VehicleSpawnPadDefinition = spDef
 }
 
 object VehicleSpawnPad {
@@ -143,7 +143,7 @@ object VehicleSpawnPad {
     * @param spDef the spawn pad's definition entry
     * @return a `VehicleSpawnPad` object
     */
-  def apply(spDef: VehicleSpawnPadDefinition): VehicleSpawnPad = {
+def apply(spDef: VehicleSpawnPadDefinition): VehicleSpawnPad = {
     new VehicleSpawnPad(spDef)
   }
 
@@ -159,7 +159,7 @@ object VehicleSpawnPad {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `VehicleSpawnPad` object
     */
-  def Constructor(pos: Vector3, pdef: VehicleSpawnPadDefinition, orient: Vector3)(
+private def Constructor(pos: Vector3, pdef: VehicleSpawnPadDefinition, orient: Vector3)(
       id: Int,
       context: ActorContext
   ): VehicleSpawnPad = {

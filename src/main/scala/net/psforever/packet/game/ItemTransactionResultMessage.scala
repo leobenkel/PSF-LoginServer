@@ -22,8 +22,8 @@ final case class ItemTransactionResultMessage(
     error: Int = 0
 ) extends PlanetSideGamePacket {
   type Packet = ItemTransactionResultMessage
-  def opcode = GamePacketOpcode.ItemTransactionResultMessage
-  def encode = ItemTransactionResultMessage.encode(this)
+def opcode = GamePacketOpcode.ItemTransactionResultMessage
+def encode = ItemTransactionResultMessage.encode(this)
 }
 
 object ItemTransactionResultMessage extends Marshallable[ItemTransactionResultMessage] {

@@ -68,7 +68,7 @@ object PlayerData extends Marshallable[PlayerData] {
     *                   technically, always `DrawnSlot.None`, but the field is preserved to maintain similarity
     * @return a `PlayerData` object
     */
-  def apply(
+def apply(
       basic_appearance: Int => CharacterAppearanceData,
       character_data: (Boolean, Boolean) => CharacterData,
       inventory: InventoryData,
@@ -90,7 +90,7 @@ object PlayerData extends Marshallable[PlayerData] {
     *                   technically, always `DrawnSlot.None`, but the field is preserved to maintain similarity
     * @return a `PlayerData` object
     */
-  def apply(
+def apply(
       basic_appearance: Int => CharacterAppearanceData,
       character_data: (Boolean, Boolean) => CharacterData,
       drawn_slot: DrawnSlot.Type
@@ -110,7 +110,7 @@ object PlayerData extends Marshallable[PlayerData] {
     * @param drawn_slot the holster that is initially drawn
     * @return a `PlayerData` object
     */
-  def apply(
+def apply(
       pos: PlacementData,
       basic_appearance: Int => CharacterAppearanceData,
       character_data: (Boolean, Boolean) => CharacterData,
@@ -137,7 +137,7 @@ object PlayerData extends Marshallable[PlayerData] {
     * @param drawn_slot the holster that is initially drawn
     * @return a `PlayerData` object
     */
-  def apply(
+def apply(
       pos: PlacementData,
       basic_appearance: Int => CharacterAppearanceData,
       character_data: (Boolean, Boolean) => CharacterData,
@@ -159,7 +159,7 @@ object PlayerData extends Marshallable[PlayerData] {
     * @param pos the optional `PlacementData` object that creates the shift in bits
     * @return the pad length in bits
     */
-  def PaddingOffset(pos: Option[PlacementData]): Int = {
+private def PaddingOffset(pos: Option[PlacementData]): Int = {
     /*
     The `ObjectCreateMessage` length is either 32 + 12 + 16 + 81 - 141 - with `PlacementData`,
     with an additional +42 - 183 - with the optional velocity field,
@@ -180,7 +180,7 @@ object PlayerData extends Marshallable[PlayerData] {
     * @param length the current length of a stream
     * @return the number of bits needed to pad it
     */
-  def ByteAlignmentPadding(length: Long): Int = {
+private def ByteAlignmentPadding(length: Long): Int = {
     val pad = (length - math.floor(length.toDouble / 8) * 8).toInt
     if (pad > 0) {
       8 - pad
@@ -197,7 +197,7 @@ object PlayerData extends Marshallable[PlayerData] {
     * @param position_defined this entry has `PlacementData` that defines position, orientation, and, optionally, motion
     * @return a `Codec` that translates a `PlayerData` object
     */
-  def codec(position_defined: Boolean): Codec[PlayerData] =
+private def codec(position_defined: Boolean): Codec[PlayerData] =
     (conditional(position_defined, "pos" | PlacementData.codec) >>:~ { pos =>
       ("basic_appearance" | CharacterAppearanceData.codec(PaddingOffset(pos))) >>:~ { app =>
         ("character_data" | newcodecs.binary_choice(
@@ -228,7 +228,7 @@ object PlayerData extends Marshallable[PlayerData] {
     * @param offset the padding for the player's name field
     * @return a `Codec` that translates a `PlayerData` object
     */
-  def codec(offset: Int): Codec[PlayerData] =
+private def codec(offset: Int): Codec[PlayerData] =
     (
       ("basic_appearance" | CharacterAppearanceData.codec(offset)) >>:~ { app =>
         ("character_data" | CharacterData.codec_seated(app.b.backpack)) ::

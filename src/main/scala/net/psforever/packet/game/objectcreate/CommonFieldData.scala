@@ -12,7 +12,7 @@ final case class CommonFieldDataExtra(unk1: Option[Int], unk2: Boolean) extends 
 }
 
 object CommonFieldDataExtra {
-  def codec(unk1: Boolean): Codec[CommonFieldDataExtra] =
+private def codec(unk1: Boolean): Codec[CommonFieldDataExtra] =
     (
       ("unk1" | conditional(unk1, uint16L)) :: //not sure what flags this field
         ("unk2" | bool)
@@ -64,7 +64,7 @@ final case class CommonFieldData(
     23L + extraSize + v4Size + v5Size
   }
 
-  def apply(flag: Boolean): CommonFieldData =
+def apply(flag: Boolean): CommonFieldData =
     CommonFieldData(faction, bops, alternate, v1, v2, jammered, Some(flag), v5, guid)
 }
 
@@ -74,22 +74,22 @@ object CommonFieldData extends Marshallable[CommonFieldData] {
     * Overloaded constructors.
     * @return a `CommonFieldData` object
     */
-  def apply(): CommonFieldData =
+def apply(): CommonFieldData =
     CommonFieldData(PlanetSideEmpire.NEUTRAL, false, false, false, None, false, None, None, PlanetSideGUID(0))
 
-  def apply(faction: PlanetSideEmpire.Value): CommonFieldData =
+def apply(faction: PlanetSideEmpire.Value): CommonFieldData =
     CommonFieldData(faction, false, false, false, None, false, None, None, PlanetSideGUID(0))
 
-  def apply(faction: PlanetSideEmpire.Value, unk: Int): CommonFieldData =
+def apply(faction: PlanetSideEmpire.Value, unk: Int): CommonFieldData =
     CommonFieldData(faction, false, false, unk > 1, None, unk % 1 == 1, None, None, PlanetSideGUID(0))
 
-  def apply(faction: PlanetSideEmpire.Value, unk: Int, player_guid: PlanetSideGUID): CommonFieldData =
+def apply(faction: PlanetSideEmpire.Value, unk: Int, player_guid: PlanetSideGUID): CommonFieldData =
     CommonFieldData(faction, false, false, unk > 1, None, unk % 1 == 1, None, None, player_guid)
 
-  def apply(faction: PlanetSideEmpire.Value, destroyed: Boolean, unk: Int): CommonFieldData =
+def apply(faction: PlanetSideEmpire.Value, destroyed: Boolean, unk: Int): CommonFieldData =
     CommonFieldData(faction, false, destroyed, unk > 1, None, unk % 1 == 1, None, None, PlanetSideGUID(0))
 
-  def apply(
+def apply(
       faction: PlanetSideEmpire.Value,
       destroyed: Boolean,
       unk: Int,
@@ -97,7 +97,7 @@ object CommonFieldData extends Marshallable[CommonFieldData] {
   ): CommonFieldData =
     CommonFieldData(faction, false, destroyed, unk > 1, None, unk % 1 == 1, None, None, player_guid)
 
-  def apply(
+def apply(
       faction: PlanetSideEmpire.Value,
       bops: Boolean,
       destroyed: Boolean,
@@ -110,7 +110,7 @@ object CommonFieldData extends Marshallable[CommonFieldData] {
     CommonFieldData(faction, bops, destroyed, unk > 1, None, unk % 1 == 1, None, jammeredField, player_guid)
   }
 
-  def codec(extra: Boolean): Codec[CommonFieldData] =
+private def codec(extra: Boolean): Codec[CommonFieldData] =
     (
       ("faction" | PlanetSideEmpire.codec) ::
         ("bops" | bool) ::
@@ -133,7 +133,7 @@ object CommonFieldData extends Marshallable[CommonFieldData] {
 
   implicit val codec: Codec[CommonFieldData] = codec(extra = false)
 
-  def codec2(extra: Boolean): Codec[CommonFieldData] =
+private def codec2(extra: Boolean): Codec[CommonFieldData] =
     (
       ("faction" | PlanetSideEmpire.codec) ::
         ("bops" | bool) ::

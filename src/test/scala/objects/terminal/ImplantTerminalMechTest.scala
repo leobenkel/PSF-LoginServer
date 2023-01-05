@@ -157,7 +157,7 @@ class ImplantTerminalMechControl5Test extends ActorTest {
 }
 
 object ImplantTerminalMechTest {
-  def SetUpAgents(faction: PlanetSideEmpire.Value)(implicit system: ActorSystem): (Player, ImplantTerminalMech) = {
+private def SetUpAgents(faction: PlanetSideEmpire.Value)(implicit system: ActorSystem): (Player, ImplantTerminalMech) = {
     import akka.actor.typed.scaladsl.adapter._
 
     val guid = new NumberPoolHub(new MaxNumberSource(10))

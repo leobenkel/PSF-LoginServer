@@ -25,18 +25,18 @@ class TerminalControl(term: Terminal)
     with DamageableAmenity
     with RepairableAmenity
     with AmenityAutoRepair {
-  def FactionObject    = term
-  def HackableObject   = term
-  def DamageableObject = term
-  def RepairableObject = term
-  def AutoRepairObject = term
+private def FactionObject    = term
+private def HackableObject   = term
+private def DamageableObject = term
+private def RepairableObject = term
+private def AutoRepairObject = term
 
 private val commonBehavior: Receive = checkBehavior
     .orElse(takesDamage)
     .orElse(canBeRepairedByNanoDispenser)
     .orElse(autoRepairBehavior)
 
-  def poweredStateLogic : Receive =
+private def poweredStateLogic : Receive =
     commonBehavior
       .orElse(hackableBehavior)
       .orElse {
@@ -59,7 +59,7 @@ private val commonBehavior: Receive = checkBehavior
         case _ => ;
       }
 
-  def unpoweredStateLogic : Receive = commonBehavior
+private def unpoweredStateLogic : Receive = commonBehavior
     .orElse {
       case Terminal.Request(player, msg) =>
         sender() ! Terminal.TerminalMessage(player, msg, Terminal.NoDeal())
@@ -93,7 +93,7 @@ private val commonBehavior: Receive = checkBehavior
     isPowered && super.tryAutoRepair()
   }
 
-  def powerTurnOffCallback() : Unit = {
+private def powerTurnOffCallback() : Unit = {
     stopAutoRepair()
     //clear hack state
     if (term.HackedBy.nonEmpty) {
@@ -102,7 +102,7 @@ private val commonBehavior: Receive = checkBehavior
     }
   }
 
-  def powerTurnOnCallback() : Unit = {
+private def powerTurnOnCallback() : Unit = {
     tryAutoRepair()
   }
 
@@ -110,7 +110,7 @@ private val commonBehavior: Receive = checkBehavior
 }
 
 object TerminalControl {
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     msg.response match {
       case Terminal.NoDeal() => sender ! msg
       case _ =>

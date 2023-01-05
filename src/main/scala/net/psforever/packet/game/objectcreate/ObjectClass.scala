@@ -456,7 +456,7 @@ object ObjectClass {
 
   final val objectClassMap = scala.collection.mutable.Map[String, Int]()
 
-  def ByName(name: String): Int = {
+private def ByName(name: String): Int = {
     // This whole thing is a dirty "temporary" hack so I don't have to make a huge map out of the above object vars by hand
     // Forgive me.
     if (objectClassMap.isEmpty) {
@@ -484,7 +484,7 @@ object ObjectClass {
     * @return the `Codec` that handles the format of data for that particular item class, or a failing `Codec`
     * @see `ConstructorData`
     */
-  def selectDataDetailedCodec(objClass: Int): Codec[ConstructorData] =
+private def selectDataDetailedCodec(objClass: Int): Codec[ConstructorData] =
     (objClass: @switch) match {
       //ammunition
       case ObjectClass.bullet_105mm                    => ConstructorData(DetailedAmmoBoxData.codec, "ammo box")
@@ -668,7 +668,7 @@ object ObjectClass {
       case _ => defaultFailureCodec(objClass)
     }
 
-  def selectDataDroppedDetailedCodec(objClass: Int): Codec[ConstructorData] =
+private def selectDataDroppedDetailedCodec(objClass: Int): Codec[ConstructorData] =
     (objClass: @switch) match {
       //special cases
       case ObjectClass.avatar            => ConstructorData(DetailedPlayerData.codec(position_defined = true), "avatar")
@@ -687,7 +687,7 @@ object ObjectClass {
     * @return the `Codec` that handles the format of data for that particular item class, or a failing `Codec`
     * @see `ConstructorData`
     */
-  def selectDataCodec(objClass: Int): Codec[ConstructorData] =
+private def selectDataCodec(objClass: Int): Codec[ConstructorData] =
     (objClass: @switch) match {
       //ammunition
       case ObjectClass.bullet_105mm                    => ConstructorData(CommonFieldData.codec2, "ammo box")
@@ -1009,7 +1009,7 @@ object ObjectClass {
     * @return the `Codec` that handles the format of data for that particular item class, or a failing `Codec`
     * @see `ConstructorData`
     */
-  def selectDataDroppedCodec(objClass: Int): Codec[ConstructorData] =
+private def selectDataDroppedCodec(objClass: Int): Codec[ConstructorData] =
     (objClass: @switch) match {
       //ammunition
       case ObjectClass.bullet_105mm                    => DroppedItemData(CommonFieldData.codec2, "ammo box")

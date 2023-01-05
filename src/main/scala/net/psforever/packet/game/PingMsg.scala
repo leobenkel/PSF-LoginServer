@@ -12,8 +12,8 @@ import scodec.codecs._
   */
 final case class PingMsg(serverSlot: Long, ticks: Long) extends PlanetSideGamePacket {
   type Packet = PingMsg
-  def opcode = GamePacketOpcode.PingMsg
-  def encode = PingMsg.encode(this)
+def opcode = GamePacketOpcode.PingMsg
+def encode = PingMsg.encode(this)
 }
 
 object PingMsg extends Marshallable[PingMsg] {

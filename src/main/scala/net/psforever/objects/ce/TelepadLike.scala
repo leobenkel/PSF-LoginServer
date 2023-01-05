@@ -16,11 +16,11 @@ trait TelepadLike {
   private var router: Option[PlanetSideGUID] = None
   private var activated: Boolean             = false
 
-  def Router: Option[PlanetSideGUID] = router
+private def Router: Option[PlanetSideGUID] = router
 
-  def Router_=(rguid: PlanetSideGUID): Option[PlanetSideGUID] = Router_=(Some(rguid))
+private def Router_=(rguid: PlanetSideGUID): Option[PlanetSideGUID] = Router_=(Some(rguid))
 
-  def Router_=(rguid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
+private def Router_=(rguid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
     router match {
       case None =>
         router = rguid
@@ -32,9 +32,9 @@ trait TelepadLike {
     Router
   }
 
-  def Active: Boolean = activated
+private def Active: Boolean = activated
 
-  def Active_=(state: Boolean): Boolean = {
+private def Active_=(state: Boolean): Boolean = {
     activated = state
     Active
   }
@@ -55,7 +55,7 @@ object TelepadLike {
     *            anticipating a `Terminal` object using this same definition
     * @param context hook to the local `Actor` system
     */
-  def Setup(obj: Amenity, context: ActorContext): Unit = {
+private def Setup(obj: Amenity, context: ActorContext): Unit = {
     obj.asInstanceOf[TelepadLike].Router = obj.Owner.GUID
     import akka.actor.Props
     if (obj.Actor == Default.Actor) {
@@ -71,7 +71,7 @@ object TelepadLike {
     * @param zone where the router is located
     * @return the pair of units that compose the teleportation system
     */
-  def AppraiseTeleportationSystem(router: Vehicle, zone: Zone): Option[(InternalTelepad, TelepadDeployable)] = {
+private def AppraiseTeleportationSystem(router: Vehicle, zone: Zone): Option[(InternalTelepad, TelepadDeployable)] = {
     import net.psforever.objects.vehicles.UtilityType
     import net.psforever.types.DriveState
     router.Utility(UtilityType.internal_router_telepad_deployable) match {
@@ -103,7 +103,7 @@ object TelepadLike {
     * @param routerGUID the vehicle that houses one end of the teleportation system (the `internalTelepad`)
     * @param obj the endpoint of the teleportation system housed by the router
     */
-  def StartRouterInternalTelepad(zone: Zone, routerGUID: PlanetSideGUID, obj: InternalTelepad): Unit = {
+private def StartRouterInternalTelepad(zone: Zone, routerGUID: PlanetSideGUID, obj: InternalTelepad): Unit = {
     val utilityGUID = obj.GUID
     val udef  = obj.Definition
     val events = zone.LocalEvents
@@ -135,7 +135,7 @@ object TelepadLike {
     LinkTelepad(zone, utilityGUID)
   }
 
-  def LinkTelepad(zone: Zone, telepadGUID: PlanetSideGUID): Unit = {
+private def LinkTelepad(zone: Zone, telepadGUID: PlanetSideGUID): Unit = {
     val events = zone.LocalEvents
     val zoneId = zone.id
     events ! LocalServiceMessage(
@@ -159,7 +159,7 @@ object TelepadLike {
 class TelepadControl(obj: InternalTelepad) extends akka.actor.Actor {
 private var setup: Cancellable = Default.Cancellable
 
-  def receive: akka.actor.Actor.Receive = {
+def receive: akka.actor.Actor.Receive = {
     case TelepadLike.Activate(o: InternalTelepad) if obj eq o =>
       obj.Active = true
 

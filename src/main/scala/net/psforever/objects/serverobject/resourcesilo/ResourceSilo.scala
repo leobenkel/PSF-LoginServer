@@ -17,15 +17,15 @@ class ResourceSilo extends Amenity with CommonNtuContainer {
   private var capacitorDisplay: Long = 0
   NtuCapacitor = Definition.MaxNtuCapacitor
 
-  def MaxNtuCapacitor : Float = Definition.MaxNtuCapacitor
+private def MaxNtuCapacitor : Float = Definition.MaxNtuCapacitor
 
-  def LowNtuWarningOn: Boolean = lowNtuWarningOn
-  def LowNtuWarningOn_=(enabled: Boolean): Boolean = {
+private def LowNtuWarningOn: Boolean = lowNtuWarningOn
+private def LowNtuWarningOn_=(enabled: Boolean): Boolean = {
     lowNtuWarningOn = enabled
     LowNtuWarningOn
   }
 
-  def CapacitorDisplay : Long = {
+private def CapacitorDisplay : Long = {
     if(NtuCapacitor == 0) {
       0
     } else if(NtuCapacitor <= 0.1f * MaxNtuCapacitor) {
@@ -35,9 +35,9 @@ class ResourceSilo extends Amenity with CommonNtuContainer {
     }
   }
 
-  def Definition: ResourceSiloDefinition = GlobalDefinitions.resource_silo
+private def Definition: ResourceSiloDefinition = GlobalDefinitions.resource_silo
 
-  def Use(player: Player, msg: UseItemMessage): ResourceSilo.Exchange = {
+private def Use(player: Player, msg: UseItemMessage): ResourceSilo.Exchange = {
     ResourceSilo.ChargeEvent()
   }
 }
@@ -53,7 +53,7 @@ object ResourceSilo {
     * Overloaded constructor.
     * @return the `Resource Silo` object
     */
-  def apply(): ResourceSilo = {
+def apply(): ResourceSilo = {
     new ResourceSilo()
   }
 
@@ -64,7 +64,7 @@ object ResourceSilo {
     *                not necessary for this object, but required by signature
     * @return the `ResourceSilo` object
     */
-  def Constructor(pos: Vector3)(id: Int, context: ActorContext): ResourceSilo = {
+private def Constructor(pos: Vector3)(id: Int, context: ActorContext): ResourceSilo = {
     val obj = ResourceSilo()
     obj.Position = pos
     obj.Actor = context.actorOf(Props(classOf[ResourceSiloControl], obj), s"${obj.Definition.Name}_$id")

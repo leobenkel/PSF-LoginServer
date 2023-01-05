@@ -738,7 +738,7 @@ object MapEnvironment {
     *                   an amenity of an `orbital_building_*`
     * @return a list of environmental representations
     */
-  def specialHartGantryDenialFields(obbasemesh: PlanetSideGUID): List[PieceOfEnvironment] = {
+private def specialHartGantryDenialFields(obbasemesh: PlanetSideGUID): List[PieceOfEnvironment] = {
     val lower: Float  = 74.902668f
     val upper: Float  = 86.246418f
     val radius: Float = 6.5f
@@ -766,7 +766,7 @@ object MapEnvironment {
     *                   that indicate the bounded regions of warning before the `killField` region
     * @return a list of environmental representations
     */
-  def zoneMapEdgeKillPlane(
+private def zoneMapEdgeKillPlane(
       scale: MapScale,
       killField: (Float, Float, Float, Float),
       warnFields: List[(Float, Float, Float, Float, Int)]

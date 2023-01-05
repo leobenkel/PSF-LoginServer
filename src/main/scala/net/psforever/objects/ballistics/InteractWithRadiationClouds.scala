@@ -28,14 +28,14 @@ class InteractWithRadiationClouds(
     */
   private var skipTargets: List[PlanetSideGUID] = List()
 
-  def Type = RadiationInteraction
+private def Type = RadiationInteraction
 
   /**
     * Wander into a radiation cloud and suffer the consequences.
     * @param sector the portion of the block map being tested
     * @param target the fixed element in this test
     */
-  def interaction(sector: SectorPopulation, target: InteractsWithZone): Unit = {
+private def interaction(sector: SectorPopulation, target: InteractsWithZone): Unit = {
     target match {
       case t: Vitality =>
         val position = target.Position
@@ -78,7 +78,7 @@ class InteractWithRadiationClouds(
     * All that can be done is blanking our retained previous effect targets.
     * @param target the fixed element in this test
     */
-  def resetInteraction(target: InteractsWithZone): Unit = {
+private def resetInteraction(target: InteractsWithZone): Unit = {
     skipTargets = List()
   }
 }

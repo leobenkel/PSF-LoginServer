@@ -17,8 +17,8 @@ final case class ConnectToWorldRequestMessage(
     unknown: Int
 ) extends PlanetSideGamePacket {
   type Packet = ConnectToWorldRequestMessage
-  def opcode = GamePacketOpcode.ConnectToWorldRequestMessage
-  def encode = ConnectToWorldRequestMessage.encode(this)
+def opcode = GamePacketOpcode.ConnectToWorldRequestMessage
+def encode = ConnectToWorldRequestMessage.encode(this)
 }
 
 object ConnectToWorldRequestMessage extends Marshallable[ConnectToWorldRequestMessage] {

@@ -243,7 +243,7 @@ class OrbitalShuttlePadObjectBuilderTest extends FreedContextActorTest {
 
 object ServerObjectBuilderTest {
   import net.psforever.objects.guid.source.MaxNumberSource
-  def NumberPoolHub: NumberPoolHub = {
+private def NumberPoolHub: NumberPoolHub = {
     val obj = new NumberPoolHub(new MaxNumberSource(2))
     obj
   }

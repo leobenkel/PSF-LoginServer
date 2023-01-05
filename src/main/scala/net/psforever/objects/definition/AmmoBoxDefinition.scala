@@ -17,7 +17,7 @@ class AmmoBoxDefinition(objectId: Int) extends EquipmentDefinition(objectId) {
 
   def Capacity: Int = capacity
 
-  def Capacity_=(capacity: Int): Int = {
+  private def Capacity_=(capacity: Int): Int = {
     this.capacity = capacity
     Capacity
   }

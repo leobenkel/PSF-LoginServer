@@ -24,15 +24,15 @@ final case class SquadMemberEvent(
     unk7: Option[Long]
 ) extends PlanetSideGamePacket {
   type Packet = SquadMemberEvent
-  def opcode = GamePacketOpcode.SquadMemberEvent
-  def encode = SquadMemberEvent.encode(this)
+def opcode = GamePacketOpcode.SquadMemberEvent
+def encode = SquadMemberEvent.encode(this)
 }
 
 object SquadMemberEvent extends Marshallable[SquadMemberEvent] {
-  def apply(action: MemberEvent.Value, unk2: Int, char_id: Long, position: Int): SquadMemberEvent =
+def apply(action: MemberEvent.Value, unk2: Int, char_id: Long, position: Int): SquadMemberEvent =
     SquadMemberEvent(action, unk2, char_id, position, None, None, None)
 
-  def Add(
+private def Add(
       unk2: Int,
       char_id: Long,
       position: Int,
@@ -42,16 +42,16 @@ object SquadMemberEvent extends Marshallable[SquadMemberEvent] {
   ): SquadMemberEvent =
     SquadMemberEvent(MemberEvent.Add, unk2, char_id, position, Some(player_name), Some(zone_number), Some(unk7))
 
-  def Remove(unk2: Int, char_id: Long, position: Int): SquadMemberEvent =
+private def Remove(unk2: Int, char_id: Long, position: Int): SquadMemberEvent =
     SquadMemberEvent(MemberEvent.Remove, unk2, char_id, position, None, None, None)
 
-  def Promote(unk2: Int, char_id: Long): SquadMemberEvent =
+private def Promote(unk2: Int, char_id: Long): SquadMemberEvent =
     SquadMemberEvent(MemberEvent.Promote, unk2, char_id, 0, None, None, None)
 
-  def UpdateZone(unk2: Int, char_id: Long, position: Int, zone_number: Int): SquadMemberEvent =
+private def UpdateZone(unk2: Int, char_id: Long, position: Int, zone_number: Int): SquadMemberEvent =
     SquadMemberEvent(MemberEvent.UpdateZone, unk2, char_id, position, None, Some(zone_number), None)
 
-  def Unknown4(unk2: Int, char_id: Long, position: Int, unk7: Long): SquadMemberEvent =
+private def Unknown4(unk2: Int, char_id: Long, position: Int, unk7: Long): SquadMemberEvent =
     SquadMemberEvent(MemberEvent.Unknown4, unk2, char_id, position, None, None, Some(unk7))
 
   implicit val codec: Codec[SquadMemberEvent] = (("action" | MemberEvent.codec) >>:~ { action =>

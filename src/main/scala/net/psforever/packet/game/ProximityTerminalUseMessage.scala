@@ -21,8 +21,8 @@ import scodec.codecs._
 final case class ProximityTerminalUseMessage(player_guid: PlanetSideGUID, object_guid: PlanetSideGUID, unk: Boolean)
     extends PlanetSideGamePacket {
   type Packet = ProximityTerminalUseMessage
-  def opcode = GamePacketOpcode.ProximityTerminalUseMessage
-  def encode = ProximityTerminalUseMessage.encode(this)
+def opcode = GamePacketOpcode.ProximityTerminalUseMessage
+def encode = ProximityTerminalUseMessage.encode(this)
 }
 
 object ProximityTerminalUseMessage extends Marshallable[ProximityTerminalUseMessage] {

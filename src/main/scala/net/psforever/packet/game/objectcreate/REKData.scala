@@ -18,7 +18,7 @@ final case class REKData(data: CommonFieldData, unk1: Int, unk2: Int) extends Co
 }
 
 object REKData extends Marshallable[REKData] {
-  def apply(data: CommonFieldData): REKData = REKData(data, 0, 0)
+def apply(data: CommonFieldData): REKData = REKData(data, 0, 0)
 
   implicit val codec: Codec[REKData] = (
     ("data" | CommonFieldData.codec2) ::

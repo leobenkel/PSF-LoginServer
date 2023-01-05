@@ -22,7 +22,7 @@ import scala.util.matching.Regex
 import scala.util.{Failure, Success}
 /*
 object LoginActor {
-  def apply(
+def apply(
       middlewareActor: typed.ActorRef[MiddlewareActor.Command],
       uuid: String
   ): Behavior[Command] =
@@ -37,7 +37,7 @@ class LoginActor(
     uuid: String
 ) {
 
-  def start(): Unit = {
+private def start(): Unit = {
     Behaviors.receiveMessagePartial {}
   }
 }

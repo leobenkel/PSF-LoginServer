@@ -5,7 +5,7 @@ import net.psforever.objects.guid.selector.{RandomSequenceSelector, _}
 import org.specs2.mutable.Specification
 
 class NumberSelectorTest extends Specification {
-  def randArrayGen(n: Int = 26, dx: Int = 0): Array[Int] = {
+private def randArrayGen(n: Int = 26, dx: Int = 0): Array[Int] = {
     val obj = Array.ofDim[Int](n)
     (0 to 25).foreach(x => { obj(x) = x + dx })
     obj

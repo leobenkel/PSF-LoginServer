@@ -16,16 +16,16 @@ final case class ArmorSiphonReason(
                                   ) extends DamageReason {
   assert(GlobalDefinitions.isBattleFrameArmorSiphon(siphon.Definition), "acting entity is not an armor siphon")
 
-  def source: DamageWithPosition = siphon.Projectile
+private def source: DamageWithPosition = siphon.Projectile
 
-  def resolution: DamageResolution.Value = DamageResolution.Resolved
+private def resolution: DamageResolution.Value = DamageResolution.Resolved
 
-  def same(test: DamageReason): Boolean = test match {
+private def same(test: DamageReason): Boolean = test match {
     case asr: ArmorSiphonReason => (asr.hostVehicle eq hostVehicle) && (asr.siphon eq siphon)
     case _                      => false
   }
 
-  def adversary: Option[SourceEntry] = None
+private def adversary: Option[SourceEntry] = None
 
   override def attribution: Int = hostVehicle.Definition.ObjectId
 }
@@ -44,7 +44,7 @@ object ArmorSiphonModifiers {
 }
 
 case object ArmorSiphonMaxDistanceCutoff extends ArmorSiphonModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: ArmorSiphonReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: ArmorSiphonReason): Int = {
     if (Vector3.DistanceSquared(data.target.Position, cause.hostVehicle.Position) < cause.source.DamageRadius * cause.source.DamageRadius) {
       damage
     }

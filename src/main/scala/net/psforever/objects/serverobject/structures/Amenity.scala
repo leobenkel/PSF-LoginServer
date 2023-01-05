@@ -21,11 +21,7 @@ import net.psforever.objects.zones.{Zone => World}
   * @see `AmenityOwner`
   * @see `FactionAffinity`
   */
-abstract class Amenity
-  extends PlanetSideServerObject
-    with Vitality
-    with StandardResistanceProfile
-    with BlockMapEntity {
+abstract class Amenity extends PlanetSideServerObject with Vitality with StandardResistanceProfile with BlockMapEntity {
   private[this] val log = org.log4s.getLogger("Amenity")
 
   /** what other entity has authority over this amenity; usually either a building or a vehicle */
@@ -34,7 +30,7 @@ abstract class Amenity
   /** if the entity exists at a specific position relative to the owner's position */
   private var offset: Option[Vector3] = None
 
-  def Faction: PlanetSideEmpire.Value = Owner.Faction
+  private def Faction: PlanetSideEmpire.Value = Owner.Faction
 
   /**
     * Reference the object that is in direct association with (is superior to) this one.
@@ -69,11 +65,11 @@ abstract class Amenity
     }
   }
 
-  def LocationOffset: Vector3 = offset.getOrElse(Vector3.Zero)
+  private def LocationOffset: Vector3 = offset.getOrElse(Vector3.Zero)
 
-  def LocationOffset_=(off: Vector3): Vector3 = LocationOffset_=(Some(off))
+  private def LocationOffset_=(off: Vector3): Vector3 = LocationOffset_=(Some(off))
 
-  def LocationOffset_=(off: Option[Vector3]): Vector3 = {
+  private def LocationOffset_=(off: Option[Vector3]): Vector3 = {
     off match {
       case Some(Vector3.Zero) =>
         offset = None
@@ -83,7 +79,7 @@ abstract class Amenity
     LocationOffset
   }
 
-  def DamageModel: DamageAndResistance = Definition.asInstanceOf[DamageAndResistance]
+  private def DamageModel: DamageAndResistance = Definition.asInstanceOf[DamageAndResistance]
 
-  def Definition: AmenityDefinition
+  override def Definition: AmenityDefinition
 }

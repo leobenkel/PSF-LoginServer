@@ -1001,7 +1001,7 @@ object PlayerControlTest {
     * @param system what we use to spawn the `Actor`
     * @return the resulting probe, and it's modified `ActorRef`
     */
-  def DummyAvatar(system: ActorSystem): (TestProbe, ActorRef[AvatarActor.Command]) = {
+private def DummyAvatar(system: ActorSystem): (TestProbe, ActorRef[AvatarActor.Command]) = {
     import akka.actor.typed.scaladsl.adapter.ClassicActorRefOps
     val probe = new TestProbe(system)
     val actor = ClassicActorRefOps(probe.ref).toTyped[AvatarActor.Command]

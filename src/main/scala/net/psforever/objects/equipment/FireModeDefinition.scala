@@ -24,7 +24,7 @@ class FireModeDefinition extends DamageModifiers {
   private var ammoSlotIndex: Int = 0
 
   /** how many rounds are replenished each reload cycle */
-  private var magazine: Int = 1
+  private var magazine: Int                = 1
   private var defaultMagazine: Option[Int] = None
 
   /** how many rounds are replenished each reload cycle, per type of ammunition loaded
@@ -47,42 +47,42 @@ class FireModeDefinition extends DamageModifiers {
 
   def AmmoSlotIndex: Int = ammoSlotIndex
 
-  def AmmoSlotIndex_=(index: Int): Int = {
+  private def AmmoSlotIndex_=(index: Int): Int = {
     ammoSlotIndex = index
     AmmoSlotIndex
   }
 
   def AmmoTypeIndices: mutable.ListBuffer[Int] = ammoTypeIndices
 
-  def AmmoTypeIndices_=(index: Int): mutable.ListBuffer[Int] = {
+  private def AmmoTypeIndices_=(index: Int): mutable.ListBuffer[Int] = {
     ammoTypeIndices += index
   }
 
   def ProjectileTypeIndices: mutable.ListBuffer[Int] = projectileTypeIndices
 
-  def ProjectileTypeIndices_=(index: Int): mutable.ListBuffer[Int] = {
+  private def ProjectileTypeIndices_=(index: Int): mutable.ListBuffer[Int] = {
     projectileTypeIndices += index
   }
 
   def DefaultMagazine: Int = defaultMagazine.getOrElse(magazine)
 
-  def DefaultMagazine_=(inMagazine: Int): Int = DefaultMagazine_=(Some(inMagazine))
+  private def DefaultMagazine_=(inMagazine: Int): Int = DefaultMagazine_=(Some(inMagazine))
 
-  def DefaultMagazine_=(inMagazine: Option[Int]): Int = {
+  private def DefaultMagazine_=(inMagazine: Option[Int]): Int = {
     defaultMagazine = inMagazine
     DefaultMagazine
   }
 
   def Magazine: Int = magazine
 
-  def Magazine_=(inMagazine: Int): Int = {
+  private def Magazine_=(inMagazine: Int): Int = {
     magazine = inMagazine
     Magazine
   }
 
   def CustomMagazine: mutable.HashMap[Ammo.Value, Int] = customAmmoMagazine
 
-  def CustomMagazine_=(kv: (Ammo.Value, Int)): mutable.HashMap[Ammo.Value, Int] = {
+  private def CustomMagazine_=(kv: (Ammo.Value, Int)): mutable.HashMap[Ammo.Value, Int] = {
     val (ammoTypeIndex, cap) = kv
     customAmmoMagazine += ammoTypeIndex -> cap
     CustomMagazine
@@ -90,19 +90,19 @@ class FireModeDefinition extends DamageModifiers {
 
   def RoundsPerShot: Int = roundsPerShot
 
-  def RoundsPerShot_=(round: Int): Int = {
+  private def RoundsPerShot_=(round: Int): Int = {
     roundsPerShot = round
     RoundsPerShot
   }
 
   def Chamber: Int = chamber
 
-  def Chamber_=(inChamber: Int): Int = {
+  private def Chamber_=(inChamber: Int): Int = {
     chamber = inChamber
     Chamber
   }
 
-  def Add: SpecificDamageProfile = modifiers
+  private def Add: SpecificDamageProfile = modifiers
 
   /**
     * Shoot a weapon, remove an anticipated amount of ammunition.
@@ -119,8 +119,8 @@ class FireModeDefinition extends DamageModifiers {
   }
 }
 
-class PelletFireModeDefinition
-  extends FireModeDefinition {
+class PelletFireModeDefinition extends FireModeDefinition {
+
   /**
     * Shoot a weapon, remove an anticipated amount of ammunition.<br>
     * <br>
@@ -143,8 +143,7 @@ class PelletFireModeDefinition
   }
 }
 
-class InfiniteFireModeDefinition
-  extends FireModeDefinition {
+class InfiniteFireModeDefinition extends FireModeDefinition {
 
   /**
     * Shoot a weapon, remove an anticipated amount of ammunition.<br>
@@ -170,11 +169,14 @@ class InfiniteFireModeDefinition
   * @param time the duration until the charge is full (milliseconds)
   * @param drainInterval the curation between ticks of ammunition depletion after "full charge"
   */
-class ChargeFireModeDefinition(private val time: Long, private val drainInterval: Long, private val roundsPerInterval: Int = 1)
-  extends FireModeDefinition {
-  def Time: Long = time
+class ChargeFireModeDefinition(
+    private val time: Long,
+    private val drainInterval: Long,
+    private val roundsPerInterval: Int = 1
+) extends FireModeDefinition {
+  private def Time: Long = time
 
-  def DrainInterval: Long = drainInterval
+  private def DrainInterval: Long = drainInterval
 
-  def RoundsPerInterval: Int = roundsPerInterval
+  private def RoundsPerInterval: Int = roundsPerInterval
 }

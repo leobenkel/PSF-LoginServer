@@ -15,33 +15,33 @@ class Squad(squadId: PlanetSideGUID, alignment: PlanetSideEmpire.Value) extends 
 
   override def GUID_=(d: PlanetSideGUID): PlanetSideGUID = GUID
 
-  def Faction: PlanetSideEmpire.Value = faction
+private def Faction: PlanetSideEmpire.Value = faction
 
-  def CustomZoneId: Boolean = zoneId.isDefined
+private def CustomZoneId: Boolean = zoneId.isDefined
 
-  def ZoneId: Int = zoneId.getOrElse(membership(0).ZoneId)
+private def ZoneId: Int = zoneId.getOrElse(membership(0).ZoneId)
 
-  def ZoneId_=(id: Int): Int = {
+private def ZoneId_=(id: Int): Int = {
     ZoneId_=(Some(id))
   }
 
-  def ZoneId_=(id: Option[Int]): Int = {
+private def ZoneId_=(id: Option[Int]): Int = {
     zoneId = id
     ZoneId
   }
 
-  def Task: String = task
+private def Task: String = task
 
-  def Task_=(assignment: String): String = {
+private def Task_=(assignment: String): String = {
     task = assignment
     Task
   }
 
-  def Membership: Array[Member] = membership
+private def Membership: Array[Member] = membership
 
-  def Availability: Array[Boolean] = availability
+private def Availability: Array[Boolean] = availability
 
-  def Leader: Member = {
+private def Leader: Member = {
     membership(0) match {
       case member if !member.Name.equals("") =>
         member
@@ -50,11 +50,11 @@ class Squad(squadId: PlanetSideGUID, alignment: PlanetSideEmpire.Value) extends 
     }
   }
 
-  def Size: Int = membership.count(member => member.CharId != 0)
+private def Size: Int = membership.count(member => member.CharId != 0)
 
-  def Capacity: Int = availability.count(open => open)
+private def Capacity: Int = availability.count(open => open)
 
-  def isAvailable(role: Int): Boolean = {
+private def isAvailable(role: Int): Boolean = {
     availability.lift(role) match {
       case Some(true) =>
         membership(role).isAvailable
@@ -63,7 +63,7 @@ class Squad(squadId: PlanetSideGUID, alignment: PlanetSideEmpire.Value) extends 
     }
   }
 
-  def isAvailable(role: Int, certs: Set[Certification]): Boolean = {
+private def isAvailable(role: Int, certs: Set[Certification]): Boolean = {
     availability.lift(role) match {
       case Some(true) =>
         membership(role).isAvailable(certs)

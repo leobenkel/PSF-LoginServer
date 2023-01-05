@@ -19,11 +19,11 @@ val attributeBehavior: Receive = {
       parseGenericAction(guid, action, other)
   }
 
-  def parseAttribute(attribute: Int, value: Long, other: Option[Any]): Unit
+private def parseAttribute(attribute: Int, value: Long, other: Option[Any]): Unit
 
-  def parseGenericAction(guid: PlanetSideGUID, action: Int, other: Option[Any]): Unit = { /*intentionally blank*/ }
+private def parseGenericAction(guid: PlanetSideGUID, action: Int, other: Option[Any]): Unit = { /*intentionally blank*/ }
 
-  def parseObjectAction(guid: PlanetSideGUID, action: Int, other: Option[Any]): Unit = { /*intentionally blank*/ }
+private def parseObjectAction(guid: PlanetSideGUID, action: Int, other: Option[Any]): Unit = { /*intentionally blank*/ }
 }
 
 object ServerObject {

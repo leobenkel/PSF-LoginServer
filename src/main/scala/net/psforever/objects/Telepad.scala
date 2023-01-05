@@ -9,7 +9,7 @@ class Telepad(private val cdef: ConstructionItemDefinition)
   with TelepadLike
 
 object Telepad {
-  def apply(cdef: ConstructionItemDefinition): Telepad = {
+def apply(cdef: ConstructionItemDefinition): Telepad = {
     new Telepad(cdef)
   }
 }

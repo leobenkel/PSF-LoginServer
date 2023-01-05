@@ -22,19 +22,19 @@ case object Cosmetic extends IntEnum[Cosmetic] {
   val values: IndexedSeq[Cosmetic] = findValues
 
   /** Get enum values from ObjectCreateMessage value */
-  def valuesFromObjectCreateValue(value: Int): Set[Cosmetic] = {
+private def valuesFromObjectCreateValue(value: Int): Set[Cosmetic] = {
     values.filter(c => (value & c.value) == c.value).toSet
   }
 
   /** Serialize enum values to ObjectCreateMessage value */
-  def valuesToObjectCreateValue(values: Set[Cosmetic]): Int = {
+private def valuesToObjectCreateValue(values: Set[Cosmetic]): Int = {
     values.foldLeft(0)(_ + _.value)
   }
 
   /** Get enum values from AttributeMessage value
     * Attribute and object create messages use different indexes and the NoHelmet value becomes a YesHelmet value
     */
-  def valuesFromAttributeValue(value: Long): Set[Cosmetic] = {
+private def valuesFromAttributeValue(value: Long): Set[Cosmetic] = {
     var values = Set[Cosmetic]()
     if (((value >> 4L) & 1L) == 1L) values += Cosmetic.Beret
     if (((value >> 3L) & 1L) == 1L) values += Cosmetic.Earpiece
@@ -47,7 +47,7 @@ case object Cosmetic extends IntEnum[Cosmetic] {
   /** Serialize enum values to AttributeMessage value
     * Attribute and object create messages use different indexes and the NoHelmet value becomes a YesHelmet value
     */
-  def valuesToAttributeValue(values: Set[Cosmetic]): Long = {
+private def valuesToAttributeValue(values: Set[Cosmetic]): Long = {
     values.foldLeft(1) {
       case (sum, NoHelmet)   => sum - 1
       case (sum, BrimmedCap) => sum + 2

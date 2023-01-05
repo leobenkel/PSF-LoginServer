@@ -59,7 +59,7 @@ abstract class ObjectDefinition(private val objectId: Int) extends BasicDefiniti
 
   def DisableAtMaxDepth: Boolean = disableAtMaxDepth
 
-  def DisableAtMaxDepth_=(drowns: Boolean): Boolean = {
+  private def DisableAtMaxDepth_=(drowns: Boolean): Boolean = {
     disableAtMaxDepth = drowns
     DisableAtMaxDepth
   }
@@ -71,9 +71,9 @@ abstract class ObjectDefinition(private val objectId: Int) extends BasicDefiniti
     DrownAtMaxDepth
   }
 
-  def UnderwaterLifespan(): Map[OxygenState, Long] = underwaterLifespan
+  private def UnderwaterLifespan(): Map[OxygenState, Long] = underwaterLifespan
 
-  def UnderwaterLifespan(key: OxygenState): Long = underwaterLifespan.getOrElse(key, 1L)
+  private def UnderwaterLifespan(key: OxygenState): Long = underwaterLifespan.getOrElse(key, 1L)
 
   def UnderwaterLifespan(suffocation: Long, recovery: Long): Map[OxygenState, Long] = {
     underwaterLifespan = Map(OxygenState.Suffocation -> suffocation, OxygenState.Recovery -> recovery)
@@ -82,9 +82,9 @@ abstract class ObjectDefinition(private val objectId: Int) extends BasicDefiniti
 
   private var serverSplashTargetsCentroid: Boolean = false
 
-  def ServerSplashTargetsCentroid: Boolean = serverSplashTargetsCentroid
+  private def ServerSplashTargetsCentroid: Boolean = serverSplashTargetsCentroid
 
-  def ServerSplashTargetsCentroid_=(splash: Boolean): Boolean = {
+  private def ServerSplashTargetsCentroid_=(splash: Boolean): Boolean = {
     serverSplashTargetsCentroid = splash
     ServerSplashTargetsCentroid
   }
@@ -98,7 +98,7 @@ abstract class ObjectDefinition(private val objectId: Int) extends BasicDefiniti
       serverGeometry
     }
 
-  def Geometry_=(func: Any => VolumetricGeometry): Any => VolumetricGeometry = {
+  private def Geometry_=(func: Any => VolumetricGeometry): Any => VolumetricGeometry = {
     serverGeometry = func
     Geometry
   }

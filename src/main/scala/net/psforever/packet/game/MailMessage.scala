@@ -19,8 +19,8 @@ import scodec.codecs._
   */
 final case class MailMessage(sender: String, subject: String, message: String) extends PlanetSideGamePacket {
   type Packet = MailMessage
-  def opcode = GamePacketOpcode.MailMessage
-  def encode = MailMessage.encode(this)
+def opcode = GamePacketOpcode.MailMessage
+def encode = MailMessage.encode(this)
 }
 
 object MailMessage extends Marshallable[MailMessage] {

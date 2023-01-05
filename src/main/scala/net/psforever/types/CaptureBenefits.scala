@@ -7,7 +7,7 @@ import enumeratum.values.{IntEnum, IntEnumEntry}
   * Perks gained through certain empire acquisitions.
   */
 sealed trait CaptureBenefit extends IntEnumEntry {
-  def value: Int
+private def value: Int
 }
 
 /**
@@ -23,7 +23,7 @@ sealed abstract class LatticeBenefit(val value: Int) extends CaptureBenefit
 sealed abstract class CavernBenefit(val value: Int) extends CaptureBenefit
 
 object LatticeBenefit extends IntEnum[LatticeBenefit] {
-  def values = findValues
+private def values = findValues
 
   /** no perk */
   case object None extends LatticeBenefit(value = 0)
@@ -40,7 +40,7 @@ object LatticeBenefit extends IntEnum[LatticeBenefit] {
 }
 
 object CavernBenefit extends IntEnum[CavernBenefit] {
-  def values = findValues.filterNot(_ eq NamelessBenefit)
+private def values = findValues.filterNot(_ eq NamelessBenefit)
 
   /** no perk */
   case object None extends CavernBenefit(value = 0)

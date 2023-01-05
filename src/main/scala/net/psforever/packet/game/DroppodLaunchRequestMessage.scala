@@ -24,8 +24,8 @@ final case class DroppodLaunchRequestMessage(
                                               unk: Int
                                             ) extends PlanetSideGamePacket {
   type Packet = DroppodLaunchRequestMessage
-  def opcode = GamePacketOpcode.DroppodLaunchRequestMessage
-  def encode = DroppodLaunchRequestMessage.encode(this)
+def opcode = GamePacketOpcode.DroppodLaunchRequestMessage
+def encode = DroppodLaunchRequestMessage.encode(this)
 }
 
 object DroppodLaunchRequestMessage extends Marshallable[DroppodLaunchRequestMessage] {
@@ -37,7 +37,7 @@ object DroppodLaunchRequestMessage extends Marshallable[DroppodLaunchRequestMess
     * @param pos where in the zone (relative to the ground) the player will be placed
     * @return a `DroppodLaunchRequestMessage` packet
     */
-  def apply(guid: PlanetSideGUID, zoneNumber: Int, pos: Vector3): DroppodLaunchRequestMessage =
+def apply(guid: PlanetSideGUID, zoneNumber: Int, pos: Vector3): DroppodLaunchRequestMessage =
     DroppodLaunchRequestMessage(DroppodLaunchInfo(guid, zoneNumber, pos), 3)
 
   implicit val codec: Codec[DroppodLaunchRequestMessage] = (

@@ -48,7 +48,7 @@ object Server {
       bind: Option[String] = None
   )
 
-  def printBanner(): Unit = {
+private def printBanner(): Unit = {
     println(ansi().fgBright(BLUE).a("""   ___  ________"""))
     println(ansi().fgBright(BLUE).a("""  / _ \/ __/ __/__  _______ _  _____ ____"""))
     println(ansi().fgBright(MAGENTA).a(""" / ___/\ \/ _// _ \/ __/ -_) |/ / -_) __/"""))
@@ -58,7 +58,7 @@ object Server {
     println()
   }
 
-  def systemInformation: String = {
+private def systemInformation: String = {
     val processors = Runtime.getRuntime.availableProcessors()
     val maxMemory  = FileUtils.byteCountToDisplaySize(Runtime.getRuntime.maxMemory())
 
@@ -73,7 +73,7 @@ object Server {
     """.stripMargin
   }
 
-  def run(args: CliConfig): Unit = {
+private def run(args: CliConfig): Unit = {
     val bindAddress: InetAddress =
       args.bind match {
         case Some(address) => InetAddress.getByName(address)         // address from first argument
@@ -158,7 +158,7 @@ object Server {
     }
   }
 
-  def flyway(args: CliConfig): Flyway = {
+private def flyway(args: CliConfig): Flyway = {
     Flyway
       .configure()
       .dataSource(Config.app.database.toJdbc, Config.app.database.username, Config.app.database.password)
@@ -166,11 +166,11 @@ object Server {
       .load()
   }
 
-  def migrate(args: CliConfig): Unit = {
+private def migrate(args: CliConfig): Unit = {
     flyway(args).migrate()
   }
 
-  def main(args: Array[String]): Unit = {
+private def main(args: Array[String]): Unit = {
     Locale.setDefault(Locale.US); // to have floats with dots, not comma
 
     printBanner()

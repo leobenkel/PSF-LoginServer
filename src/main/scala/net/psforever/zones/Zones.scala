@@ -826,7 +826,7 @@ object Zones {
     }
   }
 
-  def initZoneAmenities(zone: Zone): Unit = {
+private def initZoneAmenities(zone: Zone): Unit = {
     initResourceSilos(zone)
     initWarpGates(zone)
 
@@ -863,7 +863,7 @@ object Zones {
     * @param faction the empire
     * @return the zone id
     */
-  def sanctuaryZoneId(faction: PlanetSideEmpire.Value): String = {
+private def sanctuaryZoneId(faction: PlanetSideEmpire.Value): String = {
     faction match {
       case PlanetSideEmpire.NC => "home1"
       case PlanetSideEmpire.TR => "home2"
@@ -878,7 +878,7 @@ object Zones {
     * @param faction the empire
     * @return the zone number, within the sequence 1-32
     */
-  def sanctuaryZoneNumber(faction: PlanetSideEmpire.Value): Int = {
+private def sanctuaryZoneNumber(faction: PlanetSideEmpire.Value): Int = {
     faction match {
       case PlanetSideEmpire.NC => 11
       case PlanetSideEmpire.TR => 12
@@ -895,7 +895,7 @@ object Zones {
     * @param id a zone id string
     * @return a zone number
     */
-  def numberFromId(id: String): Int = {
+private def numberFromId(id: String): Int = {
     if (id.startsWith("z")) { //z2 -> 2
       id.substring(1).toInt
     } else if (id.startsWith("home")) { //home2 -> 2 + 10 = 12

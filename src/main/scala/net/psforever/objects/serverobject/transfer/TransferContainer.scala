@@ -13,7 +13,7 @@ trait TransferContainer
   with ZoneAware
   with WorldEntity
   with FactionAffinity {
-  def Actor : ActorRef
+private def Actor : ActorRef
 }
 
 object TransferContainer {

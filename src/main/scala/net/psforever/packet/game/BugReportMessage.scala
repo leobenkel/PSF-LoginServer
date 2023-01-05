@@ -47,8 +47,8 @@ final case class BugReportMessage(
     desc: String
 ) extends PlanetSideGamePacket {
   type Packet = BugReportMessage
-  def opcode = GamePacketOpcode.BugReportMessage
-  def encode = BugReportMessage.encode(this)
+def opcode = GamePacketOpcode.BugReportMessage
+def encode = BugReportMessage.encode(this)
 }
 
 object BugReportMessage extends Marshallable[BugReportMessage] {

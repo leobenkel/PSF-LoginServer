@@ -30,8 +30,8 @@ final case class CharacterInfoMessage(
     secondsSinceLastLogin: Long
 ) extends PlanetSideGamePacket {
   type Packet = CharacterInfoMessage
-  def opcode = GamePacketOpcode.CharacterInfoMessage
-  def encode = CharacterInfoMessage.encode(this)
+def opcode = GamePacketOpcode.CharacterInfoMessage
+def encode = CharacterInfoMessage.encode(this)
 }
 
 object CharacterInfoMessage extends Marshallable[CharacterInfoMessage] {

@@ -39,9 +39,9 @@ class BfrControl(vehicle: Vehicle)
     */
   private var shieldCharge: Cancellable = Default.Cancellable
 
-  def SiphoningObject = vehicle
+private def SiphoningObject = vehicle
 
-  def ChargeTransferObject = vehicle
+private def ChargeTransferObject = vehicle
 
   if (vehicle.Shields < vehicle.MaxShields) {
     chargeShields(amount = 0) //start charging if starts as uncharged
@@ -53,7 +53,7 @@ class BfrControl(vehicle: Vehicle)
     repairPostStop()
   }
 
-  def explosionBehavior: Receive = {
+private def explosionBehavior: Receive = {
     case BfrControl.VehicleExplosion =>
       val guid   = vehicle.GUID
       val guid0  = Service.defaultPlayerGUID
@@ -282,7 +282,7 @@ class BfrControl(vehicle: Vehicle)
     (oldWeapons, newWeapons, oldInventory, finalInventory)
   }
 
-  def culledWeaponMounts(values: Iterable[EquipmentSlot]): List[(Equipment, PlanetSideGUID)] = {
+private def culledWeaponMounts(values: Iterable[EquipmentSlot]): List[(Equipment, PlanetSideGUID)] = {
     values.collect {
       case slot if slot.Equipment.nonEmpty =>
         val obj = slot.Equipment.get
@@ -291,13 +291,13 @@ class BfrControl(vehicle: Vehicle)
     }.toList
   }
 
-  def disableShieldIfDrained(): Unit = {
+private def disableShieldIfDrained(): Unit = {
     if (vehicle.Shields == 0) {
       disableShield()
     }
   }
 
-  def disableShield(): Unit = {
+private def disableShield(): Unit = {
     val zone = vehicle.Zone
     zone.VehicleEvents ! VehicleServiceMessage(
       s"${zone.id}",
@@ -305,13 +305,13 @@ class BfrControl(vehicle: Vehicle)
     )
   }
 
-  def enableShieldIfNotDrained(): Unit = {
+private def enableShieldIfNotDrained(): Unit = {
     if (vehicle.Shields > 0) {
       enableShield()
     }
   }
 
-  def enableShield(): Unit = {
+private def enableShield(): Unit = {
     val zone = vehicle.Zone
     zone.VehicleEvents ! VehicleServiceMessage(
       s"${zone.id}",
@@ -324,7 +324,7 @@ class BfrControl(vehicle: Vehicle)
     shieldCharge(vehicle.Shields, vehicle.Definition, delay = 0) //continue charge?
   }
 
-  def chargeShieldsOnly(amount: Int): Unit = {
+private def chargeShieldsOnly(amount: Int): Unit = {
     val definition = vehicle.Definition
     val before     = vehicle.Shields
     if (canChargeShields()) {
@@ -348,11 +348,11 @@ class BfrControl(vehicle: Vehicle)
     }
   }
 
-  def shieldCharge(delay: Long): Unit = {
+private def shieldCharge(delay: Long): Unit = {
     shieldCharge(vehicle.Shields, vehicle.Definition, delay)
   }
 
-  def shieldCharge(after: Int, definition: VehicleDefinition, delay: Long): Unit = {
+private def shieldCharge(after: Int, definition: VehicleDefinition, delay: Long): Unit = {
     shieldCharge.cancel()
     if (after < definition.MaxShields && !vehicle.Jammed) {
       shieldCharge = context.system.scheduler.scheduleOnce(
@@ -365,7 +365,7 @@ class BfrControl(vehicle: Vehicle)
     }
   }
 
-  def showShieldCharge(): Unit = {
+private def showShieldCharge(): Unit = {
     val vguid   = vehicle.GUID
     val zone    = vehicle.Zone
     val shields = vehicle.Shields
@@ -448,20 +448,20 @@ class BfrControl(vehicle: Vehicle)
     }
   }
 
-  def bfrHandiness(side: equipment.Hand): Int = {
+private def bfrHandiness(side: equipment.Hand): Int = {
     if (side == Handiness.Left) 2
     else if (side == Handiness.Right) 3
     else throw new Exception("no hand associated with this slot")
   }
 
-  def bfrHandiness(slot: Int): equipment.Hand = {
+private def bfrHandiness(slot: Int): equipment.Hand = {
     //for the benefit of BFR equipment slots interacting with MoveItemMessage
     if (slot == 2) Handiness.Left
     else if (slot == 3) Handiness.Right
     else Handiness.Generic
   }
 
-  def bfrHandSubsystem(side: equipment.Hand): Option[VehicleSubsystem] = {
+private def bfrHandSubsystem(side: equipment.Hand): Option[VehicleSubsystem] = {
     //for the benefit of BFR equipment slots interacting with MoveItemMessage
     side match {
       case Handiness.Left  => vehicle.Subsystems(VehicleSubsystemEntry.BattleframeLeftArm)
@@ -470,7 +470,7 @@ class BfrControl(vehicle: Vehicle)
     }
   }
 
-  def specialArmWeaponEquipManagement(item: Equipment, slot: Int, handiness: equipment.Hand): Unit = {
+private def specialArmWeaponEquipManagement(item: Equipment, slot: Int, handiness: equipment.Hand): Unit = {
     if (item.Size == EquipmentSize.BFRArmWeapon && vehicle.VisibleSlots.contains(slot)) {
       val weapons = vehicle.Weapons
       //budget logic: the arm weapons are "next to each other" index-wise
@@ -506,7 +506,7 @@ class BfrControl(vehicle: Vehicle)
     * kill endless logic loops before they can happen
     */
   private var notSpecialManagingArmWeapon: Boolean = true
-  def specialArmWeaponActiveManagement(slotChanged: Int): Unit = {
+private def specialArmWeaponActiveManagement(slotChanged: Int): Unit = {
     if (notSpecialManagingArmWeapon) {
       notSpecialManagingArmWeapon = false
       val (thisArm, otherArm) = {
@@ -564,7 +564,7 @@ class BfrControl(vehicle: Vehicle)
     }
   }
 
-  def performEmpBurst(): Unit = {
+private def performEmpBurst(): Unit = {
     val now    = System.currentTimeMillis()
     val obj    = ChargeTransferObject
     val zone   = obj.Zone

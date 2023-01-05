@@ -10,7 +10,7 @@ import net.psforever.types.{CharacterSex, CharacterVoice, ImplantType, PlanetSid
 import org.specs2.mutable._
 
 class AvatarTest extends Specification {
-  def CreatePlayer(): (Player, Avatar) = {
+private def CreatePlayer(): (Player, Avatar) = {
     val avatar = Avatar(0, "TestCharacter", PlanetSideEmpire.VS, CharacterSex.Female, 41, CharacterVoice.Voice1)
     val player = Player(avatar)
     player.Slot(0).Equipment = Tool(beamer)

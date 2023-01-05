@@ -10,13 +10,13 @@ import net.psforever.objects.vital.interaction.DamageInteraction
   * and a means to test which calculation is valid in a given situation.
   */
 trait ResistanceSelection {
-  def Direct: ResistanceSelection.Format
-  def Splash: ResistanceSelection.Format
-  def Lash: ResistanceSelection.Format
-  def Aggravated: ResistanceSelection.Format
-  def Radiation: ResistanceSelection.Format
+private def Direct: ResistanceSelection.Format
+private def Splash: ResistanceSelection.Format
+private def Lash: ResistanceSelection.Format
+private def Aggravated: ResistanceSelection.Format
+private def Radiation: ResistanceSelection.Format
 
-  def apply(data: DamageInteraction) : ResistanceSelection.Format = data.cause.source.CausesDamageType match {
+def apply(data: DamageInteraction) : ResistanceSelection.Format = data.cause.source.CausesDamageType match {
     case DamageType.Direct     => Direct
     case DamageType.Splash     => Splash
     case DamageType.Lash       => Lash
@@ -25,7 +25,7 @@ trait ResistanceSelection {
     case _                     => ResistanceSelection.None
   }
 
-  def apply(res: DamageType.Value) : ResistanceSelection.Format = res match {
+def apply(res: DamageType.Value) : ResistanceSelection.Format = res match {
     case DamageType.Direct     => Direct
     case DamageType.Splash     => Splash
     case DamageType.Lash       => Lash

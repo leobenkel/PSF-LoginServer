@@ -10,10 +10,10 @@ final case class SquadServiceResponse(channel: String, exclude: Iterable[Long], 
     extends GenericEventBusMsg
 
 object SquadServiceResponse {
-  def apply(toChannel: String, response: SquadResponse.Response): SquadServiceResponse =
+def apply(toChannel: String, response: SquadResponse.Response): SquadServiceResponse =
     SquadServiceResponse(toChannel, Nil, response)
 
-  def apply(toChannel: String, exclude: Long, response: SquadResponse.Response): SquadServiceResponse =
+def apply(toChannel: String, exclude: Long, response: SquadResponse.Response): SquadServiceResponse =
     SquadServiceResponse(toChannel, Seq(exclude), response)
 }
 

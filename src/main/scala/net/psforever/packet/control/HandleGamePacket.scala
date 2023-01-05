@@ -9,12 +9,12 @@ import scodec.codecs._
 
 final case class HandleGamePacket(len: Int, stream: ByteVector, rest: BitVector = BitVector.empty)
     extends PlanetSideControlPacket {
-  def opcode: Type               = ControlPacketOpcode.HandleGamePacket
-  def encode: Attempt[BitVector] = HandleGamePacket.encode(this)
+def opcode: Type               = ControlPacketOpcode.HandleGamePacket
+def encode: Attempt[BitVector] = HandleGamePacket.encode(this)
 }
 
 object HandleGamePacket extends Marshallable[HandleGamePacket] {
-  def apply(stream: ByteVector): HandleGamePacket = {
+def apply(stream: ByteVector): HandleGamePacket = {
     new HandleGamePacket(stream.length.toInt, stream)
   }
 

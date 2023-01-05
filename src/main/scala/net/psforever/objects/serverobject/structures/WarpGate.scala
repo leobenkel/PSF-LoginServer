@@ -52,7 +52,7 @@ class WarpGate(name: String, building_guid: Int, map_id: Int, zone: Zone, buildi
     * @return `true`, if the warp gate can be used for transport;
     *        `false`, otherwise
     */
-  def Active: Boolean = active
+private def Active: Boolean = active
 
   /**
     * Control whether a warp gate is usable for transporting faction-affiliated forces between other gates.
@@ -61,7 +61,7 @@ class WarpGate(name: String, building_guid: Int, map_id: Int, zone: Zone, buildi
     * @return `true`, if the gate is active;
     *        `false`, otherwise
     */
-  def Active_=(state: Boolean): Boolean = {
+private def Active_=(state: Boolean): Boolean = {
     active = state
     Active
   }
@@ -73,14 +73,14 @@ class WarpGate(name: String, building_guid: Int, map_id: Int, zone: Zone, buildi
     * @return `true`, if some faction sees this warp gate as a "broadcast gate";
     *        `false`, otherwise
     */
-  def Broadcast: Boolean = Active && !passageFor.contains(PlanetSideEmpire.NEUTRAL)
+private def Broadcast: Boolean = Active && !passageFor.contains(PlanetSideEmpire.NEUTRAL)
 
   /**
     * Determine whether a specific faction interacts with this warp gate as "broadcast."
     * @return `true`, if the given faction interacts with this warp gate as a "broadcast gate";
     *        `false`, otherwise
     */
-  def Broadcast(faction: PlanetSideEmpire.Value): Boolean = {
+private def Broadcast(faction: PlanetSideEmpire.Value): Boolean = {
     Broadcast && passageFor.contains(faction)
   }
 
@@ -88,14 +88,14 @@ class WarpGate(name: String, building_guid: Int, map_id: Int, zone: Zone, buildi
     * Which factions interact with this warp gate as "broadcast"?
     * @return the set of all factions who interact with this warp gate as "broadcast"
     */
-  def AllowBroadcastFor: Set[PlanetSideEmpire.Value] = passageFor
+private def AllowBroadcastFor: Set[PlanetSideEmpire.Value] = passageFor
 
   /**
     * Allow a faction to interact with a given warp gate as "broadcast" if it is active.
     * @param bcast the faction
     * @return the set of all factions who interact with this warp gate as "broadcast"
     */
-  def AllowBroadcastFor_=(bcast: PlanetSideEmpire.Value): Set[PlanetSideEmpire.Value] = {
+private def AllowBroadcastFor_=(bcast: PlanetSideEmpire.Value): Set[PlanetSideEmpire.Value] = {
     AllowBroadcastFor_=(Set(bcast))
   }
 
@@ -104,7 +104,7 @@ class WarpGate(name: String, building_guid: Int, map_id: Int, zone: Zone, buildi
     * @param bcast the factions
     * @return the set of all factions who interact with this warp gate as "broadcast"
     */
-  def AllowBroadcastFor_=(bcast: Set[PlanetSideEmpire.Value]): Set[PlanetSideEmpire.Value] = {
+private def AllowBroadcastFor_=(bcast: Set[PlanetSideEmpire.Value]): Set[PlanetSideEmpire.Value] = {
     val validFactions = bcast.filterNot(_ == PlanetSideEmpire.NEUTRAL)
     passageFor = if (bcast.isEmpty || validFactions.isEmpty) {
       Set(PlanetSideEmpire.NEUTRAL)
@@ -114,13 +114,13 @@ class WarpGate(name: String, building_guid: Int, map_id: Int, zone: Zone, buildi
     AllowBroadcastFor
   }
 
-  def Owner: PlanetSideServerObject = this
+private def Owner: PlanetSideServerObject = this
 
-  def NtuCapacitor: Float = Definition.MaxNtuCapacitor
+private def NtuCapacitor: Float = Definition.MaxNtuCapacitor
 
-  def NtuCapacitor_=(value: Float): Float = NtuCapacitor
+private def NtuCapacitor_=(value: Float): Float = NtuCapacitor
 
-  def MaxNtuCapacitor : Float = Int.MaxValue
+private def MaxNtuCapacitor : Float = Int.MaxValue
 
   override def isOffline: Boolean = !Active
 
@@ -134,17 +134,17 @@ class WarpGate(name: String, building_guid: Int, map_id: Int, zone: Zone, buildi
 }
 
 object WarpGate {
-  def apply(name: String, guid: Int, map_id: Int, zone: Zone, buildingDefinition: WarpGateDefinition): WarpGate = {
+def apply(name: String, guid: Int, map_id: Int, zone: Zone, buildingDefinition: WarpGateDefinition): WarpGate = {
     new WarpGate(name, guid, map_id, zone, buildingDefinition)
   }
 
-  def Structure(name: String, guid: Int, map_id: Int, zone: Zone, context: ActorContext): WarpGate = {
+private def Structure(name: String, guid: Int, map_id: Int, zone: Zone, context: ActorContext): WarpGate = {
     val obj = new WarpGate(name, guid, map_id, zone, GlobalDefinitions.warpgate)
     obj.Actor = context.spawn(BuildingActor(zone, obj), name = s"$map_id-$guid-gate").toClassic
     obj
   }
 
-  def Structure(
+private def Structure(
       location: Vector3
   )(name: String, guid: Int, map_id: Int, zone: Zone, context: ActorContext): WarpGate = {
     val obj = new WarpGate(name, guid, map_id, zone, GlobalDefinitions.warpgate)
@@ -153,7 +153,7 @@ object WarpGate {
     obj
   }
 
-  def Structure(
+private def Structure(
       location: Vector3,
       buildingDefinition: WarpGateDefinition
   )(name: String, guid: Int, map_id: Int, zone: Zone, context: ActorContext): WarpGate = {

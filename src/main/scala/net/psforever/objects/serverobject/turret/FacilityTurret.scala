@@ -13,7 +13,7 @@ class FacilityTurret(tDef: FacilityTurretDefinition)
     with CaptureTerminalAware {
   WeaponTurret.LoadDefinition(this)
 
-  def Definition: FacilityTurretDefinition = tDef
+private def Definition: FacilityTurretDefinition = tDef
 }
 
 object FacilityTurret {
@@ -23,7 +23,7 @@ object FacilityTurret {
     * @param tDef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
     * @return a `FacilityTurret` object
     */
-  def apply(tDef: FacilityTurretDefinition): FacilityTurret = {
+def apply(tDef: FacilityTurretDefinition): FacilityTurret = {
     new FacilityTurret(tDef)
   }
 
@@ -38,14 +38,14 @@ object FacilityTurret {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `MannedTurret` object
     */
-  def Constructor(tdef: FacilityTurretDefinition)(id: Int, context: ActorContext): FacilityTurret = {
+private def Constructor(tdef: FacilityTurretDefinition)(id: Int, context: ActorContext): FacilityTurret = {
     import akka.actor.Props
     val obj = FacilityTurret(tdef)
     obj.Actor = context.actorOf(Props(classOf[FacilityTurretControl], obj), s"${tdef.Name}_$id")
     obj
   }
 
-  def Constructor(pos: Vector3, tdef: FacilityTurretDefinition)(id: Int, context: ActorContext): FacilityTurret = {
+private def Constructor(pos: Vector3, tdef: FacilityTurretDefinition)(id: Int, context: ActorContext): FacilityTurret = {
     import akka.actor.Props
     val obj = FacilityTurret(tdef)
     obj.Position = pos

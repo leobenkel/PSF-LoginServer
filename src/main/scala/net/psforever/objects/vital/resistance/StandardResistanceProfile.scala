@@ -15,7 +15,7 @@ trait StandardResistanceProfile extends ResistanceProfile {
   assert(Definition.isInstanceOf[ResistanceProfile], s"$this object definition must extend ResistanceProfile")
   private val resistDef = Definition.asInstanceOf[ResistanceProfile] //cast only once
 
-  def Subtract: DamageProfile = resistDef.Subtract
+  private def Subtract: DamageProfile = resistDef.Subtract
 
   def ResistanceDirectHit: Int = resistDef.ResistanceDirectHit
 

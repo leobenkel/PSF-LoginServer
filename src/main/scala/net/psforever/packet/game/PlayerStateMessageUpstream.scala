@@ -53,8 +53,8 @@ final case class PlayerStateMessageUpstream(
   assert(seq_time > -1 && seq_time < 1024)
 
   type Packet = PlayerStateMessageUpstream
-  def opcode = GamePacketOpcode.PlayerStateMessageUpstream
-  def encode = PlayerStateMessageUpstream.encode(this)
+def opcode = GamePacketOpcode.PlayerStateMessageUpstream
+def encode = PlayerStateMessageUpstream.encode(this)
 }
 
 object PlayerStateMessageUpstream extends Marshallable[PlayerStateMessageUpstream] {

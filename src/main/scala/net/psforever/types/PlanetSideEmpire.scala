@@ -15,7 +15,7 @@ object PlanetSideEmpire extends Enumeration {
 
   implicit val codec: Codec[PlanetSideEmpire.Value] = PacketHelpers.createEnumerationCodec(this, uint2L)
 
-  def apply(id: String): PlanetSideEmpire.Value = {
+def apply(id: String): PlanetSideEmpire.Value = {
     values.find(_.toString.equalsIgnoreCase(id)) match {
       case Some(faction) =>
         faction

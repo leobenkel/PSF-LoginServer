@@ -16,16 +16,16 @@ import net.psforever.types.Vector3
 final case class Point(a: Float, b: Float, inPlane: AxisAlignment2D)
   extends Geometry2D
   with geometry.Point {
-  def center: Point = this
+private def center: Point = this
 
-  def moveCenter(point: geometry.Point): Point = {
+private def moveCenter(point: geometry.Point): Point = {
     point match {
       case p: Point if inPlane == p.inPlane => Point(p.a, p.b, inPlane)
       case _                                => this
     }
   }
 
-  def asVector3: Vector3 = inPlane.asVector3(a, b)
+private def asVector3: Vector3 = inPlane.asVector3(a, b)
 }
 
 object Point {
@@ -34,14 +34,14 @@ object Point {
     * By default, the planar frame is the common XY-axis.
     * @return a `Point2D` entity
     */
-  def apply(): Point = Point(0,0, AxisAlignment.XY)
+def apply(): Point = Point(0,0, AxisAlignment.XY)
 
   /**
     * An overloaded constructor that assigns world origin coordinates.
     * By default, the planar frame is the common XY-axis.
     * @return a `Point2D` entity
     */
-  def apply(point: geometry.Point): Point = {
+def apply(point: geometry.Point): Point = {
     val p = point.asVector3
     Point(p.x, p.y, AxisAlignment.XY)
   }
@@ -50,7 +50,7 @@ object Point {
     * An overloaded constructor that assigns world origin coordinates in the given planar frame.
     * @return a `Point2D` entity
     */
-  def apply(frame: AxisAlignment2D): Point = Point(0,0, frame)
+def apply(frame: AxisAlignment2D): Point = Point(0,0, frame)
 
   /**
     * An overloaded constructor that uses the same coordinates from a `Vector3` entity.
@@ -58,7 +58,7 @@ object Point {
     * @param v the entity with the corresponding points
     * @return a `Point2D` entity
     */
-  def apply(v: Vector3): Point = Point(v.x, v.y, AxisAlignment.XY)
+def apply(v: Vector3): Point = Point(v.x, v.y, AxisAlignment.XY)
 
   /**
     * An overloaded constructor that uses the same coordinates from a `Vector3` entity in the given planar frame.
@@ -66,7 +66,7 @@ object Point {
     * @param v the entity with the corresponding points
     * @return a `Point2D` entity
     */
-  def apply(v: Vector3, frame: AxisAlignment2D): Point = {
+def apply(v: Vector3, frame: AxisAlignment2D): Point = {
     frame match {
       case AxisAlignment.XY => Point(v.x, v.y, frame)
       case AxisAlignment.YZ => Point(v.y, v.z, frame)

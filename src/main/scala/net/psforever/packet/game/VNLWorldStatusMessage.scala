@@ -43,8 +43,8 @@ final case class WorldInformation(
 final case class VNLWorldStatusMessage(welcomeMessage: String, worlds: Vector[WorldInformation])
     extends PlanetSideGamePacket {
   type Packet = VNLWorldStatusMessage
-  def opcode = GamePacketOpcode.VNLWorldStatusMessage
-  def encode = VNLWorldStatusMessage.encode(this)
+def opcode = GamePacketOpcode.VNLWorldStatusMessage
+def encode = VNLWorldStatusMessage.encode(this)
 }
 
 object VNLWorldStatusMessage extends Marshallable[VNLWorldStatusMessage] {

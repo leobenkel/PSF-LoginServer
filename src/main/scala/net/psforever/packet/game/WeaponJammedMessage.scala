@@ -16,8 +16,8 @@ import scodec.codecs._
   */
 final case class WeaponJammedMessage(weapon_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = WeaponJammedMessage
-  def opcode = GamePacketOpcode.WeaponJammedMessage
-  def encode = WeaponJammedMessage.encode(this)
+def opcode = GamePacketOpcode.WeaponJammedMessage
+def encode = WeaponJammedMessage.encode(this)
 }
 
 object WeaponJammedMessage extends Marshallable[WeaponJammedMessage] {

@@ -12,8 +12,8 @@ import scodec.codecs._
   */
 final case class WeaponDelayFireMessage(seq_time: Int, weapon_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = WeaponDelayFireMessage
-  def opcode = GamePacketOpcode.WeaponDelayFireMessage
-  def encode = WeaponDelayFireMessage.encode(this)
+def opcode = GamePacketOpcode.WeaponDelayFireMessage
+def encode = WeaponDelayFireMessage.encode(this)
 }
 
 object WeaponDelayFireMessage extends Marshallable[WeaponDelayFireMessage] {

@@ -24,7 +24,7 @@ object Angular {
     roll => () :: roll :: HNil
   )
 
-  def codec_roll(bits: Int): Codec[Float] = newcodecs.q_float(0.0f, 360.0f, bits)
+private def codec_roll(bits: Int): Codec[Float] = newcodecs.q_float(0.0f, 360.0f, bits)
 
   //pitch
   val codec_pitch: Codec[Float] = (
@@ -38,7 +38,7 @@ object Angular {
     pitch => () :: pitch :: HNil
   )
 
-  def codec_pitch(bits: Int): Codec[Float] =
+private def codec_pitch(bits: Int): Codec[Float] =
     newcodecs
       .q_float(360.0f, 0.0f, bits)
       .xmap[Float](
@@ -47,7 +47,7 @@ object Angular {
       )
 
   //yaw
-  def codec_yaw(North: Float = 90.0f): Codec[Float] =
+private def codec_yaw(North: Float = 90.0f): Codec[Float] =
     (
       ignore(1) ::
         codec_yaw(7, North)
@@ -59,7 +59,7 @@ object Angular {
       yaw => () :: yaw :: HNil
     )
 
-  def codec_yaw(bits: Int, North: Float): Codec[Float] =
+private def codec_yaw(bits: Int, North: Float): Codec[Float] =
     newcodecs
       .q_float(360.0f, 0.0f, bits)
       .xmap[Float](
@@ -78,7 +78,7 @@ object Angular {
   )
 
   //support
-  def decodeCorrectedAngle(angle: Float, correction: Float = 0f): Float = {
+private def decodeCorrectedAngle(angle: Float, correction: Float = 0f): Float = {
     var correctedAng: Float = angle + correction
     if (correctedAng >= 360f) {
       correctedAng = correctedAng - 360f
@@ -86,7 +86,7 @@ object Angular {
     correctedAng
   }
 
-  def encodeCorrectedAngle(angle: Float, correction: Float = 0f): Float = {
+def encodeCorrectedAngle(angle: Float, correction: Float = 0f): Float = {
     var correctedAng: Float = angle - correction
     if (correctedAng <= 0f) {
       correctedAng = 360f + correctedAng % 360f
@@ -105,7 +105,7 @@ object Angular {
     * @param angle the original angle in degrees
     * @return the rotation flipped angle in degrees within the range of 0 to 359
     */
-  def flipClockwise(angle: Float): Float = {
+private def flipClockwise(angle: Float): Float = {
     //counterclockwise: 0-degrees starts at East Vector3(1,0,0)
     //clockwise: 0-degrees starts at North Vector3(0,1,0)
     val boundedAngle = {

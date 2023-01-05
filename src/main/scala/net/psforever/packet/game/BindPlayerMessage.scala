@@ -73,8 +73,8 @@ final case class BindPlayerMessage(
     pos: Vector3
 ) extends PlanetSideGamePacket {
   type Packet = BindPlayerMessage
-  def opcode = GamePacketOpcode.BindPlayerMessage
-  def encode = BindPlayerMessage.encode(this)
+def opcode = GamePacketOpcode.BindPlayerMessage
+def encode = BindPlayerMessage.encode(this)
 }
 
 object BindPlayerMessage extends Marshallable[BindPlayerMessage] {

@@ -31,8 +31,8 @@ final case class FavoritesRequest(
     label: Option[String]
 ) extends PlanetSideGamePacket {
   type Packet = FavoritesRequest
-  def opcode = GamePacketOpcode.FavoritesRequest
-  def encode = FavoritesRequest.encode(this)
+def opcode = GamePacketOpcode.FavoritesRequest
+def encode = FavoritesRequest.encode(this)
 }
 
 object FavoritesRequest extends Marshallable[FavoritesRequest] {

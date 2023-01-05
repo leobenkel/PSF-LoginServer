@@ -62,7 +62,7 @@ object AvatarConverter {
     * @param obj the `Player` game object
     * @return the resulting `CharacterAppearanceData`
     */
-  def MakeAppearanceData(obj: Player): Int => CharacterAppearanceData = {
+private def MakeAppearanceData(obj: Player): Int => CharacterAppearanceData = {
     val alt_model_flag: Boolean = obj.isBackpack
     val aa: Int => CharacterAppearanceA = CharacterAppearanceA(
       BasicCharacterData(obj.Name, obj.Faction, obj.Sex, obj.Head, obj.Voice),
@@ -108,7 +108,7 @@ object AvatarConverter {
     CharacterAppearanceData(aa, ab, obj.avatar.decoration.ribbonBars)
   }
 
-  def MakeCharacterData(obj: Player): (Boolean, Boolean) => CharacterData = {
+private def MakeCharacterData(obj: Player): (Boolean, Boolean) => CharacterData = {
     val MaxArmor = obj.MaxArmor
     CharacterData(
       StatConverter.Health(obj.Health, obj.MaxHealth),
@@ -125,7 +125,7 @@ object AvatarConverter {
     )
   }
 
-  def MakeDetailedCharacterData(obj: Player): Option[Int] => DetailedCharacterData = {
+private def MakeDetailedCharacterData(obj: Player): Option[Int] => DetailedCharacterData = {
     val maxOpt: Option[Long] = if (obj.ExoSuit == ExoSuitType.MAX) { Some(0L) }
     else { None }
     val ba: DetailedCharacterA = DetailedCharacterA(
@@ -169,11 +169,11 @@ object AvatarConverter {
     pad_length: Option[Int] => DetailedCharacterData(ba, bb(obj.avatar.bep, pad_length))(pad_length)
   }
 
-  def MakeInventoryData(obj: Player): InventoryData = {
+private def MakeInventoryData(obj: Player): InventoryData = {
     InventoryData(MakeHolsters(obj, BuildEquipment))
   }
 
-  def MakeDetailedInventoryData(obj: Player): InventoryData = {
+private def MakeDetailedInventoryData(obj: Player): InventoryData = {
     InventoryData(
       MakeHolsters(obj, BuildDetailedEquipment) ++
        MakeFifthSlot(obj) ++
@@ -210,7 +210,7 @@ object AvatarConverter {
     * @param builder the function used to transform to the decoded packet form
     * @return a list of all items that were in the holsters in decoded packet form
     */
-  def MakeHolsters(obj: Player, builder: (Int, Equipment) => InternalSlot): List[InternalSlot] = {
+private def MakeHolsters(obj: Player, builder: (Int, Equipment) => InternalSlot): List[InternalSlot] = {
     recursiveMakeHolsters(obj.Holsters().iterator, builder)
   }
 
@@ -254,7 +254,7 @@ object AvatarConverter {
     * @param equip the game object
     * @return the game object in decoded packet form
     */
-  def BuildDetailedEquipment(index: Int, equip: Equipment): InternalSlot = {
+private def BuildDetailedEquipment(index: Int, equip: Equipment): InternalSlot = {
     InternalSlot(
       equip.Definition.ObjectId,
       equip.GUID,
@@ -300,7 +300,7 @@ object AvatarConverter {
     * @param obj the `Player` game object
     * @return the holster's Enumeration value
     */
-  def GetDrawnSlot(obj: Player): DrawnSlot.Value = {
+private def GetDrawnSlot(obj: Player): DrawnSlot.Value = {
     obj.DrawnSlot match {
       case Player.HandsDownSlot | Player.FreeHandSlot => DrawnSlot.None
       case n                                          => DrawnSlot(n)

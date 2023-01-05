@@ -12,16 +12,16 @@ final case class RespawnInfo(unk1: List[Vector3], unk2: List[Boolean])
 final case class RespawnAMSInfoMessage(unk1: PlanetSideGUID, unk2: Boolean, unk3: Option[RespawnInfo])
     extends PlanetSideGamePacket {
   type Packet = RespawnAMSInfoMessage
-  def opcode = GamePacketOpcode.RespawnAMSInfoMessage
-  def encode = RespawnAMSInfoMessage.encode(this)
+def opcode = GamePacketOpcode.RespawnAMSInfoMessage
+def encode = RespawnAMSInfoMessage.encode(this)
 }
 
 object RespawnAMSInfoMessage extends Marshallable[RespawnAMSInfoMessage] {
-  def apply(u1: PlanetSideGUID, u2: Boolean): RespawnAMSInfoMessage = {
+def apply(u1: PlanetSideGUID, u2: Boolean): RespawnAMSInfoMessage = {
     RespawnAMSInfoMessage(u1, u2, None)
   }
 
-  def apply(u1: PlanetSideGUID, u2: Boolean, u3: RespawnInfo): RespawnAMSInfoMessage = {
+def apply(u1: PlanetSideGUID, u2: Boolean, u3: RespawnInfo): RespawnAMSInfoMessage = {
     RespawnAMSInfoMessage(u1, u2, Some(u3))
   }
 

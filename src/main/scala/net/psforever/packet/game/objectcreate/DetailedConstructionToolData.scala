@@ -24,7 +24,7 @@ final case class DetailedConstructionToolData(data: CommonFieldData, mode: Int) 
 }
 
 object DetailedConstructionToolData extends Marshallable[DetailedConstructionToolData] {
-  def apply(data: CommonFieldData): DetailedConstructionToolData = DetailedConstructionToolData(data, 0)
+def apply(data: CommonFieldData): DetailedConstructionToolData = DetailedConstructionToolData(data, 0)
 
   implicit val codec: Codec[DetailedConstructionToolData] = (
     ("data" | CommonFieldData.codec(false)) ::

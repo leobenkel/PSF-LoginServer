@@ -418,8 +418,8 @@ object SquadAction {
 final case class SquadDefinitionActionMessage(squad_guid: PlanetSideGUID, line: Int, action: SquadAction)
     extends PlanetSideGamePacket {
   type Packet = SquadDefinitionActionMessage
-  def opcode = GamePacketOpcode.SquadDefinitionActionMessage
-  def encode = SquadDefinitionActionMessage.encode(this)
+def opcode = GamePacketOpcode.SquadDefinitionActionMessage
+def encode = SquadDefinitionActionMessage.encode(this)
 }
 
 object SquadDefinitionActionMessage extends Marshallable[SquadDefinitionActionMessage] {
@@ -431,7 +431,7 @@ object SquadDefinitionActionMessage extends Marshallable[SquadDefinitionActionMe
     * @param code the action behavior code
     * @return the `SquadAction` `Codec` to use for the given `code`
     */
-  def selectFromActionCode(code: Int): Codec[SquadAction] = {
+private def selectFromActionCode(code: Int): Codec[SquadAction] = {
     import SquadAction.Codecs._
     import scala.annotation.switch
     ((code: @switch) match {

@@ -8,7 +8,7 @@ import scala.reflect.runtime.universe
 
 // TODO definitions should be in an iterable format
 object DefinitionUtil {
-  def idToDefinition(id: Int): Any = {
+private def idToDefinition(id: Int): Any = {
     import net.psforever.objects.GlobalDefinitions._
     id match {
       //ammunition
@@ -317,7 +317,7 @@ object DefinitionUtil {
   }
 
   /** Apply default loadout to given player */
-  def applyDefaultLoadout(player: Player): Unit = {
+def applyDefaultLoadout(player: Player): Unit = {
     val faction = player.Faction
     player.ExoSuit = ExoSuitType.Standard
     player.Slot(0).Equipment = Tool(GlobalDefinitions.StandardPistol(faction))
@@ -333,7 +333,7 @@ object DefinitionUtil {
   }
 
   /*
-  def fromStringImpl(c: blackbox.Context)(name: c.Expr[String]): c.Tree = {
+private def fromStringImpl(c: blackbox.Context)(name: c.Expr[String]): c.Tree = {
     import c.universe._
 
     q"""
@@ -346,7 +346,7 @@ object DefinitionUtil {
     """
   }
 
-  def fromString(name: String): BasicDefinition = macro fromStringImpl
+private def fromString(name: String): BasicDefinition = macro fromStringImpl
 
    */
 
@@ -357,7 +357,7 @@ object DefinitionUtil {
   // This is slow and ugly, the macro implementation from above would be better
   // But macros cannot be called from the project they're defined in, and moving this to another project is not easy
   // Making GlobalDefinitions iterable (map etc) should be the preferred solution
-  def fromString(name: String): BasicDefinition = {
+private def fromString(name: String): BasicDefinition = {
     universe.typeOf[GlobalDefinitions.type].decl(universe.TermName(name))
     val method = universe.typeOf[GlobalDefinitions.type].member(universe.TermName(name)).asMethod
     instanceMirror.reflectMethod(method).apply().asInstanceOf[BasicDefinition]

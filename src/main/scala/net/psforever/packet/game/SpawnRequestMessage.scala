@@ -20,9 +20,9 @@ final case class SpawnRequestMessage(unk1: Int, spawn_type: SpawnGroup, unk3: In
     extends PlanetSideGamePacket {
   type Packet = SpawnRequestMessage
 
-  def opcode = GamePacketOpcode.SpawnRequestMessage
+def opcode = GamePacketOpcode.SpawnRequestMessage
 
-  def encode = SpawnRequestMessage.encode(this)
+def encode = SpawnRequestMessage.encode(this)
 }
 
 object SpawnRequestMessage extends Marshallable[SpawnRequestMessage] {

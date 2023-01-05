@@ -21,7 +21,7 @@ trait Repairable {
     * Needs declaration in lowest implementing code.
     * @return the entity controlled by this actor
     */
-  def RepairableObject: Repairable.Target
+private def RepairableObject: Repairable.Target
 
   /**
     * The official mixin hook; `orElse` onto the "control" `Actor` `receive`;
@@ -43,7 +43,7 @@ trait Repairable {
     * Override this method only when directly implementing.
     * @see `canBeRepairedByNanoDispenser`
     */
-  def CanBeRepairedByNanoDispenser(player: Player, item: Tool): Unit
+private def CanBeRepairedByNanoDispenser(player: Player, item: Tool): Unit
 
   /**
     * The amount of repair that any specific tool provides.
@@ -51,13 +51,13 @@ trait Repairable {
     * @param item the tool in question
     * @return an amount to add to the repair attempt progress
     */
-  def RepairToolValue(item: Tool): Float = item.AmmoSlot.Box.Definition.repairAmount
+private def RepairToolValue(item: Tool): Float = item.AmmoSlot.Box.Definition.repairAmount
 
   /**
     * The entity is no longer destroyed.
     * @param obj the entity
     */
-  def Restoration(obj: Repairable.Target): Unit = {
+private def Restoration(obj: Repairable.Target): Unit = {
     Repairable.Restoration(obj)
   }
 }
@@ -75,7 +75,7 @@ object Repairable {
     * @param amount the base amount of repairing
     * @return a modified amount of repairing
     */
-  def applyLevelModifier(user: Player, item: Tool, amount: Float): Float = {
+def applyLevelModifier(user: Player, item: Tool, amount: Float): Float = {
     item.Definition.RepairMultiplier(Players.repairModifierLevel(user)) * amount
   }
 
@@ -83,7 +83,7 @@ object Repairable {
     * The entity is no longer destroyed.
     * @param target the entity
     */
-  def Restoration(target: Repairable.Target): Unit = {
+private def Restoration(target: Repairable.Target): Unit = {
     target.Destroyed = false
   }
 }

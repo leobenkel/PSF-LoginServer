@@ -23,11 +23,11 @@ final case class LockerContainerData(inventory: Option[InventoryData]) extends C
 }
 
 object LockerContainerData extends Marshallable[LockerContainerData] {
-  def apply(): LockerContainerData = new LockerContainerData(None)
+def apply(): LockerContainerData = new LockerContainerData(None)
 
-  def apply(inventory: InventoryData): LockerContainerData = new LockerContainerData(Some(inventory))
+def apply(inventory: InventoryData): LockerContainerData = new LockerContainerData(Some(inventory))
 
-  def apply(inventory: List[InternalSlot]): LockerContainerData =
+def apply(inventory: List[InternalSlot]): LockerContainerData =
     new LockerContainerData(Some(InventoryData(inventory)))
 
   implicit val codec: Codec[LockerContainerData] = (

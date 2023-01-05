@@ -22,9 +22,9 @@ final case class Cuboid(
                          width: Float,
                          height: Float,
                        ) extends VolumetricGeometry {
-  def center: Point = Point(p.asVector3 + relativeUp * height * 0.5f)
+private def center: Point = Point(p.asVector3 + relativeUp * height * 0.5f)
 
-  def moveCenter(point: geometry.Point): VolumetricGeometry = Cuboid(Point(point), relativeForward, relativeUp, length, width, height)
+private def moveCenter(point: geometry.Point): VolumetricGeometry = Cuboid(Point(point), relativeForward, relativeUp, length, width, height)
 
   override def pointOnOutside(v: Vector3): Point = {
     import net.psforever.types.Vector3.{CrossProduct, DotProduct, neg}

@@ -25,8 +25,8 @@ import scodec.codecs._
 final case class SquadInvitationRequestMessage(squad_guid: PlanetSideGUID, slot: Int, char_id: Long, name: String)
     extends PlanetSideGamePacket {
   type Packet = SquadInvitationRequestMessage
-  def opcode = GamePacketOpcode.SquadInvitationRequestMessage
-  def encode = SquadInvitationRequestMessage.encode(this)
+def opcode = GamePacketOpcode.SquadInvitationRequestMessage
+def encode = SquadInvitationRequestMessage.encode(this)
 }
 
 object SquadInvitationRequestMessage extends Marshallable[SquadInvitationRequestMessage] {

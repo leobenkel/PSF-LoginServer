@@ -42,9 +42,9 @@ object VehicleSubsystemConditionModifier extends IntEnum[VehicleSubsystemConditi
 //Conditions
 
 trait VehicleSubsystemCondition {
-  def getMultiplier(): Float = 1f
+private def getMultiplier(): Float = 1f
 
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket]
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket]
 }
 
 final case class VehicleComponentCondition(
@@ -54,7 +54,7 @@ final case class VehicleComponentCondition(
 ) extends VehicleSubsystemCondition {
   override def getMultiplier(): Float = factor.multiplier
 
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
     if (vehicle.Jammed) {
       List(ComponentDamageMessage(guid, id, Some(ComponentDamageField(alarm_level = 0, factor.value, unk))))
     } else {
@@ -64,12 +64,12 @@ final case class VehicleComponentCondition(
 }
 
 object VehicleComponentCondition {
-  def apply(alarm: Long, factor: VehicleSubsystemConditionModifier): VehicleComponentCondition =
+def apply(alarm: Long, factor: VehicleSubsystemConditionModifier): VehicleComponentCondition =
     VehicleComponentCondition(alarm, factor, unk = true)
 }
 
 sealed abstract class BattleframeArmMountCondition(code: Int) extends VehicleSubsystemCondition {
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
     List(GenericObjectActionMessage(guid, code))
   }
 }
@@ -81,35 +81,35 @@ private case object BattleframeArmInactive extends BattleframeArmMountCondition(
 //Statuses
 
 trait VehicleSubsystemStatus {
-  def name: String
-  def effects: List[VehicleSubsystemCondition]
-  def priority: Int
-  def jamState: Int
-  def damageState: Option[Any]
+private def name: String
+private def effects: List[VehicleSubsystemCondition]
+private def priority: Int
+private def jamState: Int
+private def damageState: Option[Any]
 
-  def damageable: Boolean = damageState.nonEmpty
+private def damageable: Boolean = damageState.nonEmpty
 
-  def jammable: Boolean = jamState > 0
+private def jammable: Boolean = jamState > 0
 
-  def getMessageTarget(vehicle: Vehicle): Option[IdentifiableEntity] = Some(vehicle)
+private def getMessageTarget(vehicle: Vehicle): Option[IdentifiableEntity] = Some(vehicle)
 
-  def getMessageTargetId(vehicle: Vehicle): PlanetSideGUID = vehicle.GUID
+private def getMessageTargetId(vehicle: Vehicle): PlanetSideGUID = vehicle.GUID
 
-  def getMessage(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket]
+private def getMessage(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket]
 
-  def jammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket]
+private def jammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket]
 
-  def clearJammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket]
+private def clearJammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket]
 }
 
 trait VehicleSubsystemComponent extends VehicleSubsystemStatus {
-  def componentId: SubsystemComponent
+private def componentId: SubsystemComponent
 
-  def getMessage(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def getMessage(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = {
     effects(toState).getMessage(componentId, vehicle, getMessageTargetId(vehicle))
   }
 
-  def jammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def jammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = {
     if (jammable && toState < jamState) {
       effects(jamState).getMessage(componentId, vehicle, getMessageTargetId(vehicle))
     } else {
@@ -117,7 +117,7 @@ trait VehicleSubsystemComponent extends VehicleSubsystemStatus {
     }
   }
 
-  def clearJammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def clearJammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = {
     if (jammable) {
       effects(math.max(0, toState)).getMessage(componentId, vehicle, getMessageTargetId(vehicle))
     } else {
@@ -136,12 +136,12 @@ final case class VehicleComponentStatus(
 ) extends VehicleSubsystemComponent
 
 object VehicleComponentStatus {
-  def apply(state: String, cid: SubsystemComponent, states: List[VehicleSubsystemCondition]): VehicleComponentStatus =
+def apply(state: String, cid: SubsystemComponent, states: List[VehicleSubsystemCondition]): VehicleComponentStatus =
     VehicleComponentStatus(state, cid, states, damageState = None, jamState = 0, priority = 0)
 }
 
 trait VehicleWeaponStatus extends VehicleSubsystemStatus {
-  def slotIndex: Int
+private def slotIndex: Int
 
   override def getMessageTarget(vehicle: Vehicle): Option[PlanetSideGameObject] = {
     vehicle.Weapons.get(slotIndex) match {
@@ -247,37 +247,37 @@ final case class BattleframeArmorSiphonComponentStatus(
 }
 
 final case class BattleframeWeaponToggle(slotIndex: Int) extends VehicleWeaponStatus {
-  def name: String = "Toggle"
+private def name: String = "Toggle"
 
-  def effects: List[VehicleSubsystemCondition] = List(BattleframeArmActive, BattleframeArmInactive)
+private def effects: List[VehicleSubsystemCondition] = List(BattleframeArmActive, BattleframeArmInactive)
 
-  def priority: Int = 0
+private def priority: Int = 0
 
-  def jamState: Int = 0
+private def jamState: Int = 0
 
-  def damageState: Option[Any] = None
+private def damageState: Option[Any] = None
 
-  def jammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = Nil
+private def jammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = Nil
 
-  def clearJammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = Nil
+private def clearJammerMessages(toState: Int, vehicle: Vehicle): List[PlanetSideGamePacket] = Nil
 }
 
 //Entry
 
 trait VehicleSubsystemFields {
-  def name: String
+private def name: String
 
-  def statuses: List[VehicleSubsystemStatus]
+private def statuses: List[VehicleSubsystemStatus]
 
-  def startsEnabled: Boolean
+private def startsEnabled: Boolean
 
-  def enabledStatus: List[String]
+private def enabledStatus: List[String]
 
-  def defaultState: Boolean = startsEnabled
+private def defaultState: Boolean = startsEnabled
 
-  def damageable: Boolean = statuses.exists { _.damageable }
+private def damageable: Boolean = statuses.exists { _.damageable }
 
-  def jammable: Boolean = statuses.exists { _.jammable }
+private def jammable: Boolean = statuses.exists { _.jammable }
 }
 
 sealed abstract class VehicleSubsystemEntry(
@@ -286,7 +286,7 @@ sealed abstract class VehicleSubsystemEntry(
     val startsEnabled: Boolean,
     val enabledStatus: List[String]
 ) extends VehicleSubsystemFields {
-  def this(value: String, statuses: List[VehicleSubsystemStatus]) =
+private def this(value: String, statuses: List[VehicleSubsystemStatus]) =
     this(value, statuses, startsEnabled = true, enabledStatus = Nil)
 
 //  def jammerMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = Nil //TODO
@@ -498,7 +498,7 @@ sealed abstract class BattleframeArmWeaponEntry(override val name: String, slotI
 ////
 
 sealed abstract class BattleframeShieldGeneratorCondition(code: Int) extends VehicleSubsystemCondition {
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
     if (vehicle.Shields > 0) {
       List(GenericObjectActionMessage(guid, code))
     } else {
@@ -508,11 +508,11 @@ sealed abstract class BattleframeShieldGeneratorCondition(code: Int) extends Veh
 }
 
 case object PlaceholderNormalReplaceLater extends VehicleSubsystemCondition {
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = Nil
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = Nil
 }
 
 case object VehicleComponentNormal extends VehicleSubsystemCondition {
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
     List(ComponentDamageMessage(guid, id, None))
   }
 }
@@ -524,7 +524,7 @@ private case object BattleframeShieldGeneratorOffline extends BattleframeShieldG
 }
 
 private case object BattleframeShieldGeneratorFixed extends VehicleSubsystemCondition {
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
     List(ComponentDamageMessage(guid, id, None))
   }
 }
@@ -532,7 +532,7 @@ private case object BattleframeShieldGeneratorFixed extends VehicleSubsystemCond
 private case object BattleframeShieldGeneratorDamaged extends VehicleSubsystemCondition {
   override def getMultiplier(): Float = 0f
 
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
     if (vehicle.SubsystemStatus("BattleframeShieldGenerator.Online").contains(true)) {
       List(ComponentDamageMessage(guid, id, Some(ComponentDamageField(4, VehicleSubsystemConditionModifier.Off.value))))
     } else {
@@ -544,7 +544,7 @@ private case object BattleframeShieldGeneratorDamaged extends VehicleSubsystemCo
 private case object BattleframeShieldGeneratorDestroyed extends VehicleSubsystemCondition {
   override def getMultiplier(): Float = 0f
 
-  def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
+private def getMessage(id: SubsystemComponent, vehicle: Vehicle, guid: PlanetSideGUID): List[PlanetSideGamePacket] = {
     BattleframeShieldGeneratorOffline.getMessage(id, vehicle, guid) ++
       List(
         ComponentDamageMessage(
@@ -946,7 +946,7 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     * the subsystem is not jammed.
     * @return whether the subsystem is activated
     */
-  def Enabled: Boolean = {
+private def Enabled: Boolean = {
     !Jammed && (if (enabledStatusIndices.nonEmpty) {
                   enabledStatusIndices.forall { damageStates(_).Condition == 0 }
                 } else {
@@ -961,7 +961,7 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     * @param state the new state of the subsystem
     * @return the new state of the subsystem
     */
-  def Enabled_=(state: Boolean): Boolean = {
+private def Enabled_=(state: Boolean): Boolean = {
     if (enabled != state && enabledStatusIndices.nonEmpty) {
       //for any VehicleSubsystemEvent.status, index=0 is normal and index>0 is damaged/jammed/disabled
       val condIndex = enabledStatusIndices.head
@@ -978,7 +978,7 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     Enabled
   }
 
-  def jam(): Unit = {
+private def jam(): Unit = {
     val statuses = sys.statuses
     if (sys.jammable && activeJammedMsgs.isEmpty) {
       val indexed = statuses.indices.toList
@@ -1006,7 +1006,7 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     }
   }
 
-  def unjam(): Unit = {
+private def unjam(): Unit = {
     if (activeJammedMsgs.nonEmpty) {
       activeJammedMsgs.foreach { i => damageStates(i).jam() }
       activeJammedMsgs = Nil
@@ -1014,21 +1014,21 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     }
   }
 
-  def messagesForStatus(statusName: String, vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def messagesForStatus(statusName: String, vehicle: Vehicle): List[PlanetSideGamePacket] = {
     sys.statuses.indexWhere { _.name.contains(statusName) } match {
       case -1 => Nil
       case n  => sys.statuses(n).getMessage(damageStates(n).Condition, vehicle)
     }
   }
 
-  def stateOfStatus(statusName: String): Option[Boolean] = {
+private def stateOfStatus(statusName: String): Option[Boolean] = {
     damageStates.find { _.status.name.contains(statusName) } match {
       case Some(status) => Some(status.Condition == 0)
       case _            => None
     }
   }
 
-  def multiplierOfStatus(statusName: String, defaultMultiplier: Float = 1f): Float = {
+private def multiplierOfStatus(statusName: String, defaultMultiplier: Float = 1f): Float = {
     sys.statuses.indexWhere { _.name.contains(statusName) } match {
       case -1 =>
         defaultMultiplier
@@ -1042,7 +1042,7 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     }
   }
 
-  def jammerMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def jammerMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
     val statuses = sys.statuses
     val sysIndices = if (activeJammedMsgs.isEmpty) {
       val indexed = statuses.indices.toList
@@ -1075,7 +1075,7 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     msgs
   }
 
-  def clearJammerMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def clearJammerMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
     if (Jammed) {
       Jammed = false
       val statuses = sys.statuses
@@ -1097,7 +1097,7 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     * @param vehicle the vehicle in which the subsystem module is operating
     * @return game packets that reflect the condition
     */
-  def getMessage(vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def getMessage(vehicle: Vehicle): List[PlanetSideGamePacket] = {
     if (Jammed) {
       jammerMessages(vehicle)
     } else {
@@ -1117,15 +1117,15 @@ class VehicleSubsystem(val sys: VehicleSubsystemEntry) extends JammableUnit {
     * @param vehicle the vehicle in which the subsystem module is operating
     * @return game packets that reflect the condition
     */
-  def currentMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def currentMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
     toPacketList(damageStates.zipWithIndex, vehicle)
   }
 
-  def changedMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def changedMessages(vehicle: Vehicle): List[PlanetSideGamePacket] = {
     toPacketList(damageStates.zipWithIndex.filter { case (status, _) => status.wasChanged }, vehicle, always = true)
   }
 
-  def specificStatusMessage(name: String, vehicle: Vehicle): List[PlanetSideGamePacket] = {
+private def specificStatusMessage(name: String, vehicle: Vehicle): List[PlanetSideGamePacket] = {
     damageStates.zipWithIndex.find { case (status, _) => status.status.name.contains(name) } match {
       case Some(pair) =>
         toPacketList(List(pair), vehicle)
@@ -1159,19 +1159,19 @@ class VehicleSubsystemStatusMonitor(
   private var condition: Int   = 0
   private var changed: Boolean = false
 
-  def Condition: Int = condition
+private def Condition: Int = condition
 
-  def Condition_=(state: Int): Int = {
+private def Condition_=(state: Int): Int = {
     changed = state != condition
     condition = state
     Condition
   }
 
-  def jam(): Unit = {
+private def jam(): Unit = {
     changed = status.jammable
   }
 
-  def Changed: Boolean = changed
+private def Changed: Boolean = changed
 
   /**
     * A kind of temporary meta-filter.
@@ -1181,7 +1181,7 @@ class VehicleSubsystemStatusMonitor(
     * Subsequent tests should not observe this flag until another condition change.
     * @return whether or not a state changed since the last time this status was tested for a state change
     */
-  def wasChanged: Boolean = {
+private def wasChanged: Boolean = {
     val originalValue = changed
     changed = false
     originalValue

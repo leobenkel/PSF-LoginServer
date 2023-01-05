@@ -54,7 +54,7 @@ class ZoneMap(val name: String) {
     * @param terminalGuid       The guid of the terminal this object (typically a spawn pad) should be linked to, if specified
     * @return the current number of builders
     */
-  def addLocalObject[A <: PlanetSideServerObject](
+  private def addLocalObject[A <: PlanetSideServerObject](
       id: Int,
       constructor: ServerObjectBuilder.ConstructorType[A],
       owningBuildingGuid: Int = 0,
@@ -79,9 +79,9 @@ class ZoneMap(val name: String) {
     localObjects.size
   }
 
-  def localBuildings: Map[(String, Int, Int), FoundationBuilder] = buildings
+  private def localBuildings: Map[(String, Int, Int), FoundationBuilder] = buildings
 
-  def addLocalBuilding(name: String, buildingGuid: Int, mapId: Int, constructor: FoundationBuilder): Int = {
+  private def addLocalBuilding(name: String, buildingGuid: Int, mapId: Int, constructor: FoundationBuilder): Int = {
     if (buildingGuid > 0) {
       buildings = buildings ++ Map((name, buildingGuid, mapId) -> constructor)
     }
@@ -90,47 +90,47 @@ class ZoneMap(val name: String) {
 
   def objectToBuilding: Map[Int, Int] = linkObjectBase
 
-  def linkObjectToBuilding(objectGuid: Int, buildingId: Int): Unit = {
+  private def linkObjectToBuilding(objectGuid: Int, buildingId: Int): Unit = {
     linkObjectBase = linkObjectBase ++ Map(objectGuid -> buildingId)
   }
 
   def doorToLock: Map[Int, Int] = linkDoorLock
 
-  def linkDoorToLock(doorGuid: Int, lockGuid: Int): Unit = {
+  private def linkDoorToLock(doorGuid: Int, lockGuid: Int): Unit = {
     linkDoorLock = linkDoorLock ++ Map(doorGuid -> lockGuid)
   }
 
   def terminalToSpawnPad: Map[Int, Int] = linkTerminalPad
 
-  def linkTerminalToSpawnPad(terminalGuid: Int, padGuid: Int): Unit = {
+  private def linkTerminalToSpawnPad(terminalGuid: Int, padGuid: Int): Unit = {
     linkTerminalPad = linkTerminalPad ++ Map(terminalGuid -> padGuid)
   }
 
   def terminalToInterface: Map[Int, Int] = linkTerminalInterface
 
-  def linkTerminalToInterface(terminalGuid: Int, interfaceGuid: Int): Unit = {
+  private def linkTerminalToInterface(terminalGuid: Int, interfaceGuid: Int): Unit = {
     linkTerminalInterface = linkTerminalInterface ++ Map(terminalGuid -> interfaceGuid)
   }
 
   def turretToWeapon: Map[Int, Int] = linkTurretWeapon
 
-  def linkTurretToWeapon(turretGuid: Int, weaponGuid: Int): Unit = {
+  private def linkTurretToWeapon(turretGuid: Int, weaponGuid: Int): Unit = {
     linkTurretWeapon = linkTurretWeapon ++ Map(turretGuid -> weaponGuid)
   }
 
-  def shuttleBays: List[Int] = containsShuttle
+  private def shuttleBays: List[Int] = containsShuttle
 
-  def linkShuttleToBay(shuttleBayGuid: Int): Unit = {
+  private def linkShuttleToBay(shuttleBayGuid: Int): Unit = {
     containsShuttle = containsShuttle :+ shuttleBayGuid
   }
 
-  def latticeLink: Set[(String, String)] = lattice
+  private def latticeLink: Set[(String, String)] = lattice
 
-  def addLatticeLink(source: String, target: String): Unit = {
+  private def addLatticeLink(source: String, target: String): Unit = {
     lattice = lattice ++ Set((source, target))
   }
 
-  def areValidCoordinates(coordinates: Vector3): Boolean = {
+  private def areValidCoordinates(coordinates: Vector3): Boolean = {
     coordinates.x >= 0 && coordinates.x <= scale.width &&
     coordinates.y >= 0 && coordinates.y <= scale.height
   }

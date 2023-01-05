@@ -24,7 +24,7 @@ import scala.util.Random
   * There is only one SocketActor, but each connected client gets its own MiddlewareActor
   */
 object SocketActor {
-  def apply(
+def apply(
       address: InetSocketAddress,
       next: (ActorRef[MiddlewareActor.Command], InetSocketAddress, String) => Behavior[PlanetSidePacket]
   ): Behavior[Command] =
@@ -157,7 +157,7 @@ private val sessionReaper: Cancellable = context.system.scheduler.scheduleWithFi
     })
   })
 
-  def start(): Behavior[Command] = {
+private def start(): Behavior[Command] = {
     Behaviors
       .receiveMessagePartial[Command] {
         case Bound(socket) =>
@@ -170,7 +170,7 @@ private val sessionReaper: Cancellable = context.system.scheduler.scheduleWithFi
       }
   }
 
-  def active(socket: classic.ActorRef): Behavior[Command] = {
+private def active(socket: classic.ActorRef): Behavior[Command] = {
     Behaviors
       .receiveMessagePartial[Command] {
         case UdpEventMessage(message) =>

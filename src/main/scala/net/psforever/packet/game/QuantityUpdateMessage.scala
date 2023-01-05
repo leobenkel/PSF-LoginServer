@@ -16,8 +16,8 @@ import scodec.codecs._
   */
 final case class QuantityUpdateMessage(item_guid: PlanetSideGUID, quantity: Int) extends PlanetSideGamePacket {
   type Packet = QuantityUpdateMessage
-  def opcode = GamePacketOpcode.QuantityUpdateMessage
-  def encode = QuantityUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.QuantityUpdateMessage
+def encode = QuantityUpdateMessage.encode(this)
 }
 
 object QuantityUpdateMessage extends Marshallable[QuantityUpdateMessage] {

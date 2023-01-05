@@ -18,14 +18,14 @@ import scala.annotation.tailrec
 class StreamLengthToken(init: Int = 0) {
   private var bitLength: Int = init
 
-  def Length: Int = bitLength
+private def Length: Int = bitLength
 
-  def Length_=(toLength: Int): StreamLengthToken = {
+private def Length_=(toLength: Int): StreamLengthToken = {
     bitLength = toLength
     this
   }
 
-  def Add(more: Int): StreamLengthToken = {
+private def Add(more: Int): StreamLengthToken = {
     bitLength += more
     this
   }
@@ -62,7 +62,7 @@ final case class SquadPositionDetail(
     * @param info the object being combined
     * @return the combined `SquadDetail` object
     */
-  def And(info: SquadPositionDetail): SquadPositionDetail = {
+private def And(info: SquadPositionDetail): SquadPositionDetail = {
     SquadPositionDetail(
       is_closed match {
         case Some(false) | None =>
@@ -79,28 +79,28 @@ final case class SquadPositionDetail(
   }
 
   //methods intended to combine the fields of itself and another object
-  def Open: SquadPositionDetail =
+private def Open: SquadPositionDetail =
     this And SquadPositionDetail(Some(false), None, None, None, None, None)
 
-  def Close: SquadPositionDetail =
+private def Close: SquadPositionDetail =
     this And SquadPositionDetail(Some(true), None, None, None, None, None)
 
-  def Role(role: String): SquadPositionDetail =
+private def Role(role: String): SquadPositionDetail =
     this And SquadPositionDetail(None, Some(role), None, None, None, None)
 
-  def DetailedOrders(orders: String): SquadPositionDetail =
+private def DetailedOrders(orders: String): SquadPositionDetail =
     this And SquadPositionDetail(None, None, Some(orders), None, None, None)
 
-  def Requirements(req: Set[Certification]): SquadPositionDetail =
+private def Requirements(req: Set[Certification]): SquadPositionDetail =
     this And SquadPositionDetail(None, None, None, Some(req), None, None)
 
-  def CharId(char_id: Long): SquadPositionDetail =
+private def CharId(char_id: Long): SquadPositionDetail =
     this And SquadPositionDetail(None, None, None, None, Some(char_id), None)
 
-  def Name(name: String): SquadPositionDetail =
+private def Name(name: String): SquadPositionDetail =
     this And SquadPositionDetail(None, None, None, None, None, Some(name))
 
-  def Player(char_id: Long, name: String): SquadPositionDetail =
+private def Player(char_id: Long, name: String): SquadPositionDetail =
     this And SquadPositionDetail(None, None, None, None, Some(char_id), Some(name))
 
   /**
@@ -108,7 +108,7 @@ final case class SquadPositionDetail(
     *
     * @return a `SquadPositionDetail` object with all of its field populated
     */
-  def Complete: SquadPositionDetail =
+private def Complete: SquadPositionDetail =
     SquadPositionDetail(
       is_closed.orElse(Some(false)),
       role.orElse(Some("")),
@@ -174,7 +174,7 @@ final case class SquadDetail(
     * @param info the object being combined
     * @return the combined `SquadDetail` object
     */
-  def And(info: SquadDetail): SquadDetail = {
+private def And(info: SquadDetail): SquadDetail = {
     SquadDetail(
       unk1.orElse(info.unk1),
       unk2.orElse(info.unk2),
@@ -202,23 +202,23 @@ final case class SquadDetail(
   }
 
   //methods intended to combine the fields of itself and another object
-  def Field1(value: Int): SquadDetail =
+private def Field1(value: Int): SquadDetail =
     this And SquadDetail(Some(value), None, None, None, None, None, None, None, None)
-  def LeaderCharId(char_id: Long): SquadDetail =
+private def LeaderCharId(char_id: Long): SquadDetail =
     this And SquadDetail(None, None, Some(char_id), None, None, None, None, None, None)
-  def Field3(value: Long): SquadDetail =
+private def Field3(value: Long): SquadDetail =
     this And SquadDetail(None, None, None, Some(value), None, None, None, None, None)
-  def LeaderName(name: String): SquadDetail =
+private def LeaderName(name: String): SquadDetail =
     this And SquadDetail(None, None, None, None, Some(name), None, None, None, None)
-  def Leader(char_id: Long, name: String): SquadDetail =
+private def Leader(char_id: Long, name: String): SquadDetail =
     this And SquadDetail(None, None, Some(char_id), None, Some(name), None, None, None, None)
-  def Task(task: String): SquadDetail =
+private def Task(task: String): SquadDetail =
     this And SquadDetail(None, None, None, None, None, Some(task), None, None, None)
-  def ZoneId(zone: PlanetSideZoneID): SquadDetail =
+private def ZoneId(zone: PlanetSideZoneID): SquadDetail =
     this And SquadDetail(None, None, None, None, None, None, Some(zone), None, None)
-  def Field7(value: Int): SquadDetail =
+private def Field7(value: Int): SquadDetail =
     this And SquadDetail(None, None, None, None, None, None, None, Some(value), None)
-  def Members(list: List[SquadPositionEntry]): SquadDetail =
+private def Members(list: List[SquadPositionEntry]): SquadDetail =
     this And SquadDetail(None, None, None, None, None, None, None, None, Some(list))
 
   /**
@@ -226,7 +226,7 @@ final case class SquadDetail(
     * The `member_info` field requires additional allocation.
     * @return a `SquadDetail` object with all of its field populated
     */
-  def Complete: SquadDetail =
+private def Complete: SquadDetail =
     SquadDetail(
       unk1.orElse(Some(1)),
       unk2.orElse(Some(0)),
@@ -276,8 +276,8 @@ final case class SquadDetail(
 final case class SquadDetailDefinitionUpdateMessage(guid: PlanetSideGUID, detail: SquadDetail)
     extends PlanetSideGamePacket {
   type Packet = SquadDetailDefinitionUpdateMessage
-  def opcode = GamePacketOpcode.SquadDetailDefinitionUpdateMessage
-  def encode = SquadDetailDefinitionUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.SquadDetailDefinitionUpdateMessage
+def encode = SquadDetailDefinitionUpdateMessage.encode(this)
 }
 
 object SquadPositionDetail {
@@ -302,14 +302,14 @@ object SquadPositionDetail {
     * An overloaded constructor that produces a featureless squad position.
     * @return a `SquadPositionDetail` object
     */
-  def apply(): SquadPositionDetail = SquadPositionDetail(None, None, None, None, None, None)
+def apply(): SquadPositionDetail = SquadPositionDetail(None, None, None, None, None, None)
 
   /**
     * An overloaded constructor that produces a full squad position with a role, detailed orders, and certification requirements.
     * This basically defines an available squad position that is unoccupied.
     * @return a `SquadPositionDetail` object
     */
-  def apply(
+def apply(
       role: String,
       detailed_orders: String,
       requirements: Set[Certification],
@@ -334,7 +334,7 @@ object SquadPositionEntry {
     * An overloaded constructor.
     * @return a `SquadPositionEntry` object
     */
-  def apply(index: Int, detail: SquadPositionDetail): SquadPositionEntry = SquadPositionEntry(index, Some(detail))
+def apply(index: Int, detail: SquadPositionDetail): SquadPositionEntry = SquadPositionEntry(index, Some(detail))
 }
 
 object SquadDetail {
@@ -349,13 +349,13 @@ object SquadDetail {
     * An overloaded constructor that produces a featureless squad.
     * @return a `SquadDetail` object
     */
-  def apply(): SquadDetail = SquadDetail(None, None, None, None, None, None, None, None, None)
+def apply(): SquadDetail = SquadDetail(None, None, None, None, None, None, None, None, None)
 
   /**
     * An overloaded constructor that produces a complete squad with all fields populated.
     * @return a `SquadDetail` object
     */
-  def apply(
+def apply(
       unk1: Int,
       unk2: Int,
       leader_char_id: Long,
@@ -380,23 +380,23 @@ object SquadDetail {
   }
 
   //individual field overloaded constructors
-  def Field1(unk1: Int): SquadDetail =
+private def Field1(unk1: Int): SquadDetail =
     SquadDetail(Some(unk1), None, None, None, None, None, None, None, None)
-  def LeaderCharId(char_id: Long): SquadDetail =
+private def LeaderCharId(char_id: Long): SquadDetail =
     SquadDetail(None, None, Some(char_id), None, None, None, None, None, None)
-  def Field3(char_id: Option[Long], unk3: Long): SquadDetail =
+private def Field3(char_id: Option[Long], unk3: Long): SquadDetail =
     SquadDetail(None, None, None, Some(unk3), None, None, None, None, None)
-  def LeaderName(name: String): SquadDetail =
+private def LeaderName(name: String): SquadDetail =
     SquadDetail(None, None, None, None, Some(name), None, None, None, None)
-  def Leader(char_id: Long, name: String): SquadDetail =
+private def Leader(char_id: Long, name: String): SquadDetail =
     SquadDetail(None, None, Some(char_id), None, Some(name), None, None, None, None)
-  def Task(task: String): SquadDetail =
+private def Task(task: String): SquadDetail =
     SquadDetail(None, None, None, None, None, Some(task), None, None, None)
-  def ZoneId(zone: PlanetSideZoneID): SquadDetail =
+private def ZoneId(zone: PlanetSideZoneID): SquadDetail =
     SquadDetail(None, None, None, None, None, None, Some(zone), None, None)
-  def Field7(unk7: Int): SquadDetail =
+private def Field7(unk7: Int): SquadDetail =
     SquadDetail(None, None, None, None, None, None, None, Some(unk7), None)
-  def Members(list: List[SquadPositionEntry]): SquadDetail =
+private def Members(list: List[SquadPositionEntry]): SquadDetail =
     SquadDetail(None, None, None, None, None, None, None, None, Some(list))
 
   object Fields {

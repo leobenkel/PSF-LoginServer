@@ -16,8 +16,8 @@ final case class GenericObjectActionAtPositionMessage(
                                                        pos: Vector3
                                                      ) extends PlanetSideGamePacket {
   type Packet = GenericObjectActionAtPositionMessage
-  def opcode = GamePacketOpcode.GenericObjectActionAtPositionMessage
-  def encode = GenericObjectActionAtPositionMessage.encode(this)
+def opcode = GamePacketOpcode.GenericObjectActionAtPositionMessage
+def encode = GenericObjectActionAtPositionMessage.encode(this)
 }
 
 object GenericObjectActionAtPositionMessage extends Marshallable[GenericObjectActionAtPositionMessage] {

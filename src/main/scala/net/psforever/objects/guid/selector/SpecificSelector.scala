@@ -11,7 +11,7 @@ class SpecificSelector extends NumberSelector {
     * Call `Get` to complete process.
     * @param number the number
     */
-  def SelectionIndex_=(number: Int): Unit = {
+private def SelectionIndex_=(number: Int): Unit = {
     selectionIndex = number
   }
 

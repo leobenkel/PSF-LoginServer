@@ -20,14 +20,14 @@ import net.psforever.types.PlanetSideGUID
 class OrbitalShuttlePad(spDef: AmenityDefinition) extends Amenity {
   private var _shuttle: Option[PlanetSideGUID] = None
 
-  def shuttle: Option[PlanetSideGUID] = _shuttle
+private def shuttle: Option[PlanetSideGUID] = _shuttle
 
-  def shuttle_=(orbitalShuttle: Vehicle): Option[PlanetSideGUID] = {
+private def shuttle_=(orbitalShuttle: Vehicle): Option[PlanetSideGUID] = {
     _shuttle = _shuttle.orElse(Some(orbitalShuttle.GUID))
     _shuttle
   }
 
-  def Definition: AmenityDefinition = spDef
+private def Definition: AmenityDefinition = spDef
 }
 
 object OrbitalShuttlePad {
@@ -40,7 +40,7 @@ object OrbitalShuttlePad {
     * @param spDef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
     * @return an `OrbitalShuttlePad` object
     */
-  def apply(spDef: AmenityDefinition): OrbitalShuttlePad = {
+def apply(spDef: AmenityDefinition): OrbitalShuttlePad = {
     new OrbitalShuttlePad(spDef)
   }
 
@@ -56,7 +56,7 @@ object OrbitalShuttlePad {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `OrbitalShuttlePad` object
     */
-  def Constructor(pos: Vector3, pdef: AmenityDefinition, orient: Vector3)(
+private def Constructor(pos: Vector3, pdef: AmenityDefinition, orient: Vector3)(
     id: Int,
     context: ActorContext
   ): OrbitalShuttlePad = {

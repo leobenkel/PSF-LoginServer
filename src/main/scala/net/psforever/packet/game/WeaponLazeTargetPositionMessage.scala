@@ -24,8 +24,8 @@ import scodec.codecs._
 final case class WeaponLazeTargetPositionMessage(weapon_uid: PlanetSideGUID, player_pos: Vector3, lazed_pos: Vector3)
     extends PlanetSideGamePacket {
   type Packet = WeaponLazeTargetPositionMessage
-  def opcode = GamePacketOpcode.WeaponLazeTargetPositionMessage
-  def encode = WeaponLazeTargetPositionMessage.encode(this)
+def opcode = GamePacketOpcode.WeaponLazeTargetPositionMessage
+def encode = WeaponLazeTargetPositionMessage.encode(this)
 }
 
 object WeaponLazeTargetPositionMessage extends Marshallable[WeaponLazeTargetPositionMessage] {

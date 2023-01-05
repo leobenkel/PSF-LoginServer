@@ -19,23 +19,23 @@ class SpawnTubeControl(tube: SpawnTube)
     with DamageableAmenity
     with RepairableAmenity
     with AmenityAutoRepair {
-  def FactionObject    = tube
-  def DamageableObject = tube
-  def RepairableObject = tube
-  def AutoRepairObject = tube
+private def FactionObject    = tube
+private def DamageableObject = tube
+private def RepairableObject = tube
+private def AutoRepairObject = tube
 
 private val commonBehavior: Receive = checkBehavior
     .orElse(takesDamage)
     .orElse(canBeRepairedByNanoDispenser)
     .orElse(autoRepairBehavior)
 
-  def poweredStateLogic: Receive =
+private def poweredStateLogic: Receive =
     commonBehavior
       .orElse {
         case _ => ;
       }
 
-  def unpoweredStateLogic: Receive =
+private def unpoweredStateLogic: Receive =
     commonBehavior
       .orElse {
         case _ => ;
@@ -75,7 +75,7 @@ private val commonBehavior: Receive = checkBehavior
     isPowered && super.tryAutoRepair()
   }
 
-  def powerTurnOffCallback(): Unit = {
+private def powerTurnOffCallback(): Unit = {
     tube.offline = true
     stopAutoRepair()
     tube.Owner match {
@@ -84,7 +84,7 @@ private val commonBehavior: Receive = checkBehavior
     }
   }
 
-  def powerTurnOnCallback(): Unit = {
+private def powerTurnOnCallback(): Unit = {
     tube.offline = false
     tryAutoRepair()
     tube.Owner match {

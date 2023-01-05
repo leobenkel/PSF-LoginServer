@@ -6,13 +6,13 @@ import scala.jdk.CollectionConverters._
 
 object CmdInternal {
 
-  def cmdDumpConfig(args: Array[String]) = {
+private def cmdDumpConfig(args: Array[String]) = {
     val config =
       Config.config.root.keySet.asScala.map(key => key -> Config.config.getAnyRef(key).asInstanceOf[Any]).toMap
     CommandGoodResponse(s"Dump of WorldConfig", mutable.Map(config.toSeq: _*))
   }
 
-  def cmdThreadDump(args: Array[String]) = {
+private def cmdThreadDump(args: Array[String]) = {
 
     var data       = mutable.Map[String, Any]()
     val traces     = Thread.getAllStackTraces().asScala

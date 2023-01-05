@@ -7,7 +7,7 @@ import net.psforever.objects.{Tool, Vehicle}
   * The "control" `Actor` mixin for repair-handling code for `Vehicle` objects.
   */
 trait RepairableVehicle extends RepairableEntity {
-  def RepairableObject: Vehicle
+private def RepairableObject: Vehicle
 
   override def Restoration(obj: Repairable.Target): Unit = {
     obj.Health = 0

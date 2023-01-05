@@ -12,27 +12,27 @@ abstract class PlanetSideGameObject extends IdentifiableEntity with WorldEntity 
   private var entity: WorldEntity = new SimpleWorldEntity()
   private var destroyed: Boolean  = false
 
-  def Entity: WorldEntity = entity
+  private def Entity: WorldEntity = entity
 
-  def Entity_=(newEntity: WorldEntity): Unit = {
+  private def Entity_=(newEntity: WorldEntity): Unit = {
     entity = newEntity
   }
 
-  def Position: Vector3 = Entity.Position
+  override def Position: Vector3 = Entity.Position
 
-  def Position_=(vec: Vector3): Vector3 = {
+  override def Position_=(vec: Vector3): Vector3 = {
     Entity.Position = vec
   }
 
-  def Orientation: Vector3 = Entity.Orientation
+  override def Orientation: Vector3 = Entity.Orientation
 
-  def Orientation_=(vec: Vector3): Vector3 = {
+  override def Orientation_=(vec: Vector3): Vector3 = {
     Entity.Orientation = vec
   }
 
-  def Velocity: Option[Vector3] = Entity.Velocity
+  override def Velocity: Option[Vector3] = Entity.Velocity
 
-  def Velocity_=(vec: Option[Vector3]): Option[Vector3] = {
+  override def Velocity_=(vec: Option[Vector3]): Option[Vector3] = {
     Entity.Velocity = vec
   }
 
@@ -47,7 +47,7 @@ abstract class PlanetSideGameObject extends IdentifiableEntity with WorldEntity 
 }
 
 object PlanetSideGameObject {
-  def toString(obj: PlanetSideGameObject): String = {
+  private def toString(obj: PlanetSideGameObject): String = {
     val guid: String = if (obj.HasGUID) { obj.GUID.toString }
     else { "NOGUID" }
     val P = obj.Position

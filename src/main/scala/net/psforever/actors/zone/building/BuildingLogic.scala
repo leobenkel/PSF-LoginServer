@@ -34,7 +34,7 @@ trait BuildingLogic {
     * @param data optional information
     * @return the next behavior for this control agency messaging system
     */
-  def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command]
+private def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command]
 
   /**
     * The facility has lost power.
@@ -42,7 +42,7 @@ trait BuildingLogic {
     * @param details package class that conveys the important information
     * @return the next behavior for this control agency messaging system
     */
-  def powerOff(details: BuildingWrapper): Behavior[Command]
+private def powerOff(details: BuildingWrapper): Behavior[Command]
 
   /**
     * The facility has regained power.
@@ -50,7 +50,7 @@ trait BuildingLogic {
     * @param details package class that conveys the important information
     * @return the next behavior for this control agency messaging system
     */
-  def powerOn(details: BuildingWrapper): Behavior[Command]
+private def powerOn(details: BuildingWrapper): Behavior[Command]
 
   /**
     * The facility has run out of nanite resources.
@@ -58,7 +58,7 @@ trait BuildingLogic {
     * @param details package class that conveys the important information
     * @return the next behavior for this control agency messaging system
     */
-  def ntuDepleted(details: BuildingWrapper): Behavior[Command]
+private def ntuDepleted(details: BuildingWrapper): Behavior[Command]
 
   /**
     * The facility has had its nanite resources restored, even if partially.
@@ -66,7 +66,7 @@ trait BuildingLogic {
     * @param details package class that conveys the important information
     * @return the next behavior for this control agency messaging system
     */
-  def suppliedWithNtu(details: BuildingWrapper): Behavior[Command]
+private def suppliedWithNtu(details: BuildingWrapper): Behavior[Command]
 
   /**
     * The facility will change its faction affiliation.
@@ -75,7 +75,7 @@ trait BuildingLogic {
     * @param faction the faction affiliation to which the facility will update
     * @return the next behavior for this control agency messaging system
     */
-  def setFactionTo(details: BuildingWrapper, faction: PlanetSideEmpire.Value): Behavior[Command]
+private def setFactionTo(details: BuildingWrapper, faction: PlanetSideEmpire.Value): Behavior[Command]
 
   /**
     * A facility that influences this facility has changed its faction affiliation.
@@ -84,7 +84,7 @@ trait BuildingLogic {
     * @param building the neighbor facility that has had its faction changed
     * @return the next behavior for this control agency messaging system
     */
-  def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command]
+private def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command]
 
   /**
     * The facility has had its nanite resources changed in some way.
@@ -94,7 +94,7 @@ trait BuildingLogic {
     * @param msg the original message that instigated this upoate
     * @return the next behavior for this control agency messaging system
     */
-  def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command]
+private def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command]
 
   /**
     * Produce an appropriate representation of the facility for the given logic implementation.
@@ -103,7 +103,7 @@ trait BuildingLogic {
     * @param details temporary storage to retain still-allocating reousces during facility startup
     * @return the representation of the building and assorted connecting and reporting outlets
     */
-  def wrapper(
+private def wrapper(
                building: Building,
                context: ActorContext[BuildingActor.Command],
                details: BuildingControlDetails

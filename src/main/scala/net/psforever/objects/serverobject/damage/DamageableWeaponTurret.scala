@@ -22,12 +22,12 @@ trait DamageableWeaponTurret
   with AggravatedBehavior {
   _: Actor =>
 
-  def damageableWeaponTurretPostStop(): Unit = {
+private def damageableWeaponTurretPostStop(): Unit = {
     EndAllAggravation()
   }
 
-  def DamageableObject: Damageable.Target with WeaponTurret
-  def AggravatedObject: Damageable.Target with WeaponTurret = DamageableObject
+private def DamageableObject: Damageable.Target with WeaponTurret
+private def AggravatedObject: Damageable.Target with WeaponTurret = DamageableObject
 
   override val takesDamage: Receive = originalTakesDamage.orElse(aggravatedBehavior)
 
@@ -120,7 +120,7 @@ object DamageableWeaponTurret {
     *               but the handling code closely associates with the former
     * @param cause historical information about the damage
     */
-  def DestructionAwareness(target: Damageable.Target with MountedWeapons, cause: DamageResult): Unit = {
+private def DestructionAwareness(target: Damageable.Target with MountedWeapons, cause: DamageResult): Unit = {
     //wreckage has no (visible) mounted weapons
     val zone         = target.Zone
     val zoneId       = zone.id

@@ -10,7 +10,7 @@ import net.psforever.services.avatar.{AvatarAction, AvatarServiceMessage}
   * for the majority of `Repairable` `Amenity` objects installed in a facility or a field tower.
   */
 trait RepairableAmenity extends RepairableEntity {
-  def RepairableObject: Amenity
+private def RepairableObject: Amenity
 
   override def Restoration(obj: Repairable.Target): Unit = {
     super.Restoration(obj)
@@ -30,7 +30,7 @@ object RepairableAmenity {
     * @see `Zone.AvatarEvents`
     * @param target the entity being destroyed
     */
-  def Restoration(target: Repairable.Target): Unit = {
+private def Restoration(target: Repairable.Target): Unit = {
     val zone       = target.Zone
     val zoneId     = zone.id
     val events     = zone.AvatarEvents

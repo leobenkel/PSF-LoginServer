@@ -13,15 +13,15 @@ import net.psforever.packet.game.UseItemMessage
 class Door(private val ddef: DoorDefinition) extends Amenity {
   private var openState: Option[Player] = None
 
-  def isOpen: Boolean = openState.isDefined
+private def isOpen: Boolean = openState.isDefined
 
-  def Open: Option[Player] = openState
+private def Open: Option[Player] = openState
 
-  def Open_=(player: Player): Option[Player] = {
+private def Open_=(player: Player): Option[Player] = {
     Open_=(Some(player))
   }
 
-  def Open_=(open: Option[Player]): Option[Player] = {
+private def Open_=(open: Option[Player]): Option[Player] = {
     openState = open
     Open
   }
@@ -29,7 +29,7 @@ class Door(private val ddef: DoorDefinition) extends Amenity {
   /** Doors do not have health, so only check if they are damageable. */
   override def CanDamage : Boolean = Definition.Damageable
 
-  def Definition: DoorDefinition = ddef
+private def Definition: DoorDefinition = ddef
 }
 
 object Door {
@@ -81,7 +81,7 @@ object Door {
     * Overloaded constructor.
     * @param tdef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
     */
-  def apply(tdef: DoorDefinition): Door = {
+def apply(tdef: DoorDefinition): Door = {
     new Door(tdef)
   }
 
@@ -93,7 +93,7 @@ object Door {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `Door` object
     */
-  def Constructor(id: Int, context: ActorContext): Door = {
+private def Constructor(id: Int, context: ActorContext): Door = {
     import akka.actor.Props
     import net.psforever.objects.GlobalDefinitions
 
@@ -112,7 +112,7 @@ object Door {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `Door` object
     */
-  def Constructor(pos: Vector3)(id: Int, context: ActorContext): Door = {
+private def Constructor(pos: Vector3)(id: Int, context: ActorContext): Door = {
     import net.psforever.objects.GlobalDefinitions
     Constructor(pos, GlobalDefinitions.door)(id, context)
   }
@@ -126,7 +126,7 @@ object Door {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `Door` object
     */
-  def Constructor(pos: Vector3, ddef: DoorDefinition)(id: Int, context: ActorContext): Door = {
+private def Constructor(pos: Vector3, ddef: DoorDefinition)(id: Int, context: ActorContext): Door = {
     import akka.actor.Props
 
     val obj = Door(ddef)

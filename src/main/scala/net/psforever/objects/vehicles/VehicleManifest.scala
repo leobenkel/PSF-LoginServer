@@ -36,7 +36,7 @@ final case class VehicleManifest(
 
 
 object VehicleManifest {
-  def apply(vehicle: Vehicle): VehicleManifest = {
+def apply(vehicle: Vehicle): VehicleManifest = {
     val driverName = vehicle.Seats(0).occupant match {
       case Some(driver) => driver.Name
       case None         => "MISSING_DRIVER"
@@ -55,7 +55,7 @@ object VehicleManifest {
     VehicleManifest(ManifestChannelName(vehicle), vehicle, vehicle.Zone, driverName, passengers, cargo)
   }
 
-  def ManifestChannelName(vehicle: Vehicle): String = {
+private def ManifestChannelName(vehicle: Vehicle): String = {
     s"transport-vehicle-channel-${vehicle.GUID.guid}"
   }
 }

@@ -23,8 +23,8 @@ final case class Statistics(unk1: Option[Int], unk2: Option[Int], unk3: List[Lon
   */
 final case class AvatarStatisticsMessage(unk: Int, stats: Statistics) extends PlanetSideGamePacket {
   type Packet = AvatarStatisticsMessage
-  def opcode = GamePacketOpcode.AvatarStatisticsMessage
-  def encode = AvatarStatisticsMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarStatisticsMessage
+def encode = AvatarStatisticsMessage.encode(this)
 }
 
 object AvatarStatisticsMessage extends Marshallable[AvatarStatisticsMessage] {
@@ -93,9 +93,9 @@ object AvatarStatisticsMessage extends Marshallable[AvatarStatisticsMessage] {
 }
 
 object Statistics {
-  def apply(unk: Long): Statistics =
+def apply(unk: Long): Statistics =
     Statistics(None, None, List(unk))
 
-  def apply(unk1: Int, unk2: Int, unk3: List[Long]): Statistics =
+def apply(unk1: Int, unk2: Int, unk3: List[Long]): Statistics =
     Statistics(Some(unk1), Some(unk2), unk3)
 }

@@ -61,7 +61,7 @@ object ObjectCreateBase {
     *             note: the type is `StreamBitSize` as opposed to `ConstructorData`
     * @return the total length of the resulting data stream in bits
     */
-  def streamLen(parentInfo: Option[ObjectCreateMessageParent], data: StreamBitSize): Long = {
+private def streamLen(parentInfo: Option[ObjectCreateMessageParent], data: StreamBitSize): Long = {
     //knowable length
     val base: Long = if (parentInfo.isDefined) {
       if (parentInfo.get.slot > 127) 92L else 84L //(32u + 1u + 11u + 16u) ?+ (16u + (8u | 16u))
@@ -82,7 +82,7 @@ object ObjectCreateBase {
     * @return the optional constructed object
     * @see `ObjectClass`
     */
-  def decodeData(
+private def decodeData(
       objectClass: Int,
       data: BitVector,
       getCodecFunc: Int => Codec[ConstructorData]
@@ -113,7 +113,7 @@ object ObjectCreateBase {
     * @return the bitstream data
     * @see `ObjectClass`
     */
-  def encodeData(
+def encodeData(
       objectClass: Int,
       obj: ConstructorData,
       getCodecFunc: Int => Codec[ConstructorData]

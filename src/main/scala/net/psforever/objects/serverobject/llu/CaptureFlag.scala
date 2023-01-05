@@ -8,14 +8,14 @@ import net.psforever.types.{PlanetSideEmpire, Vector3}
   * This object represents the LLU that gets spawned at a LLU socket when a LLU control console is hacked
   */
 class CaptureFlag(tDef: CaptureFlagDefinition) extends Amenity {
-  def Definition : CaptureFlagDefinition = tDef
+private def Definition : CaptureFlagDefinition = tDef
 
   private var target: Building = Building.NoBuilding
   private var faction: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
   private var carrier: Option[Player] = None
 
-  def Target: Building = target
-  def Target_=(new_target: Building): Building = {
+private def Target: Building = target
+private def Target_=(new_target: Building): Building = {
     target = new_target
     target
   }
@@ -34,19 +34,19 @@ class CaptureFlag(tDef: CaptureFlagDefinition) extends Amenity {
     Entity.Position
   }
 
-  def Carrier: Option[Player] = carrier
-  def Carrier_=(new_carrier: Option[Player]) : Option[Player] = {
+private def Carrier: Option[Player] = carrier
+private def Carrier_=(new_carrier: Option[Player]) : Option[Player] = {
     carrier = new_carrier
     carrier
   }
 }
 
 object CaptureFlag {
-  def apply(tDef: CaptureFlagDefinition): CaptureFlag = {
+def apply(tDef: CaptureFlagDefinition): CaptureFlag = {
     new CaptureFlag(tDef)
   }
 
-  def Constructor(pos: Vector3, ori: Vector3, target: Building, owner: AmenityOwner, faction: PlanetSideEmpire.Value) : CaptureFlag = {
+private def Constructor(pos: Vector3, ori: Vector3, target: Building, owner: AmenityOwner, faction: PlanetSideEmpire.Value) : CaptureFlag = {
     val obj = CaptureFlag(GlobalDefinitions.capture_flag)
     obj.Position = pos
     obj.Orientation = ori

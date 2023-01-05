@@ -71,8 +71,8 @@ final case class HackMessage(
     unk7: Long
 ) extends PlanetSideGamePacket {
   type Packet = HackMessage
-  def opcode = GamePacketOpcode.HackMessage
-  def encode = HackMessage.encode(this)
+def opcode = GamePacketOpcode.HackMessage
+def encode = HackMessage.encode(this)
 }
 
 object HackMessage extends Marshallable[HackMessage] {

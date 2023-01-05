@@ -17,7 +17,7 @@ sealed abstract class CharacterSex(
     val pronounObject: String,
     val possessive: String
 ) extends IntEnumEntry {
-  def possessiveNoObject: String = possessive
+private def possessiveNoObject: String = possessive
 }
 
 /**

@@ -22,11 +22,11 @@ class KitDefinition(objectId: Int) extends EquipmentDefinition(objectId) {
 object KitDefinition {
   private val converter = new KitConverter()
 
-  def apply(objectId: Int): KitDefinition = {
+def apply(objectId: Int): KitDefinition = {
     new KitDefinition(objectId)
   }
 
-  def apply(kit: Kits.Value): KitDefinition = {
+def apply(kit: Kits.Value): KitDefinition = {
     new KitDefinition(kit.id)
   }
 }

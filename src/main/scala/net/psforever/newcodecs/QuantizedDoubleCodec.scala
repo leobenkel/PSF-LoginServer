@@ -14,7 +14,7 @@ final class QuantizedDoubleCodec(min: Double, max: Double, bits: Int) extends Co
 
   override def sizeBound = SizeBound.exact(bitsL)
 
-  def QuantizeDouble(value: Double): Int = {
+private def QuantizeDouble(value: Double): Int = {
     val range: Double = max - min;
 
     if (range == 0.0)
@@ -32,7 +32,7 @@ final class QuantizedDoubleCodec(min: Double, max: Double, bits: Int) extends Co
     return rounded_quantized
   }
 
-  def UnquantizeDouble(value: Int): Double = {
+private def UnquantizeDouble(value: Int): Double = {
     return ((max - min) * value.toDouble / (1 << bitsL.toInt).toDouble + min)
   }
 

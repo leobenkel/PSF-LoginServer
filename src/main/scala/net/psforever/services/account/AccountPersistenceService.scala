@@ -75,7 +75,7 @@ private var galaxy: ActorRef = ActorRef.noSender
     accounts.clear()
   }
 
-  def receive: Receive = Setup
+def receive: Receive = Setup
 
   /**
     * Entry point for persistence monitoring setup.
@@ -148,7 +148,7 @@ private val Setup: Receive = {
       log.warn(s"not yet started; received a $msg that will go unhandled")
   }
 
-  def switchToStarted(): Unit = {
+private def switchToStarted(): Unit = {
     if (squad != ActorRef.noSender && galaxy != ActorRef.noSender) {
       context.become(Started)
     }
@@ -159,7 +159,7 @@ private val Setup: Receive = {
     * @param name the unique name of the player
     * @return the persistence monitor object
     */
-  def CreateNewPlayerToken(name: String): ActorRef = {
+private def CreateNewPlayerToken(name: String): ActorRef = {
     val ref =
       context.actorOf(Props(classOf[PersistenceMonitor], name, squad, galaxy), s"${NextPlayerIndex(name)}_${name.hashCode()}")
     accounts += name -> ref
@@ -174,7 +174,7 @@ private val Setup: Receive = {
     * @param name the text personal descriptor used by the player
     * @return the next index for this player, starting at 0
     */
-  def NextPlayerIndex(name: String): Int = {
+private def NextPlayerIndex(name: String): Int = {
     userIndices.get(name) match {
       case Some(n) =>
         val p = n + 1
@@ -273,7 +273,7 @@ private var timer: Cancellable = Default.Cancellable
     PerformLogout()
   }
 
-  def receive: Receive = {
+def receive: Receive = {
     case AccountPersistenceService.Login(_, charId) =>
       UpdateTimer() //longer!
       if (kicked) {
@@ -337,7 +337,7 @@ private var timer: Cancellable = Default.Cancellable
   /**
     * Restart the minimum activity timer.
     */
-  def UpdateTimer(): Unit = {
+private def UpdateTimer(): Unit = {
     timer.cancel()
     timer = context.system.scheduler.scheduleOnce(persistTime.getOrElse(60L) seconds, self, Logout(name))
   }
@@ -362,7 +362,7 @@ private var timer: Cancellable = Default.Cancellable
     * and can arise during normal transitional gameplay,
     * but should be uncommon.
     */
-  def PerformLogout(): Unit = {
+private def PerformLogout(): Unit = {
     (inZone.Players.find(p => p.name == name), inZone.LivePlayers.find(p => p.Name == name)) match {
       case (Some(avatar), Some(player)) if player.VehicleSeated.nonEmpty =>
         //alive or dead in a vehicle
@@ -418,7 +418,7 @@ private var timer: Cancellable = Default.Cancellable
     * @param avatar the avatar
     * @param player the player
     */
-  def PlayerAvatarLogout(avatar: Avatar, player: Player): Unit = {
+private def PlayerAvatarLogout(avatar: Avatar, player: Player): Unit = {
     val pguid  = player.GUID
     val parent = context.parent
     player.Position = Vector3.Zero
@@ -445,7 +445,7 @@ private var timer: Cancellable = Default.Cancellable
     * @see `Zone.Population.Leave`
     * @param avatar the avatar
     */
-  def AvatarLogout(avatar: Avatar): Unit = {
+private def AvatarLogout(avatar: Avatar): Unit = {
     LivePlayerList.Remove(avatar.id)
     squadService.tell(Service.Leave(Some(avatar.id.toString)), context.parent)
     galaxyService.tell(GalaxyServiceMessage(GalaxyAction.LogStatusChange(avatar.name)), context.parent)

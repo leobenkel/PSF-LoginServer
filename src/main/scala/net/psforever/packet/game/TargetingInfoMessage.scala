@@ -34,8 +34,8 @@ final case class TargetInfo(target_guid: PlanetSideGUID, health: Float, armor: F
   */
 final case class TargetingInfoMessage(target_list: List[TargetInfo]) extends PlanetSideGamePacket {
   type Packet = TargetingInfoMessage
-  def opcode = GamePacketOpcode.TargetingInfoMessage
-  def encode = TargetingInfoMessage.encode(this)
+def opcode = GamePacketOpcode.TargetingInfoMessage
+def encode = TargetingInfoMessage.encode(this)
 }
 
 object TargetInfo {
@@ -47,7 +47,7 @@ object TargetInfo {
     * @param armor the amount of armor the target has
     * @return a `TargetInfo` object
     */
-  def apply(target_guid: PlanetSideGUID, health: Int, armor: Int): TargetInfo = {
+def apply(target_guid: PlanetSideGUID, health: Int, armor: Int): TargetInfo = {
     val health2: Float = TargetingInfoMessage.rangedFloat(health)
     val armor2: Float  = TargetingInfoMessage.rangedFloat(armor)
     TargetInfo(target_guid, health2, armor2)
@@ -59,7 +59,7 @@ object TargetInfo {
     * @param health the amount of health the target has
     * @return a `TargetInfo` object
     */
-  def apply(target_guid: PlanetSideGUID, health: Int): TargetInfo = {
+def apply(target_guid: PlanetSideGUID, health: Int): TargetInfo = {
     val health2: Float = TargetingInfoMessage.rangedFloat(health)
     TargetInfo(target_guid, health2)
   }
@@ -73,7 +73,7 @@ object TargetingInfoMessage extends Marshallable[TargetingInfoMessage] {
     * @param n an unsigned `Integer` number inclusive 0 and below 256
     * @return a scaled `Float` number inclusive to 0f to 1f
     */
-  def rangedFloat(n: Int): Float = {
+private def rangedFloat(n: Int): Float = {
     (
       (if (n <= 0) {
          0
@@ -90,7 +90,7 @@ object TargetingInfoMessage extends Marshallable[TargetingInfoMessage] {
     * @param n `Float` number inclusive to 0f to 1f
     * @return a scaled unsigned `Integer` number inclusive 0 and below 256
     */
-  def rangedInt(n: Float): Int = {
+private def rangedInt(n: Float): Int = {
     (
       (if (n <= 0f) {
          0f

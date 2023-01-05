@@ -42,7 +42,7 @@ private val projector = context.actorOf(
 private val backup =
     context.actorOf(Props(classOf[ZoneHotSpotHistory], zone, dataList, dataBlanking), s"${zone.id}-hotspot-backup")
 
-  def receive: Receive = {
+def receive: Receive = {
     case _ if sender() == projector || sender() == backup => ; //catch and disrupt cyclic messaging paths
     case msg =>
       projector ! msg
@@ -95,7 +95,7 @@ private var blankingDelay: FiniteDuration = blankingTime
     super.postStop()
   }
 
-  def receive: Receive = Initializing
+def receive: Receive = Initializing
 
   /**
     * Accept the `GalaxyService` hook and switch to active message processing when it arrives.
@@ -106,7 +106,7 @@ private var blankingDelay: FiniteDuration = blankingTime
     * @see `ZoneHotSpotProjector.UpdateMappingFunction`
     * @return a partial function
     */
-  def Initializing: Receive = {
+private def Initializing: Receive = {
     case ServiceManager.LookupResult("galaxy", galaxyRef) =>
       galaxy = galaxyRef
       context.become(Established)
@@ -134,7 +134,7 @@ private var blankingDelay: FiniteDuration = blankingTime
     * @see `ZoneHotSpotProjector.UpdateMappingFunction`
     * @return a partial function
     */
-  def Established: Receive = {
+private def Established: Receive = {
     case ZoneHotSpotProjector.UpdateDurationFunction() =>
       blanking.cancel()
       UpdateDurationFunction()
@@ -240,7 +240,7 @@ private var blankingDelay: FiniteDuration = blankingTime
     * @param displayLoc the location for the hotpot that was normalized by the coordinate mapping function
     * @return the hotspot data that corresponds to this location
     */
-  def TryHotSpot(displayLoc: Vector3): HotSpotInfo = {
+private def TryHotSpot(displayLoc: Vector3): HotSpotInfo = {
     hotspots.find(spot => spot.DisplayLocation == displayLoc) match {
       case Some(spot) =>
         //hotspot already exists
@@ -257,7 +257,7 @@ private var blankingDelay: FiniteDuration = blankingTime
     * Assign a new functionality for determining how long hotspots remain active.
     * Recalculate all current hotspot information.
     */
-  def UpdateDurationFunction(): Unit = {
+private def UpdateDurationFunction(): Unit = {
     hotspots.foreach { spot =>
       spot.Activity.values.foreach { report =>
         val heat = report.Heat
@@ -273,7 +273,7 @@ private var blankingDelay: FiniteDuration = blankingTime
     * Assign new functionality for determining where to depict howspots on a given zone map.
     * Recalculate all current hotspot information.
     */
-  def UpdateMappingFunction(): Unit = {
+private def UpdateMappingFunction(): Unit = {
     val redoneSpots = hotspots.map { spot =>
       val newSpot = new HotSpotInfo(zone.HotSpotCoordinateFunction(spot.DisplayLocation))
       PlanetSideEmpire.values.foreach { faction =>
@@ -298,7 +298,7 @@ private var blankingDelay: FiniteDuration = blankingTime
     *                     if empty or contains no information for a selected group,
     *                     that group's hotspots will be eliminated (blanked) as a result
     */
-  def UpdateHotSpots(affectedFactions: Iterable[PlanetSideEmpire.Value], hotSpotInfos: Iterable[HotSpotInfo]): Unit = {
+private def UpdateHotSpots(affectedFactions: Iterable[PlanetSideEmpire.Value], hotSpotInfos: Iterable[HotSpotInfo]): Unit = {
     val zoneNumber      = zone.Number
     val hotSpotInfoList = hotSpotInfos.toList
     affectedFactions.foreach(faction =>
@@ -359,7 +359,7 @@ object ZoneHotSpotProjector {
     * @param hotSpotInfos the total activity information
     * @return the discovered activity information that aligns with `faction`
     */
-  def SpecificHotSpotInfo(faction: PlanetSideEmpire.Value, hotSpotInfos: List[HotSpotInfo]): List[HotSpotInfo] = {
+private def SpecificHotSpotInfo(faction: PlanetSideEmpire.Value, hotSpotInfos: List[HotSpotInfo]): List[HotSpotInfo] = {
     hotSpotInfos.filter { spot => spot.ActivityBy(faction) }
   }
 }

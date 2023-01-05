@@ -30,10 +30,10 @@ class GeneratorControl(gen: Generator)
     with DamageableEntity
     with RepairableEntity
     with AmenityAutoRepair {
-  def FactionObject      = gen
-  def DamageableObject   = gen
-  def RepairableObject   = gen
-  def AutoRepairObject   = gen
+private def FactionObject      = gen
+private def DamageableObject   = gen
+private def RepairableObject   = gen
+private def AutoRepairObject   = gen
   /** flagged to explode after some time */
 private var imminentExplosion: Boolean   = false
   /** explode when this timer completes */
@@ -66,7 +66,7 @@ private var alarmCooldown: Cancellable   = Default.Cancellable
   it is split between when detecting ntu and when starved for ntu
    */
 
-  def receive: Receive = withNtu
+def receive: Receive = withNtu
 
   /** behavior that is valid for both "with-ntu" and "without-ntu" */
 private val commonBehavior: Receive =
@@ -93,7 +93,7 @@ private val commonBehavior: Receive =
   the generator can be properly destabilized and explode
   the generator can be repaired to operational status and power the facility in which it is installed
    */
-  def withNtu: Receive =
+private def withNtu: Receive =
     commonBehavior
       .orElse {
         case GeneratorControl.Destabilized() =>
@@ -136,7 +136,7 @@ private val commonBehavior: Receive =
   the generator can still be destroyed but will not explode
   handles the possibility that ntu was lost during an ongoing destabilization and cancels the explosion
    */
-  def withoutNtu: Receive =
+private def withoutNtu: Receive =
     commonBehavior
       .orElse {
         case GeneratorControl.GeneratorExplodes() =>
@@ -284,7 +284,7 @@ object GeneratorControl {
     * @param cause historical information about the damage
     * @param amount the amount of damage
     */
-  def DamageAwareness(target: Generator, cause: DamageResult, amount: Int): Unit = {
+private def DamageAwareness(target: Generator, cause: DamageResult, amount: Int): Unit = {
     if (!target.Destroyed) {
       val health: Float = target.Health.toFloat
       val max: Float    = target.MaxHealth.toFloat
@@ -307,7 +307,7 @@ object GeneratorControl {
     * @return a function that takes source and target and
     *         calculates whether or not the target will be affected by an explosion of the source
     */
-  def generatorRoomExplosionDetectionTestSetup(
+private def generatorRoomExplosionDetectionTestSetup(
                                                 pointTowardsFront: Vector3,
                                                 source: PlanetSideGameObject
                                               ): (PlanetSideGameObject, PlanetSideGameObject, Float)=> Boolean = {
@@ -358,7 +358,7 @@ object GeneratorControl {
     * @return `true`, if the target entities are near enough to each other;
     *        `false`, otherwise
     */
-  def generatorRoomExplosionDetectionTest(
+private def generatorRoomExplosionDetectionTest(
                                            g1ctrXY: Vector3,
                                            ufront: Vector3,
                                            uside: Vector3,

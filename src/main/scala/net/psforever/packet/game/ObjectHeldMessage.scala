@@ -9,8 +9,8 @@ import scodec.codecs._
 final case class ObjectHeldMessage(avatar_guid: PlanetSideGUID, held_holsters: Int, unk1: Boolean)
     extends PlanetSideGamePacket {
   type Packet = ObjectHeldMessage
-  def opcode = GamePacketOpcode.ObjectHeldMessage
-  def encode = ObjectHeldMessage.encode(this)
+def opcode = GamePacketOpcode.ObjectHeldMessage
+def encode = ObjectHeldMessage.encode(this)
 }
 
 object ObjectHeldMessage extends Marshallable[ObjectHeldMessage] {

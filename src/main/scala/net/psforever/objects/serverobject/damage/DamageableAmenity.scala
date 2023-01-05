@@ -11,7 +11,7 @@ import net.psforever.services.avatar.{AvatarAction, AvatarServiceMessage}
   * with specific exceptions for the `ImplantTerminalMech` and the `Generator`.
   */
 trait DamageableAmenity extends DamageableEntity {
-  def DamageableObject: Amenity
+private def DamageableObject: Amenity
 
   override protected def DestructionAwareness(target: Damageable.Target, cause: DamageResult): Unit = {
     super.DestructionAwareness(target, cause)
@@ -32,7 +32,7 @@ object DamageableAmenity {
     * @param target the entity being destroyed
     * @param cause historical information about the damage
     */
-  def DestructionAwareness(target: Damageable.Target, cause: DamageResult): Unit = {
+private def DestructionAwareness(target: Damageable.Target, cause: DamageResult): Unit = {
     val zone       = target.Zone
     val zoneId     = zone.id
     val events     = zone.AvatarEvents

@@ -54,7 +54,7 @@ trait AmenityAutoRepair extends NtuStorageBehavior {
     */
   private var autoRepairOverflow: Float = 0f
 
-  def AutoRepairObject: Amenity
+private def AutoRepairObject: Amenity
 
   final val autoRepairBehavior: Receive = storageBehavior.orElse {
     case BuildingActor.SuppliedWithNtu() =>
@@ -65,17 +65,17 @@ trait AmenityAutoRepair extends NtuStorageBehavior {
   }
 
   //nothing special
-  def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {}
+private def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {}
 
   /**
     * Stop the auto-repair timer.
     */
-  def StopNtuBehavior(sender: ActorRef): Unit = {
+private def StopNtuBehavior(sender: ActorRef): Unit = {
     stopAutoRepair()
   }
 
   //nothing special
-  def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {}
+private def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {}
 
   /**
     * When reports of an NTU provision is returned to the requesting amenity,
@@ -84,7 +84,7 @@ trait AmenityAutoRepair extends NtuStorageBehavior {
     * auto-repair executes a single tick.
     * @see `RepairableAmenity`
     */
-  def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
+private def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
     val obj = AutoRepairObject
     obj.Definition.autoRepair match {
       case Some(repair: AutoRepairStats) if obj.Health < obj.Definition.MaxHealth =>
@@ -115,7 +115,7 @@ trait AmenityAutoRepair extends NtuStorageBehavior {
     * Confirm that a provision of NTU to the potential requesting amenity is possible.
     * Attempt to start auto-repair operations.
     */
-  def withNtuSupplyCallback(): Unit = {
+private def withNtuSupplyCallback(): Unit = {
     startAutoRepairFunctionality()
   }
 
@@ -123,7 +123,7 @@ trait AmenityAutoRepair extends NtuStorageBehavior {
     * No (further) provisions of NTU to the potential requesting amenity will be forthcoming.
     * Cancel any attempts at auto-repair.
     */
-  def noNtuSupplyCallback(): Unit = {
+private def noNtuSupplyCallback(): Unit = {
     stopAutoRepairFunctionality()
   }
 
@@ -187,7 +187,7 @@ trait AmenityAutoRepair extends NtuStorageBehavior {
     * @return `true`, if the auto-repair process started specifically due to this call;
     *        `false`, if it was already started, or did not start
     */
-  def tryAutoRepair(): Boolean = {
+private def tryAutoRepair(): Boolean = {
     actuallyTryAutoRepair()
   }
 

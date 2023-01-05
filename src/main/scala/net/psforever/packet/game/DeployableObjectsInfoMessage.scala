@@ -70,9 +70,9 @@ final case class DeployableObjectsInfoMessage(action: DeploymentAction.Value, de
     extends PlanetSideGamePacket {
   type Packet = DeployableObjectsInfoMessage
 
-  def opcode: Type = GamePacketOpcode.DeployableObjectsInfoMessage
+def opcode: Type = GamePacketOpcode.DeployableObjectsInfoMessage
 
-  def encode: Attempt[BitVector] = DeployableObjectsInfoMessage.encode(this)
+def encode: Attempt[BitVector] = DeployableObjectsInfoMessage.encode(this)
 }
 
 object DeployableObjectsInfoMessage extends Marshallable[DeployableObjectsInfoMessage] {
@@ -83,7 +83,7 @@ object DeployableObjectsInfoMessage extends Marshallable[DeployableObjectsInfoMe
     * @param info the singular entry of a deployable item
     * @return a `DeployableObjectsInfoMessage` object
     */
-  def apply(action: DeploymentAction.Type, info: DeployableInfo): DeployableObjectsInfoMessage =
+def apply(action: DeploymentAction.Type, info: DeployableInfo): DeployableObjectsInfoMessage =
     new DeployableObjectsInfoMessage(action, info :: Nil)
 
   /**

@@ -20,8 +20,8 @@ final case class LoginMessage(
   require(revision >= 0)
   require(password.isDefined ^ token.isDefined, "Either 'username' or 'token' must be set, but not both")
 
-  def opcode = GamePacketOpcode.LoginMessage
-  def encode = LoginMessage.encode(this)
+def opcode = GamePacketOpcode.LoginMessage
+def encode = LoginMessage.encode(this)
 }
 
 object LoginMessage extends Marshallable[LoginMessage] {

@@ -25,12 +25,12 @@ import scala.concurrent.duration._
   * @param pad the `VehicleSpawnPad` object being governed
   */
 class VehicleSpawnControlRailJack(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
-  def LogId = "-lifter"
+private def LogId = "-lifter"
 
 private val seatDriver =
     context.actorOf(Props(classOf[VehicleSpawnControlSeatDriver], pad), s"${context.parent.path.name}-mount")
 
-  def receive: Receive = {
+def receive: Receive = {
     case order @ VehicleSpawnControl.Order(driver, vehicle) =>
       vehicle.MountedIn = pad.GUID
       Zone.serverSideDamage(
@@ -50,7 +50,7 @@ private val seatDriver =
 }
 
 object VehicleSpawnControlRailJack {
-  def prepareSpawnExplosion(
+private def prepareSpawnExplosion(
       pad: VehicleSpawnPad,
       driver: SourceEntry,
       vehicle: SourceEntry
@@ -71,7 +71,7 @@ object VehicleSpawnControlRailJack {
     )
   }
 
-  def vehicleSpawnExplosion(
+private def vehicleSpawnExplosion(
       vehicle: SourceEntry,
       properties: DamageProperties,
       cause: Option[DamageResult]

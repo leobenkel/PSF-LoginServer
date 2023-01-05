@@ -17,20 +17,20 @@ import net.psforever.objects.vital.{NoResistanceSelection, SimpleResolutions, Vi
   * @param against for the purposes of damage, what kind of target is being acted upon
   */
 final case class EnvironmentReason(body: PieceOfEnvironment, against: DamageCalculations.Selector) extends DamageReason {
-  def resolution: DamageResolution.Value = DamageResolution.Environmental
+private def resolution: DamageResolution.Value = DamageResolution.Environmental
 
-  def source: DamageProperties = EnvironmentReason.selectDamage(body)
+private def source: DamageProperties = EnvironmentReason.selectDamage(body)
 
-  def same(test: DamageReason): Boolean = {
+private def same(test: DamageReason): Boolean = {
     test match {
       case o : EnvironmentReason => body == o.body //TODO eq
       case _ => false
     }
   }
 
-  def adversary: Option[SourceEntry] = None
+private def adversary: Option[SourceEntry] = None
 
-  def damageModel: DamageAndResistance = EnvironmentReason.drm(against)
+private def damageModel: DamageAndResistance = EnvironmentReason.drm(against)
 }
 
 object EnvironmentReason {
@@ -40,11 +40,11 @@ object EnvironmentReason {
     * @param target the target being involved in this interaction
     * @return an `EnvironmentReason` object
     */
-  def apply(body: PieceOfEnvironment, target: Vitality): EnvironmentReason =
+def apply(body: PieceOfEnvironment, target: Vitality): EnvironmentReason =
     EnvironmentReason(body, target.DamageModel.DamageUsing)
 
   /** variable, no resisting, quick and simple */
-  def drm(against: DamageCalculations.Selector) = new DamageResistanceModel {
+private def drm(against: DamageCalculations.Selector) = new DamageResistanceModel {
     DamageUsing = against
     ResistUsing = NoResistanceSelection
     Model = SimpleResolutions.calculate
@@ -72,7 +72,7 @@ object EnvironmentReason {
     * @param environment the environmental element, with a specific attribute
     * @return the damage information flags for that attribute
     */
-  def selectDamage(environment: PieceOfEnvironment): DamageProperties = {
+private def selectDamage(environment: PieceOfEnvironment): DamageProperties = {
     environment.attribute match {
       case EnvironmentAttribute.Lava => lavaDamage
       case _ => noDamage

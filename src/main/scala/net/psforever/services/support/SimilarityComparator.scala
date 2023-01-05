@@ -10,5 +10,5 @@ abstract class SimilarityComparator[A <: SupportActor.Entry] {
     * @param entry2 the second entry
     * @return if they match
     */
-  def Test(entry1: A, entry2: A): Boolean
+private def Test(entry1: A, entry2: A): Boolean
 }

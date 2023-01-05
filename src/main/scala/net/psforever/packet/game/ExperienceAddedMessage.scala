@@ -21,8 +21,8 @@ import scodec.codecs._
   */
 final case class ExperienceAddedMessage(exp: Int, unk: Boolean = true) extends PlanetSideGamePacket {
   type Packet = ExperienceAddedMessage
-  def opcode = GamePacketOpcode.ExperienceAddedMessage
-  def encode = ExperienceAddedMessage.encode(this)
+def opcode = GamePacketOpcode.ExperienceAddedMessage
+def encode = ExperienceAddedMessage.encode(this)
 }
 
 object ExperienceAddedMessage extends Marshallable[ExperienceAddedMessage] {

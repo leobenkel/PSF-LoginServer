@@ -13,12 +13,12 @@ final case class LongRangeProjectileInfoMessage(
                                                )
   extends PlanetSideGamePacket {
   type Packet = LongRangeProjectileInfoMessage
-  def opcode = GamePacketOpcode.LongRangeProjectileInfoMessage
-  def encode = LongRangeProjectileInfoMessage.encode(this)
+def opcode = GamePacketOpcode.LongRangeProjectileInfoMessage
+def encode = LongRangeProjectileInfoMessage.encode(this)
 }
 
 object LongRangeProjectileInfoMessage extends Marshallable[LongRangeProjectileInfoMessage] {
-  def apply(guid: PlanetSideGUID, pos: Vector3, vel: Vector3): LongRangeProjectileInfoMessage =
+def apply(guid: PlanetSideGUID, pos: Vector3, vel: Vector3): LongRangeProjectileInfoMessage =
     LongRangeProjectileInfoMessage(guid, pos, Some(vel))
 
   implicit val codec: Codec[LongRangeProjectileInfoMessage] = (

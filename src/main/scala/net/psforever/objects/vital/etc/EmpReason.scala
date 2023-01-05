@@ -24,19 +24,19 @@ final case class EmpReason(
                             damageModel: DamageAndResistance,
                             override val attribution: Int
                           ) extends DamageReason {
-  def resolution: DamageResolution.Value = DamageResolution.Splash
+private def resolution: DamageResolution.Value = DamageResolution.Splash
 
-  def same(test: DamageReason): Boolean = test match {
+private def same(test: DamageReason): Boolean = test match {
     case eer: ExplodingEntityReason => eer.entity eq entity
     case _                          => false
   }
 
   /** lay the blame on that which caused this emp to occur */
-  def adversary: Option[SourceEntry] = Some(entity)
+private def adversary: Option[SourceEntry] = Some(entity)
 }
 
 object EmpReason {
-  def apply(
+def apply(
              owner: PlanetSideGameObject with FactionAffinity,
              source: DamageWithPosition,
              target: PlanetSideGameObject with Vitality

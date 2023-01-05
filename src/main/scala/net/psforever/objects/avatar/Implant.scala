@@ -9,7 +9,7 @@ case class Implant(
     initialized: Boolean = false
     //initializationTime: FiniteDuration
 ) {
-  def toEntry: ImplantEntry = {
+private def toEntry: ImplantEntry = {
     // TODO initialization time?
     new ImplantEntry(definition.implantType, None, active)
   }

@@ -130,7 +130,7 @@ class DoorControl3Test extends ActorTest {
 }
 
 object DoorControlTest {
-  def SetUpAgents(faction: PlanetSideEmpire.Value)(implicit system: ActorSystem): (Player, Door) = {
+private def SetUpAgents(faction: PlanetSideEmpire.Value)(implicit system: ActorSystem): (Player, Door) = {
     val door = Door(GlobalDefinitions.door)
     val guid = new NumberPoolHub(new MaxNumberSource(5))
     val zone = new Zone("test", new ZoneMap("test"), 0) {

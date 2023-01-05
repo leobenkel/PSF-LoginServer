@@ -7,10 +7,10 @@ package net.psforever.objects.guid.key
   * @param key a reference to the monitor
   */
 final class SecureKey(private val guid: Int, private val key: Monitor) {
-  def GUID: Int = guid
+private def GUID: Int = guid
 
-  def Policy: AvailabilityPolicy = key.policy
+private def Policy: AvailabilityPolicy = key.policy
 
   import net.psforever.objects.entity.IdentifiableEntity
-  def Object: Option[IdentifiableEntity] = key.obj
+private def Object: Option[IdentifiableEntity] = key.obj
 }

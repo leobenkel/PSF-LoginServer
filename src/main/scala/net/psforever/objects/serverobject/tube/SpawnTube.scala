@@ -14,7 +14,7 @@ class SpawnTube(tDef: SpawnTubeDefinition) extends Amenity with SpawnPoint {
 
   override def isOffline: Boolean = offline || super.isOffline
 
-  def Definition: SpawnTubeDefinition = tDef
+private def Definition: SpawnTubeDefinition = tDef
 }
 
 object SpawnTube {
@@ -24,7 +24,7 @@ object SpawnTube {
     * @param tDef the spawn tube's definition entry
     * @return a `SpawnTube` object
     */
-  def apply(tDef: SpawnTubeDefinition): SpawnTube = {
+def apply(tDef: SpawnTubeDefinition): SpawnTube = {
     new SpawnTube(tDef)
   }
 
@@ -39,7 +39,7 @@ object SpawnTube {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `SpawnTube` object
     */
-  def Constructor(pos: Vector3, orient: Vector3)(id: Int, context: ActorContext): SpawnTube = {
+private def Constructor(pos: Vector3, orient: Vector3)(id: Int, context: ActorContext): SpawnTube = {
     Constructor(pos, GlobalDefinitions.respawn_tube, orient)(id, context)
   }
 
@@ -52,7 +52,7 @@ object SpawnTube {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `SpawnTube` object
     */
-  def Constructor(pos: Vector3, tdef: SpawnTubeDefinition, orient: Vector3)(
+private def Constructor(pos: Vector3, tdef: SpawnTubeDefinition, orient: Vector3)(
       id: Int,
       context: ActorContext
   ): SpawnTube = {

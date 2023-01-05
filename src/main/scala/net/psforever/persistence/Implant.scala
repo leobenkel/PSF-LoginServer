@@ -7,7 +7,7 @@ case class Implant(
     name: String,
     avatarId: Int
 ) {
-  def toImplantDefinition: ImplantDefinition = {
+private def toImplantDefinition: ImplantDefinition = {
     ImplantTerminalDefinition.implants(name)
   }
 }

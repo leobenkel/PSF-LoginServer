@@ -12,7 +12,7 @@ import net.psforever.objects.vital.interaction.DamageResult
   * @param vehicle the vehicle
   */
 class CargoCarrierControl(vehicle: Vehicle) extends VehicleControl(vehicle) with CarrierBehavior {
-  def CarrierObject = vehicle
+private def CarrierObject = vehicle
 
   override def postStop(): Unit = {
     super.postStop()

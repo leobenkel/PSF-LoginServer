@@ -34,7 +34,7 @@ final case class ImplantPage(stock: Map[String, ImplantDefinition]) extends Tab 
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     sender ! msg
   }
 }

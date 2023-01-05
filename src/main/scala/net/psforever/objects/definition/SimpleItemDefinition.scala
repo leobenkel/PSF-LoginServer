@@ -12,11 +12,11 @@ class SimpleItemDefinition(objectId: Int) extends EquipmentDefinition(objectId) 
 }
 
 object SimpleItemDefinition {
-  def apply(objectId: Int): SimpleItemDefinition = {
+def apply(objectId: Int): SimpleItemDefinition = {
     new SimpleItemDefinition(objectId)
   }
 
-  def apply(simpItem: SItem.Value): SimpleItemDefinition = {
+def apply(simpItem: SItem.Value): SimpleItemDefinition = {
     new SimpleItemDefinition(simpItem.id)
   }
 }

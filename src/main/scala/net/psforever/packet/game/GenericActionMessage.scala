@@ -52,12 +52,12 @@ import scodec.codecs._
   */
 final case class GenericActionMessage(action: Int) extends PlanetSideGamePacket {
   type Packet = GenericActionMessage
-  def opcode = GamePacketOpcode.GenericActionMessage
-  def encode = GenericActionMessage.encode(this)
+def opcode = GamePacketOpcode.GenericActionMessage
+def encode = GenericActionMessage.encode(this)
 }
 
 object GenericActionMessage extends Marshallable[GenericActionMessage] {
-  def apply(action: GenericActionEnum.GenericActionEnum): GenericActionMessage = {
+def apply(action: GenericActionEnum.GenericActionEnum): GenericActionMessage = {
     GenericActionMessage(action.id)
   }
 

@@ -10,7 +10,7 @@ import net.psforever.types.Vector3
   * Falling damage is a product of the falling distance.
   */
 case object GroundImpact extends CollisionDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: CollisionReason): Int =
+private def calculate(damage: Int, data: DamageInteraction, cause: CollisionReason): Int =
     CollisionDamageModifierFunctions.calculateGroundImpact(damage, data, cause)
 }
 
@@ -18,7 +18,7 @@ case object GroundImpact extends CollisionDamageModifiers.Mod {
   * Falling damage is a product of the falling distance.
   */
 case object GroundImpactWith extends CollisionWithDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: CollisionWithReason): Int =
+private def calculate(damage: Int, data: DamageInteraction, cause: CollisionWithReason): Int =
     CollisionDamageModifierFunctions.calculateGroundImpact(damage, data, cause)
 }
 
@@ -28,7 +28,7 @@ case object GroundImpactWith extends CollisionWithDamageModifiers.Mod {
   * Driving at high velocity into an inelastic structure is bad for one's integrity.
   */
 case object HeadonImpact extends CollisionDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: CollisionReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: CollisionReason): Int = {
     val vel = Vector3.Magnitude(cause.velocity.xy)
     if (vel > 0.05f) {
       val definition = data.target.Definition
@@ -49,7 +49,7 @@ case object HeadonImpact extends CollisionDamageModifiers.Mod {
   * damage is a function of the velocity turned into a percentage of full throttle matched against tiers of damage.
   */
 case object HeadonImpactWithEntity extends CollisionWithDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: CollisionWithReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: CollisionWithReason): Int = {
     val vel = Vector3.Magnitude(cause.velocity.xy)
     (data.target, cause.collidedWith) match {
       case (p: PlayerSource, v: VehicleSource) =>
@@ -109,7 +109,7 @@ case object HeadonImpactWithEntity extends CollisionWithDamageModifiers.Mod {
   * The tactical resonance area protection is identified by never moving (has no velocity).
   */
 case class TrapCollisionDamageMultiplier(multiplier: Float) extends CollisionWithDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: CollisionWithReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: CollisionWithReason): Int = {
     val target = data.target
     if (target.Velocity.nonEmpty && target.Faction != cause.collidedWith.Faction) {
       (multiplier * damage).toInt

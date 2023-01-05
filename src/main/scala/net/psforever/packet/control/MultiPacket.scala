@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class MultiPacket(packets: Vector[ByteVector]) extends PlanetSideControlPacket {
   type Packet = MultiPacket
-  def opcode = ControlPacketOpcode.MultiPacket
-  def encode = MultiPacket.encode(this)
+def opcode = ControlPacketOpcode.MultiPacket
+def encode = MultiPacket.encode(this)
 }
 
 object MultiPacket extends Marshallable[MultiPacket] {

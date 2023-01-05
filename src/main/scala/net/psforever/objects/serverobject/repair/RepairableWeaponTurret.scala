@@ -12,7 +12,7 @@ import net.psforever.services.vehicle.{VehicleAction, VehicleServiceMessage}
   * The "control" `Actor` mixin for repair-handling code for `WeaponTurret` objects.
   */
 trait RepairableWeaponTurret extends RepairableEntity {
-  def RepairableObject: Repairable.Target with WeaponTurret
+private def RepairableObject: Repairable.Target with WeaponTurret
 
   override def Restoration(target: Repairable.Target): Unit = {
     super.Restoration(target)
@@ -36,7 +36,7 @@ object RepairableWeaponTurret {
     *               note: `MountedWeapons` is a parent of `WeaponTurret`
     *               but the handling code closely associates with the former
     */
-  def Restoration(target: Repairable.Target with MountedWeapons): Unit = {
+private def Restoration(target: Repairable.Target with MountedWeapons): Unit = {
     val zone   = target.Zone
     val zoneId = zone.id
     val tguid  = target.GUID

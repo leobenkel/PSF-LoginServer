@@ -18,8 +18,8 @@ import scodec.codecs._
   */
 final case class ZoneForcedCavernConnectionsMessage(zone: Int, unk: Int) extends PlanetSideGamePacket {
   type Packet = ZoneForcedCavernConnectionsMessage
-  def opcode = GamePacketOpcode.ZoneForcedCavernConnectionsMessage
-  def encode = ZoneForcedCavernConnectionsMessage.encode(this)
+def opcode = GamePacketOpcode.ZoneForcedCavernConnectionsMessage
+def encode = ZoneForcedCavernConnectionsMessage.encode(this)
 }
 
 object ZoneForcedCavernConnectionsMessage extends Marshallable[ZoneForcedCavernConnectionsMessage] {

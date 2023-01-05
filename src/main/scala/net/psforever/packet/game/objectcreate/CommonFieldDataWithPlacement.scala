@@ -22,13 +22,13 @@ object CommonFieldDataWithPlacement extends Marshallable[CommonFieldDataWithPlac
     * Overloaded constructors.
     * @return a `CommonFieldDataWithPlacement` object
     */
-  def apply(pos: PlacementData, faction: PlanetSideEmpire.Value): CommonFieldDataWithPlacement =
+def apply(pos: PlacementData, faction: PlanetSideEmpire.Value): CommonFieldDataWithPlacement =
     CommonFieldDataWithPlacement(pos, CommonFieldData(faction))
 
-  def apply(pos: PlacementData, faction: PlanetSideEmpire.Value, unk: Int): CommonFieldDataWithPlacement =
+def apply(pos: PlacementData, faction: PlanetSideEmpire.Value, unk: Int): CommonFieldDataWithPlacement =
     CommonFieldDataWithPlacement(pos, CommonFieldData(faction, unk))
 
-  def apply(
+def apply(
       pos: PlacementData,
       faction: PlanetSideEmpire.Value,
       unk: Int,
@@ -36,7 +36,7 @@ object CommonFieldDataWithPlacement extends Marshallable[CommonFieldDataWithPlac
   ): CommonFieldDataWithPlacement =
     CommonFieldDataWithPlacement(pos, CommonFieldData(faction, unk, player_guid))
 
-  def apply(
+def apply(
       pos: PlacementData,
       faction: PlanetSideEmpire.Value,
       destroyed: Boolean,
@@ -44,7 +44,7 @@ object CommonFieldDataWithPlacement extends Marshallable[CommonFieldDataWithPlac
   ): CommonFieldDataWithPlacement =
     CommonFieldDataWithPlacement(pos, CommonFieldData(faction, destroyed, unk))
 
-  def apply(
+def apply(
       pos: PlacementData,
       faction: PlanetSideEmpire.Value,
       destroyed: Boolean,
@@ -53,7 +53,7 @@ object CommonFieldDataWithPlacement extends Marshallable[CommonFieldDataWithPlac
   ): CommonFieldDataWithPlacement =
     CommonFieldDataWithPlacement(pos, CommonFieldData(faction, destroyed, unk, player_guid))
 
-  def codec(extra: Boolean): Codec[CommonFieldDataWithPlacement] =
+private def codec(extra: Boolean): Codec[CommonFieldDataWithPlacement] =
     (
       ("pos" | PlacementData.codec) ::
         CommonFieldData.codec(extra)
@@ -61,7 +61,7 @@ object CommonFieldDataWithPlacement extends Marshallable[CommonFieldDataWithPlac
 
   implicit val codec: Codec[CommonFieldDataWithPlacement] = codec(false)
 
-  def codec2(extra: Boolean): Codec[CommonFieldDataWithPlacement] =
+private def codec2(extra: Boolean): Codec[CommonFieldDataWithPlacement] =
     (
       ("pos" | PlacementData.codec) ::
         CommonFieldData.codec2(extra)

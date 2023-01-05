@@ -47,7 +47,7 @@ object InfantryLoadout {
     * @param player the player
     * @return the numeric subtype
     */
-  def DetermineSubtype(player: Player): Int = {
+private def DetermineSubtype(player: Player): Int = {
     DetermineSubtypeA(player.ExoSuit, player.Slot(0).Equipment)
   }
 
@@ -62,7 +62,7 @@ object InfantryLoadout {
     *               to a MAX, that is its "primary weapon slot"
     * @return the numeric subtype
     */
-  def DetermineSubtypeA(suit: ExoSuitType.Value, weapon: Option[Equipment]): Int = {
+private def DetermineSubtypeA(suit: ExoSuitType.Value, weapon: Option[Equipment]): Int = {
     if (suit == ExoSuitType.MAX) {
       weapon match {
         case Some(item) =>
@@ -93,7 +93,7 @@ object InfantryLoadout {
     * @param subtype the mechanized assault exo-suit subtype as determined by their arm weapons
     * @return the numeric subtype
     */
-  def DetermineSubtypeB(suit: ExoSuitType.Value, subtype: Int): Int = {
+private def DetermineSubtypeB(suit: ExoSuitType.Value, subtype: Int): Int = {
     suit match {
       case ExoSuitType.Standard     => 0
       case ExoSuitType.Agile        => 1
@@ -112,7 +112,7 @@ object InfantryLoadout {
     * @param subtype the numeric subtype
     * @return a `Set` of all certifications that would grant access to the mechanized assault exo-suit subtype
     */
-  def DetermineSubtypeC(subtype: Int): Set[Certification] =
+private def DetermineSubtypeC(subtype: Int): Set[Certification] =
     subtype match {
       case 1 => Set(Certification.AAMAX, Certification.UniMAX)
       case 2 => Set(Certification.AIMAX, Certification.UniMAX)

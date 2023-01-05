@@ -13,24 +13,23 @@ import net.psforever.types.Vector3
   * @param y the 'y' coordinate of the position
   * @param z the 'z' coordinate of the position
   */
-final case class Point(x: Float, y: Float, z: Float)
-  extends VolumetricGeometry
-  with geometry.Point {
+final case class Point(x: Float, y: Float, z: Float) extends VolumetricGeometry with geometry.Point {
   def center: Point = this
 
   def moveCenter(point: geometry.Point): VolumetricGeometry = Point(point)
 
   def asVector3: Vector3 = Vector3(x, y, z)
 
-  def pointOnOutside(v: Vector3): Point = center
+  private def pointOnOutside(v: Vector3): Point = center
 }
 
 object Point {
+
   /**
     * An overloaded constructor that assigns world origin coordinates.
     * @return a `Point` entity
     */
-  def apply(): Point = Point(0,0,0)
+  def apply(): Point = Point(0, 0, 0)
 
   def apply(point: geometry.Point): Point = Point(point.asVector3)
 

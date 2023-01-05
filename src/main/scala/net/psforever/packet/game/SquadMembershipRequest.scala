@@ -35,8 +35,8 @@ final case class SquadMembershipRequest(
   }
 
   type Packet = SquadMembershipRequest
-  def opcode = GamePacketOpcode.SquadMembershipRequest
-  def encode = SquadMembershipRequest.encode(this)
+def opcode = GamePacketOpcode.SquadMembershipRequest
+def encode = SquadMembershipRequest.encode(this)
 }
 
 object SquadMembershipRequest extends Marshallable[SquadMembershipRequest] {

@@ -52,9 +52,9 @@ class ImplantDefinition(val implantType: ImplantType) extends BasicDefinition {
     InitializationDuration
   }
 
-  def Passive: Boolean = passive
+  private def Passive: Boolean = passive
 
-  def Passive_=(isPassive: Boolean): Boolean = {
+  private def Passive_=(isPassive: Boolean): Boolean = {
     passive = isPassive
     Passive
   }
@@ -73,15 +73,14 @@ class ImplantDefinition(val implantType: ImplantType) extends BasicDefinition {
     StaminaCost
   }
 
-  def CostIntervalDefault: Int = {
-    costIntervalDefault
-  }
+  def CostIntervalDefault: Int = costIntervalDefault
+
   def CostIntervalDefault_=(interval: Int): Int = {
     costIntervalDefault = interval
     CostIntervalDefault
   }
 
-  def GetCostIntervalByExoSuit(exosuit: ExoSuitType.Value): Int =
+  private def GetCostIntervalByExoSuit(exosuit: ExoSuitType.Value): Int =
     costIntervalByExoSuit.getOrElse(exosuit, CostIntervalDefault)
   def CostIntervalByExoSuitHashMap: mutable.Map[ExoSuitType.Value, Int] = costIntervalByExoSuit
 }

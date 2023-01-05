@@ -19,8 +19,8 @@ import scodec.codecs._
   */
 final case class HitHint(source_guid: PlanetSideGUID, player_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = HitHint
-  def opcode = GamePacketOpcode.HitHint
-  def encode = HitHint.encode(this)
+def opcode = GamePacketOpcode.HitHint
+def encode = HitHint.encode(this)
 }
 
 object HitHint extends Marshallable[HitHint] {

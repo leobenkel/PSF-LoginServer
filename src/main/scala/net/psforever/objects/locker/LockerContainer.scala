@@ -19,18 +19,18 @@ class LockerContainer(inventory: GridInventory)
   private var faction: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
   private val inv: GridInventory = inventory
 
-  def Faction: PlanetSideEmpire.Value = faction
+private def Faction: PlanetSideEmpire.Value = faction
 
   override def Faction_=(fact: PlanetSideEmpire.Value): PlanetSideEmpire.Value = {
     faction = fact
     Faction
   }
 
-  def Inventory: GridInventory = inv
+private def Inventory: GridInventory = inv
 
-  def VisibleSlots: Set[Int] = Set.empty[Int]
+private def VisibleSlots: Set[Int] = Set.empty[Int]
 
-  def Definition: EquipmentDefinition = GlobalDefinitions.locker_container
+private def Definition: EquipmentDefinition = GlobalDefinitions.locker_container
 }
 
 object LockerContainer {
@@ -38,7 +38,7 @@ object LockerContainer {
     * Overloaded constructor for the standard Infantry locker container of size 30x20.
     * @return a `LockerContainer` object
     */
-  def apply(): LockerContainer = {
+def apply(): LockerContainer = {
     new LockerContainer(GridInventory(30, 20))
   }
 }

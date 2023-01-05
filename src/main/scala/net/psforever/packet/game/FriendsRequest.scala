@@ -23,8 +23,8 @@ import scodec.codecs._
   */
 final case class FriendsRequest(action: MemberAction.Value, friend: String) extends PlanetSideGamePacket {
   type Packet = FriendsRequest
-  def opcode = GamePacketOpcode.FriendsRequest
-  def encode = FriendsRequest.encode(this)
+def opcode = GamePacketOpcode.FriendsRequest
+def encode = FriendsRequest.encode(this)
 }
 
 object FriendsRequest extends Marshallable[FriendsRequest] {

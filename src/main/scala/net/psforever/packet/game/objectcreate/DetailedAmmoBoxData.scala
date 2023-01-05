@@ -36,10 +36,10 @@ object DetailedAmmoBoxData extends Marshallable[DetailedAmmoBoxData] {
     * @param ammo the `DetailedAmmoBoxData`
     * @return an `InternalSlot` object that encapsulates `DetailedAmmoBoxData`
     */
-  def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, ammo: DetailedAmmoBoxData): InternalSlot =
+def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, ammo: DetailedAmmoBoxData): InternalSlot =
     new InternalSlot(cls, guid, parentSlot, ammo)
 
-  def apply(unk: Int, mag: Int): DetailedAmmoBoxData = {
+def apply(unk: Int, mag: Int): DetailedAmmoBoxData = {
     DetailedAmmoBoxData(
       CommonFieldData(PlanetSideEmpire.NEUTRAL, false, false, unk > 0, None, false, None, None, PlanetSideGUID(0)),
       mag

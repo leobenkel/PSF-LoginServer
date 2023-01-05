@@ -10,11 +10,11 @@ import scala.annotation.tailrec
 abstract class SupportActor[A <: SupportActor.Entry] extends Actor {
   private[this] val log = org.log4s.getLogger
 
-  def info(msg: String): Unit  = log.info(msg)
-  def trace(msg: String): Unit = log.trace(msg)
-  def debug(msg: String): Unit = log.debug(msg)
+private def info(msg: String): Unit  = log.info(msg)
+private def trace(msg: String): Unit = log.trace(msg)
+private def debug(msg: String): Unit = log.debug(msg)
 
-  def sameEntryComparator: SimilarityComparator[A]
+private def sameEntryComparator: SimilarityComparator[A]
 
   /**
     * Determine whether or not the resulting entry is valid for this process.
@@ -23,9 +23,9 @@ abstract class SupportActor[A <: SupportActor.Entry] extends Actor {
     * @param entry the entry
     * @return `true`, if it can be processed; `false`, otherwise
     */
-  def InclusionTest(entry: A): Boolean
+private def InclusionTest(entry: A): Boolean
 
-  def entryManagementBehaviors: Receive = {
+private def entryManagementBehaviors: Receive = {
     case SupportActor.HurrySpecific(targets, zone) =>
       HurrySpecific(targets, zone)
 
@@ -39,13 +39,13 @@ abstract class SupportActor[A <: SupportActor.Entry] extends Actor {
       ClearAll()
   }
 
-  def HurrySpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit
+private def HurrySpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit
 
-  def HurryAll(): Unit
+private def HurryAll(): Unit
 
-  def ClearSpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit
+private def ClearSpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit
 
-  def ClearAll(): Unit
+private def ClearAll(): Unit
 
   /*
    * Search the first pool of entries awaiting removal processing.
@@ -56,7 +56,7 @@ abstract class SupportActor[A <: SupportActor.Entry] extends Actor {
    *             all targets must be in this zone, with the assumption that this is the zone where they were registered
    * @return all of the discovered entries
    */
-  def PartitionTargetsFromList(
+private def PartitionTargetsFromList(
       list: List[A],
       targets: List[A],
       zone: Zone,

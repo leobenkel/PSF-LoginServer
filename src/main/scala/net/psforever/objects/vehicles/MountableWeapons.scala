@@ -15,7 +15,7 @@ trait MountableWeapons
     * @param seatNumber the mount number
     * @return a mounted weapon by index, or `None` if either the mount doesn't exist or there is no controlled weapon
     */
-  def WeaponControlledFromSeat(seatNumber: Int): Set[Equipment] = {
+private def WeaponControlledFromSeat(seatNumber: Int): Set[Equipment] = {
     Definition
       .asInstanceOf[MountableWeaponsDefinition]
       .controlledWeapons().get(seatNumber) match {
@@ -24,9 +24,9 @@ trait MountableWeapons
     }
   }
 
-  def controlledWeapon(wepNumber: Int): Set[Equipment] = ControlledWeapon(wepNumber)
+private def controlledWeapon(wepNumber: Int): Set[Equipment] = ControlledWeapon(wepNumber)
 
-  def ControlledWeapon(wepNumber: Int): Set[Equipment] = {
+private def ControlledWeapon(wepNumber: Int): Set[Equipment] = {
     weapons.get(wepNumber) match {
       case Some(slot) =>
         slot.Equipment match {
@@ -38,6 +38,6 @@ trait MountableWeapons
     }
   }
 
-  def Definition: MountableWeaponsDefinition
+private def Definition: MountableWeaponsDefinition
 }
 

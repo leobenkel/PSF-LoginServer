@@ -18,7 +18,7 @@ import net.psforever.types._
   * @param vehicle the vehicle
   */
 class DeployingVehicleControl(vehicle: Vehicle) extends VehicleControl(vehicle) with DeploymentBehavior {
-  def DeploymentObject = vehicle
+private def DeploymentObject = vehicle
 
   override def commonEnabledBehavior: Receive = super.commonEnabledBehavior.orElse(deployBehavior)
 
@@ -78,7 +78,7 @@ class DeployingVehicleControl(vehicle: Vehicle) extends VehicleControl(vehicle) 
     out
   }
 
-  def specificResponseToDeployment(state: DriveState.Value): Unit = {}
+private def specificResponseToDeployment(state: DriveState.Value): Unit = {}
 
   override def UndeploymentAction(
       obj: DeploymentObject,
@@ -91,5 +91,5 @@ class DeployingVehicleControl(vehicle: Vehicle) extends VehicleControl(vehicle) 
     out
   }
 
-  def specificResponseToUndeployment(state: DriveState.Value): Unit = {}
+private def specificResponseToUndeployment(state: DriveState.Value): Unit = {}
 }

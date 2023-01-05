@@ -20,9 +20,9 @@ final case class ProjectileReason(
                                    projectile: ActualProjectile,
                                    damageModel: DamageAndResistance
                                  ) extends DamageReason {
-  def source: DamageProperties = projectile.profile
+private def source: DamageProperties = projectile.profile
 
-  def same(test: DamageReason): Boolean = {
+private def same(test: DamageReason): Boolean = {
     test match {
       case o: ProjectileReason => o.projectile.id == projectile.id //can only be another projectile with the same uid
       case _ => false
@@ -33,7 +33,7 @@ final case class ProjectileReason(
 
   override def unstructuredModifiers: List[DamageModifiers.Mod] = projectile.fire_mode.Modifiers
 
-  def adversary: Option[SourceEntry] = Some(projectile.owner)
+private def adversary: Option[SourceEntry] = Some(projectile.owner)
 
   override def attribution: Int = projectile.attribute_to
 }

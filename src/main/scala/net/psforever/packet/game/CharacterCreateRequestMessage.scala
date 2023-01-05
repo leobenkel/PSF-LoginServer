@@ -18,8 +18,8 @@ final case class CharacterCreateRequestMessage(
     empire: PlanetSideEmpire.Value
 ) extends PlanetSideGamePacket {
   type Packet = CharacterCreateRequestMessage
-  def opcode = GamePacketOpcode.CharacterCreateRequestMessage
-  def encode = CharacterCreateRequestMessage.encode(this)
+def opcode = GamePacketOpcode.CharacterCreateRequestMessage
+def encode = CharacterCreateRequestMessage.encode(this)
 }
 
 object CharacterCreateRequestMessage extends Marshallable[CharacterCreateRequestMessage] {

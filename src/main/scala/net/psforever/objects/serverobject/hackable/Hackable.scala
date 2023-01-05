@@ -11,8 +11,8 @@ trait Hackable {
 
   /** inportant information regarding the hack and how it was started */
   private var hackedBy: Option[HackInfo]          = None
-  def HackedBy: Option[HackInfo]                  = hackedBy
-  def HackedBy_=(agent: Player): Option[HackInfo] = HackedBy_=(Some(agent))
+private def HackedBy: Option[HackInfo]                  = hackedBy
+private def HackedBy_=(agent: Player): Option[HackInfo] = HackedBy_=(Some(agent))
 
   /**
     * Set the hack state of this object by recording important information about the player who caused it.
@@ -21,7 +21,7 @@ trait Hackable {
     * @param agent a `Player`, or no player
     * @return the player hack entry
     */
-  def HackedBy_=(agent: Option[Player]): Option[HackInfo] = {
+private def HackedBy_=(agent: Option[Player]): Option[HackInfo] = {
     (hackedBy, agent) match {
       case (None, Some(actor)) =>
         hackedBy = Some(HackInfo(actor.Name, actor.GUID, actor.Faction, actor.Position, System.nanoTime, 0L))
@@ -39,31 +39,31 @@ trait Hackable {
     HackedBy
   }
 
-  def HackedBy_=(hackInfo: HackInfo): Option[HackInfo] = {
+private def HackedBy_=(hackInfo: HackInfo): Option[HackInfo] = {
     hackedBy = Some(hackInfo)
     HackedBy
   }
 
   /** The sound made when the object is hacked */
   private var hackSound: TriggeredSound.Value = TriggeredSound.HackDoor
-  def HackSound: TriggeredSound.Value         = hackSound
-  def HackSound_=(sound: TriggeredSound.Value): TriggeredSound.Value = {
+private def HackSound: TriggeredSound.Value         = hackSound
+private def HackSound_=(sound: TriggeredSound.Value): TriggeredSound.Value = {
     hackSound = sound
     hackSound
   }
 
   /** The duration in seconds a hack lasts for, based on the hacker's certification level */
   private var hackEffectDuration     = Array(0, 0, 0, 0)
-  def HackEffectDuration: Array[Int] = hackEffectDuration
-  def HackEffectDuration_=(arr: Array[Int]): Array[Int] = {
+private def HackEffectDuration: Array[Int] = hackEffectDuration
+private def HackEffectDuration_=(arr: Array[Int]): Array[Int] = {
     hackEffectDuration = arr
     arr
   }
 
   /** How long it takes to hack the object in seconds, based on the hacker's certification level */
   private var hackDuration     = Array(0, 0, 0, 0)
-  def HackDuration: Array[Int] = hackDuration
-  def HackDuration_=(arr: Array[Int]): Array[Int] = {
+private def HackDuration: Array[Int] = hackDuration
+private def HackDuration_=(arr: Array[Int]): Array[Int] = {
     hackDuration = arr
     arr
   }

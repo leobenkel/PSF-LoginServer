@@ -5,15 +5,19 @@ import scodec.Attempt
 import scodec._
 
 package object newcodecs {
-  def q_double(min: Double, max: Double, bits: Int): Codec[Double] = new QuantizedDoubleCodec(min, max, bits)
+  private def q_double(min: Double, max: Double, bits: Int): Codec[Double] = new QuantizedDoubleCodec(min, max, bits)
 
   def q_float(min: Double, max: Double, bits: Int): Codec[Float] =
     q_double(min, max, bits).narrow(v => Attempt.successful(v.toFloat), _.toDouble)
 
-  def binary_choice[A](choice: Boolean, codec_true: => Codec[A], codec_false: => Codec[A]): Codec[A] =
+  private def binary_choice[A](choice: Boolean, codec_true: => Codec[A], codec_false: => Codec[A]): Codec[A] =
     new BinaryChoiceCodec(choice, codec_true, codec_false)
 
-  def prefixedVectorOfN[A](countCodec: Codec[Int], firstValueCodec: Codec[A], valueCodec: Codec[A]): Codec[Vector[A]] =
+  private def prefixedVectorOfN[A](
+      countCodec: Codec[Int],
+      firstValueCodec: Codec[A],
+      valueCodec: Codec[A]
+  ): Codec[Vector[A]] =
     countCodec
       .flatZip { count => new PrefixedVectorCodec(firstValueCodec, valueCodec, Some(count)) }
       .narrow[Vector[A]](

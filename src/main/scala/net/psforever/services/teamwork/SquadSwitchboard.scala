@@ -49,7 +49,7 @@ private val Watchers: mutable.LongMap[ActorRef] = mutable.LongMap[ActorRef]()
     Watchers.clear()
   }
 
-  def receive: Receive = {
+def receive: Receive = {
     case SquadSwitchboard.Join(char_id, Some(actor)) =>
       UserActorMap(char_id) = DelayedJoin.remove(char_id).orElse(Watchers.remove(char_id)) match {
         case Some(_actor) =>

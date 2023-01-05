@@ -11,41 +11,52 @@ import net.psforever.objects.vital.damage.StandardDamageProfile
   * Activation of these "special effects" may or may not even require the damage to be countable
   * which is the context in which it is formally normalized.
   */
-trait DamageProperties
-  extends StandardDamageProfile
-    with JammingUnit
-    with DamageModifiers {
+trait DamageProperties extends StandardDamageProfile with JammingUnit with DamageModifiers {
+
   /** the type of damage cuased */
-  private var damageType: DamageType.Value               = DamageType.None
+  private var damageType: DamageType.Value = DamageType.None
+
   /** an auxiliary type of damage caused */
-  private var damageTypeSecondary: DamageType.Value      = DamageType.None
+  private var damageTypeSecondary: DamageType.Value = DamageType.None
+
   /** against Infantry targets, damage does not apply to armor damage */
-  private var damageToHealthOnly: Boolean                = false
+  private var damageToHealthOnly: Boolean = false
+
   /** against Vehicle targets, damage does not apply to vehicle shield */
-  private var damageToVehicleOnly: Boolean               = false
+  private var damageToVehicleOnly: Boolean = false
+
   /** against battleframe targets, damage does not apply to battleframe robotics shield;
-    * this is equivalent to the property "bfr_permeate_shield" */
-  private var damageToBFROnly: Boolean                   = false
+    * this is equivalent to the property "bfr_permeate_shield"
+    */
+  private var damageToBFROnly: Boolean = false
+
   /** use a specific modifier as a part of damage calculations */
-  private var useDamage1Subtract: Boolean                = false
+  private var useDamage1Subtract: Boolean = false
+
   /** some other entity confers damage;
     * a set value should be the damager's object uid
     * usually corresponding to a projectile;
-    * also used to produce staged projectiles */
-  private var damageProxy: List[Int]                   = Nil
+    * also used to produce staged projectiles
+    */
+  private var damageProxy: List[Int] = Nil
+
   /** na;
-    * currently used with jammer properties only */
-  private var additionalEffect: Boolean                  = false
+    * currently used with jammer properties only
+    */
+  private var additionalEffect: Boolean = false
+
   /** confers aggravated damage burn to its target */
   private var aggravatedDamage: Option[AggravatedDamage] = None
+
   /** modifies based on some measure of time */
-  private var charging: Option[ChargeDamage]             = None
+  private var charging: Option[ChargeDamage] = None
+
   /** a destroyed mine will detonate rather than fizzle-out */
-  private var sympathy: Boolean                          = false
+  private var sympathy: Boolean = false
 
-  def UseDamage1Subtract: Boolean                        = useDamage1Subtract
+  private def UseDamage1Subtract: Boolean = useDamage1Subtract
 
-  def UseDamage1Subtract_=(useDamage1Subtract: Boolean): Boolean = {
+  private def UseDamage1Subtract_=(useDamage1Subtract: Boolean): Boolean = {
     this.useDamage1Subtract = useDamage1Subtract
     UseDamage1Subtract
   }
@@ -64,71 +75,71 @@ trait DamageProperties
     CausesDamageTypeSecondary
   }
 
-  def AllDamageTypes : Set[DamageType.Value] = {
+  def AllDamageTypes: Set[DamageType.Value] = {
     Set(damageType, damageTypeSecondary).filterNot(_ == DamageType.None)
   }
 
-  def DamageToHealthOnly : Boolean = damageToHealthOnly
+  private def DamageToHealthOnly: Boolean = damageToHealthOnly
 
-  def DamageToHealthOnly_=(healthOnly: Boolean) : Boolean = {
+  private def DamageToHealthOnly_=(healthOnly: Boolean): Boolean = {
     damageToHealthOnly = healthOnly
     DamageToHealthOnly
   }
 
-  def DamageToVehicleOnly : Boolean = damageToVehicleOnly
+  private def DamageToVehicleOnly: Boolean = damageToVehicleOnly
 
-  def DamageToVehicleOnly_=(vehicleOnly: Boolean) : Boolean = {
+  private def DamageToVehicleOnly_=(vehicleOnly: Boolean): Boolean = {
     damageToVehicleOnly = vehicleOnly
     DamageToVehicleOnly
   }
 
-  def DamageToBattleframeOnly : Boolean = damageToBFROnly
+  private def DamageToBattleframeOnly: Boolean = damageToBFROnly
 
-  def DamageToBattleframeOnly_=(bfrOnly: Boolean) : Boolean = {
+  private def DamageToBattleframeOnly_=(bfrOnly: Boolean): Boolean = {
     damageToBFROnly = bfrOnly
     DamageToBattleframeOnly
   }
 
-  def DamageProxy : List[Int] = damageProxy
+  private def DamageProxy: List[Int] = damageProxy
 
-  def DamageProxy_=(proxyObjectId: Int): List[Int] = {
+  private def DamageProxy_=(proxyObjectId: Int): List[Int] = {
     damageProxy = damageProxy :+ proxyObjectId
     DamageProxy
   }
 
-  def DamageProxy_=(proxyObjectId: List[Int]): List[Int] = {
+  private def DamageProxy_=(proxyObjectId: List[Int]): List[Int] = {
     damageProxy = proxyObjectId
     DamageProxy
   }
 
-  def AdditionalEffect: Boolean = additionalEffect
+  private def AdditionalEffect: Boolean = additionalEffect
 
-  def AdditionalEffect_=(effect: Boolean): Boolean = {
+  private def AdditionalEffect_=(effect: Boolean): Boolean = {
     additionalEffect = effect
     AdditionalEffect
   }
 
-  def Aggravated : Option[AggravatedDamage] = aggravatedDamage
+  private def Aggravated: Option[AggravatedDamage] = aggravatedDamage
 
-  def Aggravated_=(damage : AggravatedDamage) : Option[AggravatedDamage] = Aggravated_=(Some(damage))
+  private def Aggravated_=(damage: AggravatedDamage): Option[AggravatedDamage] = Aggravated_=(Some(damage))
 
-  def Aggravated_=(damage : Option[AggravatedDamage]) : Option[AggravatedDamage] = {
+  private def Aggravated_=(damage: Option[AggravatedDamage]): Option[AggravatedDamage] = {
     aggravatedDamage = damage
     Aggravated
   }
 
-  def Charging : Option[ChargeDamage] = charging
+  private def Charging: Option[ChargeDamage] = charging
 
-  def Charging_=(damage : ChargeDamage) : Option[ChargeDamage] = Charging_=(Some(damage))
+  private def Charging_=(damage: ChargeDamage): Option[ChargeDamage] = Charging_=(Some(damage))
 
-  def Charging_=(damage : Option[ChargeDamage]) : Option[ChargeDamage] = {
+  private def Charging_=(damage: Option[ChargeDamage]): Option[ChargeDamage] = {
     charging = damage
     Charging
   }
 
-  def SympatheticExplosion: Boolean = sympathy
+  private def SympatheticExplosion: Boolean = sympathy
 
-  def SympatheticExplosion_=(chain: Boolean): Boolean = {
+  private def SympatheticExplosion_=(chain: Boolean): Boolean = {
     sympathy = chain
     SympatheticExplosion
   }

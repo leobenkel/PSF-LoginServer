@@ -6,11 +6,11 @@ class ObjectFinalizedException(msg: String) extends Exception(msg)
 trait IFinalizable {
 private var closed = false
 
-  def close = {
+private def close = {
     closed = true
   }
 
-  def assertNotClosed = {
+private def assertNotClosed = {
     if (closed)
       throw new ObjectFinalizedException(
         this.getClass.getCanonicalName + ": already finalized. Cannot interact with object"

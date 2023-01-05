@@ -33,7 +33,7 @@ final case class ArmorWithAmmoPage(stock: Map[String, (ExoSuitType.Value, Int)],
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     msg.response match {
       case _: Terminal.BuyExosuit => msg.player.Actor ! msg
       case _                      => sender ! msg

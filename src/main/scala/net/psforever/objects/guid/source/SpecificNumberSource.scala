@@ -22,26 +22,26 @@ class SpecificNumberSource(values: Iterable[Int]) extends NumberSource {
   }
   private val ary: Map[Int, Key] = values.map(index => (index, new Key)).toMap
 
-  def max: Int = ary.keys.max
+private def max: Int = ary.keys.max
 
-  def size: Int = ary.size
+private def size: Int = ary.size
 
-  def countAvailable: Int = ary.values.count { _.policy == AvailabilityPolicy.Available }
+private def countAvailable: Int = ary.values.count { _.policy == AvailabilityPolicy.Available }
 
-  def countUsed: Int = ary.values.count { _.policy == AvailabilityPolicy.Leased }
+private def countUsed: Int = ary.values.count { _.policy == AvailabilityPolicy.Leased }
 
-  def countDangling: Int = ary.values.count { key => key.policy == AvailabilityPolicy.Leased && key.obj.isEmpty }
+private def countDangling: Int = ary.values.count { key => key.policy == AvailabilityPolicy.Leased && key.obj.isEmpty }
 
-  def test(number: Int): Boolean = ary.contains(number)
+private def test(number: Int): Boolean = ary.contains(number)
 
-  def get(number: Int): Option[SecureKey] = {
+private def get(number: Int): Option[SecureKey] = {
     ary.get(number) match {
       case Some(key) => Some(new SecureKey(number, key))
       case _         => None
     }
   }
 
-  def get(obj: IdentifiableEntity): Option[SecureKey] = {
+private def get(obj: IdentifiableEntity): Option[SecureKey] = {
     ary.find {
       case (_, key) =>
         key.obj match {
@@ -54,7 +54,7 @@ class SpecificNumberSource(values: Iterable[Int]) extends NumberSource {
     }
   }
 
-  def getAvailable(number: Int): Option[LoanedKey] = {
+private def getAvailable(number: Int): Option[LoanedKey] = {
     ary.get(number) match {
       case Some(key) if key.policy == AvailabilityPolicy.Available =>
         key.policy = AvailabilityPolicy.Leased
@@ -64,7 +64,7 @@ class SpecificNumberSource(values: Iterable[Int]) extends NumberSource {
     }
   }
 
-  def returnNumber(number: Int): Option[IdentifiableEntity] = {
+private def returnNumber(number: Int): Option[IdentifiableEntity] = {
     ary.get(number) match {
       case Some(key) if key.policy == AvailabilityPolicy.Leased =>
         val out = key.obj
@@ -76,7 +76,7 @@ class SpecificNumberSource(values: Iterable[Int]) extends NumberSource {
     }
   }
 
-  def clear(): List[IdentifiableEntity] = {
+private def clear(): List[IdentifiableEntity] = {
     ary.values.foreach { _.policy = AvailabilityPolicy.Available }
     ary.values.collect {
       case key if key.obj.nonEmpty =>
@@ -88,7 +88,7 @@ class SpecificNumberSource(values: Iterable[Int]) extends NumberSource {
 }
 
 object SpecificNumberSource {
-  def apply(values: Iterable[Int]): SpecificNumberSource = {
+def apply(values: Iterable[Int]): SpecificNumberSource = {
     new SpecificNumberSource(values)
   }
 }

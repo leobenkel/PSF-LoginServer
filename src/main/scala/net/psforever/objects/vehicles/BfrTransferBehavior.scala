@@ -24,7 +24,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
   findChargeTargetFunc = Vehicles.FindBfrChargingSource
   findDischargeTargetFunc = Vehicles.FindBfrDischargingTarget
 
-  def TransferMaterial = Ntu.Nanites
+private def TransferMaterial = Ntu.Nanites
 
   private var pairedSlotList: Option[List[(VehicleSubsystem, (Int, EquipmentSlot))]] = None
 
@@ -35,7 +35,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     * Works regardless of the type of battleframe unit.
     * @return the arm weapon subsystems for each arm weapon mount and that mount's slot number
     */
-  def pairedArmSlotSubsystems(): List[(VehicleSubsystem, (Int, EquipmentSlot))] = {
+private def pairedArmSlotSubsystems(): List[(VehicleSubsystem, (Int, EquipmentSlot))] = {
     pairedSlotList.getOrElse {
       val obj = ChargeTransferObject
       val pairs = obj
@@ -62,7 +62,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     * Works regardless of the type of battleframe unit.
     * @return the arm weapon subsystems for each arm weapon mount
     */
-  def pairedArmSubsystems(): List[(VehicleSubsystem, EquipmentSlot)] = {
+private def pairedArmSubsystems(): List[(VehicleSubsystem, EquipmentSlot)] = {
     pairedList.getOrElse {
       val pairs = pairedArmSlotSubsystems().map { case (a, (_, c)) => (a, c) }
       pairedList = Some(pairs)
@@ -70,7 +70,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def getNtuContainer(): Option[NtuContainer] = {
+private def getNtuContainer(): Option[NtuContainer] = {
     pairedArmSubsystems()
       .find {
         case (sub, arm) =>
@@ -87,9 +87,9 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def ChargeTransferObject: Vehicle with NtuContainer
+private def ChargeTransferObject: Vehicle with NtuContainer
 
-  def bfrBehavior: Receive =
+private def bfrBehavior: Receive =
     storageBehavior
       .orElse(transferBehavior)
       .orElse {
@@ -108,7 +108,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
           }
       }
 
-  def UpdateNtuUI(vehicle: Vehicle with NtuContainer): Unit = {
+private def UpdateNtuUI(vehicle: Vehicle with NtuContainer): Unit = {
     getNtuContainer() match {
       case Some(siphon) =>
         UpdateNtuUI(vehicle, siphon)
@@ -116,7 +116,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def UpdateNtuUI(vehicle: Vehicle with NtuContainer, siphon: NtuContainer): Unit = {
+private def UpdateNtuUI(vehicle: Vehicle with NtuContainer, siphon: NtuContainer): Unit = {
     siphon match {
       case equip: NtuSiphon =>
         vehicle.Zone.VehicleEvents ! VehicleServiceMessage(
@@ -127,7 +127,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def HandleChargingEvent(target: TransferContainer): Boolean = {
+private def HandleChargingEvent(target: TransferContainer): Boolean = {
     if (transferEvent == TransferBehavior.Event.None) {
       HandleChargingOps(target)
     } else {
@@ -136,7 +136,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def HandleChargingOps(target: TransferContainer): Boolean = {
+private def HandleChargingOps(target: TransferContainer): Boolean = {
     ntuProcessingRequest = false
     getNtuContainer() match {
       case Some(siphon: NtuSiphon) if siphon.NtuCapacitor < siphon.MaxNtuCapacitor =>
@@ -167,7 +167,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def ReceiveAndDepositUntilFull(vehicle: Vehicle, amount: Float): Boolean = {
+private def ReceiveAndDepositUntilFull(vehicle: Vehicle, amount: Float): Boolean = {
     getNtuContainer() match {
       case Some(siphon) =>
         ReceiveAndDepositUntilFull(vehicle, siphon, amount)
@@ -176,14 +176,14 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def ReceiveAndDepositUntilFull(vehicle: Vehicle, obj: NtuContainer, amount: Float): Boolean = {
+private def ReceiveAndDepositUntilFull(vehicle: Vehicle, obj: NtuContainer, amount: Float): Boolean = {
     val isNotFull = (obj.NtuCapacitor += amount) < obj.MaxNtuCapacitor
     UpdateNtuUI(vehicle, obj)
     isNotFull
   }
 
   /** Discharging */
-  def HandleDischargingEvent(target: TransferContainer): Boolean = {
+private def HandleDischargingEvent(target: TransferContainer): Boolean = {
     if (transferEvent == TransferBehavior.Event.None) {
       HandleDischargingOps(target)
     } else {
@@ -192,7 +192,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def HandleDischargingOps(target: TransferContainer): Boolean = {
+private def HandleDischargingOps(target: TransferContainer): Boolean = {
     ntuProcessingRequest = false
     val obj = ChargeTransferObject
     getNtuContainer() match {
@@ -213,7 +213,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def WithdrawAndTransmit(vehicle: Vehicle, maxRequested: Float): Any = {
+private def WithdrawAndTransmit(vehicle: Vehicle, maxRequested: Float): Any = {
     val chargeable = ChargeTransferObject
     val chargeToDeposit = getNtuContainer() match {
       case Some(siphon) =>
@@ -243,11 +243,11 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     super.TryStopChargingEvent(obj)
   }
 
-  def StopNtuBehavior(sender: ActorRef): Unit = TryStopChargingEvent(ChargeTransferObject)
+private def StopNtuBehavior(sender: ActorRef): Unit = TryStopChargingEvent(ChargeTransferObject)
 
-  def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {}
+private def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit = {}
 
-  def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {
+private def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit = {
     val chargeable = ChargeTransferObject
     getNtuContainer() match {
       case Some(siphon) =>
@@ -279,7 +279,7 @@ trait BfrTransferBehavior extends TransferBehavior with NtuStorageBehavior {
     }
   }
 
-  def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
+private def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit = {
     val obj = ChargeTransferObject
     if (transferEvent != TransferBehavior.Event.Charging || !ReceiveAndDepositUntilFull(obj, amount)) {
       sender ! Ntu.Request(0, 0)
@@ -295,21 +295,21 @@ class NtuSiphon(
     val equipment: Tool,
     private val definition: ObjectDefinition with NtuContainerDefinition
 ) extends NtuContainer {
-  def Faction: PlanetSideEmpire.Value = equipment.Faction
+private def Faction: PlanetSideEmpire.Value = equipment.Faction
 
-  def storageGUID: PlanetSideGUID = equipment.AmmoSlot.Box.GUID
+private def storageGUID: PlanetSideGUID = equipment.AmmoSlot.Box.GUID
 
-  def drain: Int = equipment.FireMode.RoundsPerShot
+private def drain: Int = equipment.FireMode.RoundsPerShot
 
-  def NtuCapacitor: Float = equipment.Magazine.toFloat
+private def NtuCapacitor: Float = equipment.Magazine.toFloat
 
-  def NtuCapacitor_=(value: Float): Float = equipment.Magazine_=(value.toInt).toFloat
+private def NtuCapacitor_=(value: Float): Float = equipment.Magazine_=(value.toInt).toFloat
 
-  def MaxNtuCapacitor: Float = equipment.MaxMagazine.toFloat
+private def MaxNtuCapacitor: Float = equipment.MaxMagazine.toFloat
 
   override def Definition: ObjectDefinition with NtuContainerDefinition = definition
 
-  def Actor: ActorRef = null
+private def Actor: ActorRef = null
 
   override def GUID: PlanetSideGUID = equipment.GUID
 

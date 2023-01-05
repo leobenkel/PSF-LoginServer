@@ -22,8 +22,8 @@ import scodec.codecs._
 final case class LootItemMessage(item_guid: PlanetSideGUID, destination_guid: PlanetSideGUID)
     extends PlanetSideGamePacket {
   type Packet = LootItemMessage
-  def opcode = GamePacketOpcode.LootItemMessage
-  def encode = LootItemMessage.encode(this)
+def opcode = GamePacketOpcode.LootItemMessage
+def encode = LootItemMessage.encode(this)
 }
 
 object LootItemMessage extends Marshallable[LootItemMessage] {

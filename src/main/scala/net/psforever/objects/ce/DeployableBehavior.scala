@@ -36,7 +36,7 @@ import scala.concurrent.duration._
   */
 trait DeployableBehavior {
   _: Actor =>
-  def DeployableObject: Deployable
+private def DeployableObject: Deployable
 
   /** the timer for the construction process */
   protected var setup: Cancellable = Default.Cancellable
@@ -54,12 +54,12 @@ trait DeployableBehavior {
   /** a value that is utilized by the `ObjectDeleteMessage` packet, affecting animation */
   var deletionType: Int = 2
 
-  def deployableBehaviorPostStop(): Unit = {
+private def deployableBehaviorPostStop(): Unit = {
     setup.cancel()
     decay.cancel()
   }
 
-  def isConstructed: Option[Boolean] = constructed
+private def isConstructed: Option[Boolean] = constructed
 
   protected val deployableBehavior: Receive = {
     case Zone.Deployable.Setup() if constructed.isEmpty && setup.isCancelled =>
@@ -101,7 +101,7 @@ trait DeployableBehavior {
     * @param toFaction the faction to which to set the deployable to be visualized on the map and in the game world;
     *                  may also affect deployable operation
     */
-  def loseOwnership(toFaction: PlanetSideEmpire.Value): Unit = {
+private def loseOwnership(toFaction: PlanetSideEmpire.Value): Unit = {
     val obj             = DeployableObject
     val guid            = obj.GUID
     val zone            = obj.Zone
@@ -130,7 +130,7 @@ trait DeployableBehavior {
     startOwnerlessDecay()
   }
 
-  def startOwnerlessDecay(): Unit = {
+private def startOwnerlessDecay(): Unit = {
     val obj = DeployableObject
     if (obj.Owner.nonEmpty && decay.isCancelled) {
       //without an owner, this deployable should begin to decay and will deconstruct later
@@ -145,7 +145,7 @@ trait DeployableBehavior {
     * @see `gainOwnership(Player, PlanetSideEmpire.Value)`
     * @param player the player being given ownership of this deployable
     */
-  def gainOwnership(player: Player): Unit = {
+private def gainOwnership(player: Player): Unit = {
     gainOwnership(player, player.Faction)
   }
 
@@ -155,7 +155,7 @@ trait DeployableBehavior {
     * @param toFaction the faction to which the deployable is being assigned;
     *                  usually matches the `player`'s own faction
     */
-  def gainOwnership(player: Player, toFaction: PlanetSideEmpire.Value): Unit = {
+private def gainOwnership(player: Player, toFaction: PlanetSideEmpire.Value): Unit = {
     val obj = DeployableObject
     obj.AssignOwnership(player)
     decay.cancel()
@@ -191,7 +191,7 @@ trait DeployableBehavior {
     * @see `LocalAction.TriggerEffectLocation`
     * @param callback an `ActorRef` used for confirming the deployable's completion of the process
     */
-  def setupDeployable(callback: ActorRef): Unit = {
+private def setupDeployable(callback: ActorRef): Unit = {
     val obj = DeployableObject
     constructed = Some(false)
     if (obj.Definition.deployAnimation == DeployAnimation.Standard) {
@@ -227,7 +227,7 @@ trait DeployableBehavior {
     * @see `Zone.Deployable.IsBuilt`
     * @param callback an `ActorRef` used for confirming the deployable's completion of the process
     */
-  def finalizeDeployable(callback: ActorRef): Unit = {
+private def finalizeDeployable(callback: ActorRef): Unit = {
     setup.cancel()
     setup = Default.Cancellable
     constructed = Some(true)
@@ -264,7 +264,7 @@ trait DeployableBehavior {
     * The first stage of the deployable dismissal process, to put the formal process in motion.
     * @param time an optional duration that overrides the deployable's usual duration
     */
-  def deconstructDeployable(time: Option[FiniteDuration]): Unit = {
+private def deconstructDeployable(time: Option[FiniteDuration]): Unit = {
     constructed = Some(false)
     val duration = time.getOrElse(Deployable.cleanup)
     import scala.concurrent.ExecutionContext.Implicits.global
@@ -279,7 +279,7 @@ trait DeployableBehavior {
     * Most deployables are monolithic entities, requiring only a single unique identifier.
     * @param obj the deployable
     */
-  def unregisterDeployable(obj: Deployable): Unit = {
+private def unregisterDeployable(obj: Deployable): Unit = {
     val zone = obj.Zone
     TaskWorkflow.execute(GUIDTask.unregisterObject(zone.GUID, obj))
   }
@@ -289,7 +289,7 @@ trait DeployableBehavior {
     * Queue up final deployable unregistering, separate from the zone's deployable governance,
     * and instruct all clients in this zone that the deployable is to be deconstructed.
     */
-  def dismissDeployable(): Unit = {
+private def dismissDeployable(): Unit = {
     setup.cancel()
     setup = Default.Cancellable
     decay.cancel()

@@ -16,8 +16,8 @@ import scodec.codecs._
 final case class DelayedPathMountMsg(player_guid: PlanetSideGUID, vehicle_guid: PlanetSideGUID, u1: Int, u2: Boolean)
     extends PlanetSideGamePacket {
   type Packet = DelayedPathMountMsg
-  def opcode = GamePacketOpcode.DelayedPathMountMsg
-  def encode = DelayedPathMountMsg.encode(this)
+def opcode = GamePacketOpcode.DelayedPathMountMsg
+def encode = DelayedPathMountMsg.encode(this)
 }
 
 object DelayedPathMountMsg extends Marshallable[DelayedPathMountMsg] {

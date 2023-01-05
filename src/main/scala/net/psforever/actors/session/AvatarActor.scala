@@ -34,7 +34,7 @@ import net.psforever.services.{Service, ServiceManager}
 import net.psforever.services.avatar.{AvatarAction, AvatarServiceMessage}
 
 object AvatarActor {
-  def apply(sessionActor: ActorRef[SessionActor.Command]): Behavior[Command] =
+def apply(sessionActor: ActorRef[SessionActor.Command]): Behavior[Command] =
     Behaviors
       .supervise[Command] {
         Behaviors.withStash(100) { buffer =>
@@ -208,7 +208,7 @@ object AvatarActor {
     * @param owner the player whose inventory is being transcribed
     * @return the resulting text data that represents an inventory
     */
-  def buildClobFromPlayerLoadout(owner: Player): String = {
+private def buildClobFromPlayerLoadout(owner: Player): String = {
     val clobber: mutable.StringBuilder = new mutable.StringBuilder()
     //encode holsters
     owner
@@ -239,7 +239,7 @@ object AvatarActor {
     * @param clob the inventory data in string form
     * @param log a reference to a logging context
     */
-  def buildContainedEquipmentFromClob(container: Container, clob: String, log: org.log4s.Logger): Unit = {
+private def buildContainedEquipmentFromClob(container: Container, clob: String, log: org.log4s.Logger): Unit = {
     clob.split("/").filter(_.trim.nonEmpty).foreach { value =>
       val (objectType, objectIndex, objectId, toolAmmo) = value.split(",") match {
         case Array(a, b: String, c: String)    => (a, b.toInt, c.toInt, None)
@@ -295,7 +295,7 @@ object AvatarActor {
     * @param log a reference to a logging context
     * @return the resulting text data that represents object to time mappings
     */
-  def buildCooldownsFromClob(
+private def buildCooldownsFromClob(
                               clob: String,
                               cooldownDurations: Map[BasicDefinition,FiniteDuration],
                               log: org.log4s.Logger
@@ -329,7 +329,7 @@ object AvatarActor {
     * @param cooldowns a base reference for entity to time comparison
     * @return the resulting map that represents object to time string data
     */
-  def buildClobfromCooldowns(cooldowns: Map[String, LocalDateTime]): String = {
+private def buildClobfromCooldowns(cooldowns: Map[String, LocalDateTime]): String = {
     val now = LocalDateTime.now()
     cooldowns
       .filter { case (_, cd) => cd.compareTo(now) == -1 }
@@ -337,7 +337,7 @@ object AvatarActor {
       .mkString("/")
   }
 
-  def resolvePurchaseTimeName(faction: PlanetSideEmpire.Value, item: BasicDefinition): (BasicDefinition, String) = {
+private def resolvePurchaseTimeName(faction: PlanetSideEmpire.Value, item: BasicDefinition): (BasicDefinition, String) = {
     val factionName: String = faction.toString.toLowerCase
     val name = item match {
       case GlobalDefinitions.trhev_dualcycler | GlobalDefinitions.nchev_scattercannon |
@@ -353,7 +353,7 @@ object AvatarActor {
     (item, name)
   }
 
-  def resolveSharedPurchaseTimeNames(pair: (BasicDefinition, String)): Seq[(BasicDefinition, String)] = {
+private def resolveSharedPurchaseTimeNames(pair: (BasicDefinition, String)): Seq[(BasicDefinition, String)] = {
     val (definition, name) = pair
     if (name.matches("(tr|nc|vs)hev_.+") && Config.app.game.sharedMaxCooldown) {
       val faction = name.take(2)
@@ -384,7 +384,7 @@ object AvatarActor {
     }
   }
 
-  def encodeLockerClob(container: Container): String = {
+def encodeLockerClob(container: Container): String = {
     val clobber: mutable.StringBuilder = new StringBuilder()
     container.Inventory.Items.foreach {
       case InventoryItem(obj, index) =>
@@ -393,7 +393,7 @@ object AvatarActor {
     clobber.mkString.drop(1)
   }
 
-  def encodeLoadoutClobFragment(equipment: Equipment, index: Int): String = {
+def encodeLoadoutClobFragment(equipment: Equipment, index: Int): String = {
     val ammoInfo: String = equipment match {
       case tool: Tool =>
         tool.AmmoSlots.zipWithIndex.collect {
@@ -406,7 +406,7 @@ object AvatarActor {
     s"/${equipment.getClass.getSimpleName},$index,${equipment.Definition.ObjectId},$ammoInfo"
   }
 
-  def changeRibbons(ribbons: RibbonBars, ribbon: MeritCommendation.Value, bar: RibbonBarSlot.Value): RibbonBars = {
+private def changeRibbons(ribbons: RibbonBars, ribbon: MeritCommendation.Value, bar: RibbonBarSlot.Value): RibbonBars = {
     bar match {
       case RibbonBarSlot.Top           => ribbons.copy(upper = ribbon)
       case RibbonBarSlot.Middle        => ribbons.copy(middle = ribbon)
@@ -422,7 +422,7 @@ object AvatarActor {
     * @param func functionality that is called upon discovery of the character
     * @return if found, the discovered avatar, the avatar's account id, and the avatar's faction affiliation
     */
-  def getLiveAvatarForFunc(name: String, func: (Long,String,Int)=>Unit): Option[(Avatar, Long, PlanetSideEmpire.Value)] = {
+private def getLiveAvatarForFunc(name: String, func: (Long,String,Int)=>Unit): Option[(Avatar, Long, PlanetSideEmpire.Value)] = {
     if (name.nonEmpty) {
       LivePlayerList.WorldPopulation({ case (_, a) => a.name.equals(name) }).headOption match {
         case Some(otherAvatar) =>
@@ -445,7 +445,7 @@ object AvatarActor {
     *         otherwise, always returns `None` as if no avatar was discovered
     *         (the query is probably still in progress)
     */
-  def getAvatarForFunc(name: String, func: (Long,String,Int)=>Unit): Option[(Avatar, Long, PlanetSideEmpire.Value)] = {
+private def getAvatarForFunc(name: String, func: (Long,String,Int)=>Unit): Option[(Avatar, Long, PlanetSideEmpire.Value)] = {
     getLiveAvatarForFunc(name, func).orElse {
       if (name.nonEmpty) {
         import ctx._
@@ -472,7 +472,7 @@ object AvatarActor {
     * @param name unique character name
     * @param faction the faction affiliation
     */
-  def formatForOtherFunc(func: (Long,String)=>Unit)(charId: Long, name: String, faction: Int): Unit = {
+private def formatForOtherFunc(func: (Long,String)=>Unit)(charId: Long, name: String, faction: Int): Unit = {
     func(charId, name)
   }
 
@@ -483,7 +483,7 @@ object AvatarActor {
     * @return `true`, if one player is visible to the other
     *         `false`, otherwise
     */
-  def onlineIfNotIgnored(onlinePlayerName: String, observerName: String): Boolean = {
+private def onlineIfNotIgnored(onlinePlayerName: String, observerName: String): Boolean = {
     LivePlayerList.WorldPopulation({ case (_, a) => a.name.equals(onlinePlayerName) }).headOption match {
       case Some(onlinePlayer) => onlineIfNotIgnored(onlinePlayer, observerName)
       case _ => false
@@ -498,7 +498,7 @@ object AvatarActor {
     * @return `true`, if one player is visible to the other
     *         `false`, otherwise
     */
-  def onlineIfNotIgnoredEitherWay(observer: Avatar, onlinePlayerName: String): Boolean = {
+private def onlineIfNotIgnoredEitherWay(observer: Avatar, onlinePlayerName: String): Boolean = {
     LivePlayerList.WorldPopulation({ case (_, a) => a.name.equals(onlinePlayerName) }) match {
       case Nil => false //weird case, but ...
       case onlinePlayer :: Nil => onlineIfNotIgnoredEitherWay(onlinePlayer, observer)
@@ -514,7 +514,7 @@ object AvatarActor {
     * @return `true`, if the other person is not ignoring us;
     *         `false`, otherwise
     */
-  def onlineIfNotIgnoredEitherWay(onlinePlayer: Avatar, observer: Avatar): Boolean = {
+private def onlineIfNotIgnoredEitherWay(onlinePlayer: Avatar, observer: Avatar): Boolean = {
     onlineIfNotIgnored(onlinePlayer, observer.name) && onlineIfNotIgnored(observer, onlinePlayer.name)
   }
 
@@ -526,7 +526,7 @@ object AvatarActor {
     * @return `true`, if the other person is visible;
     *         `false`, otherwise
     */
-  def onlineIfNotIgnored(onlinePlayer: Avatar, observedName: String): Boolean = {
+private def onlineIfNotIgnored(onlinePlayer: Avatar, observedName: String): Boolean = {
     !onlinePlayer.people.ignored.exists { f => f.name.equals(observedName) }
   }
 
@@ -537,7 +537,7 @@ object AvatarActor {
     * @param avatarId the unique character identifier number
     * @return when completed, a copy of data on that character from the database
     */
-  def loadSavedPlayerData(avatarId: Long): Future[persistence.Savedplayer] = {
+private def loadSavedPlayerData(avatarId: Long): Future[persistence.Savedplayer] = {
     import ctx._
     import scala.concurrent.ExecutionContext.Implicits.global
     val out: Promise[persistence.Savedplayer] = Promise()
@@ -572,7 +572,7 @@ object AvatarActor {
     * @param player the player character
     * @return when completed, return the number of rows updated
     */
-  def savePlayerData(player: Player): Future[Int] = {
+private def savePlayerData(player: Player): Future[Int] = {
     savePlayerData(player, player.Health)
   }
 
@@ -586,7 +586,7 @@ object AvatarActor {
     * @param player the player character
     * @return when completed, return the number of rows updated
     */
-  def finalSavePlayerData(player: Player): Future[Int] = {
+private def finalSavePlayerData(player: Player): Future[Int] = {
     val health = (
       player.History.find(_.isInstanceOf[DamagingActivity]),
       player.History.find(_.isInstanceOf[HealingActivity])
@@ -617,7 +617,7 @@ object AvatarActor {
     * @param health a custom health value to assign the player character's information in the database
     * @return when completed, return the number of rows updated
     */
-  def savePlayerData(player: Player, health: Int): Future[Int] = {
+private def savePlayerData(player: Player, health: Int): Future[Int] = {
     import ctx._
     import scala.concurrent.ExecutionContext.Implicits.global
     val out: Promise[Int] = Promise()
@@ -655,7 +655,7 @@ object AvatarActor {
     * @param player the player character
     * @return when completed, return the number of rows updated
     */
-  def savePlayerLocation(player: Player): Future[Int] = {
+private def savePlayerLocation(player: Player): Future[Int] = {
     import ctx._
     import scala.concurrent.ExecutionContext.Implicits.global
     val out: Promise[Int] = Promise()
@@ -690,7 +690,7 @@ object AvatarActor {
     * @param avatarId a unique identifier number associated with the player avatar
     * @return when completed, return the persisted data
     */
-  def loadSavedAvatarData(avatarId: Long): Future[persistence.Savedavatar] = {
+private def loadSavedAvatarData(avatarId: Long): Future[persistence.Savedavatar] = {
     import ctx._
     import scala.concurrent.ExecutionContext.Implicits.global
     val out: Promise[persistence.Savedavatar] = Promise()
@@ -721,7 +721,7 @@ object AvatarActor {
     * @param avatar a unique player avatar
     * @return when completed, return the number of rows updated
     */
-  def saveAvatarData(avatar: Avatar): Future[Int] = {
+private def saveAvatarData(avatar: Avatar): Future[Int] = {
     import ctx._
     import scala.concurrent.ExecutionContext.Implicits.global
     val out: Promise[Int] = Promise()
@@ -763,15 +763,15 @@ private var _avatar: Option[Avatar]                      = None
 private var saveLockerFunc: () => Unit                   = storeNewLocker
   //val topic: ActorRef[Topic.Command[Avatar]]       = context.spawnAnonymous(Topic[Avatar]("avatar"))
 
-  def avatar: Avatar = _avatar.get
+private def avatar: Avatar = _avatar.get
 
-  def avatar_=(avatar: Avatar): Unit = {
+private def avatar_=(avatar: Avatar): Unit = {
     _avatar = Some(avatar)
     //topic ! Topic.Publish(avatar)
     sessionActor ! SessionActor.SetAvatar(avatar)
   }
 
-  def start(): Behavior[Command] = {
+private def start(): Behavior[Command] = {
     Behaviors
       .receiveMessage[Command] {
         case SetAccount(newAccount) =>
@@ -797,7 +797,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
       }
   }
 
-  def postStartBehaviour(): Behavior[Command] = {
+private def postStartBehaviour(): Behavior[Command] = {
     account match {
       case Some(_account) =>
         buffer.unstashAll(active(_account))
@@ -806,7 +806,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def active(account: Account): Behavior[Command] = {
+private def active(account: Account): Behavior[Command] = {
     Behaviors
       .receiveMessagePartial[Command] {
         case SetSession(newSession) =>
@@ -1699,15 +1699,15 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
       }
   }
 
-  def throwLoadoutFailure(msg: String): Future[Loadout] = {
+private def throwLoadoutFailure(msg: String): Future[Loadout] = {
     throwLoadoutFailure(new Exception(msg))
   }
 
-  def throwLoadoutFailure(ex: Throwable): Future[Loadout] = {
+private def throwLoadoutFailure(ex: Throwable): Future[Loadout] = {
     Future.failed(ex).asInstanceOf[Future[Loadout]]
   }
 
-  def performAvatarLogin(avatarId: Long, accountId: Long, replyTo: ActorRef[AvatarLoginResponse]): Unit = {
+private def performAvatarLogin(avatarId: Long, accountId: Long, replyTo: ActorRef[AvatarLoginResponse]): Unit = {
     import ctx._
 
     val result = for {
@@ -1784,7 +1784,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @see `avatarCopy(Avatar)`
     * @param newAvatar na
     */
-  def replaceAvatar(newAvatar: Avatar): Unit = {
+private def replaceAvatar(newAvatar: Avatar): Unit = {
     avatarCopy(newAvatar)
     avatar.deployables.UpdateMaxCounts(avatar.certifications)
     updateDeployableUIElements(
@@ -1792,7 +1792,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     )
   }
 
-  def setCosmetics(cosmetics: Set[Cosmetic]): Future[Unit] = {
+private def setCosmetics(cosmetics: Set[Cosmetic]): Future[Unit] = {
     val p = Promise[Unit]()
 
     import ctx._
@@ -1819,21 +1819,21 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     p.future
   }
 
-  def tryRestoreStaminaForSession(stamina: Int): Option[Session] = {
+private def tryRestoreStaminaForSession(stamina: Int): Option[Session] = {
     (session, _avatar) match {
       case (out @ Some(_), Some(a)) if !a.staminaFull && stamina > 0 => out
       case _                                                         => None
     }
   }
 
-  def actuallyRestoreStaminaIfStationary(stamina: Int, session: Session): Unit = {
+private def actuallyRestoreStaminaIfStationary(stamina: Int, session: Session): Unit = {
     val player = session.player
     if (player.VehicleSeated.nonEmpty || !(player.isMoving || player.Jumping)) {
       actuallyRestoreStamina(stamina, session)
     }
   }
 
-  def actuallyRestoreStamina(stamina: Int, session: Session): Unit = {
+private def actuallyRestoreStamina(stamina: Int, session: Session): Unit = {
     val originalStamina = avatar.stamina
     val maxStamina      = avatar.maxStamina
     val totalStamina    = math.min(maxStamina, originalStamina + stamina)
@@ -1859,7 +1859,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def restoreStaminaPeriodically(stamina: Int): Unit = {
+private def restoreStaminaPeriodically(stamina: Int): Unit = {
     tryRestoreStaminaForSession(stamina) match {
       case Some(sess) =>
         actuallyRestoreStaminaIfStationary(stamina, sess)
@@ -1877,7 +1877,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @return `true`, as long as the requested amount of stamina can be drained in total;
     *        `false`, otherwise
     */
-  def consumeThisMuchStamina(stamina: Int): Boolean = {
+private def consumeThisMuchStamina(stamina: Int): Boolean = {
     if (stamina < 1) {
       true
     } else {
@@ -1915,7 +1915,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def initializeImplants(): Unit = {
+private def initializeImplants(): Unit = {
     avatar.implants.zipWithIndex.foreach {
       case (Some(implant), slot) =>
         // TODO if this implant is Installed but does not have shortcut, add to a free slot or write over slot 61/62/63
@@ -1947,7 +1947,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def deinitializeImplants(): Unit = {
+private def deinitializeImplants(): Unit = {
     avatarCopy(avatar.copy(implants = avatar.implants.zipWithIndex.map {
       case (Some(implant), slot) =>
         if (implant.active) {
@@ -1965,7 +1965,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }))
   }
 
-  def resetAnImplant(implantType: ImplantType): Unit = {
+private def resetAnImplant(implantType: ImplantType): Unit = {
     avatar.implants.zipWithIndex.find {
       case (Some(imp), _) => imp.definition.implantType == implantType
       case (None, _)      => false
@@ -2003,7 +2003,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def deactivateImplant(implantType: ImplantType): Unit = {
+private def deactivateImplant(implantType: ImplantType): Unit = {
     avatar.implants.zipWithIndex.collectFirst {
       case (Some(implant), index) if implant.definition.implantType == implantType => (implant, index)
     } match {
@@ -2027,7 +2027,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
   }
 
   /** Send list of avatars to client (show character selection screen) */
-  def sendAvatars(account: Account): Unit = {
+private def sendAvatars(account: Account): Unit = {
     import ctx._
     val result = ctx.run(query[persistence.Avatar].filter(_.accountId == lift(account.id)))
     result.onComplete {
@@ -2113,7 +2113,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def storeLoadout(owner: Player, label: String, line: Int): Future[Loadout] = {
+private def storeLoadout(owner: Player, label: String, line: Int): Future[Loadout] = {
     import ctx._
     sessionActor ! SessionActor.CharSaved
     val items: String = AvatarActor.buildClobFromPlayerLoadout(owner)
@@ -2142,7 +2142,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     } yield Loadout.Create(owner, label)
   }
 
-  def storeVehicleLoadout(owner: Player, label: String, line: Int, vehicle: Vehicle): Future[Loadout] = {
+private def storeVehicleLoadout(owner: Player, label: String, line: Int, vehicle: Vehicle): Future[Loadout] = {
     import ctx._
     val items: String = {
       val clobber: mutable.StringBuilder = new StringBuilder()
@@ -2188,7 +2188,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     } yield Loadout.Create(vehicle, label)
   }
 
-  def storeNewLocker(): Unit = {
+private def storeNewLocker(): Unit = {
     if (_avatar.nonEmpty) {
       pushLockerClobToDataBase(AvatarActor.encodeLockerClob(avatar.locker))
         .onComplete {
@@ -2202,16 +2202,16 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def doNotStoreLocker(): Unit = {
+private def doNotStoreLocker(): Unit = {
     /* most likely the database encountered an error; don't do anything with it until the restart */
   }
 
-  def storeLocker(): Unit = {
+private def storeLocker(): Unit = {
     log.debug(s"saving locker contents belonging to ${avatar.name}")
     pushLockerClobToDataBase(AvatarActor.encodeLockerClob(avatar.locker))
   }
 
-  def pushLockerClobToDataBase(items: String): Database.ctx.Result[Database.ctx.RunActionResult] = {
+private def pushLockerClobToDataBase(items: String): Database.ctx.Result[Database.ctx.RunActionResult] = {
     import ctx._
     sessionActor ! SessionActor.CharSaved
     ctx.run(
@@ -2221,7 +2221,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     )
   }
 
-  def initializeAllLoadouts(): Future[Seq[Option[Loadout]]] = {
+private def initializeAllLoadouts(): Future[Seq[Option[Loadout]]] = {
     for {
       infantry <- loadLoadouts().andThen {
         case out @ Success(_) => out
@@ -2234,7 +2234,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     } yield infantry ++ vehicles
   }
 
-  def loadLoadouts(): Future[Seq[Option[Loadout]]] = {
+private def loadLoadouts(): Future[Seq[Option[Loadout]]] = {
     import ctx._
     ctx
       .run(query[persistence.Loadout].filter(_.avatarId == lift(avatar.id)))
@@ -2255,7 +2255,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
       .map { loadouts => (0 until 10).map { index => loadouts.find(_._1 == index).map(_._2) } }
   }
 
-  def loadVehicleLoadouts(): Future[Seq[Option[Loadout]]] = {
+private def loadVehicleLoadouts(): Future[Seq[Option[Loadout]]] = {
     import ctx._
     ctx
       .run(query[persistence.Vehicleloadout].filter(_.avatarId == lift(avatar.id)))
@@ -2276,7 +2276,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
       .map { loadouts => (0 until 10).map { index => loadouts.find(_._1 == index).map(_._2) } }
   }
 
-  def refreshLoadouts(loadouts: Iterable[(Option[Loadout], Int)]): Unit = {
+private def refreshLoadouts(loadouts: Iterable[(Option[Loadout], Int)]): Unit = {
     loadouts
       .map {
         case (Some(loadout: InfantryLoadout), index) =>
@@ -2319,7 +2319,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
       .foreach { sessionActor ! SessionActor.SendResponse(_) }
   }
 
-  def refreshLoadout(line: Int): Unit = {
+private def refreshLoadout(line: Int): Unit = {
     avatar.loadouts.suit.lift(line) match {
       case Some(Some(loadout: InfantryLoadout)) =>
         sessionActor ! SessionActor.SendResponse(
@@ -2368,7 +2368,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def loadLocker(charId: Long): Future[LockerContainer] = {
+private def loadLocker(charId: Long): Future[LockerContainer] = {
     val locker = Avatar.makeLocker()
     var notLoaded: Boolean = false
     import ctx._
@@ -2402,7 +2402,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
 
 
 
-  def loadFriendList(avatarId: Long): Future[List[AvatarFriend]] = {
+private def loadFriendList(avatarId: Long): Future[List[AvatarFriend]] = {
     import ctx._
     val out: Promise[List[AvatarFriend]] = Promise()
 
@@ -2423,7 +2423,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     out.future
   }
 
-  def loadIgnoredList(avatarId: Long): Future[List[AvatarIgnored]] = {
+private def loadIgnoredList(avatarId: Long): Future[List[AvatarIgnored]] = {
     import ctx._
     val out: Promise[List[AvatarIgnored]] = Promise()
 
@@ -2444,7 +2444,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     out.future
   }
 
-  def loadShortcuts(avatarId: Long): Future[Array[Option[AvatarShortcut]]] = {
+private def loadShortcuts(avatarId: Long): Future[Array[Option[AvatarShortcut]]] = {
     import ctx._
     val out: Promise[Array[Option[AvatarShortcut]]] = Promise()
 
@@ -2468,13 +2468,13 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     out.future
   }
 
-  def startIfStoppedStaminaRegen(initialDelay: FiniteDuration): Unit = {
+private def startIfStoppedStaminaRegen(initialDelay: FiniteDuration): Unit = {
     if (staminaRegenTimer.isCancelled) {
       defaultStaminaRegen(initialDelay)
     }
   }
 
-  def defaultStaminaRegen(initialDelay: FiniteDuration): Unit = {
+private def defaultStaminaRegen(initialDelay: FiniteDuration): Unit = {
     staminaRegenTimer.cancel()
     val restoreStaminaFunc: Int => Unit = restoreStaminaPeriodically
     staminaRegenTimer = context.system.scheduler.scheduleWithFixedDelay(initialDelay, delay = 0.5 seconds)(() => {
@@ -2483,7 +2483,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
   }
 
   // same as in SA, this really doesn't belong here
-  def updateDeployableUIElements(list: List[(Int, Int, Int, Int)]): Unit = {
+private def updateDeployableUIElements(list: List[(Int, Int, Int, Int)]): Unit = {
     val guid = PlanetSideGUID(0)
     list.foreach({
       case (currElem, curr, maxElem, max) =>
@@ -2493,7 +2493,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     })
   }
 
-  def refreshPurchaseTimes(keys: Set[String]): Unit = {
+private def refreshPurchaseTimes(keys: Set[String]): Unit = {
     var keysToDrop: Seq[String] = Nil
     keys.foreach { key =>
       avatar.cooldowns.purchase.find { case (name, _) => name.equals(key) } match {
@@ -2520,7 +2520,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     }
   }
 
-  def updatePurchaseTimer(name: String, time: Long, isActuallyAVehicle: Boolean): Unit = {
+private def updatePurchaseTimer(name: String, time: Long, isActuallyAVehicle: Boolean): Unit = {
     sessionActor ! SessionActor.SendResponse(
       AvatarVehicleTimerMessage(session.get.player.GUID, name, time, isActuallyAVehicle)
     )
@@ -2531,7 +2531,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @see `replaceCopy(Avatar)`
     * @param copyAvatar na
     */
-  def avatarCopy(copyAvatar: Avatar): Unit = {
+private def avatarCopy(copyAvatar: Avatar): Unit = {
     avatar = copyAvatar
     session match {
       case Some(sess) if sess.player != null =>
@@ -2545,7 +2545,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @param action nature of the request
     * @param name other player's name (can not be our name)
     */
-  def memberListAction(action: MemberAction.Value, name: String): Unit = {
+private def memberListAction(action: MemberAction.Value, name: String): Unit = {
     if (!name.equals(avatar.name)) {
       action match {
         case MemberAction.InitializeFriendList => memberActionListManagement(action, transformFriendsList)
@@ -2564,14 +2564,14 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * Transform the friends list in a list of packet entities.
     * @return a list of `Friends` suitable for putting into a packet
     */
-  def transformFriendsList(): List[GameFriend] = {
+private def transformFriendsList(): List[GameFriend] = {
     avatar.people.friend.map { f => GameFriend(f.name, f.online)}
   }
   /**
     * Transform the ignored players list in a list of packet entities.
     * @return a list of `Friends` suitable for putting into a packet
     */
-  def transformIgnoredList(): List[GameFriend] = {
+private def transformIgnoredList(): List[GameFriend] = {
     avatar.people.ignored.map { f => GameFriend(f.name, f.online)}
   }
   /**
@@ -2581,7 +2581,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     *               (either `InitializeFriendList` or `InitializeIgnoreList`, hopefully)
     * @param listFunc transformation function that produces data suitable for a game paket
     */
-  def memberActionListManagement(action: MemberAction.Value, listFunc: ()=>List[GameFriend]): Unit = {
+private def memberActionListManagement(action: MemberAction.Value, listFunc: ()=>List[GameFriend]): Unit = {
     FriendsResponse.packetSequence(action, listFunc()).foreach { msg =>
       sessionActor ! SessionActor.SendResponse(msg)
     }
@@ -2594,7 +2594,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @param name unique character name
     * @param faction a faction affiliation
     */
-  def memberActionAddFriend(charId: Long, name: String, faction: Int): Unit = {
+private def memberActionAddFriend(charId: Long, name: String, faction: Int): Unit = {
     val people = avatar.people
     people.friend.find { _.name.equals(name) } match {
       case Some(_) => ;
@@ -2621,7 +2621,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @param charId unique account identifier
     * @param name unique character name
     */
-  def memberActionRemoveFriend(charId: Long, name: String): Unit = {
+private def memberActionRemoveFriend(charId: Long, name: String): Unit = {
     import ctx._
     val people = avatar.people
     people.friend.find { _.name.equals(name) } match {
@@ -2645,7 +2645,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @param name unique character name
     * @return if the avatar is found, that avatar's unique identifier and the avatar's faction affiliation
     */
-  def memberActionUpdateFriend(name: String): Option[(Long, PlanetSideEmpire.Value)] = {
+private def memberActionUpdateFriend(name: String): Option[(Long, PlanetSideEmpire.Value)] = {
     if (name.nonEmpty) {
       val people = avatar.people
       people.friend.find { _.name.equals(name) } match {
@@ -2683,7 +2683,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @param name unique character name
     * @param faction a faction affiliation
     */
-  def memberActionAddIgnored(charId: Long, name: String, faction: Int): Unit = {
+private def memberActionAddIgnored(charId: Long, name: String, faction: Int): Unit = {
     val people = avatar.people
     people.ignored.find { _.name.equals(name) } match {
       case Some(_) => ;
@@ -2711,7 +2711,7 @@ private var saveLockerFunc: () => Unit                   = storeNewLocker
     * @param charId unique account identifier
     * @param name unique character name
     */
-  def memberActionRemoveIgnored(charId: Long, name: String): Unit = {
+private def memberActionRemoveIgnored(charId: Long, name: String): Unit = {
     import ctx._
     val people = avatar.people
     people.ignored.find { _.name.equals(name) } match {

@@ -32,8 +32,8 @@ import scodec.codecs._
 final case class AvatarGrenadeStateMessage(player_guid: PlanetSideGUID, state: GrenadeState.Value)
     extends PlanetSideGamePacket {
   type Packet = AvatarGrenadeStateMessage
-  def opcode = GamePacketOpcode.AvatarGrenadeStateMessage
-  def encode = AvatarGrenadeStateMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarGrenadeStateMessage
+def encode = AvatarGrenadeStateMessage.encode(this)
 }
 
 object AvatarGrenadeStateMessage extends Marshallable[AvatarGrenadeStateMessage] {

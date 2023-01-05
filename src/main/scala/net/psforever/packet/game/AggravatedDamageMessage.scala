@@ -20,8 +20,8 @@ final case class AggravatedDamageMessage(guid : PlanetSideGUID,
                                          damage : Long)
   extends PlanetSideGamePacket {
   type Packet = AggravatedDamageMessage
-  def opcode = GamePacketOpcode.AggravatedDamageMessage
-  def encode = AggravatedDamageMessage.encode(this)
+def opcode = GamePacketOpcode.AggravatedDamageMessage
+def encode = AggravatedDamageMessage.encode(this)
 }
 
 object AggravatedDamageMessage extends Marshallable[AggravatedDamageMessage] {

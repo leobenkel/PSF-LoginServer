@@ -20,7 +20,7 @@ import scala.util.{Failure, Success, Try}
 class NumberPoolActor(pool: NumberPool) extends Actor {
   private[this] val log = org.log4s.getLogger
 
-  def receive: Receive = {
+def receive: Receive = {
     case NumberPoolActor.GetAnyNumber() =>
       sender() ! (pool.Get() match {
         case Success(value) =>
@@ -86,7 +86,7 @@ object NumberPoolActor {
     * @param number the number requested
     * @return the number requested, or an error
     */
-  def GetSpecificNumber(pool: NumberPool, number: Int): Try[Int] = {
+private def GetSpecificNumber(pool: NumberPool, number: Int): Try[Int] = {
     val original: NumberSelector   = pool.Selector
     val specific: SpecificSelector = new SpecificSelector
     pool.Selector = specific

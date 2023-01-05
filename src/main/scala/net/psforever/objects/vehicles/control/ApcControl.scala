@@ -24,7 +24,7 @@ import net.psforever.types.PlanetSideGUID
 class ApcControl(vehicle: Vehicle)
   extends VehicleControl(vehicle)
   with VehicleCapacitance {
-  def CapacitanceObject: Vehicle = vehicle
+private def CapacitanceObject: Vehicle = vehicle
 
   override def postStop() : Unit = {
     super.postStop()
@@ -40,7 +40,7 @@ class ApcControl(vehicle: Vehicle)
       case _ => ;
     }
 
-  def performEmpBurst(): Unit = {
+private def performEmpBurst(): Unit = {
     val obj = CapacitanceObject
     if (obj.Capacitor == obj.Definition.MaxCapacitor) { //only if the capacitor is full
       val zone = obj.Zone

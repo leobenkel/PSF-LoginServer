@@ -137,17 +137,17 @@ final case class CharacterAppearanceData(a: CharacterAppearanceA, b: CharacterAp
     * The padding will always be a number 0-7.
     * @return the pad length in bits
     */
-  def NamePadding: Int = name_padding
+private def NamePadding: Int = name_padding
 
   /**
     * When a player is released-dead or attached to a zipline, their basic infantry model is replaced with a different one.
     * @return the length of the variable field that exists when using alternate models
     */
-  def altModelBit: Option[Int] = CharacterAppearanceData.altModelBit(this)
+private def altModelBit: Option[Int] = CharacterAppearanceData.altModelBit(this)
 }
 
 object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
-  def apply(
+def apply(
       app: BasicCharacterData,
       black_ops: Boolean,
       jammered: Boolean,
@@ -217,7 +217,7 @@ object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
     )(name_padding)
   }
 
-  def apply(a: Int => CharacterAppearanceA, b: (Boolean, Int) => CharacterAppearanceB, ribbons: RibbonBars)(
+def apply(a: Int => CharacterAppearanceA, b: (Boolean, Int) => CharacterAppearanceB, ribbons: RibbonBars)(
       name_padding: Int
   ): CharacterAppearanceData = {
     val first = a(name_padding)
@@ -250,7 +250,7 @@ object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
     * @param app the appearance
     * @return the length of the variable field that exists when using alternate models
     */
-  def altModelBit(app: CharacterAppearanceData): Option[Int] =
+private def altModelBit(app: CharacterAppearanceData): Option[Int] =
     if (app.b.backpack || app.b.on_zipline.isDefined) {
       if (!app.a.data.alternate) {
         throw new IllegalArgumentException("missing alternate model flag when should be set")
@@ -261,7 +261,7 @@ object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
       None
     }
 
-  def namePadding(inheritPad: Int, pad: Option[CommonFieldDataExtra]): Int = {
+private def namePadding(inheritPad: Int, pad: Option[CommonFieldDataExtra]): Int = {
     pad match {
       case Some(n) =>
         val bitsize = n.bitsize.toInt % 8
@@ -279,7 +279,7 @@ object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
     * The padding will always be a number 0-7.
     * @return the pad length in bits
     */
-  def outfitNamePadding: Int = {
+private def outfitNamePadding: Int = {
     6
   }
 
@@ -298,7 +298,7 @@ object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
     * @param name_padding na
     * @return na
     */
-  def a_codec(name_padding: Int): Codec[CharacterAppearanceA] =
+private def a_codec(name_padding: Int): Codec[CharacterAppearanceA] =
     (
       ("data" | CommonFieldData.codec) >>:~ { data =>
         ("name" | PacketHelpers.encodedWideStringAligned(namePadding(name_padding, data.v2))) ::
@@ -392,7 +392,7 @@ object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
     * @param name_padding na
     * @return na
     */
-  def b_codec(alt_model: Boolean, name_padding: Int): Codec[CharacterAppearanceB] =
+private def b_codec(alt_model: Boolean, name_padding: Int): Codec[CharacterAppearanceB] =
     (
       ("unk0" | uint32L) :: //for outfit_name (below) to be visible in-game, this value should be non-zero
         ("outfit_name" | PacketHelpers.encodedWideStringAligned(outfitNamePadding)) ::
@@ -481,7 +481,7 @@ object CharacterAppearanceData extends Marshallable[CharacterAppearanceData] {
       }
     )
 
-  def codec(name_padding: Int): Codec[CharacterAppearanceData] =
+private def codec(name_padding: Int): Codec[CharacterAppearanceData] =
     (
       ("a" | a_codec(name_padding)) >>:~ { a =>
         ("b" | b_codec(a.data.alternate, name_padding)) ::

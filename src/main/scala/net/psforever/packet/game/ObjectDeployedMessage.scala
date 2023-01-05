@@ -48,8 +48,8 @@ object DeployOutcome extends Enumeration(1) {
 final case class ObjectDeployedMessage(unk: Int, desc: String, action: DeployOutcome.Value, count: Long, max: Long)
     extends PlanetSideGamePacket {
   type Packet = ObjectDeployedMessage
-  def opcode = GamePacketOpcode.ObjectDeployedMessage
-  def encode = ObjectDeployedMessage.encode(this)
+def opcode = GamePacketOpcode.ObjectDeployedMessage
+def encode = ObjectDeployedMessage.encode(this)
 }
 
 object ObjectDeployedMessage extends Marshallable[ObjectDeployedMessage] {
@@ -62,7 +62,7 @@ object ObjectDeployedMessage extends Marshallable[ObjectDeployedMessage] {
     * @param max the maximum number of this type of object that can be deployed
     * @return an `ObjectDeployedMessage` object
     */
-  def apply(desc: String, action: DeployOutcome.Value, count: Long, max: Long): ObjectDeployedMessage =
+def apply(desc: String, action: DeployOutcome.Value, count: Long, max: Long): ObjectDeployedMessage =
     new ObjectDeployedMessage(0, desc, action, count, max)
 
   /**
@@ -72,7 +72,7 @@ object ObjectDeployedMessage extends Marshallable[ObjectDeployedMessage] {
     * @param max the maximum number of this type of object that can be deployed
     * @return an `ObjectDeployedMessage` object
     */
-  def Success(desc: String, count: Int, max: Int): ObjectDeployedMessage =
+private def Success(desc: String, count: Int, max: Int): ObjectDeployedMessage =
     new ObjectDeployedMessage(0, desc, DeployOutcome.Success, count, max)
 
   /**
@@ -80,7 +80,7 @@ object ObjectDeployedMessage extends Marshallable[ObjectDeployedMessage] {
     * @param desc descriptive text of what kind of object failed to be deployed
     * @return an `ObjectDeployedMessage` object
     */
-  def Failure(desc: String): ObjectDeployedMessage =
+private def Failure(desc: String): ObjectDeployedMessage =
     new ObjectDeployedMessage(0, desc, DeployOutcome.Failure, 0, 0)
 
   implicit val codec: Codec[ObjectDeployedMessage] = (

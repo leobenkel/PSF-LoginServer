@@ -27,22 +27,22 @@ class ImplantTerminalMechControl(mech: ImplantTerminalMech)
     with RepairableEntity
     with AmenityAutoRepair
     with CaptureTerminalAwareBehavior {
-  def MountableObject  = mech
-  def HackableObject   = mech
-  def FactionObject    = mech
-  def DamageableObject = mech
-  def RepairableObject = mech
-  def AutoRepairObject = mech
-  def CaptureTerminalAwareObject = mech
+private def MountableObject  = mech
+private def HackableObject   = mech
+private def FactionObject    = mech
+private def DamageableObject = mech
+private def RepairableObject = mech
+private def AutoRepairObject = mech
+private def CaptureTerminalAwareObject = mech
 
-  def commonBehavior: Receive =
+private def commonBehavior: Receive =
     checkBehavior
       .orElse(dismountBehavior)
       .orElse(takesDamage)
       .orElse(canBeRepairedByNanoDispenser)
       .orElse(autoRepairBehavior)
 
-  def poweredStateLogic : Receive =
+private def poweredStateLogic : Receive =
     commonBehavior
       .orElse(mountBehavior)
       .orElse {
@@ -61,7 +61,7 @@ class ImplantTerminalMechControl(mech: ImplantTerminalMech)
         case _ => ;
       }
 
-  def unpoweredStateLogic: Receive =
+private def unpoweredStateLogic: Receive =
     commonBehavior
       .orElse {
         case _ => ;
@@ -113,7 +113,7 @@ class ImplantTerminalMechControl(mech: ImplantTerminalMech)
     isPowered && super.tryAutoRepair()
   }
 
-  def powerTurnOffCallback(): Unit = {
+private def powerTurnOffCallback(): Unit = {
     stopAutoRepair()
     //kick all occupants
     val guid = mech.GUID
@@ -133,7 +133,7 @@ class ImplantTerminalMechControl(mech: ImplantTerminalMech)
     )
   }
 
-  def powerTurnOnCallback(): Unit = {
+private def powerTurnOnCallback(): Unit = {
     tryAutoRepair()
   }
 }

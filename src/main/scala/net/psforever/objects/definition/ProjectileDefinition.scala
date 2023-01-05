@@ -85,113 +85,113 @@ class ProjectileDefinition(objectId: Int) extends ObjectDefinition(objectId) wit
 
   def ProjectileType: Projectiles.Types.Value = projectileType
 
-  def Acceleration: Int = acceleration
+  private def Acceleration: Int = acceleration
 
-  def Acceleration_=(accel: Int): Int = {
+  private def Acceleration_=(accel: Int): Int = {
     acceleration = accel
     Acceleration
   }
 
-  def AccelerationUntil: Float = accelerationUntil
+  private def AccelerationUntil: Float = accelerationUntil
 
-  def AccelerationUntil_=(accelUntil: Float): Float = {
+  private def AccelerationUntil_=(accelUntil: Float): Float = {
     accelerationUntil = accelUntil
     AccelerationUntil
   }
 
-  def ProjectileDamageType: DamageType.Value = CausesDamageType
+  private def ProjectileDamageType: DamageType.Value = CausesDamageType
 
-  def ProjectileDamageType_=(damageType1: DamageType.Value): DamageType.Value = {
+  private def ProjectileDamageType_=(damageType1: DamageType.Value): DamageType.Value = {
     CausesDamageType = damageType1
     ProjectileDamageType
   }
 
-  def ProjectileDamageTypeSecondary: DamageType.Value = CausesDamageTypeSecondary
+  private def ProjectileDamageTypeSecondary: DamageType.Value = CausesDamageTypeSecondary
 
-  def ProjectileDamageTypeSecondary_=(damageTypeSecondary1: DamageType.Value): DamageType.Value = {
+  private def ProjectileDamageTypeSecondary_=(damageTypeSecondary1: DamageType.Value): DamageType.Value = {
     CausesDamageTypeSecondary = damageTypeSecondary1
     ProjectileDamageTypeSecondary
   }
 
-  def ProjectileDamageTypes: Set[DamageType.Value] = AllDamageTypes
+  private def ProjectileDamageTypes: Set[DamageType.Value] = AllDamageTypes
 
-  def DegradeDelay: Float = degradeDelay
+  private def DegradeDelay: Float = degradeDelay
 
-  def DegradeDelay_=(degradeDelay: Float): Float = {
+  private def DegradeDelay_=(degradeDelay: Float): Float = {
     this.degradeDelay = degradeDelay
     DegradeDelay
   }
 
-  def DegradeMultiplier: Float = degradeMultiplier
+  private def DegradeMultiplier: Float = degradeMultiplier
 
-  def DegradeMultiplier_=(degradeMultiplier: Float): Float = {
+  private def DegradeMultiplier_=(degradeMultiplier: Float): Float = {
     this.degradeMultiplier = degradeMultiplier
     DegradeMultiplier
   }
 
-  def InitialVelocity: Int = initialVelocity
+  private def InitialVelocity: Int = initialVelocity
 
-  def InitialVelocity_=(initialVelocity: Int): Int = {
+  private def InitialVelocity_=(initialVelocity: Int): Int = {
     this.initialVelocity = initialVelocity
     InitialVelocity
   }
 
   def Lifespan: Float = lifespan
 
-  def Lifespan_=(lifespan: Float): Float = {
+  private def Lifespan_=(lifespan: Float): Float = {
     this.lifespan = lifespan
     Lifespan
   }
 
-  def LashRadius: Float = lashRadius
+  private def LashRadius: Float = lashRadius
 
-  def LashRadius_=(radius: Float): Float = {
+  private def LashRadius_=(radius: Float): Float = {
     lashRadius = radius
     LashRadius
   }
 
-  def ExistsOnRemoteClients: Boolean = existsOnRemoteClients
+  private def ExistsOnRemoteClients: Boolean = existsOnRemoteClients
 
-  def ExistsOnRemoteClients_=(existsOnRemoteClients: Boolean): Boolean = {
+  private def ExistsOnRemoteClients_=(existsOnRemoteClients: Boolean): Boolean = {
     this.existsOnRemoteClients = existsOnRemoteClients
     ExistsOnRemoteClients
   }
 
-  def RemoteClientData: (Int, Int) = remoteClientData
+  private def RemoteClientData: (Int, Int) = remoteClientData
 
-  def RemoteClientData_=(remoteClientData: (Int, Int)): (Int, Int) = {
+  private def RemoteClientData_=(remoteClientData: (Int, Int)): (Int, Int) = {
     this.remoteClientData = remoteClientData
     RemoteClientData
   }
 
-  def AutoLock: Boolean = autoLock
+  private def AutoLock: Boolean = autoLock
 
-  def AutoLock_=(lockState: Boolean): Boolean = {
+  private def AutoLock_=(lockState: Boolean): Boolean = {
     autoLock = lockState
     AutoLock
   }
 
-  def JammerProjectile: Boolean = jammerProjectile
+  private def JammerProjectile: Boolean = jammerProjectile
 
-  def JammerProjectile_=(effect: Boolean): Boolean = {
+  private def JammerProjectile_=(effect: Boolean): Boolean = {
     jammerProjectile = effect
     JammerProjectile
   }
 
-  def GrenadeProjectile: Boolean = grenade_projectile
+  private def GrenadeProjectile: Boolean = grenade_projectile
 
-  def GrenadeProjectile_=(isGrenade: Boolean): Boolean = {
+  private def GrenadeProjectile_=(isGrenade: Boolean): Boolean = {
     grenade_projectile = isGrenade
     GrenadeProjectile
   }
 
-  def DistanceMax: Float = distanceMax //accessor only
+  private def DistanceMax: Float = distanceMax //accessor only
 
-  def DistanceFromAcceleration: Float = distanceFromAcceleration //accessor only
+  private def DistanceFromAcceleration: Float = distanceFromAcceleration //accessor only
 
-  def DistanceNoDegrade: Float = distanceNoDegrade //accessor only
+  private def DistanceNoDegrade: Float = distanceNoDegrade //accessor only
 
-  def FinalVelocity: Float = finalVelocity //accessor only
+  private def FinalVelocity: Float = finalVelocity //accessor only
 }
 
 object ProjectileDefinition {
@@ -206,7 +206,7 @@ object ProjectileDefinition {
     * or for "radial damage", typically associated with explosive splash projectiles.
     * @param pdef the projectile's definition, often called its profile
     */
-  def CalculateDerivedFields(pdef: ProjectileDefinition): Unit = {
+  private def CalculateDerivedFields(pdef: ProjectileDefinition): Unit = {
     val (distanceMax, distanceFromAcceleration, finalVelocity): (Float, Float, Float) = if (pdef.Acceleration == 0) {
       (pdef.InitialVelocity * pdef.Lifespan, 0, pdef.InitialVelocity.toFloat)
     } else {

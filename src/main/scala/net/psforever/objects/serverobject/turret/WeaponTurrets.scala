@@ -20,7 +20,7 @@ object WeaponTurrets {
     * @param tool    the nano-dispenser that was used to perform this upgrade
     * @param upgrade the new upgrade state
     */
-  def FinishUpgradingMannedTurret(
+private def FinishUpgradingMannedTurret(
       target: FacilityTurret,
       user: Player,
       tool: Tool,
@@ -45,7 +45,7 @@ object WeaponTurrets {
     * @param target the facility turret being upgraded
     * @param upgrade the upgrade being applied to the turret (usually, it's weapon system)
     */
-  def FinishUpgradingMannedTurret(target: FacilityTurret, upgrade: TurretUpgrade.Value): Unit = {
+private def FinishUpgradingMannedTurret(target: FacilityTurret, upgrade: TurretUpgrade.Value): Unit = {
     log.info(s"Manned wall turret weapon being converted to $upgrade")
     val zone   = target.Zone
     val events = zone.VehicleEvents

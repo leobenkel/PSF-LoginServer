@@ -23,7 +23,7 @@ object SpawnTubeDefinition {
     *            anticipating a `Terminal` object using this same definition
     * @param context hook to the local `Actor` system
     */
-  def Setup(obj: Amenity, context: ActorContext): Unit = {
+private def Setup(obj: Amenity, context: ActorContext): Unit = {
     import akka.actor.Props
     if (obj.Actor == Default.Actor) {
       obj.Actor = context.actorOf(Props(classOf[SpawnTubeControl], obj), PlanetSideServerObject.UniqueActorName(obj))

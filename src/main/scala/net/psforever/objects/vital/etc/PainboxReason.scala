@@ -13,18 +13,18 @@ final case class PainboxReason(entity: Painbox) extends DamageReason {
   private val definition = entity.Definition
   assert(definition.innateDamage.nonEmpty, s"causal entity '${definition.Name}' does not emit pain field")
 
-  def source: DamageWithPosition = definition.innateDamage.get
+private def source: DamageWithPosition = definition.innateDamage.get
 
-  def resolution: DamageResolution.Value = DamageResolution.Resolved
+private def resolution: DamageResolution.Value = DamageResolution.Resolved
 
-  def same(test: DamageReason): Boolean = test match {
+private def same(test: DamageReason): Boolean = test match {
     case eer: PainboxReason         => eer.entity eq entity
     case _                          => false
   }
 
-  def adversary: Option[SourceEntry] = None
+private def adversary: Option[SourceEntry] = None
 
-  def damageModel : DamageAndResistance = PainboxReason.drm
+private def damageModel : DamageAndResistance = PainboxReason.drm
 }
 
 object PainboxReason {

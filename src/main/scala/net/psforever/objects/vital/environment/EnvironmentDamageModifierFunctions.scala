@@ -11,7 +11,7 @@ import net.psforever.objects.serverobject.environment.EnvironmentAttribute
   * What do you hope to achieve by wading through molten rock anyway?
   */
 case object LavaDepth extends EnvironmentDamageModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: EnvironmentReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: EnvironmentReason): Int = {
     if (cause.body.attribute == EnvironmentAttribute.Lava) {
       val depth: Float = scala.math.max(0, cause.body.collision.altitude - data.target.Position.z)
       data.target match {

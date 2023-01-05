@@ -20,9 +20,9 @@ class HotSpotInfo(val DisplayLocation: Vector3) {
     PlanetSideEmpire.VS -> new ActivityReport()
   )
 
-  def Activity: Map[PlanetSideEmpire.Value, ActivityReport] = activity
+private def Activity: Map[PlanetSideEmpire.Value, ActivityReport] = activity
 
-  def ActivityFor(faction: PlanetSideEmpire.Value): Option[ActivityReport] = {
+private def ActivityFor(faction: PlanetSideEmpire.Value): Option[ActivityReport] = {
     activity.get(faction)
   }
 
@@ -30,7 +30,7 @@ class HotSpotInfo(val DisplayLocation: Vector3) {
     * Which factions claim a current level of activity that they might see this hotspot?
     * @return the active factions
     */
-  def ActivityBy(): Set[PlanetSideEmpire.Value] = {
+private def ActivityBy(): Set[PlanetSideEmpire.Value] = {
     for {
       faction <- PlanetSideEmpire.values
       if ActivityBy(faction)
@@ -43,7 +43,7 @@ class HotSpotInfo(val DisplayLocation: Vector3) {
     * @return `true`, if the heat level is non-zero;
     *        `false`, otherwise
     */
-  def ActivityBy(faction: PlanetSideEmpire.Value): Boolean = {
+private def ActivityBy(faction: PlanetSideEmpire.Value): Boolean = {
     activity.get(faction) match {
       case Some(report) =>
         report.Heat > 0
@@ -74,15 +74,15 @@ class ActivityReport {
     * The increasing heat does nothing, presently, but acts as a flag for activity.
     * @return the heat
     */
-  def Heat: Int = heat
+private def Heat: Int = heat
 
   /**
     * As a `Long` value, if there was no previous report, the value will be considered `0L`.
     * @return the time of the last activity report
     */
-  def LastReport: Long = lastReport.getOrElse(0L)
+private def LastReport: Long = lastReport.getOrElse(0L)
 
-  def SetLastReport(time: Long): Long = {
+private def SetLastReport(time: Long): Long = {
     lastReport = Some(time)
     LastReport
   }
@@ -91,14 +91,14 @@ class ActivityReport {
     * The length of time that this (ongoing) activity is relevant.
     * @return the time
     */
-  def Duration: FiniteDuration = duration
+private def Duration: FiniteDuration = duration
 
   /**
     * Set the length of time that this (ongoing) activity is relevant.
     * @param time the time, as a `Duration`
     * @return the time
     */
-  def Duration_=(time: FiniteDuration): FiniteDuration = {
+private def Duration_=(time: FiniteDuration): FiniteDuration = {
     Duration_=(time.toNanos)
   }
 
@@ -108,7 +108,7 @@ class ActivityReport {
     * @param time the time, as a `Long` value
     * @return the time
     */
-  def Duration_=(time: Long): FiniteDuration = {
+private def Duration_=(time: Long): FiniteDuration = {
     if (time > duration.toNanos) {
       duration = FiniteDuration(time, "nanoseconds")
       Renew
@@ -121,7 +121,7 @@ class ActivityReport {
     * @see `Renew`
     * @return the current report
     */
-  def Report(): ActivityReport = {
+private def Report(): ActivityReport = {
     RaiseHeat(1)
     Renew
     this
@@ -132,7 +132,7 @@ class ActivityReport {
     * @see `Renew`
     * @return the current report
     */
-  def Report(pow: Int): ActivityReport = {
+private def Report(pow: Int): ActivityReport = {
     RaiseHeat(pow)
     Renew
     this
@@ -143,7 +143,7 @@ class ActivityReport {
     * Do not increase the lifespan of the current report's existence.
     * @return the current report
     */
-  def ReportOld(pow: Int): ActivityReport = {
+private def ReportOld(pow: Int): ActivityReport = {
     RaiseHeat(pow)
     this
   }
@@ -161,7 +161,7 @@ class ActivityReport {
     * Reset the time of the last report to the present.
     * @return the current time
     */
-  def Renew: Long = {
+private def Renew: Long = {
     val t = System.nanoTime
     lastReport = Some(t)
     t
@@ -171,7 +171,7 @@ class ActivityReport {
     * Act as if no activity was ever valid for this report.
     * Set heat to zero to flag no activity and set duration to "0 seconds" to eliminate its lifespan.
     */
-  def Clear(): Unit = {
+private def Clear(): Unit = {
     heat = 0
     lastReport = None
     duration = FiniteDuration(0, "nanoseconds")

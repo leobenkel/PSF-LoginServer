@@ -10,8 +10,8 @@ import scodec.Codec
 
 final case class ReleaseAvatarRequestMessage() extends PlanetSideGamePacket {
   type Packet = ReleaseAvatarRequestMessage
-  def opcode = GamePacketOpcode.ReleaseAvatarRequestMessage
-  def encode = ReleaseAvatarRequestMessage.encode(this)
+def opcode = GamePacketOpcode.ReleaseAvatarRequestMessage
+def encode = ReleaseAvatarRequestMessage.encode(this)
 }
 
 object ReleaseAvatarRequestMessage extends Marshallable[ReleaseAvatarRequestMessage] {

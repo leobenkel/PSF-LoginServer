@@ -13,13 +13,13 @@ abstract class AmenityOwner extends PlanetSideServerObject {
 
   def Amenities: List[Amenity] = amenities
 
-  def Amenities_=(obj: Amenity): List[Amenity] = {
+  private def Amenities_=(obj: Amenity): List[Amenity] = {
     amenities = amenities :+ obj
     obj.Owner = this
     amenities
   }
 
-  def RemoveAmenity(obj: Amenity): List[Amenity] = {
+  private def RemoveAmenity(obj: Amenity): List[Amenity] = {
     amenities = amenities.filterNot(x => x == obj)
     amenities
   }

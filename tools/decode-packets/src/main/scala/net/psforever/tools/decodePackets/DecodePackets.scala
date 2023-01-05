@@ -23,7 +23,7 @@ case class Config(
 )
 
 object DecodePackets {
-  def main(args: Array[String]): Unit = {
+private def main(args: Array[String]): Unit = {
 
     val builder = OParser.builder[Config]
 
@@ -141,7 +141,7 @@ object DecodePackets {
   /** Traverse down any nested packets such as SlottedMetaPacket, MultiPacket and MultiPacketEx and add indent for each layer down
     * The number of lines to skip will be returned so duplicate lines following SlottedMetaPackets in the gcapy output can be filtered out
     */
-  def recursivelyHandleNestedPacket(decodedLine: String, writer: BufferedWriter, depth: Int = 0): Int = {
+private def recursivelyHandleNestedPacket(decodedLine: String, writer: BufferedWriter, depth: Int = 0): Int = {
     if (decodedLine.indexOf("Failed to parse") >= 0) return depth
     val regex   = "(0x[a-f0-9]+)".r
     val matches = regex.findAllIn(decodedLine)
@@ -169,7 +169,7 @@ object DecodePackets {
     linesToSkip
   }
 
-  def shortGcapyString(line: String): String = {
+private def shortGcapyString(line: String): String = {
     val regex = "Game record ([0-9]+) at ([0-9.]+s) is from ([S|C]).* to ([S|C]).*contents (.*)".r
     line match {
       case regex(index, time, from, to, contents) => {
@@ -179,12 +179,12 @@ object DecodePackets {
     }
   }
 
-  def isNestedPacket(decodedLine: String): Boolean = {
+private def isNestedPacket(decodedLine: String): Boolean = {
     // Also matches MultiPacketEx
     decodedLine.indexOf("MultiPacket") >= 0 || decodedLine.indexOf("SlottedMetaPacket") >= 0
   }
 
-  def decodePacket(hexString: String): String = {
+private def decodePacket(hexString: String): String = {
     PacketCoding.decodePacket(ByteVector.fromValidHex(hexString)) match {
       case Successful(value) => value.toString
       case Failure(cause)    => s"Decoding error '${cause.toString}' for data ${hexString}"

@@ -22,7 +22,7 @@ import scala.concurrent.duration._
 trait DeploymentBehavior {
   _: Actor =>
 
-  def DeploymentObject: Deployment.DeploymentObject
+private def DeploymentObject: Deployment.DeploymentObject
 
   protected val deployBehavior: Receive = {
     case Deployment.TryDeploymentChange(state) =>
@@ -35,7 +35,7 @@ trait DeploymentBehavior {
       sender() ! TryUndeployStateChange(state)
   }
 
-  def TryDeploymentStateChange(state: DriveState.Value): Any = {
+private def TryDeploymentStateChange(state: DriveState.Value): Any = {
     val obj       = DeploymentObject
     val prevState = obj.DeploymentState
     if (TryDeploymentChange(obj, state)) {
@@ -51,7 +51,7 @@ trait DeploymentBehavior {
     }
   }
 
-  def TryDeployStateChange(state: DriveState.Value): Any = {
+private def TryDeployStateChange(state: DriveState.Value): Any = {
     val obj       = DeploymentObject
     val prevState = obj.DeploymentState
     if (Deployment.CheckForDeployState(state) && TryDeploymentChange(obj, state)) {
@@ -62,7 +62,7 @@ trait DeploymentBehavior {
     }
   }
 
-  def TryUndeployStateChange(state: DriveState.Value): Any = {
+private def TryUndeployStateChange(state: DriveState.Value): Any = {
     val obj       = DeploymentObject
     val prevState = obj.DeploymentState
     if (Deployment.CheckForUndeployState(state) && TryUndeploymentChange(obj, state)) {
@@ -73,15 +73,15 @@ trait DeploymentBehavior {
     }
   }
 
-  def TryDeploymentChange(obj: Deployment.DeploymentObject, state: DriveState.Value): Boolean = {
+private def TryDeploymentChange(obj: Deployment.DeploymentObject, state: DriveState.Value): Boolean = {
     DeploymentBehavior.TryDeploymentChange(obj, state)
   }
 
-  def TryUndeploymentChange(obj: Deployment.DeploymentObject, state: DriveState.Value): Boolean = {
+private def TryUndeploymentChange(obj: Deployment.DeploymentObject, state: DriveState.Value): Boolean = {
     DeploymentBehavior.TryDeploymentChange(obj, state)
   }
 
-  def DeploymentAction(
+private def DeploymentAction(
       obj: Deployment.DeploymentObject,
       state: DriveState.Value,
       prevState: DriveState.Value
@@ -118,7 +118,7 @@ trait DeploymentBehavior {
     }
   }
 
-  def UndeploymentAction(
+private def UndeploymentAction(
       obj: Deployment.DeploymentObject,
       state: DriveState.Value,
       prevState: DriveState.Value
@@ -152,7 +152,7 @@ trait DeploymentBehavior {
 }
 
 object DeploymentBehavior {
-  def TryDeploymentChange(obj: Deployment.DeploymentObject, state: DriveState.Value): Boolean = {
+private def TryDeploymentChange(obj: Deployment.DeploymentObject, state: DriveState.Value): Boolean = {
     Deployment.NextState(obj.DeploymentState) == state && (obj.DeploymentState = state) == state
   }
 }

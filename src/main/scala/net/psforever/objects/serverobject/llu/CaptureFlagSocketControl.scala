@@ -12,9 +12,9 @@ import net.psforever.objects.serverobject.affinity.FactionAffinityBehavior
 class CaptureFlagSocketControl(socket: CaptureFlagSocket)
   extends Actor
   with FactionAffinityBehavior.Check {
-  def FactionObject      = socket
+private def FactionObject      = socket
 
-  def receive: Receive = {
+def receive: Receive = {
     case _ => ;
   }
 }

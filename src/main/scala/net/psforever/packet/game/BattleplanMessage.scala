@@ -137,8 +137,8 @@ final case class BattleplanMessage(
     diagrams: List[BattleDiagramAction]
 ) extends PlanetSideGamePacket {
   type Packet = BattleplanMessage
-  def opcode = GamePacketOpcode.BattleplanMessage
-  def encode = BattleplanMessage.encode(this)
+def opcode = GamePacketOpcode.BattleplanMessage
+def encode = BattleplanMessage.encode(this)
 }
 
 object BattleDiagramAction {
@@ -149,7 +149,7 @@ object BattleDiagramAction {
     * @param color the color of the line
     * @return a `BattleDiagramAction` object
     */
-  def style(thickness: Float, color: Int): BattleDiagramAction =
+private def style(thickness: Float, color: Int): BattleDiagramAction =
     BattleDiagramAction(DiagramActionCode.Style, Some(Style(thickness, color)))
 
   /**
@@ -158,7 +158,7 @@ object BattleDiagramAction {
     * @param y the y-coordinate of this point
     * @return a `BattleDiagramAction` object
     */
-  def vertex(x: Float, y: Float): BattleDiagramAction =
+private def vertex(x: Float, y: Float): BattleDiagramAction =
     BattleDiagramAction(DiagramActionCode.Vertex, Some(Vertex(x, y)))
 
   /**
@@ -168,7 +168,7 @@ object BattleDiagramAction {
     * @param unk na
     * @return a `BattleDiagramAction` object
     */
-  def stroke5(x: Float, y: Float, unk: Float): BattleDiagramAction =
+private def stroke5(x: Float, y: Float, unk: Float): BattleDiagramAction =
     BattleDiagramAction(DiagramActionCode.Action5, Some(StrokeFive(x, y, unk)))
 
   /**
@@ -179,7 +179,7 @@ object BattleDiagramAction {
     * @param channel the available "slots" in which to display messages on the map
     * @param message the text to display
     */
-  def drawString(x: Float, y: Float, color: Int, channel: Int, message: String): BattleDiagramAction =
+private def drawString(x: Float, y: Float, color: Int, channel: Int, message: String): BattleDiagramAction =
     BattleDiagramAction(DiagramActionCode.DrawString, Some(DrawString(x, y, color, channel, message)))
 
   /**
@@ -187,7 +187,7 @@ object BattleDiagramAction {
     * @param unk na
     * @return a `BattleDiagramAction` object
     */
-  def stroke7(unk: Int): BattleDiagramAction =
+private def stroke7(unk: Int): BattleDiagramAction =
     BattleDiagramAction(DiagramActionCode.Action7, Some(StrokeSeven(unk)))
 }
 

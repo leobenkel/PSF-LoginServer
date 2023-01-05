@@ -18,7 +18,7 @@ object AggravatedTiming {
     * @param duration for how long the over-all effect lasts
     * @return an `AggravatedTiming` object
     */
-  def apply(duration: Long): AggravatedTiming = AggravatedTiming(duration, None)
+def apply(duration: Long): AggravatedTiming = AggravatedTiming(duration, None)
 
   /**
     * Overloaded constructor.
@@ -26,7 +26,7 @@ object AggravatedTiming {
     * @param ticks a custom number of damage applications
     * @return an `AggravatedTiming` object
     */
-  def apply(duration: Long, ticks: Int): AggravatedTiming = AggravatedTiming(duration, Some(ticks))
+def apply(duration: Long, ticks: Int): AggravatedTiming = AggravatedTiming(duration, Some(ticks))
 }
 
 /**
@@ -69,7 +69,7 @@ object AggravatedDamage {
     * @param max_factor na
     * @param targets validation information indicating whether a certain entity is applicable for aggravation
     */
-  def apply(info: AggravatedInfo,
+def apply(info: AggravatedInfo,
             effect_type: Aura,
             timing: AggravatedTiming,
             max_factor: Float,
@@ -93,7 +93,7 @@ object AggravatedDamage {
     * @param vanu_aggravated na
     * @param targets validation information indicating whether a certain entity is applicable for aggravation
     */
-  def apply(info: AggravatedInfo,
+def apply(info: AggravatedInfo,
             effect_type: Aura,
             timing: AggravatedTiming,
             max_factor: Float,
@@ -117,7 +117,7 @@ object AggravatedDamage {
     * @param max_factor na
     * @param targets validation information indicating whether a certain entity is applicable for aggravation
     */
-  def apply(info: AggravatedInfo,
+def apply(info: AggravatedInfo,
             effect_type: Aura,
             duration: Long,
             max_factor: Float,
@@ -141,7 +141,7 @@ object AggravatedDamage {
     * @param vanu_aggravated na
     * @param targets validation information indicating whether a certain entity is applicable for aggravation
     */
-  def apply(info: AggravatedInfo,
+def apply(info: AggravatedInfo,
             effect_type: Aura,
             duration: Long,
             max_factor: Float,
@@ -157,7 +157,7 @@ object AggravatedDamage {
       targets
     )
 
-  def burning(resolution: DamageResolution.Value): DamageResolution.Value = {
+private def burning(resolution: DamageResolution.Value): DamageResolution.Value = {
     resolution match {
       case DamageResolution.AggravatedDirect => DamageResolution.AggravatedDirectBurn
       case DamageResolution.AggravatedSplash => DamageResolution.AggravatedSplashBurn
@@ -165,7 +165,7 @@ object AggravatedDamage {
     }
   }
 
-  def basicDamageType(resolution: DamageResolution.Value): DamageType.Value = {
+private def basicDamageType(resolution: DamageResolution.Value): DamageType.Value = {
     resolution match {
       case DamageResolution.AggravatedDirect | DamageResolution.AggravatedDirectBurn =>
         DamageType.Direct

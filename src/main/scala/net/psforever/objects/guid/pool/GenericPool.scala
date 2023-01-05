@@ -16,15 +16,15 @@ class GenericPool(
   private val selector: SpecificSelector = new SpecificSelector
   selector.SelectionIndex = -1
 
-  def Numbers: List[Int] = numbers.toList
+private def Numbers: List[Int] = numbers.toList
 
-  def Count: Int = numbers.length
+private def Count: Int = numbers.length
 
-  def Selector: NumberSelector = selector
+private def Selector: NumberSelector = selector
 
-  def Selector_=(slctr: NumberSelector): Unit = { /* intentionally blank */ }
+private def Selector_=(slctr: NumberSelector): Unit = { /* intentionally blank */ }
 
-  def Get(): Try[Int] = {
+private def Get(): Try[Int] = {
     val specific = selector.SelectionIndex
     selector.SelectionIndex = -1 //clear
     if (specific == -1) {
@@ -45,7 +45,7 @@ class GenericPool(
     }
   }
 
-  def Return(number: Int): Boolean = {
+private def Return(number: Int): Boolean = {
     val index: Int = numbers.indexOf(number)
     if (index > -1) {
       numbers.remove(index)
@@ -65,7 +65,7 @@ object GenericPool {
     * @param poolName na
     * @return a `GenericPool` entity
     */
-  def apply(
+def apply(
              hub: mutable.LongMap[String],
              max: Int,
              poolName: String
@@ -80,7 +80,7 @@ object GenericPool {
     * @param domainSize how many numbers can be supported
     * @return the next available number, or -1
     */
-  def first(list: List[Long], domainSize: Int): Int = {
+private def first(list: List[Long], domainSize: Int): Int = {
     if (list.size < domainSize) {
       val sortedList: List[Long] = 0L +: list.sorted :+ domainSize
       var index: Int = 0
@@ -109,7 +109,7 @@ object GenericPool {
     * @param domainSize how many numbers can be supported
     * @return midpoint of the largest distance between any two of the existing numbers, or -1
     */
-  def rand(list: List[Long], domainSize: Int): Int = {
+private def rand(list: List[Long], domainSize: Int): Int = {
     if (list.size < domainSize) {
       //get a list of all assigned numbers with an appended min and max
       val sortedList: List[Long] = -1L +: list.sorted :+ domainSize.toLong

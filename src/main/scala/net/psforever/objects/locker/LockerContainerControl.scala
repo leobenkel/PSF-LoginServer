@@ -19,15 +19,15 @@ import net.psforever.types.{PlanetSideEmpire, Vector3}
 class LockerContainerControl(locker: LockerContainer, toChannel: String)
   extends Actor
   with ContainableBehavior {
-  def ContainerObject = locker
+private def ContainerObject = locker
 
-  def receive: Receive =
+def receive: Receive =
     containerBehavior
       .orElse {
         case _ => ;
       }
 
-  def MessageDeferredCallback(msg: Any): Unit = {
+private def MessageDeferredCallback(msg: Any): Unit = {
     msg match {
       case Containable.MoveItem(_, item, _) =>
         //momentarily put item back where it was originally
@@ -44,12 +44,12 @@ class LockerContainerControl(locker: LockerContainer, toChannel: String)
     }
   }
 
-  def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
+private def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
     val zone = locker.Zone
     zone.AvatarEvents ! AvatarServiceMessage(toChannel, AvatarAction.ObjectDelete(Service.defaultPlayerGUID, item.GUID))
   }
 
-  def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
+private def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
     val zone       = locker.Zone
     val definition = item.Definition
     item.Faction = PlanetSideEmpire.NEUTRAL
@@ -67,7 +67,7 @@ class LockerContainerControl(locker: LockerContainer, toChannel: String)
     )
   }
 
-  def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
+private def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
     val zone = locker.Zone
     zone.AvatarEvents ! AvatarServiceMessage(
       toChannel,

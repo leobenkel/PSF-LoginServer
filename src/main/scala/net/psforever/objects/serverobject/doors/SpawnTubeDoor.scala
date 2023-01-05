@@ -14,7 +14,7 @@ object SpawnTubeDoor {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `Door` object
     */
-  def Constructor(pos: Vector3, ddef: DoorDefinition)(id: Int, context: ActorContext): Door = {
+private def Constructor(pos: Vector3, ddef: DoorDefinition)(id: Int, context: ActorContext): Door = {
     val obj = Door(ddef)
     obj.Position = pos
     obj.Actor = context.actorOf(Props(classOf[SpawnTubeDoorControl], obj), s"${ddef.Name}_$id")

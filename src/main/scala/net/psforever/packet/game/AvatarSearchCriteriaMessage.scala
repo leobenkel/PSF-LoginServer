@@ -14,8 +14,8 @@ import shapeless.{::, HNil}
   */
 final case class AvatarSearchCriteriaMessage(unk1: PlanetSideGUID, unk2: List[Int]) extends PlanetSideGamePacket {
   type Packet = AvatarSearchCriteriaMessage
-  def opcode = GamePacketOpcode.AvatarSearchCriteriaMessage
-  def encode = AvatarSearchCriteriaMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarSearchCriteriaMessage
+def encode = AvatarSearchCriteriaMessage.encode(this)
 }
 
 object AvatarSearchCriteriaMessage extends Marshallable[AvatarSearchCriteriaMessage] {

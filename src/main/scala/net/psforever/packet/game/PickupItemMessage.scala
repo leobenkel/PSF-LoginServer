@@ -23,8 +23,8 @@ import scodec.codecs._
 final case class PickupItemMessage(item_guid: PlanetSideGUID, player_guid: PlanetSideGUID, unk1: Int, unk2: Int)
     extends PlanetSideGamePacket {
   type Packet = PickupItemMessage
-  def opcode = GamePacketOpcode.PickupItemMessage
-  def encode = PickupItemMessage.encode(this)
+def opcode = GamePacketOpcode.PickupItemMessage
+def encode = PickupItemMessage.encode(this)
 }
 
 object PickupItemMessage extends Marshallable[PickupItemMessage] {

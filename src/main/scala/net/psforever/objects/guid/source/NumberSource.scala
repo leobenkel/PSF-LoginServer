@@ -22,20 +22,20 @@ trait NumberSource {
     * The maximum number that can be produced by this source.
     * @return the max
     */
-  def max: Int
+private def max: Int
 
   /**
     * The count of numbers allocated to this source.
     * @return the count
     */
-  def size: Int
+private def size: Int
 
   /**
     * Select the type of count desired based on the allocation policy of the key.
     * @param policy the allocation policy
     * @return the number of keys belonging to this policy
     */
-  def count(policy: AvailabilityPolicy): Int = {
+private def count(policy: AvailabilityPolicy): Int = {
     policy match {
       case AvailabilityPolicy.Available => countAvailable
       case AvailabilityPolicy.Leased => countUsed
@@ -48,34 +48,34 @@ trait NumberSource {
     * The count of numbers that can still be drawn.
     * @return the count
     */
-  def countAvailable: Int
+private def countAvailable: Int
 
   /**
     * The count of numbers that can not be drawn.
     * @return the count
     */
-  def countUsed: Int
+private def countUsed: Int
 
   /**
     * The count of numbers that can not be drawn but have not yet been assigned to an entity.
     * Could only ever be a non-zero count if the number of used keys is a non-zero count.
     * @return the count
     */
-  def countDangling: Int
+private def countDangling: Int
 
   /**
     * Is this number a member of this number source?
     * @param number the number
     * @return `true`, if it is a member; `false`, otherwise
     */
-  def test(number: Int): Boolean
+private def test(number: Int): Boolean
 
   /**
     * Produce an un-modifiable wrapper for the `Monitor` for this number.
     * @param number the number
     * @return the wrapped `Monitor`
     */
-  def get(number: Int): Option[SecureKey]
+private def get(number: Int): Option[SecureKey]
 
   /**
     * Produce an un-modifiable wrapper for the `Monitor` for this entity,
@@ -83,7 +83,7 @@ trait NumberSource {
     * @param obj the entity
     * @return the wrapped `Monitor`
     */
-  def get(obj: IdentifiableEntity) : Option[SecureKey]
+private def get(obj: IdentifiableEntity) : Option[SecureKey]
 
   /**
     * Produce a modifiable wrapper for the `Monitor` for this number, only if the number has not been used.
@@ -91,14 +91,14 @@ trait NumberSource {
     * @param number the number
     * @return the wrapped `Monitor`, or `None`
     */
-  def getAvailable(number: Int): Option[LoanedKey]
+private def getAvailable(number: Int): Option[LoanedKey]
 
   /**
     * Consume a wrapped `Monitor` and release its number from its previous assignment/use.
     * @param monitor the `Monitor`
     * @return any object previously using this `Monitor`
     */
-  def returnNumber(monitor: SecureKey): Option[IdentifiableEntity] = {
+private def returnNumber(monitor: SecureKey): Option[IdentifiableEntity] = {
     returnNumber(monitor.GUID)
   }
 
@@ -107,7 +107,7 @@ trait NumberSource {
     * @param monitor the `Monitor`
     * @return any object previously using this `Monitor`
     */
-  def returnNumber(monitor: LoanedKey): Option[IdentifiableEntity] = {
+private def returnNumber(monitor: LoanedKey): Option[IdentifiableEntity] = {
     returnNumber(monitor.GUID)
   }
 
@@ -116,12 +116,12 @@ trait NumberSource {
     * @param number the number
     * @return any object previously using this number
     */
-  def returnNumber(number: Int): Option[IdentifiableEntity]
+private def returnNumber(number: Int): Option[IdentifiableEntity]
 
   /**
     * Reset all number `Monitor`s so that their underlying number is not longer treated as assigned.
     * Perform some level of housecleaning to ensure that all dependencies are resolved in some manner.
     * @return a `List` of assignments maintained by all the currently-used number `Monitors`
     */
-  def clear(): List[IdentifiableEntity]
+private def clear(): List[IdentifiableEntity]
 }

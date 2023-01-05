@@ -47,7 +47,7 @@ trait RespondsToZoneEnvironment {
   private var interactWithEnvironmentStop: mutable.HashMap[EnvironmentTrait, RespondsToZoneEnvironment.Interaction] =
     mutable.HashMap[EnvironmentTrait, RespondsToZoneEnvironment.Interaction]()
 
-  def InteractiveObject: PlanetSideServerObject with InteractsWithZone
+private def InteractiveObject: PlanetSideServerObject with InteractsWithZone
 
   val environmentBehavior: Receive = {
     case InteractingWithEnvironment(target, body, optional) =>
@@ -60,17 +60,17 @@ trait RespondsToZoneEnvironment {
       recoverFromEnvironmentInteracting()
   }
 
-  def InteractWith: Option[PieceOfEnvironment] = interactWith
+private def InteractWith: Option[PieceOfEnvironment] = interactWith
 
-  def SetInteraction(attribute: EnvironmentTrait, action: RespondsToZoneEnvironment.Interaction): Unit = {
+private def SetInteraction(attribute: EnvironmentTrait, action: RespondsToZoneEnvironment.Interaction): Unit = {
     interactWithEnvironmentStart += attribute -> action
   }
 
-  def SetInteractionStop(attribute: EnvironmentTrait, action: RespondsToZoneEnvironment.Interaction): Unit = {
+private def SetInteractionStop(attribute: EnvironmentTrait, action: RespondsToZoneEnvironment.Interaction): Unit = {
     interactWithEnvironmentStop += attribute -> action
   }
 
-  def doEnvironmentInteracting(
+private def doEnvironmentInteracting(
       obj: PlanetSideServerObject,
       body: PieceOfEnvironment,
       data: Option[OxygenStateTarget]
@@ -86,7 +86,7 @@ trait RespondsToZoneEnvironment {
     }
   }
 
-  def stopEnvironmentInteracting(
+private def stopEnvironmentInteracting(
       obj: PlanetSideServerObject,
       body: PieceOfEnvironment,
       data: Option[OxygenStateTarget]
@@ -106,7 +106,7 @@ trait RespondsToZoneEnvironment {
     * Reset the environment encounter fields and completely stop whatever is the current mechanic.
     * This does not perform messaging relay either with mounted occupants or with any other service.
     */
-  def recoverFromEnvironmentInteracting(): Unit = {
+private def recoverFromEnvironmentInteracting(): Unit = {
     interactionTimer.cancel()
     interactionTime = 0
     interactWith = None
@@ -126,7 +126,7 @@ object RespondsToZoneEnvironment {
     *         for how long this new change if effect will occur after starting,
     *         and what the starting progress value of this new effect looks like
     */
-  def drowningInWateryConditions(
+private def drowningInWateryConditions(
       obj: PlanetSideServerObject,
       condition: Option[OxygenState],
       completionTime: Long
@@ -165,7 +165,7 @@ object RespondsToZoneEnvironment {
     *         for how long this new change if effect will occur after starting,
     *         and what the starting progress value of this new effect looks like
     */
-  def recoveringFromWateryConditions(
+private def recoveringFromWateryConditions(
       obj: PlanetSideServerObject,
       condition: Option[OxygenState],
       completionTime: Long

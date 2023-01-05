@@ -30,7 +30,7 @@ class InteractWithRadiationCloudsSeatedInVehicle(
     */
   private var skipTargets: List[PlanetSideGUID] = List()
 
-  def Type = RadiationInVehicleInteraction
+private def Type = RadiationInVehicleInteraction
 
   /**
     * Drive into a radiation cloud and all the vehicle's occupants suffer the consequences.
@@ -103,7 +103,7 @@ class InteractWithRadiationCloudsSeatedInVehicle(
     * All that can be done is blanking our retained previous effect targets.
     * @param target the fixed element in this test
     */
-  def resetInteraction(target: InteractsWithZone): Unit = {
+private def resetInteraction(target: InteractsWithZone): Unit = {
     skipTargets = List()
   }
 }

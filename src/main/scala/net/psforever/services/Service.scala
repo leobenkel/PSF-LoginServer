@@ -16,7 +16,7 @@ object Service {
 }
 
 trait GenericEventBusMsg {
-  def channel: String
+private def channel: String
 }
 
 class GenericEventBus[A <: GenericEventBusMsg] extends ActorEventBus with SubchannelClassification {

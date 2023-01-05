@@ -17,16 +17,16 @@ class BoomerDeployable(cdef: ExplosiveDeployableDefinition)
   extends ExplosiveDeployable(cdef) {
   private var trigger: Option[BoomerTrigger] = None
 
-  def Trigger: Option[BoomerTrigger] = trigger
+private def Trigger: Option[BoomerTrigger] = trigger
 
-  def Trigger_=(item: BoomerTrigger): Option[BoomerTrigger] = {
+private def Trigger_=(item: BoomerTrigger): Option[BoomerTrigger] = {
     if (trigger.isEmpty) { //can only set trigger once
       trigger = Some(item)
     }
     Trigger
   }
 
-  def Trigger_=(item: Option[BoomerTrigger]): Option[BoomerTrigger] = {
+private def Trigger_=(item: Option[BoomerTrigger]): Option[BoomerTrigger] = {
     if (item.isEmpty) {
       trigger = None
     }
@@ -42,7 +42,7 @@ class BoomerDeployableDefinition(private val objectId: Int) extends ExplosiveDep
 }
 
 object BoomerDeployableDefinition {
-  def apply(dtype: DeployedItem.Value): BoomerDeployableDefinition = {
+def apply(dtype: DeployedItem.Value): BoomerDeployableDefinition = {
     new BoomerDeployableDefinition(dtype.id)
   }
 }
@@ -50,7 +50,7 @@ object BoomerDeployableDefinition {
 class BoomerDeployableControl(mine: BoomerDeployable)
   extends ExplosiveDeployableControl(mine) {
 
-  def receive: Receive =
+def receive: Receive =
     commonMineBehavior
       .orElse {
         case CommonMessages.Use(player, Some(trigger: BoomerTrigger)) if mine.Trigger.contains(trigger) =>

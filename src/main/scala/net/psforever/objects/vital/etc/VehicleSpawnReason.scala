@@ -15,9 +15,9 @@ import net.psforever.objects.vital.resolution.{DamageAndResistance, DamageResist
   */
 final case class VehicleSpawnReason(driver: SourceEntry, vehicle: SourceEntry)
   extends DamageReason {
-  def resolution: DamageResolution.Value = DamageResolution.Resolved
+private def resolution: DamageResolution.Value = DamageResolution.Resolved
 
-  def same(test: DamageReason): Boolean = test match {
+private def same(test: DamageReason): Boolean = test match {
     case cause: VehicleSpawnReason =>
       driver.Name.equals(cause.driver.Name) &&
       (vehicle.Definition eq cause.vehicle.Definition)
@@ -25,9 +25,9 @@ final case class VehicleSpawnReason(driver: SourceEntry, vehicle: SourceEntry)
       false
   }
 
-  def source: DamageProperties = VehicleSpawnReason.source
+private def source: DamageProperties = VehicleSpawnReason.source
 
-  def damageModel: DamageAndResistance = VehicleSpawnReason.drm
+private def damageModel: DamageAndResistance = VehicleSpawnReason.drm
 
   override def adversary : Option[SourceEntry] = Some(driver)
 

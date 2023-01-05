@@ -29,18 +29,18 @@ trait TurretDefinition
     */
   private var hasReserveAmmunition: Boolean = false
 
-  def WeaponPaths: mutable.HashMap[Int, mutable.HashMap[TurretUpgrade.Value, ToolDefinition]] = weaponPaths
+private def WeaponPaths: mutable.HashMap[Int, mutable.HashMap[TurretUpgrade.Value, ToolDefinition]] = weaponPaths
 
-  def FactionLocked: Boolean = factionLocked
+private def FactionLocked: Boolean = factionLocked
 
-  def FactionLocked_=(ownable: Boolean): Boolean = {
+private def FactionLocked_=(ownable: Boolean): Boolean = {
     factionLocked = ownable
     FactionLocked
   }
 
-  def ReserveAmmunition: Boolean = hasReserveAmmunition
+private def ReserveAmmunition: Boolean = hasReserveAmmunition
 
-  def ReserveAmmunition_=(reserved: Boolean): Boolean = {
+private def ReserveAmmunition_=(reserved: Boolean): Boolean = {
     hasReserveAmmunition = reserved
     ReserveAmmunition
   }

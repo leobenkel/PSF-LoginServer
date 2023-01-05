@@ -7,8 +7,8 @@ import scodec.codecs._
 
 final case class KeepAliveMessage(code: Int = 0) extends PlanetSideGamePacket {
   type Packet = KeepAliveMessage
-  def opcode = GamePacketOpcode.KeepAliveMessage
-  def encode = KeepAliveMessage.encode(this)
+def opcode = GamePacketOpcode.KeepAliveMessage
+def encode = KeepAliveMessage.encode(this)
 }
 
 object KeepAliveMessage extends Marshallable[KeepAliveMessage] {

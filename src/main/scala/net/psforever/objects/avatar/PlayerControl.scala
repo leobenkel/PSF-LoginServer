@@ -50,21 +50,21 @@ class PlayerControl(player: Player, avatarActor: typed.ActorRef[AvatarActor.Comm
     with AggravatedBehavior
     with AuraEffectBehavior
     with RespondsToZoneEnvironment {
-  def JammableObject = player
+private def JammableObject = player
 
-  def DamageableObject = player
+private def DamageableObject = player
 
-  def ContainerObject = player
+private def ContainerObject = player
 
-  def AggravatedObject = player
+private def AggravatedObject = player
 
-  def AuraTargetObject = player
+private def AuraTargetObject = player
   ApplicableEffect(Aura.Plasma)
   ApplicableEffect(Aura.Napalm)
   ApplicableEffect(Aura.Comet)
   ApplicableEffect(Aura.Fire)
 
-  def InteractiveObject = player
+private def InteractiveObject = player
   SetInteraction(EnvironmentAttribute.Water, doInteractingWithWater)
   SetInteraction(EnvironmentAttribute.Lava, doInteractingWithLava)
   SetInteraction(EnvironmentAttribute.Death, doInteractingWithDeath)
@@ -94,7 +94,7 @@ private val lockerControlAgent: ActorRef = {
     EndAllAggravation()
   }
 
-  def receive: Receive =
+def receive: Receive =
     jammableBehavior
       .orElse(takesDamage)
       .orElse(aggravatedBehavior)
@@ -587,7 +587,7 @@ private val lockerControlAgent: ActorRef = {
         case _ => ;
       }
 
-  def setExoSuit(exosuit: ExoSuitType.Value, subtype: Int): Boolean = {
+private def setExoSuit(exosuit: ExoSuitType.Value, subtype: Int): Boolean = {
     var toDelete : List[InventoryItem] = Nil
     val originalSuit = player.ExoSuit
     val originalSubtype = Loadout.DetermineSubtype(player)
@@ -695,7 +695,7 @@ private val lockerControlAgent: ActorRef = {
     }
   }
 
-  def loseDeployableOwnership(obj: Deployable): Boolean = {
+private def loseDeployableOwnership(obj: Deployable): Boolean = {
     if (player.avatar.deployables.Remove(obj)) {
       obj.Actor ! Deployable.Ownership(None)
       player.Zone.LocalEvents ! LocalServiceMessage(player.Name, LocalAction.DeployableUIFor(obj.Definition.Item))
@@ -706,7 +706,7 @@ private val lockerControlAgent: ActorRef = {
     }
   }
 
-  def setupDeployable(obj: Deployable, tool: ConstructionItem): Unit = {
+private def setupDeployable(obj: Deployable, tool: ConstructionItem): Unit = {
     if (deployablePair.isEmpty) {
       val zone = player.Zone
       val deployables = player.avatar.deployables
@@ -778,7 +778,7 @@ private val lockerControlAgent: ActorRef = {
     * na
     * @param target na
     */
-  def HandleDamage(
+private def HandleDamage(
                     target: Player,
                     cause: DamageResult,
                     damageToHealth: Int,
@@ -816,7 +816,7 @@ private val lockerControlAgent: ActorRef = {
     }
   }
 
-  def DamageAwareness(
+private def DamageAwareness(
                        target: Player,
                        cause: DamageResult,
                        damageToHealth: Int,
@@ -939,7 +939,7 @@ private val lockerControlAgent: ActorRef = {
     * @param target na
     * @param cause na
     */
-  def DestructionAwareness(target: Player, cause: DamageResult): Unit = {
+private def DestructionAwareness(target: Player, cause: DamageResult): Unit = {
     val player_guid  = target.GUID
     val pos          = target.Position
     val respawnTimer = 300000 //milliseconds
@@ -1041,7 +1041,7 @@ private val lockerControlAgent: ActorRef = {
     }
   }
 
-  def suicide() : Unit = {
+private def suicide() : Unit = {
     if (player.Health > 0 || player.isAlive) {
       PerformDamage(
         player,
@@ -1110,7 +1110,7 @@ private val lockerControlAgent: ActorRef = {
       case _ => ;
     }
 
-  def RepairToolValue(item: Tool): Float = {
+private def RepairToolValue(item: Tool): Float = {
     item.AmmoSlot.Box.Definition.repairAmount +
     (if (player.ExoSuit != ExoSuitType.MAX) {
       item.FireMode.Add.Damage0
@@ -1120,7 +1120,7 @@ private val lockerControlAgent: ActorRef = {
     })
   }
 
-  def MessageDeferredCallback(msg: Any): Unit = {
+private def MessageDeferredCallback(msg: Any): Unit = {
     msg match {
       case Containable.MoveItem(_, item, _) =>
         //momentarily depict item back where it was originally
@@ -1134,7 +1134,7 @@ private val lockerControlAgent: ActorRef = {
     }
   }
 
-  def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
+private def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
     val obj       = ContainerObject
     val zone      = obj.Zone
     val events    = zone.AvatarEvents
@@ -1152,7 +1152,7 @@ private val lockerControlAgent: ActorRef = {
     events ! AvatarServiceMessage(toChannel, AvatarAction.ObjectDelete(Service.defaultPlayerGUID, item.GUID))
   }
 
-  def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
+private def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
     val obj        = ContainerObject
     val guid       = obj.GUID
     val zone       = obj.Zone
@@ -1197,7 +1197,7 @@ private val lockerControlAgent: ActorRef = {
     }
   }
 
-  def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
+private def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
     val obj       = ContainerObject
     val zone      = obj.Zone
     val toChannel = if (player.isBackpack) {
@@ -1213,7 +1213,7 @@ private val lockerControlAgent: ActorRef = {
     )
   }
 
-  def UpdateAuraEffect(target: AuraEffectBehavior.Target) : Unit = {
+private def UpdateAuraEffect(target: AuraEffectBehavior.Target) : Unit = {
     import net.psforever.services.avatar.{AvatarAction, AvatarServiceMessage}
     val zone = target.Zone
     val value = target.Aura.foldLeft(0)(_ + PlayerControl.auraEffectToAttributeValue(_))
@@ -1228,7 +1228,7 @@ private val lockerControlAgent: ActorRef = {
     * @param data additional interaction information, if applicable;
     *             for players, this will be data from any mounted vehicles
     */
-  def doInteractingWithWater(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+private def doInteractingWithWater(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
     val (effect: Boolean, time: Long, percentage: Float) =
       RespondsToZoneEnvironment.drowningInWateryConditions(obj, submergedCondition, interactionTime)
     if (effect) {
@@ -1256,7 +1256,7 @@ private val lockerControlAgent: ActorRef = {
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithLava(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+private def doInteractingWithLava(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
     if (player.isAlive) {
       PerformDamage(
         player,
@@ -1281,11 +1281,11 @@ private val lockerControlAgent: ActorRef = {
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithDeath(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+private def doInteractingWithDeath(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
     suicide()
   }
 
-  def doInteractingWithGantryField(
+private def doInteractingWithGantryField(
                                     obj: PlanetSideServerObject,
                                     body: PieceOfEnvironment,
                                     data: Option[OxygenStateTarget]
@@ -1323,7 +1323,7 @@ private val lockerControlAgent: ActorRef = {
     * @param body the environment
     * @param data additional interaction information, if applicable
     */
-  def doInteractingWithMovementTrigger(
+private def doInteractingWithMovementTrigger(
                                         obj: PlanetSideServerObject,
                                         body: PieceOfEnvironment,
                                         data: Option[OxygenStateTarget]
@@ -1339,7 +1339,7 @@ private val lockerControlAgent: ActorRef = {
     * @param data additional interaction information, if applicable;
     *             for players, this will be data from any mounted vehicles
     */
-  def stopInteractingWithWater(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
+private def stopInteractingWithWater(obj: PlanetSideServerObject, body: PieceOfEnvironment, data: Option[OxygenStateTarget]): Unit = {
     val (effect: Boolean, time: Long, percentage: Float) =
       RespondsToZoneEnvironment.recoveringFromWateryConditions(obj, submergedCondition, interactionTime)
     if (percentage == 100f) {
@@ -1395,11 +1395,11 @@ object PlayerControl {
     case _           => 0
   }
 
-  def sendResponse(zone: Zone, channel: String, msg: PlanetSideGamePacket): Unit = {
+private def sendResponse(zone: Zone, channel: String, msg: PlanetSideGamePacket): Unit = {
     zone.AvatarEvents ! AvatarServiceMessage(channel, AvatarAction.SendResponse(Service.defaultPlayerGUID, msg))
   }
 
-  def maxRestriction(player: Player, slot: Int): Boolean = {
+private def maxRestriction(player: Player, slot: Int): Boolean = {
     if (player.ExoSuit == ExoSuitType.MAX) {
       slot != 0
     } else {

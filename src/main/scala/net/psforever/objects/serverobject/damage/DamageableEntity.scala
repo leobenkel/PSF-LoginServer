@@ -124,7 +124,7 @@ trait DamageableEntity extends Damageable {
 }
 
 object DamageableEntity {
-  def attributionTo(cause: DamageResult, zone: Zone, default: PlanetSideGUID = PlanetSideGUID(0)): PlanetSideGUID = {
+private def attributionTo(cause: DamageResult, zone: Zone, default: PlanetSideGUID = PlanetSideGUID(0)): PlanetSideGUID = {
     (cause.adversarial match {
       case Some(adversarial) => zone.LivePlayers.find { p => adversarial.attacker.Name.equals(p.Name) }
       case None              => None
@@ -152,7 +152,7 @@ object DamageableEntity {
     * @param target the entity being damaged
     * @param cause historical information about the damage
     */
-  def DamageAwareness(target: Damageable.Target, cause: DamageResult, amount: Int): Unit = {
+private def DamageAwareness(target: Damageable.Target, cause: DamageResult, amount: Int): Unit = {
     if (Damageable.CanJammer(target, cause.interaction)) {
       target.Actor ! JammableUnit.Jammered(cause)
     }
@@ -161,7 +161,7 @@ object DamageableEntity {
     }
   }
 
-  def DamageToHealth(target: Damageable.Target, cause: DamageResult, amount: Int): Boolean = {
+private def DamageToHealth(target: Damageable.Target, cause: DamageResult, amount: Int): Boolean = {
     if (amount > 0 && !target.Destroyed) {
       val zone = target.Zone
       zone.AvatarEvents ! AvatarServiceMessage(
@@ -189,7 +189,7 @@ object DamageableEntity {
     * @param target the entity being destroyed
     * @param cause historical information about the damage
     */
-  def DestructionAwareness(target: Damageable.Target, cause: DamageResult): Unit = {
+private def DestructionAwareness(target: Damageable.Target, cause: DamageResult): Unit = {
     //un-jam
     target.Actor ! JammableUnit.ClearJammeredSound()
     target.Actor ! JammableUnit.ClearJammeredStatus()

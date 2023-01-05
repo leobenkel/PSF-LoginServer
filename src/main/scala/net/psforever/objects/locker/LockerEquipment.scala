@@ -33,9 +33,9 @@ class LockerEquipment(locker: LockerContainer)
 
   override def Faction: PlanetSideEmpire.Value = obj.Faction
 
-  def Inventory: GridInventory = obj.Inventory
+private def Inventory: GridInventory = obj.Inventory
 
-  def VisibleSlots: Set[Int] = Set.empty[Int]
+private def VisibleSlots: Set[Int] = Set.empty[Int]
 
-  def Definition: EquipmentDefinition = obj.Definition
+private def Definition: EquipmentDefinition = obj.Definition
 }

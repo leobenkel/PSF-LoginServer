@@ -13,8 +13,8 @@ import scodec.codecs._
 final case class SetEmpireMessage(object_guid: PlanetSideGUID, empire: PlanetSideEmpire.Value)
     extends PlanetSideGamePacket {
   type Packet = SetEmpireMessage
-  def opcode = GamePacketOpcode.SetEmpireMessage
-  def encode = SetEmpireMessage.encode(this)
+def opcode = GamePacketOpcode.SetEmpireMessage
+def encode = SetEmpireMessage.encode(this)
 }
 
 object SetEmpireMessage extends Marshallable[SetEmpireMessage] {

@@ -15,8 +15,8 @@ final case class ItemTransactionMessage(
     item_guid: PlanetSideGUID
 ) extends PlanetSideGamePacket {
   type Packet = ItemTransactionMessage
-  def opcode = GamePacketOpcode.ItemTransactionMessage
-  def encode = ItemTransactionMessage.encode(this)
+def opcode = GamePacketOpcode.ItemTransactionMessage
+def encode = ItemTransactionMessage.encode(this)
 }
 
 object ItemTransactionMessage extends Marshallable[ItemTransactionMessage] {

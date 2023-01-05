@@ -14,7 +14,7 @@ import org.specs2.mutable._
 import scala.util.Success
 
 class PlayerTest extends Specification {
-  def TestPlayer(
+private def TestPlayer(
       name: String,
       faction: PlanetSideEmpire.Value,
       sex: CharacterSex,

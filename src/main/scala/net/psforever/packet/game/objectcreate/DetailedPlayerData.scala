@@ -65,7 +65,7 @@ object DetailedPlayerData extends Marshallable[DetailedPlayerData] {
     *                   technically, always `DrawnSlot.None`, but the field is preserved to maintain similarity
     * @return a `DetailedPlayerData` object
     */
-  def apply(
+def apply(
       basic_appearance: Int => CharacterAppearanceData,
       character_data: Option[Int] => DetailedCharacterData,
       inventory: InventoryData,
@@ -85,7 +85,7 @@ object DetailedPlayerData extends Marshallable[DetailedPlayerData] {
     *                   technically, always `DrawnSlot.None`, but the field is preserved to maintain similarity
     * @return a `DetailedPlayerData` object
     */
-  def apply(
+def apply(
       basic_appearance: Int => CharacterAppearanceData,
       character_data: Option[Int] => DetailedCharacterData,
       drawn_slot: DrawnSlot.Value
@@ -105,7 +105,7 @@ object DetailedPlayerData extends Marshallable[DetailedPlayerData] {
     * @param drawn_slot the holster that is depicted as exposed, or "drawn"
     * @return a `DetailedPlayerData` object
     */
-  def apply(
+def apply(
       pos: PlacementData,
       basic_appearance: Int => CharacterAppearanceData,
       character_data: Option[Int] => DetailedCharacterData,
@@ -126,7 +126,7 @@ object DetailedPlayerData extends Marshallable[DetailedPlayerData] {
     * @param drawn_slot the holster that is depicted as exposed, or "drawn"
     * @return a `DetailedPlayerData` object
     */
-  def apply(
+def apply(
       pos: PlacementData,
       basic_appearance: Int => CharacterAppearanceData,
       character_data: Option[Int] => DetailedCharacterData,
@@ -136,7 +136,7 @@ object DetailedPlayerData extends Marshallable[DetailedPlayerData] {
     DetailedPlayerData(Some(pos), appearance, character_data(appearance.altModelBit), None, drawn_slot)(true)
   }
 
-  def codec(position_defined: Boolean): Codec[DetailedPlayerData] =
+private def codec(position_defined: Boolean): Codec[DetailedPlayerData] =
     (conditional(position_defined, "pos" | PlacementData.codec) >>:~ { pos =>
       ("basic_appearance" | CharacterAppearanceData.codec(PlayerData.PaddingOffset(pos))) >>:~ { app =>
         ("character_data" | DetailedCharacterData.codec(app.a.exosuit, app.altModelBit)) ::

@@ -86,7 +86,7 @@ class IFFLockControl3Test extends ActorTest {
 }
 
 object IFFLockControlTest {
-  def SetUpAgents(faction: PlanetSideEmpire.Value)(implicit system: ActorSystem): (Player, IFFLock) = {
+private def SetUpAgents(faction: PlanetSideEmpire.Value)(implicit system: ActorSystem): (Player, IFFLock) = {
     val lock = IFFLock(GlobalDefinitions.lock_external)
     lock.Actor = system.actorOf(Props(classOf[IFFLockControl], lock), "lock-control")
     lock.Owner = new Building(

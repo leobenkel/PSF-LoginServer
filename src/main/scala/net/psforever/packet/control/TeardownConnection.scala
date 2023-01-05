@@ -7,8 +7,8 @@ import scodec.codecs._
 
 final case class TeardownConnection(targetNonce: Long) extends PlanetSideControlPacket {
   type Packet = TeardownConnection
-  def opcode = ControlPacketOpcode.TeardownConnection
-  def encode = TeardownConnection.encode(this)
+def opcode = ControlPacketOpcode.TeardownConnection
+def encode = TeardownConnection.encode(this)
 }
 
 object TeardownConnection extends Marshallable[TeardownConnection] {

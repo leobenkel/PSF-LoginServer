@@ -27,13 +27,13 @@ trait PoweredAmenityControl extends Actor {
       unpoweredStateLogic.apply(msg)
   }
 
-  def isPowered: Boolean = powered
+private def isPowered: Boolean = powered
 
-  def poweredStateLogic: Receive
+private def poweredStateLogic: Receive
 
-  def unpoweredStateLogic: Receive
+private def unpoweredStateLogic: Receive
 
-  def powerTurnOnCallback(): Unit
+private def powerTurnOnCallback(): Unit
 
-  def powerTurnOffCallback(): Unit
+private def powerTurnOffCallback(): Unit
 }

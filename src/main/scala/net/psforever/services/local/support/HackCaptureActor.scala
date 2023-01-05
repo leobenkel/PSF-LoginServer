@@ -28,7 +28,7 @@ class HackCaptureActor extends Actor {
   /** A `List` of currently hacked server objects */
   private var hackedObjects: List[HackCaptureActor.HackEntry] = Nil
 
-  def receive: Receive = {
+def receive: Receive = {
     case HackCaptureActor.StartCaptureTerminalHack(target, zone, unk1, unk2, startTime) =>
       log.trace(s"StartCaptureTerminalHack: ${target.GUID} is hacked.")
         val duration = target.Definition match {
@@ -269,7 +269,7 @@ object HackCaptureActor {
       hack_timestamp: Long
   )
 
-  def GetHackingFaction(terminal: CaptureTerminal): Option[PlanetSideEmpire.Value] = {
+private def GetHackingFaction(terminal: CaptureTerminal): Option[PlanetSideEmpire.Value] = {
     terminal.HackedBy match {
       case Some(Hackable.HackInfo(_, _, hackingFaction, _, _, _)) =>
         Some(hackingFaction)
@@ -277,7 +277,7 @@ object HackCaptureActor {
     }
   }
 
-  def GetHackUpdateAttributeValue(terminal: CaptureTerminal, isResecured: Boolean): Long = {
+private def GetHackUpdateAttributeValue(terminal: CaptureTerminal, isResecured: Boolean): Long = {
     if (isResecured) {
       17039360L
     } else {

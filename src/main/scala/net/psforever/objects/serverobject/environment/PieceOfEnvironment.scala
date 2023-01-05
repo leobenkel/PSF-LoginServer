@@ -26,7 +26,7 @@ trait PieceOfEnvironment extends BlockMapEntity {
     * @return `true`, if the point is sufficiently "deep";
     *        `false`, otherwise
     */
-  def testInteraction(pos: Vector3, varDepth: Float): Boolean = collision.testInteraction(pos, varDepth)
+  private def testInteraction(pos: Vector3, varDepth: Float): Boolean = collision.testInteraction(pos, varDepth)
 
   /**
     * Did the test point move into or leave the bounds of the represented environment since its previous test?
@@ -37,27 +37,27 @@ trait PieceOfEnvironment extends BlockMapEntity {
     *        `Some(false)`, if the point has left the sufficiently "deep" region;
     *        `None`, otherwise
     */
-  def testStepIntoInteraction(pos: Vector3, previousPos: Vector3, varDepth: Float): Option[Boolean] =
+  private def testStepIntoInteraction(pos: Vector3, previousPos: Vector3, varDepth: Float): Option[Boolean] =
     PieceOfEnvironment.testStepIntoInteraction(body = this, pos, previousPos, varDepth)
 
-  def Position: Vector3 = collision.bounding.center.asVector3 + Vector3.z(collision.altitude)
+  private def Position: Vector3 = collision.bounding.center.asVector3 + Vector3.z(collision.altitude)
 
-  def Position_=(vec: Vector3): Vector3 = Position
+  private def Position_=(vec: Vector3): Vector3 = Position
 
-  def Orientation: Vector3 = Vector3.Zero
+  private def Orientation: Vector3 = Vector3.Zero
 
-  def Orientation_=(vec: Vector3): Vector3 = Vector3.Zero
+  private def Orientation_=(vec: Vector3): Vector3 = Vector3.Zero
 
-  def Velocity: Option[Vector3] = None
+  private def Velocity: Option[Vector3] = None
 
-  def Velocity_=(vec: Option[Vector3]): Option[Vector3] = None
+  private def Velocity_=(vec: Option[Vector3]): Option[Vector3] = None
 }
 
 /**
   * A general description of environment and its interactive possibilities.
   */
 sealed abstract class EnvironmentTrait extends EnumEntry {
-  def canInteractWith(obj: PlanetSideGameObject): Boolean
+   def canInteractWith(obj: PlanetSideGameObject): Boolean
 }
 
 object EnvironmentAttribute extends Enum[EnvironmentTrait] {
@@ -130,7 +130,7 @@ object EnvironmentAttribute extends Enum[EnvironmentTrait] {
 final case class SeaLevel(attribute: EnvironmentTrait, altitude: Float) extends PieceOfEnvironment {
   private val planar = DeepPlane(altitude)
 
-  def collision: EnvironmentCollision = planar
+  private def collision: EnvironmentCollision = planar
 
   override def Position: Vector3 = Vector3.Zero
 }
@@ -173,14 +173,14 @@ final case class GantryDenialField(
     mountPoint: Int,
     collision: EnvironmentCollision
 ) extends PieceOfEnvironment {
-  def attribute = EnvironmentAttribute.GantryDenialField
+  private def attribute = EnvironmentAttribute.GantryDenialField
 }
 
 final case class GeneralMovementField(
     triggerAction: PlanetSideGameObject => Unit,
     collision: EnvironmentCollision
 ) extends PieceOfEnvironment {
-  def attribute = EnvironmentAttribute.MovementFieldTrigger
+  private def attribute = EnvironmentAttribute.MovementFieldTrigger
 }
 
 object PieceOfEnvironment {
@@ -195,7 +195,7 @@ object PieceOfEnvironment {
     *        `Some(false)`, if the point has left the sufficiently "deep" region;
     *        `None`, if the described points only exist outside of or only exists inside of the critical region
     */
-  def testStepIntoInteraction(
+  private def testStepIntoInteraction(
       body: PieceOfEnvironment,
       pos: Vector3,
       previousPos: Vector3,

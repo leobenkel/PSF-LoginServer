@@ -16,8 +16,8 @@ import scodec.codecs._
   */
 final case class WeaponDryFireMessage(weapon_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = WeaponDryFireMessage
-  def opcode = GamePacketOpcode.WeaponDryFireMessage
-  def encode = WeaponDryFireMessage.encode(this)
+def opcode = GamePacketOpcode.WeaponDryFireMessage
+def encode = WeaponDryFireMessage.encode(this)
 }
 
 object WeaponDryFireMessage extends Marshallable[WeaponDryFireMessage] {

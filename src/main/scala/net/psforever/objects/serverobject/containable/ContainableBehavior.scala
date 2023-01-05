@@ -30,7 +30,7 @@ sealed trait DeferrableMsg extends ContainableMsg
   */
 trait ContainableBehavior {
   _: Actor =>
-  def ContainerObject: PlanetSideServerObject with Container
+private def ContainerObject: PlanetSideServerObject with Container
 
   /**
     * A flag for handling deferred messages during an attempt at complicated item movement (`MoveItem`) procedures.
@@ -109,7 +109,7 @@ trait ContainableBehavior {
     * @see `DeferrableMsg`
     * @param msg the message to defer
     */
-  def RepeatMessageLater(msg: Any): Unit = {
+private def RepeatMessageLater(msg: Any): Unit = {
     import scala.concurrent.ExecutionContext.Implicits.global
     context.system.scheduler.scheduleOnce(100 milliseconds, self, msg)
   }
@@ -117,21 +117,21 @@ trait ContainableBehavior {
   /**
     * Increment the flag for blocking messages.
     */
-  def Wait(): Unit = {
+private def Wait(): Unit = {
     waitOnMoveItemOps = math.min(waitOnMoveItemOps + 1, 2)
   }
 
   /**
     * Decrement the flag for blocking messages.
     */
-  def Resume(): Unit = {
+private def Resume(): Unit = {
     waitOnMoveItemOps = math.max(0, waitOnMoveItemOps - 1)
   }
 
   /**
     * Stop blocking messages.
     */
-  def Reset(): Unit = {
+private def Reset(): Unit = {
     waitOnMoveItemOps = 0
   }
 
@@ -317,7 +317,7 @@ trait ContainableBehavior {
     * To be implemented.
     * @param msg the deferred message
     */
-  def MessageDeferredCallback(msg: Any): Unit
+private def MessageDeferredCallback(msg: Any): Unit
 
   /**
     * Reaction to an item being removed a container.
@@ -325,7 +325,7 @@ trait ContainableBehavior {
     * @param item the item that was removed
     * @param slot the slot from which is was removed
     */
-  def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit
+private def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit
 
   /**
     * Reaction to an item being placed into a container.
@@ -333,7 +333,7 @@ trait ContainableBehavior {
     * @param item the item that was removed
     * @param slot the slot from which is was removed
     */
-  def PutItemInSlotCallback(item: Equipment, slot: Int): Unit
+private def PutItemInSlotCallback(item: Equipment, slot: Int): Unit
 
   /**
     * Reaction to the existence of a swap item being produced from a container into the environment.
@@ -341,7 +341,7 @@ trait ContainableBehavior {
     * @param item the item that was removed
     * @param fromSlot the slot from where the item was removed (where it previous was)
     */
-  def SwapItemCallback(item: Equipment, fromSlot: Int): Unit
+private def SwapItemCallback(item: Equipment, fromSlot: Int): Unit
 }
 
 object ContainableBehavior {
@@ -374,7 +374,7 @@ object ContainableBehavior {
     *         the second is the item again, if it has been removed;
     *         will use `(None, None)` to report failure
     */
-  def TryRemoveItemFromSlot(
+private def TryRemoveItemFromSlot(
       source: PlanetSideServerObject with Container,
       item: Equipment
   ): (Option[Int], Option[Equipment]) = {
@@ -405,7 +405,7 @@ object ContainableBehavior {
     *         the second is the item, if it has been removed;
     *         will use `(None, None)` to report failure
     */
-  def TryRemoveItemFromSlot(
+private def TryRemoveItemFromSlot(
       source: PlanetSideServerObject with Container,
       slot: Int
   ): (Option[Int], Option[Equipment]) = {
@@ -436,7 +436,7 @@ object ContainableBehavior {
     * @return the results of the insertion test, if an insertion can be permitted;
     *         `None`, otherwise, and the insertion is not permitted
     */
-  def TestPutItemInSlot(
+private def TestPutItemInSlot(
       destination: PlanetSideServerObject with Container,
       item: Equipment,
       dest: Int
@@ -465,7 +465,7 @@ object ContainableBehavior {
     *         the first is `true` if the insertion occurred; and, `false`, otherwise
     *         the second is an optional item that was removed from a coincidental position in the container ("swap item")
     */
-  def TryPutItemInSlot(
+private def TryPutItemInSlot(
       destination: PlanetSideServerObject with Container,
       item: Equipment,
       dest: Int
@@ -499,7 +499,7 @@ object ContainableBehavior {
     * @return `true` if the insertion occurred;
     *        `false`, otherwise
     */
-  def TryPutItemInSlotOnly(destination: PlanetSideServerObject with Container, item: Equipment, dest: Int): Boolean = {
+private def TryPutItemInSlotOnly(destination: PlanetSideServerObject with Container, item: Equipment, dest: Int): Boolean = {
     ContainableBehavior.TestPutItemInSlot(destination, item, dest).contains(Nil) && (destination.Slot(dest).Equipment =
       item).contains(item)
   }
@@ -512,7 +512,7 @@ object ContainableBehavior {
     * @return the slot index of the insertion point;
     *         `None`, if a clean insertion is not possible
     */
-  def TryPutItemAway(destination: PlanetSideServerObject with Container, item: Equipment): Option[Int] = {
+private def TryPutItemAway(destination: PlanetSideServerObject with Container, item: Equipment): Option[Int] = {
     destination.Fit(item) match {
       case out @ Some(dest)
           if ContainableBehavior.PermitEquipmentStow(destination, item, dest) && (destination.Slot(dest).Equipment = item)
@@ -533,7 +533,7 @@ object ContainableBehavior {
     * @param dest in which specific slot the insertion is first tested (upper left corner of item)
     * @return na
     */
-  def TryPutItemInSlotOrAway(
+private def TryPutItemInSlotOrAway(
       destination: PlanetSideServerObject with Container,
       item: Equipment,
       dest: Option[Int]
@@ -562,7 +562,7 @@ object ContainableBehavior {
     * @param dest in which specific slot the insertion is first tested (upper left corner of item)
     * @return na
     */
-  def TryPutItemInSlotOnlyOrAway(
+private def TryPutItemInSlotOnlyOrAway(
       destination: PlanetSideServerObject with Container,
       item: Equipment,
       dest: Option[Int]
@@ -594,7 +594,7 @@ object ContainableBehavior {
     * @return `true`, if the type of equipment object is allowed to be removed from the containing entity;
     *        `false`, otherwise
     */
-  def PermitEquipmentExtract(
+private def PermitEquipmentExtract(
                               source: PlanetSideServerObject with Container,
                               equipment: Equipment,
                               slot: Int
@@ -619,7 +619,7 @@ object ContainableBehavior {
     * @return `true`, if the object is allowed to contain the type of equipment object;
     *        `false`, otherwise
     */
-  def PermitEquipmentStow(
+private def PermitEquipmentStow(
                            destination: PlanetSideServerObject with Container,
                            equipment: Equipment,
                            dest: Int
@@ -660,7 +660,7 @@ object ContainableBehavior {
     * @param tplayer the player
     * @return true if the item is to be dropped; false, otherwise
     */
-  def DropPredicate(tplayer: Player): InventoryItem => Boolean =
+private def DropPredicate(tplayer: Player): InventoryItem => Boolean =
     entry => {
       val objDef  = entry.obj.Definition
       val faction = GlobalDefinitions.isFactionEquipment(objDef)

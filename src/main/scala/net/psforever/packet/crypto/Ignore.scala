@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class Ignore(data: ByteVector) extends PlanetSideCryptoPacket {
   type Packet = Ignore
-  def opcode = CryptoPacketOpcode.Ignore
-  def encode = Ignore.encode(this)
+def opcode = CryptoPacketOpcode.Ignore
+def encode = Ignore.encode(this)
 }
 
 object Ignore extends Marshallable[Ignore] {

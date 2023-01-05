@@ -13,7 +13,7 @@ import net.psforever.types.PlanetSideGUID
   */
 class InventoryItem(val obj: Equipment, var start: Int = 0) {
   //TODO eventually move this object from storing the item directly to just storing its GUID?
-  def GUID: PlanetSideGUID = obj.GUID
+  private def GUID: PlanetSideGUID = obj.GUID
 }
 
 object InventoryItem {

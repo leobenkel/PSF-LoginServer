@@ -13,8 +13,8 @@ import scodec.codecs._
   */
 final case class ConnectToWorldMessage(server: String, serverAddress: String, port: Int) extends PlanetSideGamePacket {
   type Packet = ConnectToWorldMessage
-  def opcode = GamePacketOpcode.ConnectToWorldMessage
-  def encode = ConnectToWorldMessage.encode(this)
+def opcode = GamePacketOpcode.ConnectToWorldMessage
+def encode = ConnectToWorldMessage.encode(this)
 }
 
 object ConnectToWorldMessage extends Marshallable[ConnectToWorldMessage] {

@@ -34,8 +34,8 @@ final case class InvalidTerrainMessage(
     pos: Vector3
 ) extends PlanetSideGamePacket {
   type Packet = InvalidTerrainMessage
-  def opcode = GamePacketOpcode.InvalidTerrainMessage
-  def encode = InvalidTerrainMessage.encode(this)
+def opcode = GamePacketOpcode.InvalidTerrainMessage
+def encode = InvalidTerrainMessage.encode(this)
 }
 
 object InvalidTerrainMessage extends Marshallable[InvalidTerrainMessage] {

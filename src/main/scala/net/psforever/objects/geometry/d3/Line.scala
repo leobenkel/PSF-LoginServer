@@ -14,9 +14,9 @@ import net.psforever.types.Vector3
 final case class Line(p: Point, d: Vector3)
   extends Geometry3D
   with geometry.Line {
-  def center: Point = p
+private def center: Point = p
 
-  def moveCenter(point: geometry.Point): Geometry3D = Line(Point(point), d)
+private def moveCenter(point: geometry.Point): Geometry3D = Line(Point(point), d)
 }
 
 object Line {
@@ -28,7 +28,7 @@ object Line {
     * @param d the direction
     * @return a `Line` entity
     */
-  def apply(x: Float, y: Float, z: Float, d: Vector3): Line = {
+def apply(x: Float, y: Float, z: Float, d: Vector3): Line = {
     Line(Point(x,y,z), d)
   }
 
@@ -43,7 +43,7 @@ object Line {
     * @param bz the 'z' coordinate of a destination position
     * @return a `Line` entity
     */
-  def apply(ax: Float, ay: Float, az: Float, bx: Float, by: Float, bz: Float): Line = {
+def apply(ax: Float, ay: Float, az: Float, bx: Float, by: Float, bz: Float): Line = {
     Line(Point(ax, ay, az), Vector3.Unit(Vector3(bx - ax, by - ay, bz - az)))
   }
 
@@ -54,7 +54,7 @@ object Line {
     * @param p2 the coordinates of a destination position
     * @return a `Line` entity
     */
-  def apply(p1: Point, p2: Point): Line = {
+def apply(p1: Point, p2: Point): Line = {
     Line(p1, Vector3.Unit(Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z)))
   }
 }

@@ -17,17 +17,17 @@ import net.psforever.objects.vital.resolution.DamageAndResistance
 final case class TrippedMineReason(mine: DeployableSource, owner: SourceEntry)
   extends DamageReason {
 
-  def source: DamageProperties = mine.Definition.innateDamage.getOrElse(TrippedMineReason.triggered)
+private def source: DamageProperties = mine.Definition.innateDamage.getOrElse(TrippedMineReason.triggered)
 
-  def resolution: DamageResolution.Value = DamageResolution.Resolved
+private def resolution: DamageResolution.Value = DamageResolution.Resolved
 
-  def same(test: DamageReason): Boolean = test match {
+private def same(test: DamageReason): Boolean = test match {
     case trip: TrippedMineReason => mine == trip.mine && mine.OwnerName == trip.mine.OwnerName
     case _                      => false
   }
 
   /** lay the blame on the player who laid this mine, if possible */
-  def adversary: Option[SourceEntry] = Some(owner)
+private def adversary: Option[SourceEntry] = Some(owner)
 
   override def damageModel : DamageAndResistance = mine.Definition
 

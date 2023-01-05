@@ -51,8 +51,8 @@ object TriggeredSound extends Enumeration {
 final case class TriggerSoundMessage(sound: TriggeredSound.Value, pos: Vector3, unk: Int, volume: Float)
     extends PlanetSideGamePacket {
   type Packet = TriggerSoundMessage
-  def opcode = GamePacketOpcode.TriggerSoundMessage
-  def encode = TriggerSoundMessage.encode(this)
+def opcode = GamePacketOpcode.TriggerSoundMessage
+def encode = TriggerSoundMessage.encode(this)
 }
 
 object TriggerSoundMessage extends Marshallable[TriggerSoundMessage] {

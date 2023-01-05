@@ -36,9 +36,9 @@ final case class CargoMountPointStatusMessage(
 ) extends PlanetSideGamePacket {
   type Packet = CargoMountPointStatusMessage
 
-  def opcode = GamePacketOpcode.CargoMountPointStatusMessage
+def opcode = GamePacketOpcode.CargoMountPointStatusMessage
 
-  def encode = CargoMountPointStatusMessage.encode(this)
+def encode = CargoMountPointStatusMessage.encode(this)
 }
 
 object CargoMountPointStatusMessage extends Marshallable[CargoMountPointStatusMessage] {

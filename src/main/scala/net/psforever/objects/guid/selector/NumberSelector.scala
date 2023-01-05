@@ -18,9 +18,9 @@ abstract class NumberSelector {
   /** The index for the selector when performing a number return action, then modified for the "next" index. */
   protected var ret: Int = 0
 
-  def SelectionIndex: Int = selectionIndex
+private def SelectionIndex: Int = selectionIndex
 
-  def ReturnIndex: Int = ret
+private def ReturnIndex: Int = ret
 
   /**
     * Accept a provided `pool` and select the next number.<br>
@@ -38,7 +38,7 @@ abstract class NumberSelector {
     * @param ary the `Array` of `Int` numbers from which to draw a new number
     * @return an `Int` number
     */
-  def Get(ary: Array[Int]): Int
+private def Get(ary: Array[Int]): Int
 
   /**
     * Give a number back to a specific collection following the principles of this selector.<br>
@@ -53,7 +53,7 @@ abstract class NumberSelector {
     * @param ary the `Array` of `Int` numbers to which the number is to be returned
     * @return `true`, if this return was successful; `false`, otherwise
     */
-  def Return(number: Int, ary: Array[Int]): Boolean = {
+private def Return(number: Int, ary: Array[Int]): Boolean = {
     if (ary(number) == -1) {
       ary(number) = number
       ret = number
@@ -72,7 +72,7 @@ abstract class NumberSelector {
     * The `ret` index is set to index zero.
     * @param ary the `Array` of `Int` numbers
     */
-  def Format(ary: Array[Int]): Unit = {
+private def Format(ary: Array[Int]): Unit = {
     val sorted = ary.sortWith((b, a) =>
       if (b == -1) { a > b }
       else { false }

@@ -258,7 +258,7 @@ object DeploymentTest {
     def receive                   = deployBehavior.orElse { case _ => }
   }
 
-  def SetUpAgent(implicit system: ActorSystem) = {
+private def SetUpAgent(implicit system: ActorSystem) = {
     val obj = new DeploymentObject()
     obj.GUID = PlanetSideGUID(1)
     obj.Zone = Zone("test", new ZoneMap("test"), 1)

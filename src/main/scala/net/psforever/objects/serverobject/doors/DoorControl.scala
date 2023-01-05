@@ -16,11 +16,11 @@ import net.psforever.services.local.{LocalAction, LocalResponse, LocalServiceMes
 class DoorControl(door: Door)
   extends PoweredAmenityControl
   with FactionAffinityBehavior.Check {
-  def FactionObject: FactionAffinity = door
+private def FactionObject: FactionAffinity = door
 private var isLocked: Boolean = false
 private var lockingMechanism: Door.LockingMechanismLogic = DoorControl.alwaysOpen
 
-  def commonBehavior: Receive = checkBehavior
+private def commonBehavior: Receive = checkBehavior
     .orElse {
       case Door.Lock =>
         isLocked = true
@@ -37,7 +37,7 @@ private var lockingMechanism: Door.LockingMechanismLogic = DoorControl.alwaysOpe
         lockingMechanism = logic
     }
 
-  def poweredStateLogic: Receive =
+private def poweredStateLogic: Receive =
     commonBehavior
       .orElse {
         case CommonMessages.Use(player, _) =>
@@ -51,7 +51,7 @@ private var lockingMechanism: Door.LockingMechanismLogic = DoorControl.alwaysOpe
         case _ => ;
       }
 
-  def unpoweredStateLogic: Receive = {
+private def unpoweredStateLogic: Receive = {
     commonBehavior
       .orElse {
         case CommonMessages.Use(player, _) if !isLocked =>
@@ -62,7 +62,7 @@ private var lockingMechanism: Door.LockingMechanismLogic = DoorControl.alwaysOpe
       }
   }
 
-  def openDoor(player: Player): Unit = {
+private def openDoor(player: Player): Unit = {
     val zone = door.Zone
     val doorGUID = door.GUID
     if (!door.isOpen) {
@@ -89,5 +89,5 @@ private var lockingMechanism: Door.LockingMechanismLogic = DoorControl.alwaysOpe
 }
 
 object DoorControl {
-  def alwaysOpen(obj: PlanetSideServerObject, door: Door): Boolean = true
+private def alwaysOpen(obj: PlanetSideServerObject, door: Door): Boolean = true
 }

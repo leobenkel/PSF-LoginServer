@@ -19,8 +19,8 @@ import shapeless.{::, HNil}
 final case class PropertyOverrideMessage(list: List[PropertyOverrideMessage.GamePropertyScope])
     extends PlanetSideGamePacket {
   type Packet = PropertyOverrideMessage
-  def opcode = GamePacketOpcode.PropertyOverrideMessage
-  def encode = PropertyOverrideMessage.encode(this)
+def opcode = GamePacketOpcode.PropertyOverrideMessage
+def encode = PropertyOverrideMessage.encode(this)
 }
 
 object GamePropertyTarget {
@@ -37,7 +37,7 @@ object GamePropertyTarget {
     * @param kv the key-value pair
     * @return a `PropertyOverrideMessage.GamePropertyTarget` association object
     */
-  def apply(target: Int, kv: (String, String)): PropertyOverrideMessage.GamePropertyTarget = {
+def apply(target: Int, kv: (String, String)): PropertyOverrideMessage.GamePropertyTarget = {
     PropertyOverrideMessage.GamePropertyTarget(target, PropertyOverrideMessage.GameProperty(kv._1, kv._2) :: Nil)
   }
 
@@ -47,7 +47,7 @@ object GamePropertyTarget {
     * @param list a `List` of key-value pairs
     * @return a `PropertyOverrideMessage.GamePropertyTarget` association object
     */
-  def apply(target: Int, list: List[(String, String)]): PropertyOverrideMessage.GamePropertyTarget = {
+def apply(target: Int, list: List[(String, String)]): PropertyOverrideMessage.GamePropertyTarget = {
     PropertyOverrideMessage.GamePropertyTarget(
       target,
       list.map({
@@ -66,7 +66,7 @@ object GamePropertyScope {
     * @param property a targeted key-value pair
     * @return a `PropertyOverrideMessage.GamePropertyScope` association object
     */
-  def apply(
+def apply(
       zone: Int,
       property: PropertyOverrideMessage.GamePropertyTarget
   ): PropertyOverrideMessage.GamePropertyScope = {
@@ -79,7 +79,7 @@ object GamePropertyScope {
     * @param list a `List` of targeted key-value pairs
     * @return a `PropertyOverrideMessage.GamePropertyScope` association object
     */
-  def apply(
+def apply(
       zone: Int,
       list: List[PropertyOverrideMessage.GamePropertyTarget]
   ): PropertyOverrideMessage.GamePropertyScope = {
@@ -121,7 +121,7 @@ object PropertyOverrideMessage extends Marshallable[PropertyOverrideMessage] {
     * @param list a list of regions, objects, and changed properties
     * @return a `PropertyOverrideMessage` object
     */
-  def apply(list: PropertyOverrideMessage.GamePropertyScope): PropertyOverrideMessage = {
+def apply(list: PropertyOverrideMessage.GamePropertyScope): PropertyOverrideMessage = {
     PropertyOverrideMessage(list :: Nil)
   }
 

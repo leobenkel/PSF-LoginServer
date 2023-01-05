@@ -22,9 +22,9 @@ class AdvancedCollisionData() extends CollisionData() {
 }
 
 trait CollisionDoesDamage {
-  def hp(): List[Int]
+private def hp(): List[Int]
 
-  def hp(d: Int): Int = {
+private def hp(d: Int): Int = {
     val _hp = hp()
     _hp.lift(d) match {
       case Some(n) => n
@@ -36,11 +36,11 @@ trait CollisionDoesDamage {
 final case class CollisionZData(data: Iterable[(Float, Int)]) extends CollisionDoesDamage {
   assert(data.nonEmpty, "some collision data must be defined")
 
-  def height(): List[Float] = data.unzip._1.toList
+private def height(): List[Float] = data.unzip._1.toList
 
   override def hp(): List[Int] = data.unzip._2.toList
 
-  def height(z: Float): Int = {
+private def height(z: Float): Int = {
     val n = data.toArray.indexWhere { case (h, _) => h > z }
     if (n == -1) {
       data.size - 1
@@ -51,17 +51,17 @@ final case class CollisionZData(data: Iterable[(Float, Int)]) extends CollisionD
 }
 
 object CollisionZData {
-  def apply(): CollisionZData = CollisionZData(Array((0f, 0)))
+def apply(): CollisionZData = CollisionZData(Array((0f, 0)))
 }
 
 final case class CollisionXYData(data: Iterable[(Float, Int)]) extends CollisionDoesDamage {
   assert(data.nonEmpty, "some collision data must be defined")
 
-  def throttle(): List[Float] = data.unzip._1.toList
+private def throttle(): List[Float] = data.unzip._1.toList
 
   override def hp(): List[Int] = data.unzip._2.toList
 
-  def throttle(z: Float): Int = {
+private def throttle(z: Float): Int = {
     val n = data.toArray.indexWhere { case (h, _) => h > z }
     if (n == -1) {
       data.size - 1
@@ -72,5 +72,5 @@ final case class CollisionXYData(data: Iterable[(Float, Int)]) extends Collision
 }
 
 object CollisionXYData {
-  def apply(): CollisionXYData = CollisionXYData(Array((0f, 0)))
+def apply(): CollisionXYData = CollisionXYData(Array((0f, 0)))
 }

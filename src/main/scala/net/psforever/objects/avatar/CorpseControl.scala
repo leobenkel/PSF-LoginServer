@@ -12,13 +12,13 @@ import net.psforever.services.Service
 import net.psforever.services.avatar.{AvatarAction, AvatarServiceMessage}
 
 class CorpseControl(player: Player) extends Actor with ContainableBehavior {
-  def ContainerObject = player
+private def ContainerObject = player
 
   //private [this] val log = org.log4s.getLogger(player.Name)
 
-  def receive: Receive = containerBehavior.orElse { case _ => ; }
+def receive: Receive = containerBehavior.orElse { case _ => ; }
 
-  def MessageDeferredCallback(msg: Any): Unit = {
+private def MessageDeferredCallback(msg: Any): Unit = {
     msg match {
       case Containable.MoveItem(_, item, _) =>
         //momentarily put item back where it was originally
@@ -35,7 +35,7 @@ class CorpseControl(player: Player) extends Actor with ContainableBehavior {
     }
   }
 
-  def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
+private def RemoveItemFromSlotCallback(item: Equipment, slot: Int): Unit = {
     val obj    = ContainerObject
     val zone   = obj.Zone
     val events = zone.AvatarEvents
@@ -43,7 +43,7 @@ class CorpseControl(player: Player) extends Actor with ContainableBehavior {
     events ! AvatarServiceMessage(zone.id, AvatarAction.ObjectDelete(Service.defaultPlayerGUID, item.GUID))
   }
 
-  def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
+private def PutItemInSlotCallback(item: Equipment, slot: Int): Unit = {
     val obj        = ContainerObject
     val zone       = obj.Zone
     val events     = zone.AvatarEvents
@@ -62,7 +62,7 @@ class CorpseControl(player: Player) extends Actor with ContainableBehavior {
     )
   }
 
-  def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
+private def SwapItemCallback(item: Equipment, fromSlot: Int): Unit = {
     val obj  = ContainerObject
     val zone = obj.Zone
     zone.AvatarEvents ! AvatarServiceMessage(

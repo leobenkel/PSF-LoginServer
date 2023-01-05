@@ -62,8 +62,8 @@ final case class VehicleStateMessage(
     is_cloaked: Boolean
 ) extends PlanetSideGamePacket {
   type Packet = VehicleStateMessage
-  def opcode = GamePacketOpcode.VehicleStateMessage
-  def encode = VehicleStateMessage.encode(this)
+def opcode = GamePacketOpcode.VehicleStateMessage
+def encode = VehicleStateMessage.encode(this)
 }
 
 object VehicleStateMessage extends Marshallable[VehicleStateMessage] {

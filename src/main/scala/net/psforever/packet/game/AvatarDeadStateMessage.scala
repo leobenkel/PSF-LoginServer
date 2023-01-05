@@ -58,8 +58,8 @@ final case class AvatarDeadStateMessage(
     unk5: Boolean
 ) extends PlanetSideGamePacket {
   type Packet = AvatarDeadStateMessage
-  def opcode = GamePacketOpcode.AvatarDeadStateMessage
-  def encode = AvatarDeadStateMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarDeadStateMessage
+def encode = AvatarDeadStateMessage.encode(this)
 }
 
 object AvatarDeadStateMessage extends Marshallable[AvatarDeadStateMessage] {

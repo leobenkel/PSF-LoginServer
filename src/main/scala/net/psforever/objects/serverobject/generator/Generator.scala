@@ -17,9 +17,9 @@ import net.psforever.types.PlanetSideGeneratorState
 class Generator(private val gdef: GeneratorDefinition) extends Amenity {
   private var condition: PlanetSideGeneratorState.Value = PlanetSideGeneratorState.Normal
 
-  def Condition: PlanetSideGeneratorState.Value = condition
+private def Condition: PlanetSideGeneratorState.Value = condition
 
-  def Condition_=(state: PlanetSideGeneratorState.Value): PlanetSideGeneratorState.Value = {
+private def Condition_=(state: PlanetSideGeneratorState.Value): PlanetSideGeneratorState.Value = {
     condition = state
     Condition
   }
@@ -34,17 +34,17 @@ class Generator(private val gdef: GeneratorDefinition) extends Amenity {
     isDestroyed
   }
 
-  def Definition: GeneratorDefinition = gdef
+private def Definition: GeneratorDefinition = gdef
 }
 
 object Generator {
-  def apply(gdef: GeneratorDefinition): Generator = {
+def apply(gdef: GeneratorDefinition): Generator = {
     new Generator(gdef)
   }
 
   import akka.actor.ActorContext
   import net.psforever.types.Vector3
-  def Constructor(pos: Vector3)(id: Int, context: ActorContext): Generator = {
+private def Constructor(pos: Vector3)(id: Int, context: ActorContext): Generator = {
     import akka.actor.Props
     import net.psforever.objects.GlobalDefinitions
 

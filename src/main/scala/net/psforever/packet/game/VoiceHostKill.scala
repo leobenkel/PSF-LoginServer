@@ -12,8 +12,8 @@ import scodec.Codec
   */
 final case class VoiceHostKill() extends PlanetSideGamePacket {
   type Packet = VoiceHostKill
-  def opcode = GamePacketOpcode.VoiceHostKill
-  def encode = VoiceHostKill.encode(this)
+def opcode = GamePacketOpcode.VoiceHostKill
+def encode = VoiceHostKill.encode(this)
 }
 
 object VoiceHostKill extends Marshallable[VoiceHostKill] {

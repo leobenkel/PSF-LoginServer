@@ -39,7 +39,7 @@ object Default {
     * @param sys the actor universe under which this default actor will exist
     * @return the new default actor
     */
-  def apply(sys: ActorSystem): ActorRef = {
+def apply(sys: ActorSystem): ActorRef = {
     if (defaultRef == ActorRef.noSender) {
       defaultRef = sys.actorOf(Props[DefaultActor](), name = s"system-default-actor")
     }

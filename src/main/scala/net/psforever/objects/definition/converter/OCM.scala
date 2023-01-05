@@ -15,7 +15,7 @@ object OCM {
     * @param obj the entity being converted into a packet
     * @return an `ObjectCreateMessage` packet
     */
-  def apply(obj: PlanetSideGameObject): PlanetSideGamePacket = {
+def apply(obj: PlanetSideGameObject): PlanetSideGamePacket = {
     val definition = obj.Definition
     ObjectCreateMessage(
       definition.ObjectId,
@@ -30,7 +30,7 @@ object OCM {
     * @param parent information about the container for this entity
     * @return an `ObjectCreateMessage` packet
     */
-  def apply(obj: PlanetSideGameObject, parent: Option[ObjectCreateMessageParent]): PlanetSideGamePacket = {
+def apply(obj: PlanetSideGameObject, parent: Option[ObjectCreateMessageParent]): PlanetSideGamePacket = {
     parent match {
       case Some(info) => apply(obj, info)
       case _          => apply(obj)
@@ -42,7 +42,7 @@ object OCM {
     * @param parent information about the container for this entity
     * @return an `ObjectCreateMessage` packet
     */
-  def apply(obj: PlanetSideGameObject, parent: ObjectCreateMessageParent): PlanetSideGamePacket = {
+def apply(obj: PlanetSideGameObject, parent: ObjectCreateMessageParent): PlanetSideGamePacket = {
     val definition = obj.Definition
     ObjectCreateMessage(
       definition.ObjectId,
@@ -52,7 +52,7 @@ object OCM {
     )
   }
 
-  def detailed(obj: PlanetSideGameObject): PlanetSideGamePacket = {
+private def detailed(obj: PlanetSideGameObject): PlanetSideGamePacket = {
     val definition = obj.Definition
     val packet = definition.Packet
     if (packet.noDetailedForm(obj)) {
@@ -72,7 +72,7 @@ object OCM {
     * @param parent information about the container for this entity
     * @return an `ObjectCreateMessage` packet
     */
-  def detailed(obj: PlanetSideGameObject, parent: Option[ObjectCreateMessageParent]): PlanetSideGamePacket = {
+private def detailed(obj: PlanetSideGameObject, parent: Option[ObjectCreateMessageParent]): PlanetSideGamePacket = {
     parent match {
       case Some(info) => detailed(obj, info)
       case _          => detailed(obj)
@@ -84,7 +84,7 @@ object OCM {
     * @param parent information about the container for this entity
     * @return an `ObjectCreateMessage` packet
     */
-  def detailed(obj: PlanetSideGameObject, parent: ObjectCreateMessageParent): PlanetSideGamePacket = {
+private def detailed(obj: PlanetSideGameObject, parent: ObjectCreateMessageParent): PlanetSideGamePacket = {
     val definition = obj.Definition
     val packet = definition.Packet
     if (packet.noDetailedForm(obj)) {

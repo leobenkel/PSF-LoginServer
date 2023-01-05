@@ -40,7 +40,7 @@ final case class VehicleLoadoutPage(lineOffset: Int) extends LoadoutTab {
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     val player = msg.player
     player.Zone.GUID(player.avatar.vehicle) match {
       case Some(vehicle: Vehicle) => vehicle.Actor ! msg

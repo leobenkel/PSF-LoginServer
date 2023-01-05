@@ -19,7 +19,7 @@ final case class EquipmentHandiness(
     left: EquipmentDefinition,
     right: EquipmentDefinition
 ) {
-  def transform(handiness: Hand): EquipmentDefinition = {
+private def transform(handiness: Hand): EquipmentDefinition = {
     handiness match {
       case Handiness.Generic => generic
       case Handiness.Left    => left
@@ -27,7 +27,7 @@ final case class EquipmentHandiness(
     }
   }
 
-  def contains(findDef: EquipmentDefinition): Boolean = {
+private def contains(findDef: EquipmentDefinition): Boolean = {
     generic == findDef || left == findDef || right == findDef
   }
 }

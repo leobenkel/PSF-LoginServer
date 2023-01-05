@@ -30,8 +30,8 @@ final case class ZipLineMessage(
     pos: Option[Vector3] = None
 ) extends PlanetSideGamePacket {
   type Packet = ZipLineMessage
-  def opcode = GamePacketOpcode.ZipLineMessage
-  def encode = ZipLineMessage.encode(this)
+def opcode = GamePacketOpcode.ZipLineMessage
+def encode = ZipLineMessage.encode(this)
 }
 
 object ZipLineMessage extends Marshallable[ZipLineMessage] {
@@ -46,7 +46,7 @@ object ZipLineMessage extends Marshallable[ZipLineMessage] {
     * @param pos               the coordinates of the point where the player is interacting with the zip line
     * @return a `ZipLineMessage` object
     */
-  def apply(
+def apply(
       player_guid: PlanetSideGUID,
       forwards: Boolean,
       action: Int,

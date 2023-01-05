@@ -37,13 +37,13 @@ class FacilityTurretControl(turret: FacilityTurret)
     with AmenityAutoRepair
     with JammableMountedWeapons
     with CaptureTerminalAwareBehavior {
-  def FactionObject    = turret
-  def MountableObject  = turret
-  def JammableObject   = turret
-  def DamageableObject = turret
-  def RepairableObject = turret
-  def AutoRepairObject = turret
-  def CaptureTerminalAwareObject = turret
+private def FactionObject    = turret
+private def MountableObject  = turret
+private def JammableObject   = turret
+private def DamageableObject = turret
+private def RepairableObject = turret
+private def AutoRepairObject = turret
+private def CaptureTerminalAwareObject = turret
 
   // Used for timing ammo recharge for vanu turrets in caves
 private var weaponAmmoRechargeTimer = Default.Cancellable
@@ -54,7 +54,7 @@ private var weaponAmmoRechargeTimer = Default.Cancellable
     stopAutoRepair()
   }
 
-  def commonBehavior: Receive =
+private def commonBehavior: Receive =
     checkBehavior
       .orElse(jammableBehavior)
       .orElse(dismountBehavior)
@@ -63,7 +63,7 @@ private var weaponAmmoRechargeTimer = Default.Cancellable
       .orElse(autoRepairBehavior)
       .orElse(captureTerminalAwareBehaviour)
 
-  def poweredStateLogic: Receive =
+private def poweredStateLogic: Receive =
     commonBehavior
       .orElse(mountBehavior)
       .orElse {
@@ -122,7 +122,7 @@ private var weaponAmmoRechargeTimer = Default.Cancellable
         case _ => ;
       }
 
-  def unpoweredStateLogic: Receive =
+private def unpoweredStateLogic: Receive =
     commonBehavior
       .orElse {
         case _ => ;
@@ -173,7 +173,7 @@ private var weaponAmmoRechargeTimer = Default.Cancellable
     isPowered && super.tryAutoRepair()
   }
 
-  def powerTurnOffCallback(): Unit = {
+private def powerTurnOffCallback(): Unit = {
     stopAutoRepair()
     //kick all occupants
     val guid = turret.GUID
@@ -193,7 +193,7 @@ private var weaponAmmoRechargeTimer = Default.Cancellable
     )
   }
 
-  def powerTurnOnCallback(): Unit = {
+private def powerTurnOnCallback(): Unit = {
     tryAutoRepair()
   }
 }

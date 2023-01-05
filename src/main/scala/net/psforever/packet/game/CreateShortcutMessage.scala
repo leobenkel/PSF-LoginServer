@@ -35,7 +35,7 @@ import shapeless.{::, HNil}
   * @param code the primary use of this shortcut
   */
 abstract class Shortcut(val code: Int) {
-  def tile: String
+private def tile: String
 }
 
 /**
@@ -65,8 +65,8 @@ final case class CreateShortcutMessage(
     shortcut: Option[Shortcut]
 ) extends PlanetSideGamePacket {
   type Packet = CreateShortcutMessage
-  def opcode = GamePacketOpcode.CreateShortcutMessage
-  def encode = CreateShortcutMessage.encode(this)
+def opcode = GamePacketOpcode.CreateShortcutMessage
+def encode = CreateShortcutMessage.encode(this)
 }
 
 object Shortcut extends Marshallable[Shortcut] {
@@ -148,7 +148,7 @@ private val implantCodec: Codec[Implant] = (
    * @return transcoder for that shortcut type
    * @throws IllegalArgumentException if the numeric code does not map to any valid transcoders
    */
-  def shortcutSwitch(code: Int): Codec[Shortcut] = {
+private def shortcutSwitch(code: Int): Codec[Shortcut] = {
     (code match {
       case 0 => medkitCodec
       case 1 => macroCodec

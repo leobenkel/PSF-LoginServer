@@ -64,25 +64,25 @@ trait VitalityDefinition extends DamageModifiers {
     Damageable
   }
 
-  def DamageableByFriendlyFire: Boolean = damageableByFriendlyFire
+  private def DamageableByFriendlyFire: Boolean = damageableByFriendlyFire
 
-  def DamageableByFriendlyFire_=(state: Boolean): Boolean = {
+  private def DamageableByFriendlyFire_=(state: Boolean): Boolean = {
     damageableByFriendlyFire = state
     DamageableByFriendlyFire
   }
 
-  def DamageDisablesAt: Int = damageDisablesAt.getOrElse(MaxHealth / 2)
+  private def DamageDisablesAt: Int = damageDisablesAt.getOrElse(MaxHealth / 2)
 
-  def DamageDisablesAt_=(value: Int): Int = DamageDisablesAt_=(Some(value))
+  private def DamageDisablesAt_=(value: Int): Int = DamageDisablesAt_=(Some(value))
 
-  def DamageDisablesAt_=(value: Option[Int]): Int = {
+  private def DamageDisablesAt_=(value: Option[Int]): Int = {
     damageDisablesAt = value
     DamageDisablesAt
   }
 
-  def DamageDestroysAt: Int = damageDestroysAt
+  private def DamageDestroysAt: Int = damageDestroysAt
 
-  def DamageDestroysAt_=(value: Int): Int = {
+  private def DamageDestroysAt_=(value: Int): Int = {
     damageDestroysAt = value
     DamageDestroysAt
   }
@@ -116,7 +116,7 @@ trait VitalityDefinition extends DamageModifiers {
 
   def Repairable: Boolean = repairable
 
-  def Repairable_=(repair: Boolean): Boolean = {
+  private def Repairable_=(repair: Boolean): Boolean = {
     repairable = repair
     Repairable
   }
@@ -130,7 +130,7 @@ trait VitalityDefinition extends DamageModifiers {
 
   def RepairIfDestroyed: Boolean = repairIfDestroyed
 
-  def RepairIfDestroyed_=(repair: Boolean): Boolean = {
+  private def RepairIfDestroyed_=(repair: Boolean): Boolean = {
     repairIfDestroyed = repair
     RepairIfDestroyed
   }
@@ -139,14 +139,14 @@ trait VitalityDefinition extends DamageModifiers {
 
   def RepairRestoresAt_=(restore: Int): Int = RepairRestoresAt_=(Some(restore))
 
-  def RepairRestoresAt_=(restore: Option[Int]): Int = {
+  private def RepairRestoresAt_=(restore: Option[Int]): Int = {
     repairRestoresAt = restore
     RepairRestoresAt
   }
 
-  def RepairMod: Int = repairMod
+  private def RepairMod: Int = repairMod
 
-  def RepairMod_=(mod: Int): Int = {
+  private def RepairMod_=(mod: Int): Int = {
     repairMod = mod
     RepairMod
   }
@@ -164,9 +164,9 @@ trait VitalityDefinition extends DamageModifiers {
     */
   private var _innateDamage: Option[DamageWithPosition] = None
 
-  def innateDamage: Option[DamageWithPosition] = _innateDamage
+  private def innateDamage: Option[DamageWithPosition] = _innateDamage
 
-  def innateDamage_=(combustion: DamageWithPosition): Option[DamageWithPosition] = {
+  private def innateDamage_=(combustion: DamageWithPosition): Option[DamageWithPosition] = {
     _innateDamage = Some(combustion)
     _innateDamage
   }

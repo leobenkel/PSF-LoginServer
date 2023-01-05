@@ -103,8 +103,8 @@ final case class BuildingInfoUpdateMessage(
     boost_generator_pain: Boolean
 ) extends PlanetSideGamePacket {
   type Packet = BuildingInfoUpdateMessage
-  def opcode = GamePacketOpcode.BuildingInfoUpdateMessage
-  def encode = BuildingInfoUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.BuildingInfoUpdateMessage
+def encode = BuildingInfoUpdateMessage.encode(this)
 }
 
 object BuildingInfoUpdateMessage extends Marshallable[BuildingInfoUpdateMessage] {

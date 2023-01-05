@@ -18,14 +18,14 @@ import net.psforever.types.{ImplantType, Vector3}
   * That numeric modifier does not have to be used for anything.
   */
 sealed trait ProjectileQuality {
-  def mod: Float
+private def mod: Float
 }
 
 /**
   * Implement the numeric modifier with the value as one.
   */
 sealed trait SameAsQuality extends ProjectileQuality {
-  def mod: Float = 1f
+private def mod: Float = 1f
 }
 
 object ProjectileQuality {
@@ -47,7 +47,7 @@ object ProjectileQuality {
     * @param resolution the resolution status to promote the projectile
     * @return a copy of the projectile
     */
-  def modifiers(
+private def modifiers(
                  projectile: Projectile,
                  resolution: DamageResolution.Value,
                  target: PlanetSideGameObject with FactionAffinity with Vitality,

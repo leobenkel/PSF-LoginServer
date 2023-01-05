@@ -10,48 +10,48 @@ trait MountableSpace[A <: MountableEntity] {
     * A single mounted entity.
     * @return one mounted entity at most, or `None`
     */
-  def occupant: Option[A] = _occupant
+private def occupant: Option[A] = _occupant
 
   /**
     * A collection of any mounted entity.
     * Useful for compiling all seated users using `flatMap`.
     * @return all mounted entities
     */
-  def occupants: List[A] = _occupant.toList
+private def occupants: List[A] = _occupant.toList
 
   /**
     * Is anything be seated?
     * Do not use this method as a test for "availability".
     */
-  def isOccupied: Boolean = _occupant.nonEmpty
+private def isOccupied: Boolean = _occupant.nonEmpty
 
   /**
     * Can something be mounted?
     * Use this method as a test for "availability".
     */
-  def canBeOccupied: Boolean = _occupant.isEmpty
+private def canBeOccupied: Boolean = _occupant.isEmpty
 
   /**
     * Is this specific entity currently mounted?
     */
-  def isOccupiedBy(target: A): Boolean = _occupant.contains(target)
+private def isOccupiedBy(target: A): Boolean = _occupant.contains(target)
 
   /**
     * Is this specific entity allowed to be mounted in this space?
     * Utiltizes restriction tests, but not "availability" tests.
     * @see `MountableDefinition[A].restriction`
     */
-  def canBeOccupiedBy(target: A): Boolean = definition.restriction.test(target)
+private def canBeOccupiedBy(target: A): Boolean = definition.restriction.test(target)
 
   /**
     * Attempt to mount the target entity in this space.
     */
-  def mount(target: A): Option[A] = mount(Some(target))
+private def mount(target: A): Option[A] = mount(Some(target))
 
   /**
     * Attempt to mount the target entity in this space.
     */
-  def mount(target: Option[A]): Option[A] = {
+private def mount(target: Option[A]): Option[A] = {
     target match {
       case Some(p) if testToMount(p) =>
         _occupant = target
@@ -71,23 +71,23 @@ trait MountableSpace[A <: MountableEntity] {
   /**
     * Attempt to dismount the target entity from this space.
     */
-  def unmount(target: A): Option[A] = unmount(Some(target))
+private def unmount(target: A): Option[A] = unmount(Some(target))
 
   /**
     * Attempt to dismount the target entity from this space.
     */
-  def unmount(target: A, bailType: BailType.Value): Option[A] = unmount(Some(target), bailType)
+private def unmount(target: A, bailType: BailType.Value): Option[A] = unmount(Some(target), bailType)
 
   /**
     * Attempt to dismount the target entity from this space.
     */
-  def unmount(target: Option[A]): Option[A] = unmount(target, BailType.Normal)
+private def unmount(target: Option[A]): Option[A] = unmount(target, BailType.Normal)
 
   /**
     * Attempt to dismount the target entity from this space.
     * @return the current seat occupant, which should be `None` if the operation was successful
     */
-  def unmount(target: Option[A], bailType: BailType.Value): Option[A] = {
+private def unmount(target: Option[A], bailType: BailType.Value): Option[A] = {
     target match {
       case Some(p) if testToUnmount(p) =>
         _occupant = None
@@ -110,10 +110,10 @@ trait MountableSpace[A <: MountableEntity] {
     * The conditions of the duress do not matter at the moment;
     * this is only a test of possibility.
     */
-  def bailable: Boolean = definition.bailable
+private def bailable: Boolean = definition.bailable
 
   /**
     * The information that establishes the underlying characteristics of this mountable space.
     */
-  def definition: MountableSpaceDefinition[A]
+private def definition: MountableSpaceDefinition[A]
 }

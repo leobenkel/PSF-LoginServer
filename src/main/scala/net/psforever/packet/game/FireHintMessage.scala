@@ -27,8 +27,8 @@ final case class FireHintMessage(
     u5: Option[Vector3] = None
 ) extends PlanetSideGamePacket {
   type Packet = FireHintMessage
-  def opcode = GamePacketOpcode.FireHintMessage
-  def encode = FireHintMessage.encode(this)
+def opcode = GamePacketOpcode.FireHintMessage
+def encode = FireHintMessage.encode(this)
 }
 
 object FireHintMessage extends Marshallable[FireHintMessage] {

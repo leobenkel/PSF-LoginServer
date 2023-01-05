@@ -31,17 +31,17 @@ final case class SuicideReason()
   Anyway, this has nothing to do with that.
   Most playes probably just want to jump to the next base over.
   */
-  def source: DamageProperties = SuicideReason.damageProperties
+private def source: DamageProperties = SuicideReason.damageProperties
 
-  def resolution: DamageResolution.Value = DamageResolution.Suicide
+private def resolution: DamageResolution.Value = DamageResolution.Suicide
 
-  def same(test: DamageReason): Boolean = {
+private def same(test: DamageReason): Boolean = {
     test.source eq source
   }
 
-  def adversary: Option[SourceEntry] = None
+private def adversary: Option[SourceEntry] = None
 
-  def damageModel: DamageAndResistance = SuicideReason.drm
+private def damageModel: DamageAndResistance = SuicideReason.drm
 }
 
 object SuicideReason {

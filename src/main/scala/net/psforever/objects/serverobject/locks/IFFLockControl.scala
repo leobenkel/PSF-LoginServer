@@ -18,10 +18,10 @@ class IFFLockControl(lock: IFFLock)
     extends Actor
     with FactionAffinityBehavior.Check
     with HackableBehavior.GenericHackable {
-  def FactionObject: FactionAffinity = lock
-  def HackableObject                 = lock
+private def FactionObject: FactionAffinity = lock
+private def HackableObject                 = lock
 
-  def receive: Receive =
+def receive: Receive =
     checkBehavior
       .orElse(hackableBehavior)
       .orElse {

@@ -32,44 +32,44 @@ class Tool(private val toolDef: ToolDefinition)
 
   Tool.LoadDefinition(tool = this)
 
-  def FireModeIndex: Int = fireModeIndex
+  override def FireModeIndex: Int = fireModeIndex
 
-  def FireModeIndex_=(index: Int): Int = {
+  override def FireModeIndex_=(index: Int): Int = {
     fireModeIndex = index % Definition.FireModes.length
     FireModeIndex
   }
 
-  def FireMode: FireModeDefinition = Definition.FireModes(fireModeIndex)
+  override def FireMode: FireModeDefinition = Definition.FireModes(fireModeIndex)
 
-  def NextFireMode: FireModeDefinition = {
+  override def NextFireMode: FireModeDefinition = {
     FireModeIndex = Definition.NextFireModeIndex(FireModeIndex)
     AmmoSlot.Chamber = FireMode.Chamber
     FireMode
   }
 
-  def ToFireMode: Int = Definition.NextFireModeIndex(FireModeIndex)
+  private def ToFireMode: Int = Definition.NextFireModeIndex(FireModeIndex)
 
-  def ToFireMode_=(index: Int): FireModeDefinition = {
+  private def ToFireMode_=(index: Int): FireModeDefinition = {
     FireModeIndex = index
     AmmoSlot.Chamber = FireMode.Chamber
     FireMode
   }
 
-  def AmmoTypeIndex: Int = FireMode.AmmoTypeIndices(AmmoSlot.AmmoTypeIndex)
+  private def AmmoTypeIndex: Int = FireMode.AmmoTypeIndices(AmmoSlot.AmmoTypeIndex)
 
-  def AmmoTypeIndex_=(index: Int): Int = {
+  private def AmmoTypeIndex_=(index: Int): Int = {
     AmmoSlot.AmmoTypeIndex = index % FireMode.AmmoTypeIndices.length
     AmmoTypeIndex
   }
 
-  def AmmoType: Ammo.Value = Definition.AmmoTypes(AmmoTypeIndex).AmmoType
+  private def AmmoType: Ammo.Value = Definition.AmmoTypes(AmmoTypeIndex).AmmoType
 
-  def NextAmmoType: Ammo.Value = {
+  private def NextAmmoType: Ammo.Value = {
     AmmoSlot.AmmoTypeIndex = AmmoSlot.AmmoTypeIndex + 1
     AmmoType
   }
 
-  def Projectile: ProjectileDefinition = {
+  private def Projectile: ProjectileDefinition = {
     Definition.ProjectileTypes({
       val projIndices = FireMode.ProjectileTypeIndices
       if (projIndices.isEmpty) {
@@ -80,17 +80,17 @@ class Tool(private val toolDef: ToolDefinition)
     })
   }
 
-  def ProjectileType: Projectiles.Types.Value = Projectile.ProjectileType
+  private def ProjectileType: Projectiles.Types.Value = Projectile.ProjectileType
 
   def Magazine: Int = AmmoSlot.Magazine
 
-  def Magazine_=(mag: Int): Int = {
+  private def Magazine_=(mag: Int): Int = {
     //AmmoSlot.Magazine = Math.min(Math.max(0, mag), MaxMagazine)
     AmmoSlot.Magazine = Math.max(0, mag)
     Magazine
   }
 
-  def MaxMagazine: Int = {
+  private def MaxMagazine: Int = {
     val fmode = FireMode
     fmode.CustomMagazine.get(AmmoType) match {
       case Some(magSize) =>
@@ -100,12 +100,12 @@ class Tool(private val toolDef: ToolDefinition)
     }
   }
 
-  def Discharge(rounds: Option[Int] = None): Int = {
+  private def Discharge(rounds: Option[Int] = None): Int = {
     lastDischarge = System.nanoTime()
     Magazine = FireMode.Discharge(this, rounds)
   }
 
-  def LastDischarge: Long = {
+  private def LastDischarge: Long = {
     lastDischarge
   }
 
@@ -113,9 +113,9 @@ class Tool(private val toolDef: ToolDefinition)
 
   def AmmoSlots: List[Tool.FireModeSlot] = ammoSlots
 
-  def MaxAmmoSlot: Int = ammoSlots.length
+  private def MaxAmmoSlot: Int = ammoSlots.length
 
-  def Definition: ToolDefinition = tdef
+  override def Definition: ToolDefinition = tdef
 
   override def toString: String = Tool.toString(this)
 }
@@ -131,7 +131,7 @@ object Tool {
     * Use the `*Definition` that was provided to this object to initialize its fields and settings.
     * @param tool the `Tool` being initialized
     */
-  def LoadDefinition(tool: Tool): Unit = {
+  private def LoadDefinition(tool: Tool): Unit = {
     val tdef    = tool.Definition
     val maxSlot = tdef.FireModes.maxBy(fmode => fmode.AmmoSlotIndex).AmmoSlotIndex
     tool.ammoSlots = buildFireModes(tdef, (0 to maxSlot).iterator, tdef.FireModes.toList)
@@ -145,7 +145,7 @@ object Tool {
     * @param tdef the definition used to override the definition that was previously assigned this `Tool`;
     *             WILL override the assignment in the original constructor
     */
-  def LoadDefinition(tool: Tool, tdef: ToolDefinition): Unit = {
+  private def LoadDefinition(tool: Tool, tdef: ToolDefinition): Unit = {
     tool.tdef = tdef
   }
 
@@ -170,7 +170,7 @@ object Tool {
     }
   }
 
-  def toString(obj: Tool): String = {
+  private def toString(obj: Tool): String = {
     s"${obj.Definition.Name} (mode=${obj.FireModeIndex}-${obj.AmmoType})(${obj.Magazine}/${obj.MaxMagazine})"
   }
 

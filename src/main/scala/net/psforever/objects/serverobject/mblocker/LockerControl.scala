@@ -15,10 +15,10 @@ class LockerControl(locker: Locker)
     extends Actor
     with FactionAffinityBehavior.Check
     with HackableBehavior.GenericHackable {
-  def FactionObject: FactionAffinity = locker
-  def HackableObject                 = locker
+private def FactionObject: FactionAffinity = locker
+private def HackableObject                 = locker
 
-  def receive: Receive =
+def receive: Receive =
     checkBehavior
       .orElse(hackableBehavior)
       .orElse {

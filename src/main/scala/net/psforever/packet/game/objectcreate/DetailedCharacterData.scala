@@ -31,7 +31,7 @@ final case class ImplantEntry(implant: ImplantType, initialization: Option[Int],
 }
 
 object ImplantEntry {
-  def apply(implant: ImplantType, initialization: Option[Int]): ImplantEntry = {
+def apply(implant: ImplantType, initialization: Option[Int]): ImplantEntry = {
     ImplantEntry(implant, initialization, active = false)
   }
 }
@@ -209,7 +209,7 @@ final case class DetailedCharacterData(a: DetailedCharacterA, b: DetailedCharact
 }
 
 object DetailedCharacterData extends Marshallable[DetailedCharacterData] {
-  def apply(
+def apply(
       bep: Long,
       cep: Long,
       healthMax: Int,
@@ -428,7 +428,7 @@ object DetailedCharacterData extends Marshallable[DetailedCharacterData] {
     * @param value how much to add to `start`
     * @return the amount after testing
     */
-  def displaceByOptionTest(start: Option[Int], test: Option[Any], value: Int): Option[Int] =
+private def displaceByOptionTest(start: Option[Int], test: Option[Any], value: Int): Option[Int] =
     test match {
       case Some(_) =>
         Some(start.getOrElse(0) + value)
@@ -461,7 +461,7 @@ object DetailedCharacterData extends Marshallable[DetailedCharacterData] {
     * @param currListLen the length of the current list
     * @return the padding value for the target list
     */
-  def paddingCalculations(contextOffset: Option[Int], implants: List[ImplantEntry], prevLists: List[List[Any]])(
+private def paddingCalculations(contextOffset: Option[Int], implants: List[ImplantEntry], prevLists: List[List[Any]])(
       currListLen: Long
   ): Int = {
     paddingCalculations(3, contextOffset, implants, prevLists)(currListLen)
@@ -481,7 +481,7 @@ object DetailedCharacterData extends Marshallable[DetailedCharacterData] {
     * @return the padding value for the target list;
     *         a value clamped between 0 and 7
     */
-  def paddingCalculations(
+private def paddingCalculations(
       base: Int,
       contextOffset: Option[Int],
       implants: List[ImplantEntry],
@@ -516,7 +516,7 @@ object DetailedCharacterData extends Marshallable[DetailedCharacterData] {
     }
   }
 
-  def a_codec(suit: ExoSuitType.Value): Codec[DetailedCharacterA] =
+private def a_codec(suit: ExoSuitType.Value): Codec[DetailedCharacterA] =
     (
       ("bep" | uint32L) ::
         ("cep" | uint32L) ::
@@ -589,7 +589,7 @@ object DetailedCharacterData extends Marshallable[DetailedCharacterData] {
       }
     )
 
-  def b_codec(bep: Long, pad_length: Option[Int]): Codec[DetailedCharacterB] =
+private def b_codec(bep: Long, pad_length: Option[Int]): Codec[DetailedCharacterB] =
     (
       optional(bool, "unk1" | uint32L) ::
         (("implants" | PacketHelpers.listOfNSized(
@@ -653,7 +653,7 @@ object DetailedCharacterData extends Marshallable[DetailedCharacterData] {
       }
     )
 
-  def codec(suit: ExoSuitType.Value, pad_length: Option[Int]): Codec[DetailedCharacterData] =
+private def codec(suit: ExoSuitType.Value, pad_length: Option[Int]): Codec[DetailedCharacterData] =
     (
       ("a" | a_codec(suit)) >>:~ { a =>
         ("b" | b_codec(a.bep, pad_length)).hlist

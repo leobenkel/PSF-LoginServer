@@ -27,18 +27,18 @@ import net.psforever.types.PlanetSideGUID
   * @param item_guid the trigger
   */
 final case class TriggerUsedReason(user: PlayerSource, item_guid: PlanetSideGUID) extends DamageReason {
-  def source: DamageProperties = TriggerUsedReason.triggered
+private def source: DamageProperties = TriggerUsedReason.triggered
 
-  def resolution: DamageResolution.Value = DamageResolution.Resolved
+private def resolution: DamageResolution.Value = DamageResolution.Resolved
 
-  def same(test: DamageReason): Boolean =
+private def same(test: DamageReason): Boolean =
     test match {
       case tur: TriggerUsedReason => tur.item_guid == item_guid && tur.user.Name.equals(user.Name)
       case _                      => false
     }
 
   /** lay the blame on the player who caused this explosion to occur */
-  def adversary: Option[SourceEntry] = Some(user)
+private def adversary: Option[SourceEntry] = Some(user)
 
   override def damageModel: DamageAndResistance = TriggerUsedReason.drm
 

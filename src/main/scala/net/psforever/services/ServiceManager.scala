@@ -12,7 +12,7 @@ object ServiceManager {
 
   var receptionist: typed.ActorRef[Receptionist.Command] = null
 
-  def boot(implicit system: ActorSystem) = {
+private def boot(implicit system: ActorSystem) = {
     serviceManager = system.actorOf(Props[ServiceManager](), "service")
     receptionist = system.toTyped.receptionist
     serviceManager
@@ -40,7 +40,7 @@ private val retainedRequests: mutable.HashMap[String, Set[ActorRef]] = mutable.H
     log.info("Starting...")
   }
 
-  def receive = {
+def receive = {
     case Register(props, name) =>
       log.info(s"Registered $name service")
       try {

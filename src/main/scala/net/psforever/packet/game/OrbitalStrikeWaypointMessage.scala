@@ -39,8 +39,8 @@ final case class Waypoint(x: Float, y: Float)
 final case class OrbitalStrikeWaypointMessage(guid: PlanetSideGUID, coords: Option[Waypoint] = None)
     extends PlanetSideGamePacket {
   type Packet = OrbitalStrikeWaypointMessage
-  def opcode = GamePacketOpcode.OrbitalStrikeWaypointMessage
-  def encode = OrbitalStrikeWaypointMessage.encode(this)
+def opcode = GamePacketOpcode.OrbitalStrikeWaypointMessage
+def encode = OrbitalStrikeWaypointMessage.encode(this)
 }
 
 object OrbitalStrikeWaypointMessage extends Marshallable[OrbitalStrikeWaypointMessage] {
@@ -52,7 +52,7 @@ object OrbitalStrikeWaypointMessage extends Marshallable[OrbitalStrikeWaypointMe
     * @param y the y-coordinate of the waypoint
     * @return an `OrbitalStrikeWaypointMessage` object
     */
-  def apply(guid: PlanetSideGUID, x: Float, y: Float): OrbitalStrikeWaypointMessage =
+def apply(guid: PlanetSideGUID, x: Float, y: Float): OrbitalStrikeWaypointMessage =
     new OrbitalStrikeWaypointMessage(guid, Option(Waypoint(x, y)))
 
   /**

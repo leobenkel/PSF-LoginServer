@@ -24,7 +24,7 @@ object GUIDTaskTest {
     }
   }
 
-  def CommonTestSetup(implicit system: ActorSystem): (NumberPoolHub, UniqueNumberOps, TestProbe) = {
+private def CommonTestSetup(implicit system: ActorSystem): (NumberPoolHub, UniqueNumberOps, TestProbe) = {
     import akka.testkit.TestProbe
 
     val guid: NumberPoolHub = new NumberPoolHub(new MaxNumberSource(90))
@@ -44,7 +44,7 @@ object GUIDTaskTest {
   /**
     * @see `UniqueNumberSetup.AllocateNumberPoolActors(NumberPoolHub)(implicit ActorContext)`
     */
-  def AllocateNumberPoolActors(poolSource: NumberPoolHub)(implicit system: ActorSystem): Map[String, ActorRef] = {
+private def AllocateNumberPoolActors(poolSource: NumberPoolHub)(implicit system: ActorSystem): Map[String, ActorRef] = {
     poolSource.Pools
       .map {
         case (pname, pool) =>

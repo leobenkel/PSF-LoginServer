@@ -125,7 +125,7 @@ case class DatabaseConfig(
     database: String,
     sslmode: String
 ) {
-  def toJdbc = s"jdbc:postgresql://$host:$port/$database"
+private def toJdbc = s"jdbc:postgresql://$host:$port/$database"
 }
 
 case class AntiCheatConfig(

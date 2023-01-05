@@ -34,7 +34,7 @@ import net.psforever.util.{Config, PointOfInterest}
 import net.psforever.zones.Zones
 
 object ChatActor {
-  def apply(
+def apply(
       sessionActor: ActorRef[SessionActor.Command],
       avatarActor: ActorRef[AvatarActor.Command]
   ): Behavior[Command] =
@@ -153,7 +153,7 @@ private val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.
     context.messageAdapter[Receptionist.Listing](ListingResponse)
   )
 
-  def start(): Behavior[Command] = {
+private def start(): Behavior[Command] = {
     Behaviors
       .receiveMessage[Command] {
       case ListingResponse(InterstellarClusterService.InterstellarClusterServiceKey.Listing(listings)) =>
@@ -184,7 +184,7 @@ private val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.
     }
   }
 
-  def postStartBehaviour(): Behavior[Command] = {
+private def postStartBehaviour(): Behavior[Command] = {
     (session, chatService, cluster) match {
       case (Some(_session), Some(_chatService), Some(_cluster)) if _session.player != null =>
         _chatService ! ChatService.JoinChannel(chatServiceAdapter, _session, ChatChannel.Default())
@@ -194,7 +194,7 @@ private val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.
     }
   }
 
-  def active(
+private def active(
               session: Session,
               chatService: ActorRef[ChatService.Command],
               cluster: ActorRef[InterstellarClusterService.Command]
@@ -1238,7 +1238,7 @@ private val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.
    * @param guid current player unique identifier for the target client
    * @param shortcuts list of all existing shortcuts, used for early validation
    */
-  def medkitSanityTest(
+private def medkitSanityTest(
                         guid: PlanetSideGUID,
                         shortcuts: Array[Option[AvatarShortcut]]
                       ): Unit = {
@@ -1271,7 +1271,7 @@ private val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.
    * @param haveImplants list of implants the player possesses
    * @param shortcuts list of all existing shortcuts, used for early validation
    */
-  def implantSanityTest(
+private def implantSanityTest(
                          guid: PlanetSideGUID,
                          haveImplants: Iterable[ImplantDefinition],
                          shortcuts: Array[Option[AvatarShortcut]]
@@ -1310,7 +1310,7 @@ private val chatServiceAdapter: ActorRef[ChatService.MessageResponse] = context.
    * @param msg the message published to text chat
    * @param shortcuts a list of all existing shortcuts, used for early validation
    */
-  def macroSanityTest(
+private def macroSanityTest(
                         guid: PlanetSideGUID,
                         acronym: String,
                         msg: String,

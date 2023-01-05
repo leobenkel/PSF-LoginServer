@@ -17,8 +17,8 @@ import scodec.codecs._
   */
 final case class UnuseItemMessage(player_guid: PlanetSideGUID, item_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = UnuseItemMessage
-  def opcode = GamePacketOpcode.UnuseItemMessage
-  def encode = UnuseItemMessage.encode(this)
+def opcode = GamePacketOpcode.UnuseItemMessage
+def encode = UnuseItemMessage.encode(this)
 }
 
 object UnuseItemMessage extends Marshallable[UnuseItemMessage] {

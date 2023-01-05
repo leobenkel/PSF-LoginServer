@@ -12,7 +12,7 @@ object HartTimerActions {
     * @param shuttle the orbital shuttle pad's shuttle
     * @param toChannel to whom these messages will be dispatched
     */
-  def ShuttleDocked(pad: OrbitalShuttlePad, shuttle: Vehicle, toChannel: String): Unit = {
+private def ShuttleDocked(pad: OrbitalShuttlePad, shuttle: Vehicle, toChannel: String): Unit = {
     val zone = pad.Zone
     if(toChannel.equals(zone.id)) {
       shuttle.MountedIn = pad.GUID
@@ -29,7 +29,7 @@ object HartTimerActions {
     * @param shuttle the orbital shuttle pad's shuttle
     * @param toChannel to whom these messages will be dispatched
     */
-  def ShuttleFreeFromDock(pad: OrbitalShuttlePad, shuttle: Vehicle, toChannel: String): Unit = {
+private def ShuttleFreeFromDock(pad: OrbitalShuttlePad, shuttle: Vehicle, toChannel: String): Unit = {
     val zone = pad.Zone
     if(toChannel.equals(zone.id)) {
       shuttle.MountedIn = None
@@ -46,7 +46,7 @@ object HartTimerActions {
     * @param shuttle the orbital shuttle pad's shuttle
     * @param toChannel to whom these messages will be dispatched
     */
-  def ShuttleStateUpdate(pad: OrbitalShuttlePad, shuttle: Vehicle, toChannel: String, state: Int): Unit = {
+private def ShuttleStateUpdate(pad: OrbitalShuttlePad, shuttle: Vehicle, toChannel: String, state: Int): Unit = {
     val zone = pad.Zone
     if(toChannel.equals(zone.id)) {
       shuttle.Flying = state

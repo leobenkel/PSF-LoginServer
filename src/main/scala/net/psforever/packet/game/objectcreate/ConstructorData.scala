@@ -24,7 +24,7 @@ object ConstructorData {
     * @tparam T a subclass of `ConstructorData` that indicates what type the object is
     * @return `Codec[ConstructorData]`
     */
-  def apply[T <: ConstructorData](objCodec: Codec[T], objType: String = "object"): Codec[ConstructorData] =
+def apply[T <: ConstructorData](objCodec: Codec[T], objType: String = "object"): Codec[ConstructorData] =
     objCodec.exmap[ConstructorData](
       x => {
         try {

@@ -40,7 +40,7 @@ object InventoryData {
     * @param itemCodec a `Codec` that describes each of the contents of the list
     * @return an `InventoryData` object, or a `BitVector`
     */
-  def codec(itemCodec: Codec[InventoryItem]): Codec[InventoryData] =
+private def codec(itemCodec: Codec[InventoryItem]): Codec[InventoryData] =
     (
       uint8L >>:~ { len =>
         uint2L ::

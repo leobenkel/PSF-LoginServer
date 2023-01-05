@@ -38,8 +38,8 @@ final case class HotSpotInfo(x: Float, y: Float, scale: Float)
 final case class HotSpotUpdateMessage(zone_index: Int, priority: Int, spots: List[HotSpotInfo])
     extends PlanetSideGamePacket {
   type Packet = HotSpotUpdateMessage
-  def opcode = GamePacketOpcode.HotSpotUpdateMessage
-  def encode = HotSpotUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.HotSpotUpdateMessage
+def encode = HotSpotUpdateMessage.encode(this)
 }
 
 object HotSpotInfo extends Marshallable[HotSpotInfo] {

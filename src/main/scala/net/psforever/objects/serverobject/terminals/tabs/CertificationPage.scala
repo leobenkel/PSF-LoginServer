@@ -33,7 +33,7 @@ final case class CertificationPage(stock: Seq[Certification]) extends Tab {
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     sender ! msg
   }
 }

@@ -51,7 +51,7 @@ object ControlPacketOpcode extends Enumeration {
   private def noDecoder(opcode: ControlPacketOpcode.Type) =
     (bits: BitVector) => Attempt.failure(Err(s"Could not find a marshaller for control packet $opcode (${bits.toHex})"))
 
-  def getPacketDecoder(
+private def getPacketDecoder(
       opcode: ControlPacketOpcode.Type
   ): (BitVector) => Attempt[DecodeResult[PlanetSideControlPacket]] =
     (opcode.id: @switch) match {

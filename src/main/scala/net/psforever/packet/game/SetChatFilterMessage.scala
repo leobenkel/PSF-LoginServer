@@ -41,8 +41,8 @@ final case class SetChatFilterMessage(
     whitelist: List[ChatChannel.Value]
 ) extends PlanetSideGamePacket {
   type Packet = SetChatFilterMessage
-  def opcode = GamePacketOpcode.SetChatFilterMessage
-  def encode = SetChatFilterMessage.encode(this)
+def opcode = GamePacketOpcode.SetChatFilterMessage
+def encode = SetChatFilterMessage.encode(this)
 }
 
 object SetChatFilterMessage extends Marshallable[SetChatFilterMessage] {

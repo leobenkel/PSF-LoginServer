@@ -20,7 +20,7 @@ trait ResistanceProfile {
 
   def RadiationShielding: Float
 
-  def Resist(dtype: DamageType.Value): Float = {
+  private def Resist(dtype: DamageType.Value): Float = {
     dtype match {
       case DamageType.Direct     => ResistanceDirectHit.toFloat
       case DamageType.Splash     => ResistanceSplash.toFloat
@@ -54,32 +54,32 @@ trait ResistanceProfileMutators extends ResistanceProfile {
   private var resistanceAggravated: Int = 0
   private var radiationShielding: Float = 0f
 
-  def Subtract: DamageProfile = subtract
+  private def Subtract: DamageProfile = subtract
 
-  def ResistanceDirectHit: Int = resistanceDirectHit
+  private def ResistanceDirectHit: Int = resistanceDirectHit
 
-  def ResistanceDirectHit_=(resist: Int): Int = {
+  private def ResistanceDirectHit_=(resist: Int): Int = {
     resistanceDirectHit = resist
     ResistanceDirectHit
   }
 
-  def ResistanceSplash: Int = resistanceSplash
+  private def ResistanceSplash: Int = resistanceSplash
 
-  def ResistanceSplash_=(resist: Int): Int = {
+  private def ResistanceSplash_=(resist: Int): Int = {
     resistanceSplash = resist
     ResistanceSplash
   }
 
-  def ResistanceAggravated: Int = resistanceAggravated
+  private def ResistanceAggravated: Int = resistanceAggravated
 
-  def ResistanceAggravated_=(resist: Int): Int = {
+  private def ResistanceAggravated_=(resist: Int): Int = {
     resistanceAggravated = resist
     ResistanceAggravated
   }
 
-  def RadiationShielding: Float = radiationShielding
+  private def RadiationShielding: Float = radiationShielding
 
-  def RadiationShielding_=(resist: Float): Float = {
+  private def RadiationShielding_=(resist: Float): Float = {
     radiationShielding = resist
     RadiationShielding
   }

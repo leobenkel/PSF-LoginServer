@@ -169,7 +169,7 @@ class SquadService extends Actor {
     * before it wraps back around to 1.
     * @return the current squad unique identifier number
     */
-  def GetNextSquadId(): PlanetSideGUID = {
+private def GetNextSquadId(): PlanetSideGUID = {
     val out = sid
     val j   = sid + 1
     if (j == 65536) {
@@ -184,7 +184,7 @@ class SquadService extends Actor {
     * Set the unique squad identifier back to the start (1) if no squads are active and no players are logged on.
     * @return `true`, if the identifier is reset; `false`, otherwise
     */
-  def TryResetSquadId(): Boolean = {
+private def TryResetSquadId(): Boolean = {
     if (UserEvents.isEmpty && squadFeatures.isEmpty) {
       sid = 1
       true
@@ -198,7 +198,7 @@ class SquadService extends Actor {
     * @param id the squad unique identifier number
     * @return the discovered squad, or `None`
     */
-  def GetSquad(id: PlanetSideGUID): Option[Squad] =
+private def GetSquad(id: PlanetSideGUID): Option[Squad] =
     squadFeatures.get(id) match {
       case Some(features) => Some(features.Squad)
       case None           => None
@@ -209,14 +209,14 @@ class SquadService extends Actor {
     * @param player the potential member
     * @return the discovered squad, or `None`
     */
-  def GetParticipatingSquad(player: Player): Option[Squad] = GetParticipatingSquad(player.CharId)
+private def GetParticipatingSquad(player: Player): Option[Squad] = GetParticipatingSquad(player.CharId)
 
   /**
     * If the player associated with this unique character identifier number is a member of any squad, discover that squad.
     * @param charId the potential member identifier
     * @return the discovered squad, or `None`
     */
-  def GetParticipatingSquad(charId: Long): Option[Squad] =
+private def GetParticipatingSquad(charId: Long): Option[Squad] =
     memberToSquad.get(charId) match {
       case opt @ Some(_) =>
         opt
@@ -233,7 +233,7 @@ class SquadService extends Actor {
     *            the expectation is that the provided squad is a known participating squad
     * @return the discovered squad, or `None`
     */
-  def GetLeadingSquad(player: Player, opt: Option[Squad]): Option[Squad] = GetLeadingSquad(player.CharId, opt)
+private def GetLeadingSquad(player: Player, opt: Option[Squad]): Option[Squad] = GetLeadingSquad(player.CharId, opt)
 
   /**
     * If the player associated with this unique character identifier number is the leader of any squad, discover that squad.
@@ -244,7 +244,7 @@ class SquadService extends Actor {
     *            the expectation is that the provided squad is a known participating squad
     * @return the discovered squad, or `None`
     */
-  def GetLeadingSquad(charId: Long, opt: Option[Squad]): Option[Squad] =
+private def GetLeadingSquad(charId: Long, opt: Option[Squad]): Option[Squad] =
     opt.orElse(GetParticipatingSquad(charId)) match {
       case Some(squad) =>
         if (squad.Leader.CharId == charId) {
@@ -262,7 +262,7 @@ class SquadService extends Actor {
     * @param to an `ActorRef` which to send the message
     * @param msg a message that can be stored in a `SquadServiceResponse` object
     */
-  def Publish(to: ActorRef, msg: SquadResponse.Response): Unit = {
+private def Publish(to: ActorRef, msg: SquadResponse.Response): Unit = {
     Publish(to, msg, Nil)
   }
 
@@ -274,7 +274,7 @@ class SquadService extends Actor {
     * @param excluded a group of character identifier numbers who should not receive the message
     *                 (resolved at destination)
     */
-  def Publish(to: ActorRef, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
+private def Publish(to: ActorRef, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
     to ! SquadServiceResponse("", excluded, msg)
   }
 
@@ -284,7 +284,7 @@ class SquadService extends Actor {
     * @param to a faction affiliation used as the channel for the message
     * @param msg a message that can be stored in a `SquadServiceResponse` object
     */
-  def Publish(to: PlanetSideEmpire.Type, msg: SquadResponse.Response): Unit = {
+private def Publish(to: PlanetSideEmpire.Type, msg: SquadResponse.Response): Unit = {
     Publish(to, msg, Nil)
   }
 
@@ -296,7 +296,7 @@ class SquadService extends Actor {
     * @param excluded a group of character identifier numbers who should not receive the message
     *                 (resolved at destination)
     */
-  def Publish(to: PlanetSideEmpire.Type, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
+private def Publish(to: PlanetSideEmpire.Type, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
     SquadEvents.publish(SquadServiceResponse(s"/$to/Squad", excluded, msg))
   }
 
@@ -309,7 +309,7 @@ class SquadService extends Actor {
     * @param to a string used as the channel for the message
     * @param msg a message that can be stored in a `SquadServiceResponse` object
     */
-  def Publish(to: String, msg: SquadResponse.Response): Unit = {
+private def Publish(to: String, msg: SquadResponse.Response): Unit = {
     Publish(to, msg, Nil)
   }
 
@@ -324,7 +324,7 @@ class SquadService extends Actor {
     * @param excluded a group of character identifier numbers who should not receive the message
     *                 (resolved at destination, usually)
     */
-  def Publish(to: String, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
+private def Publish(to: String, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
     to match {
       case str if "TRNCVS".indexOf(str) > -1 || str.matches("(TR|NC|VS)-Squad\\d+") =>
         SquadEvents.publish(SquadServiceResponse(s"/$str/Squad", excluded, msg))
@@ -341,7 +341,7 @@ class SquadService extends Actor {
     * @param to a unique character identifier used as the channel for the message
     * @param msg a message that can be stored in a `SquadServiceResponse` object
     */
-  def Publish(to: Long, msg: SquadResponse.Response): Unit = {
+private def Publish(to: Long, msg: SquadResponse.Response): Unit = {
     UserEvents.get(to) match {
       case Some(user) =>
         user ! SquadServiceResponse("", msg)
@@ -357,7 +357,7 @@ class SquadService extends Actor {
     * @param msg a message that can be stored in a `SquadServiceResponse` object
     * @param excluded a group of character identifier numbers who should not receive the message
     */
-  def Publish(to: Long, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
+private def Publish(to: Long, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
     if (!excluded.exists(_ == to)) {
       Publish(to, msg)
     }
@@ -371,7 +371,7 @@ class SquadService extends Actor {
     *           but is not handled as such
     * @param msg a message that can be stored in a `SquadServiceResponse` object
     */
-  def Publish[ANY >: Any](to: ANY, msg: SquadResponse.Response): Unit = {
+private def Publish[ANY >: Any](to: ANY, msg: SquadResponse.Response): Unit = {
     log.warn(s"Publish(Any): subscriber information is an unhandled format - $to")
   }
 
@@ -384,11 +384,11 @@ class SquadService extends Actor {
     * @param msg a message that can be stored in a `SquadServiceResponse` object
     * @param excluded a group of character identifier numbers who should not receive the message
     */
-  def Publish[ANY >: Any](to: ANY, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
+private def Publish[ANY >: Any](to: ANY, msg: SquadResponse.Response, excluded: Iterable[Long]): Unit = {
     log.warn(s"Publish(Any): subscriber information is an unhandled format - $to")
   }
 
-  def receive: Receive = {
+def receive: Receive = {
     //subscribe to a faction's channel - necessary to receive updates about listed squads
     case Service.Join(faction) if "TRNCVS".indexOf(faction) > -1 =>
       JoinByFaction(faction, sender())
@@ -502,13 +502,13 @@ class SquadService extends Actor {
       log.warn(s"Unhandled message $msg from ${sender()}")
   }
 
-  def JoinByFaction(faction: String, sender: ActorRef): Unit = {
+private def JoinByFaction(faction: String, sender: ActorRef): Unit = {
     val path = s"/$faction/Squad"
     log.trace(s"$sender has joined $path")
     SquadEvents.subscribe(sender, path)
   }
 
-  def JoinByCharacterId(charId: String, sender: ActorRef): Unit = {
+private def JoinByCharacterId(charId: String, sender: ActorRef): Unit = {
     try {
       val longCharId = charId.toLong
       val path       = s"/$charId/Squad"
@@ -527,13 +527,13 @@ class SquadService extends Actor {
     }
   }
 
-  def LeaveByFaction(faction: String, sender: ActorRef): Unit = {
+private def LeaveByFaction(faction: String, sender: ActorRef): Unit = {
     val path = s"/$faction/Squad"
     log.trace(s"$sender has left $path")
     SquadEvents.unsubscribe(sender, path)
   }
 
-  def LeaveByCharacterId(charId: String, sender: ActorRef): Unit = {
+private def LeaveByCharacterId(charId: String, sender: ActorRef): Unit = {
     try {
       LeaveService(charId.toLong, sender)
     } catch {
@@ -547,7 +547,7 @@ class SquadService extends Actor {
     }
   }
 
-  def LeaveInGeneral(sender: ActorRef): Unit = {
+private def LeaveInGeneral(sender: ActorRef): Unit = {
     UserEvents find { case (_, subscription) => subscription.path.equals(sender.path) } match {
       case Some((to, _)) =>
         LeaveService(to, sender)
@@ -555,7 +555,7 @@ class SquadService extends Actor {
     }
   }
 
-  def TerminatedBy(requestee: ActorRef): Unit = {
+private def TerminatedBy(requestee: ActorRef): Unit = {
     context.unwatch(requestee)
     UserEvents find { case (_, subscription) => subscription eq requestee } match {
       case Some((to, _)) =>
@@ -564,7 +564,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionInitCharId(tplayer: Player): Unit = {
+private def SquadActionInitCharId(tplayer: Player): Unit = {
     val charId = tplayer.CharId
     memberToSquad.get(charId) match {
       case None => ;
@@ -580,7 +580,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionMembershipInvite(
+private def SquadActionMembershipInvite(
       tplayer: Player,
       invitingPlayer: Long,
       _invitedPlayer: Long,
@@ -719,7 +719,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionMembershipProximityInvite(tplayer: Player, zone: Zone, invitingPlayer: Long): Unit = {
+private def SquadActionMembershipProximityInvite(tplayer: Player, zone: Zone, invitingPlayer: Long): Unit = {
     GetLeadingSquad(invitingPlayer, None) match {
       case Some(squad) =>
         val sguid    = squad.GUID
@@ -815,7 +815,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionMembershipAccept(tplayer: Player, invitedPlayer: Long): Unit = {
+private def SquadActionMembershipAccept(tplayer: Player, invitedPlayer: Long): Unit = {
     val acceptedInvite = RemoveInvite(invitedPlayer)
     acceptedInvite match {
       case Some(RequestRole(petitioner, guid, position))
@@ -1062,7 +1062,7 @@ class SquadService extends Actor {
     NextInviteAndRespond(invitedPlayer)
   }
 
-  def SquadActionMembershipLeave(
+private def SquadActionMembershipLeave(
       tplayer: Player,
       actingPlayer: Long,
       _leavingPlayer: Option[Long],
@@ -1140,7 +1140,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionMembershipReject(tplayer: Player, rejectingPlayer: Long): Unit = {
+private def SquadActionMembershipReject(tplayer: Player, rejectingPlayer: Long): Unit = {
     val rejectedBid = RemoveInvite(rejectingPlayer)
     //(A, B) -> person who made the rejection, person who was rejected
     (rejectedBid match {
@@ -1215,7 +1215,7 @@ class SquadService extends Actor {
     NextInviteAndRespond(rejectingPlayer)
   }
 
-  def SquadActionMembershipDisband(charId: Long): Unit = {
+private def SquadActionMembershipDisband(charId: Long): Unit = {
     GetLeadingSquad(charId, None) match {
       case Some(squad) =>
         DisbandSquad(squad)
@@ -1223,7 +1223,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionMembershipCancel(cancellingPlayer: Long): Unit = {
+private def SquadActionMembershipCancel(cancellingPlayer: Long): Unit = {
     //get rid of SpontaneousInvite objects and VacancyInvite objects
     invites.collect {
       case (id, invite: SpontaneousInvite) if invite.InviterCharId == cancellingPlayer =>
@@ -1251,7 +1251,7 @@ class SquadService extends Actor {
     RemoveProximityInvites(cancellingPlayer)
   }
 
-  def SquadActionMembershipPromote(promotingPlayer: Long, _promotedPlayer: Long, promotedName: String): Unit = {
+private def SquadActionMembershipPromote(promotingPlayer: Long, _promotedPlayer: Long, promotedName: String): Unit = {
     val promotedPlayer = (if (promotedName.nonEmpty) {
                             //validate player with name exists
                             LivePlayerList
@@ -1329,7 +1329,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionWaypoint(tplayer: Player, waypointType: SquadWaypoint, info: Option[WaypointInfo]): Unit = {
+private def SquadActionWaypoint(tplayer: Player, waypointType: SquadWaypoint, info: Option[WaypointInfo]): Unit = {
     val playerCharId = tplayer.CharId
     (if (waypointType.subtype == WaypointSubtype.Laze) {
        //laze rally can be updated by any squad member
@@ -1405,7 +1405,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinition(
+private def SquadActionDefinition(
       tplayer: Player,
       zone: Zone,
       guid: PlanetSideGUID,
@@ -1536,7 +1536,7 @@ class SquadService extends Actor {
     }
   }
 
-  def GetOrCreateSquadOnlyIfLeader(
+private def GetOrCreateSquadOnlyIfLeader(
       player: Player,
       participatingSquadOpt: Option[Squad],
       leadingSquadOpt: Option[Squad]
@@ -1550,7 +1550,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionSaveSquadFavorite(
+private def SquadActionDefinitionSaveSquadFavorite(
       tplayer: Player,
       line: Int,
       lSquadOpt: Option[Squad],
@@ -1564,7 +1564,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionLoadSquadFavorite(
+private def SquadActionDefinitionLoadSquadFavorite(
       tplayer: Player,
       line: Int,
       pSquadOpt: Option[Squad],
@@ -1588,12 +1588,12 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionDeleteSquadFavorite(tplayer: Player, line: Int, sendTo: ActorRef): Unit = {
+private def SquadActionDefinitionDeleteSquadFavorite(tplayer: Player, line: Int, sendTo: ActorRef): Unit = {
     tplayer.squadLoadouts.DeleteLoadout(line)
     Publish(sendTo, SquadResponse.ListSquadFavorite(line, ""))
   }
 
-  def SquadActionDefinitionChangeSquadPurpose(
+private def SquadActionDefinitionChangeSquadPurpose(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1608,7 +1608,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionChangeSquadZone(
+private def SquadActionDefinitionChangeSquadZone(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1631,7 +1631,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionCloseSquadMemberPosition(
+private def SquadActionDefinitionCloseSquadMemberPosition(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1657,7 +1657,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionAddSquadMemberPosition(
+private def SquadActionDefinitionAddSquadMemberPosition(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1679,7 +1679,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionChangeSquadMemberRequirementsRole(
+private def SquadActionDefinitionChangeSquadMemberRequirementsRole(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1701,7 +1701,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionChangeSquadMemberRequirementsDetailedOrders(
+private def SquadActionDefinitionChangeSquadMemberRequirementsDetailedOrders(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1725,7 +1725,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionChangeSquadMemberRequirementsCertifications(
+private def SquadActionDefinitionChangeSquadMemberRequirementsCertifications(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1747,7 +1747,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionLocationFollowsSquadLead(
+private def SquadActionDefinitionLocationFollowsSquadLead(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1761,7 +1761,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionAutoApproveInvitationRequests(
+private def SquadActionDefinitionAutoApproveInvitationRequests(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1797,7 +1797,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionFindLfsSoldiersForRole(
+private def SquadActionDefinitionFindLfsSoldiersForRole(
       tplayer: Player,
       zone: Zone,
       lSquadOpt: Option[Squad],
@@ -1896,7 +1896,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionCancelFind(lSquadOpt: Option[Squad]): Unit = {
+private def SquadActionDefinitionCancelFind(lSquadOpt: Option[Squad]): Unit = {
     lSquadOpt match {
       case Some(squad) =>
         val sguid    = squad.GUID
@@ -1930,7 +1930,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionRequestListSquad(
+private def SquadActionDefinitionRequestListSquad(
       tplayer: Player,
       pSquadOpt: Option[Squad],
       lSquadOpt: Option[Squad],
@@ -1949,7 +1949,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionStopListSquad(tplayer: Player, lSquadOpt: Option[Squad], sendTo: ActorRef): Unit = {
+private def SquadActionDefinitionStopListSquad(tplayer: Player, lSquadOpt: Option[Squad], sendTo: ActorRef): Unit = {
     lSquadOpt match {
       case Some(squad) =>
         val features = squadFeatures(squad.GUID)
@@ -1963,7 +1963,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionDefinitionResetAll(lSquadOpt: Option[Squad]): Unit = {
+private def SquadActionDefinitionResetAll(lSquadOpt: Option[Squad]): Unit = {
     lSquadOpt match {
       case Some(squad) if squad.Size > 1 =>
         val guid = squad.GUID
@@ -1997,7 +1997,7 @@ class SquadService extends Actor {
   }
 
   /** the following action can be performed by an unaffiliated player */
-  def SquadActionDefinitionSelectRoleForYourself(
+private def SquadActionDefinitionSelectRoleForYourself(
       tplayer: Player,
       guid: PlanetSideGUID,
       position: Int
@@ -2020,7 +2020,7 @@ class SquadService extends Actor {
   }
 
   /** the following action can be performed by anyone who has tried to join a squad */
-  def SquadActionDefinitionCancelSelectRoleForYourself(tplayer: Player, guid: PlanetSideGUID): Unit = {
+private def SquadActionDefinitionCancelSelectRoleForYourself(tplayer: Player, guid: PlanetSideGUID): Unit = {
     val cancellingPlayer = tplayer.CharId
     GetSquad(guid) match {
       case Some(squad) =>
@@ -2112,7 +2112,7 @@ class SquadService extends Actor {
   }
 
   /** the following action can be performed by ??? */
-  def SquadActionDefinitionAssignSquadMemberToRole(
+private def SquadActionDefinitionAssignSquadMemberToRole(
       squad: Squad,
       guid: PlanetSideGUID,
       char_id: Long,
@@ -2147,7 +2147,7 @@ class SquadService extends Actor {
   }
 
   /** the following action can be performed by anyone */
-  def SquadActionDefinitionDisplaySquad(tplayer: Player, guid: PlanetSideGUID, sendTo: ActorRef): Unit = {
+private def SquadActionDefinitionDisplaySquad(tplayer: Player, guid: PlanetSideGUID, sendTo: ActorRef): Unit = {
     val charId = tplayer.CharId
     GetSquad(guid) match {
       case Some(squad) if memberToSquad.get(charId).isEmpty =>
@@ -2159,7 +2159,7 @@ class SquadService extends Actor {
     }
   }
 
-  def SquadActionUpdate(
+private def SquadActionUpdate(
       charId: Long,
       health: Int,
       maxHealth: Int,
@@ -2204,7 +2204,7 @@ class SquadService extends Actor {
     * @param charId the player who refused other players
     * @return the list of other players who have been refused
     */
-  def Refused(charId: Long): List[Long] = refused.getOrElse(charId, Nil)
+private def Refused(charId: Long): List[Long] = refused.getOrElse(charId, Nil)
 
   /**
     * This player has refused to join squad leader's squads or some other players's offers to form a squad.
@@ -2212,7 +2212,7 @@ class SquadService extends Actor {
     * @param refusedCharId the player who is refused
     * @return the list of other players who have been refused
     */
-  def Refused(charId: Long, refusedCharId: Long): List[Long] = {
+private def Refused(charId: Long, refusedCharId: Long): List[Long] = {
     if (charId != refusedCharId) {
       Refused(charId, List(refusedCharId))
     } else {
@@ -2226,7 +2226,7 @@ class SquadService extends Actor {
     * @param list the players who are refused
     * @return the list of other players who have been refused
     */
-  def Refused(charId: Long, list: List[Long]): List[Long] = {
+private def Refused(charId: Long, list: List[Long]): List[Long] = {
     refused.get(charId) match {
       case Some(refusedList) =>
         refused(charId) = list ++ refusedList
@@ -2255,7 +2255,7 @@ class SquadService extends Actor {
     *         the invitation object in the active invite position;
     *         `None`, if it is not added to either the active option or inactive position
     */
-  def AddInvite(invitedPlayer: Long, invite: Invitation): Option[Invitation] = {
+private def AddInvite(invitedPlayer: Long, invite: Invitation): Option[Invitation] = {
     invites.get(invitedPlayer).orElse(previousInvites.get(invitedPlayer)) match {
       case Some(_bid) =>
         //the active invite does not interact with the given invite; add to queued invites
@@ -2307,7 +2307,7 @@ class SquadService extends Actor {
     *             not useful here
     * @return na
     */
-  def indirectInviteResp(
+private def indirectInviteResp(
       invite: IndirectInvite,
       player: Player,
       invitedPlayer: Long,
@@ -2328,7 +2328,7 @@ class SquadService extends Actor {
     * @param name a name to be used in message composition
     * @return na
     */
-  def altIndirectInviteResp(
+private def altIndirectInviteResp(
       invite: IndirectInvite,
       player: Player,
       invitedPlayer: Long,
@@ -2369,7 +2369,7 @@ class SquadService extends Actor {
     * @param invitingPlayer the unique character identifier for the player who invited the former
     * @param name a name to be used in message composition
     */
-  def InviteResponseTemplate(indirectVacancyFunc: (IndirectInvite, Player, Long, Long, String) => Boolean)(
+private def InviteResponseTemplate(indirectVacancyFunc: (IndirectInvite, Player, Long, Long, String) => Boolean)(
       targetInvite: Invitation,
       actualInvite: Option[Invitation],
       invitedPlayer: Long,
@@ -2491,7 +2491,7 @@ class SquadService extends Actor {
     * @param invitingPlayer the unique character identifier for the player who invited the former
     * @param name a name to be used in message composition
     */
-  def AddInviteAndRespond(invitedPlayer: Long, targetInvite: Invitation, invitingPlayer: Long, name: String): Unit = {
+private def AddInviteAndRespond(invitedPlayer: Long, targetInvite: Invitation, invitingPlayer: Long, name: String): Unit = {
     InviteResponseTemplate(indirectInviteResp)(
       targetInvite,
       AddInvite(invitedPlayer, targetInvite),
@@ -2513,7 +2513,7 @@ class SquadService extends Actor {
     * @param invitingPlayer the unique character identifier for the player who invited the former
     * @param name a name to be used in message composition
     */
-  def AltAddInviteAndRespond(
+private def AltAddInviteAndRespond(
       invitedPlayer: Long,
       targetInvite: Invitation,
       invitingPlayer: Long,
@@ -2544,7 +2544,7 @@ class SquadService extends Actor {
     *         the invitation object in the active invite position;
     *         `None`, if not shifted into the active position
     */
-  def NextInvite(invitedPlayer: Long): Option[Invitation] = {
+private def NextInvite(invitedPlayer: Long): Option[Invitation] = {
     previousInvites.remove(invitedPlayer)
     invites.get(invitedPlayer) match {
       case None =>
@@ -2582,7 +2582,7 @@ class SquadService extends Actor {
     *         the invitation object in the active invite position;
     *         `None`, if not shifted into the active position
     */
-  def NextInviteAndRespond(invitedPlayer: Long): Unit = {
+private def NextInviteAndRespond(invitedPlayer: Long): Unit = {
     NextInvite(invitedPlayer) match {
       case Some(invite) =>
         InviteResponseTemplate(indirectInviteResp)(
@@ -2610,7 +2610,7 @@ class SquadService extends Actor {
     *         the invitation object formerly in the active invite position;
     *         `None`, if no invitation was in the active position
     */
-  def RemoveInvite(invitedPlayer: Long): Option[Invitation] = {
+private def RemoveInvite(invitedPlayer: Long): Option[Invitation] = {
     invites.remove(invitedPlayer) match {
       case out @ Some(invite) =>
         previousInvites += invitedPlayer -> invite
@@ -2626,7 +2626,7 @@ class SquadService extends Actor {
     *                      in actuality, represents the player who will address the invitation object
     * @return a list of the removed inactive invitation objects
     */
-  def RemoveQueuedInvites(invitedPlayer: Long): List[Invitation] = {
+private def RemoveQueuedInvites(invitedPlayer: Long): List[Invitation] = {
     queuedInvites.remove(invitedPlayer) match {
       case Some(_bidList) => _bidList
       case None           => Nil
@@ -2644,7 +2644,7 @@ class SquadService extends Actor {
     * @param guid the squad identifier
     * @param position the role position index
     */
-  def RemoveInvitesForSquadAndPosition(guid: PlanetSideGUID, position: Int): Unit = {
+private def RemoveInvitesForSquadAndPosition(guid: PlanetSideGUID, position: Int): Unit = {
     //eliminate active invites for this role
     invites.collect {
       case (charId, LookingForSquadRoleInvite(_, _, sguid, pos)) if sguid == guid && pos == position =>
@@ -2665,7 +2665,7 @@ class SquadService extends Actor {
     * @param guid the squad identifier
     * @param position the role position index
     */
-  def RemoveQueuedInvitesForSquadAndPosition(guid: PlanetSideGUID, position: Int): Unit = {
+private def RemoveQueuedInvitesForSquadAndPosition(guid: PlanetSideGUID, position: Int): Unit = {
     //eliminate other invites for this role
     queuedInvites.foreach {
       case (charId, queue) =>
@@ -2694,7 +2694,7 @@ class SquadService extends Actor {
     * @see `VacancyInvite`
     * @param sguid the squad identifier
     */
-  def RemoveAllInvitesToSquad(sguid: PlanetSideGUID): Unit = {
+private def RemoveAllInvitesToSquad(sguid: PlanetSideGUID): Unit = {
     //clean up invites
     invites.collect {
       case (id, VacancyInvite(_, _, guid)) if sguid == guid                => RemoveInvite(id)
@@ -2744,7 +2744,7 @@ class SquadService extends Actor {
     * @see `VacancyInvite`
     * @param charId the player's unique identifier number
     */
-  def RemoveAllInvitesWithPlayer(charId: Long): Unit = {
+private def RemoveAllInvitesWithPlayer(charId: Long): Unit = {
     RemoveInvite(charId)
     invites.collect {
       case (id, SpontaneousInvite(player)) if player.CharId == charId             => RemoveInvite(id)
@@ -2781,7 +2781,7 @@ class SquadService extends Actor {
     * @param invitingPlayer the player who did the recruiting
     * @return a list of all players (unique character identifier number and name) who had active proximity invitations
     */
-  def RemoveProximityInvites(invitingPlayer: Long): Iterable[(Long, String)] = {
+private def RemoveProximityInvites(invitingPlayer: Long): Iterable[(Long, String)] = {
     //invites
     val (removedInvites, out): (Iterable[(Long, PlanetSideGUID)], Iterable[(Long, String)]) = invites.collect {
       case (id, ProximityInvite(inviterCharId, inviterName, squadGUID)) if inviterCharId == invitingPlayer =>
@@ -2813,7 +2813,7 @@ class SquadService extends Actor {
     * @see `SquadFeatures.SearchForRole`
     * @param list a list of players to squads with expected entry redundancy
     */
-  def RemoveProximityInvites(list: Iterable[(Long, PlanetSideGUID)]): Unit = {
+private def RemoveProximityInvites(list: Iterable[(Long, PlanetSideGUID)]): Unit = {
     val (_, squads) = list.unzip
     squads.toSeq.distinct.foreach { squad =>
       squadFeatures.get(squad) match {
@@ -2832,7 +2832,7 @@ class SquadService extends Actor {
     * @param guid the squad
     * @return a list of all players (unique character identifier number and name) who had active proximity invitations
     */
-  def RemoveProximityInvites(guid: PlanetSideGUID): Iterable[(Long, String)] = {
+private def RemoveProximityInvites(guid: PlanetSideGUID): Iterable[(Long, String)] = {
     //invites
     val (removedInvites, out): (Iterable[PlanetSideGUID], Iterable[(Long, String)]) = invites.collect {
       case (id, ProximityInvite(_, inviterName, squadGUID)) if squadGUID == guid =>
@@ -2875,7 +2875,7 @@ class SquadService extends Actor {
     * @return the squad object and a role position index, if properly invited;
     *         `None`, otherwise
     */
-  def HandleVacancyInvite(
+private def HandleVacancyInvite(
       squad_guid: PlanetSideGUID,
       invitedPlayer: Long,
       invitingPlayer: Long,
@@ -2927,7 +2927,7 @@ class SquadService extends Actor {
     * @return the squad object and a role position index, if properly invited;
     *         `None`, otherwise
     */
-  def HandleVacancyInvite(
+private def HandleVacancyInvite(
       squad: Squad,
       invitedPlayer: Long,
       invitingPlayer: Long,
@@ -2967,7 +2967,7 @@ class SquadService extends Actor {
     * @return `true`, if the player is not denied the possibility of joining the squad;
     *        `false`, otherwise, of it the squad does not exist
     */
-  def HandleRequestRole(bid: RequestRole, player: Player): Boolean = {
+private def HandleRequestRole(bid: RequestRole, player: Player): Boolean = {
     HandleRequestRole(bid, bid.squad_guid, player)
   }
 
@@ -2978,7 +2978,7 @@ class SquadService extends Actor {
     * @return `true`, if the player is not denied the possibility of joining the squad;
     *        `false`, otherwise, of it the squad does not exist
     */
-  def HandleRequestRole(bid: IndirectInvite, player: Player): Boolean = {
+private def HandleRequestRole(bid: IndirectInvite, player: Player): Boolean = {
     HandleRequestRole(bid, bid.squad_guid, player)
   }
 
@@ -3000,7 +3000,7 @@ class SquadService extends Actor {
     * @return `true`, if the player is not denied the possibility of joining the squad;
     *        `false`, otherwise, of it the squad does not exist
     */
-  def HandleRequestRole(bid: Invitation, guid: PlanetSideGUID, player: Player): Boolean = {
+private def HandleRequestRole(bid: Invitation, guid: PlanetSideGUID, player: Player): Boolean = {
     squadFeatures.get(guid) match {
       case Some(features) =>
         val leaderCharId = features.Squad.Leader.CharId
@@ -3032,7 +3032,7 @@ class SquadService extends Actor {
     * @see `SquadService.PublishFullDetails`
     * @param squad the squad
     */
-  def InitialAssociation(squad: Squad): Unit = {
+private def InitialAssociation(squad: Squad): Unit = {
     val guid = squad.GUID
     if (squadFeatures(guid).InitialAssociation) {
       squadFeatures(guid).InitialAssociation = false
@@ -3057,7 +3057,7 @@ class SquadService extends Actor {
     * @param player the player who would become the squad leader
     * @return the squad that has been created
     */
-  def StartSquad(player: Player): Squad = {
+private def StartSquad(player: Player): Squad = {
     val faction      = player.Faction
     val name         = player.Name
     val squad        = new Squad(GetNextSquadId(), faction)
@@ -3099,7 +3099,7 @@ class SquadService extends Actor {
     * @return `true`, if the player joined the squad in some capacity;
     *         `false`, if the player did not join the squad or is already a squad member
     */
-  def JoinSquad(player: Player, squad: Squad, position: Int): Boolean = {
+private def JoinSquad(player: Player, squad: Squad, position: Int): Boolean = {
     val charId = player.CharId
     val role   = squad.Membership(position)
     UserEvents.get(charId) match {
@@ -3187,7 +3187,7 @@ class SquadService extends Actor {
     * @return `true`, if the target player possesses no squad or a squad that is suitably nonexistent;
     *        `false`, otherwise
     */
-  def EnsureEmptySquad(charId: Long): Boolean = {
+private def EnsureEmptySquad(charId: Long): Boolean = {
     memberToSquad.get(charId) match {
       case None =>
         true
@@ -3209,7 +3209,7 @@ class SquadService extends Actor {
     * @return `true`, if the player, formerly a normal member of the squad, has been ejected from the squad;
     *        `false`, otherwise
     */
-  def LeaveSquad(charId: Long, squad: Squad): Boolean = {
+private def LeaveSquad(charId: Long, squad: Squad): Boolean = {
     val membership = squad.Membership.zipWithIndex
     membership.find { case (_member, _) => _member.CharId == charId } match {
       case data @ Some((us, index)) if squad.Leader.CharId != charId =>
@@ -3255,7 +3255,7 @@ class SquadService extends Actor {
     * @param entry a paired membership role with its index in the squad
     * @return if a role/index pair is provided
     */
-  def PanicLeaveSquad(charId: Long, squad: Squad, entry: Option[(Member, Int)]): Boolean = {
+private def PanicLeaveSquad(charId: Long, squad: Squad, entry: Option[(Member, Int)]): Boolean = {
     entry match {
       case Some((member, index)) =>
         info(s"${member.Name}-${squad.Faction} has left squad #${squad.GUID.guid} - ${squad.Task}")
@@ -3294,7 +3294,7 @@ class SquadService extends Actor {
     * @see `UpdateSquadList`
     * @param squad the squad
     */
-  def CloseSquad(squad: Squad): Unit = {
+private def CloseSquad(squad: Squad): Unit = {
     val guid = squad.GUID
     RemoveAllInvitesToSquad(guid)
     val membership = squad.Membership.zipWithIndex
@@ -3347,7 +3347,7 @@ class SquadService extends Actor {
     * @see `SquadResponse.Membership`
     * @param squad the squad
     */
-  def DisbandSquad(squad: Squad): Unit = {
+private def DisbandSquad(squad: Squad): Unit = {
     val leader = squad.Leader.CharId
     PanicDisbandSquad(
       squad,
@@ -3374,7 +3374,7 @@ class SquadService extends Actor {
     * @param membership the unique character identifier numbers of the other squad members
     * @return if a role/index pair is provided
     */
-  def PanicDisbandSquad(squad: Squad, membership: Iterable[Long]): Unit = {
+private def PanicDisbandSquad(squad: Squad, membership: Iterable[Long]): Unit = {
     CloseSquad(squad)
     membership.foreach { charId =>
       Publish(charId, SquadResponse.Membership(SquadResponseType.Disband, 0, 0, charId, None, "", false, Some(None)))
@@ -3393,7 +3393,7 @@ class SquadService extends Actor {
     * @param fromMember the squad role where the player is being encountered;
     *                   if a conflicting player is discovered, swap that player into `fromMember`
     */
-  def SwapMemberPosition(toMember: Member, fromMember: Member): Unit = {
+private def SwapMemberPosition(toMember: Member, fromMember: Member): Unit = {
     val (name, charId, zoneId, pos, health, armor) =
       (fromMember.Name, fromMember.CharId, fromMember.ZoneId, fromMember.Position, fromMember.Health, fromMember.Armor)
     if (toMember.CharId > 0) {
@@ -3429,7 +3429,7 @@ class SquadService extends Actor {
     * @param info information about the waypoint, as was reported by the client's packet
     * @return the waypoint data, if the waypoint type is changed
     */
-  def AddWaypoint(
+private def AddWaypoint(
       guid: PlanetSideGUID,
       waypointType: SquadWaypoint,
       info: WaypointInfo
@@ -3461,7 +3461,7 @@ class SquadService extends Actor {
     * @param guid the squad's unique identifier
     * @param waypointType the type of the waypoint
     */
-  def RemoveWaypoint(guid: PlanetSideGUID, waypointType: SquadWaypoint): Unit = {
+private def RemoveWaypoint(guid: PlanetSideGUID, waypointType: SquadWaypoint): Unit = {
     squadFeatures.get(guid) match {
       case Some(features) =>
         features.Waypoints.lift(waypointType.value) match {
@@ -3480,7 +3480,7 @@ class SquadService extends Actor {
     * @param toCharId the player to whom the waypoint data will be dispatched
     * @param guid the squad's unique identifier
     */
-  def InitWaypoints(toCharId: Long, guid: PlanetSideGUID): Unit = {
+private def InitWaypoints(toCharId: Long, guid: PlanetSideGUID): Unit = {
     squadFeatures.get(guid) match {
       case Some(features) =>
         val squad = features.Squad
@@ -3505,7 +3505,7 @@ class SquadService extends Actor {
     * @param charId the player's unique character identifier number
     * @param sender the `ActorRef` associated with this character
     */
-  def LeaveService(charId: String, sender: ActorRef): Unit = {
+private def LeaveService(charId: String, sender: ActorRef): Unit = {
     LeaveService(charId.toLong, sender)
   }
 
@@ -3514,7 +3514,7 @@ class SquadService extends Actor {
     * @param charId the player's unique character identifier number
     * @param sender the `ActorRef` associated with this character
     */
-  def LeaveService(charId: Long, sender: ActorRef): Unit = {
+private def LeaveService(charId: Long, sender: ActorRef): Unit = {
     refused.remove(charId)
     continueToMonitorDetails.remove(charId)
     RemoveAllInvitesWithPlayer(charId)
@@ -3618,7 +3618,7 @@ class SquadService extends Actor {
     * @param changes the optional highlighted aspects of the squad;
     *                these "changes" do not have to reflect the actual squad but are related to the contents of the message
     */
-  def UpdateSquadList(squad: Squad, changes: Option[SquadInfo]): Unit = {
+private def UpdateSquadList(squad: Squad, changes: Option[SquadInfo]): Unit = {
     val guid            = squad.GUID
     val faction         = squad.Faction
     val factionListings = publishedLists(faction)
@@ -3651,7 +3651,7 @@ class SquadService extends Actor {
     * @see `InitSquadDetail(PlanetSideGUID, Iterable[Long], Squad)`
     * @param squad the squad
     */
-  def InitSquadDetail(squad: Squad): Unit = {
+private def InitSquadDetail(squad: Squad): Unit = {
     InitSquadDetail(
       squad.GUID,
       squad.Membership.collect { case member if member.CharId > 0 => member.CharId },
@@ -3667,7 +3667,7 @@ class SquadService extends Actor {
     * @param to the unique character identifier numbers of the players who will receive this message
     * @param squad the squad from which the squad details shall be composed
     */
-  def InitSquadDetail(guid: PlanetSideGUID, to: Iterable[Long], squad: Squad): Unit = {
+private def InitSquadDetail(guid: PlanetSideGUID, to: Iterable[Long], squad: Squad): Unit = {
     val output = SquadResponse.Detail(guid, SquadService.PublishFullDetails(squad))
     to.foreach { Publish(_, output) }
   }
@@ -3678,7 +3678,7 @@ class SquadService extends Actor {
     * @see `UpdateSquadDetail(PlanetSideGUID, PlanetSideGUID, List[Long], SquadDetail)`
     * @param squad the squad
     */
-  def UpdateSquadDetail(squad: Squad): Unit = {
+private def UpdateSquadDetail(squad: Squad): Unit = {
     UpdateSquadDetail(
       squad.GUID,
       squad.GUID,
@@ -3697,7 +3697,7 @@ class SquadService extends Actor {
     * @see `UpdateSquadDetail(PlanetSideGUID, PlanetSideGUID, List[Long], SquadDetail)`
     * @param squad the squad
     */
-  def UpdateSquadDetail(guid: PlanetSideGUID, squad: Squad): Unit = {
+private def UpdateSquadDetail(guid: PlanetSideGUID, squad: Squad): Unit = {
     UpdateSquadDetail(
       guid,
       squad.GUID,
@@ -3713,7 +3713,7 @@ class SquadService extends Actor {
     * @param guid the unique identifier number of the squad
     * @param details the squad details to be included in the message
     */
-  def UpdateSquadDetail(guid: PlanetSideGUID, details: SquadDetail): Unit = {
+private def UpdateSquadDetail(guid: PlanetSideGUID, details: SquadDetail): Unit = {
     UpdateSquadDetail(
       guid,
       guid,
@@ -3737,7 +3737,7 @@ class SquadService extends Actor {
     * @param excluding the explicit unique character identifier numbers of individuals who should not receive the message
     * @param details the squad details to be included in the message
     */
-  def UpdateSquadDetail(
+private def UpdateSquadDetail(
       guid: PlanetSideGUID,
       toGuid: PlanetSideGUID,
       excluding: Iterable[Long],
@@ -3761,7 +3761,7 @@ class SquadService extends Actor {
     * @param faction the faction to which the squads belong
     * @return a `Vector` of transformed squad data
     */
-  def PublishedLists(faction: PlanetSideEmpire.Type): Vector[SquadInfo] = {
+private def PublishedLists(faction: PlanetSideEmpire.Type): Vector[SquadInfo] = {
     PublishedLists(publishedLists(faction))
   }
 
@@ -3770,7 +3770,7 @@ class SquadService extends Actor {
     * @param guids the list of squad unique identifier numbers
     * @return a `Vector` of transformed squad data
     */
-  def PublishedLists(guids: Iterable[PlanetSideGUID]): Vector[SquadInfo] = {
+private def PublishedLists(guids: Iterable[PlanetSideGUID]): Vector[SquadInfo] = {
     guids.map { guid => SquadService.PublishFullListing(squadFeatures(guid).Squad) }.toVector
   }
 }
@@ -3872,7 +3872,7 @@ object SquadService {
     * @param squad the squad
     * @return the squad's information to be used in the squad list
     */
-  def PublishFullListing(squad: Squad): SquadInfo = {
+private def PublishFullListing(squad: Squad): SquadInfo = {
     SquadInfo(
       squad.Leader.Name,
       squad.Task,
@@ -3889,7 +3889,7 @@ object SquadService {
     * @param squad the squad
     * @return the squad's information to be used in the squad's detail window
     */
-  def PublishFullDetails(squad: Squad): SquadDetail = {
+private def PublishFullDetails(squad: Squad): SquadDetail = {
     SquadDetail()
       .Field1(squad.GUID.guid)
       .LeaderCharId(squad.Leader.CharId)
@@ -3919,7 +3919,7 @@ object SquadService {
     * @param squad the squad
     * @param favorite the loadout object
     */
-  def LoadSquadDefinition(squad: Squad, favorite: SquadLoadout): Unit = {
+private def LoadSquadDefinition(squad: Squad, favorite: SquadLoadout): Unit = {
     squad.Task = favorite.task
     squad.ZoneId = favorite.zone_id.getOrElse(squad.ZoneId)
     squad.Availability.indices.foreach { index => squad.Availability.update(index, false) }

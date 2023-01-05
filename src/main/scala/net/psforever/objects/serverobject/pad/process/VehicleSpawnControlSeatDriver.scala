@@ -23,14 +23,14 @@ import scala.concurrent.duration._
   * @param pad the `VehicleSpawnPad` object being governed
   */
 class VehicleSpawnControlSeatDriver(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
-  def LogId = "-usher"
+private def LogId = "-usher"
 
 private val vehicleOverride = context.actorOf(
     Props(classOf[VehicleSpawnControlServerVehicleOverride], pad),
     s"${context.parent.path.name}-override"
   )
 
-  def receive: Receive = {
+def receive: Receive = {
     case order @ VehicleSpawnControl.Order(_, vehicle) =>
       if (vehicle.Actor == Default.Actor) { //wait for a necessary vehicle component to be loaded
         context.system.scheduler.scheduleOnce(50 milliseconds, self, order)

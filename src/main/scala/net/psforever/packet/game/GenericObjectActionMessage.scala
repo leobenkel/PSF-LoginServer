@@ -59,12 +59,12 @@ import shapeless.{::, HNil}
   */
 final case class GenericObjectActionMessage(object_guid: PlanetSideGUID, code: Int) extends PlanetSideGamePacket {
   type Packet = GenericObjectActionMessage
-  def opcode = GamePacketOpcode.GenericObjectActionMessage
-  def encode = GenericObjectActionMessage.encode(this)
+def opcode = GamePacketOpcode.GenericObjectActionMessage
+def encode = GenericObjectActionMessage.encode(this)
 }
 
 object GenericObjectActionMessage extends Marshallable[GenericObjectActionMessage] {
-  def apply(
+def apply(
       object_guid: PlanetSideGUID,
       code: GenericObjectActionEnum.GenericObjectActionEnum
   ): GenericObjectActionMessage = {

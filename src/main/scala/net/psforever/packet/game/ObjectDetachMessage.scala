@@ -36,12 +36,12 @@ final case class ObjectDetachMessage(
     yaw: Float
 ) extends PlanetSideGamePacket {
   type Packet = ObjectDetachMessage
-  def opcode = GamePacketOpcode.ObjectDetachMessage
-  def encode = ObjectDetachMessage.encode(this)
+def opcode = GamePacketOpcode.ObjectDetachMessage
+def encode = ObjectDetachMessage.encode(this)
 }
 
 object ObjectDetachMessage extends Marshallable[ObjectDetachMessage] {
-  def apply(
+def apply(
       parent_guid: PlanetSideGUID,
       child_guid: PlanetSideGUID,
       pos: Vector3,
@@ -50,7 +50,7 @@ object ObjectDetachMessage extends Marshallable[ObjectDetachMessage] {
     ObjectDetachMessage(parent_guid, child_guid, pos, orient.x, orient.y, orient.z)
   }
 
-  def apply(
+def apply(
       parent_guid: PlanetSideGUID,
       child_guid: PlanetSideGUID,
       pos: Vector3,

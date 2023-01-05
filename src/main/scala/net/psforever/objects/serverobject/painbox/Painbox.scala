@@ -5,7 +5,7 @@ import net.psforever.objects.serverobject.structures.Amenity
 import net.psforever.types.Vector3
 
 class Painbox(tdef: PainboxDefinition) extends Amenity {
-  def Definition = tdef
+private def Definition = tdef
 }
 
 object Painbox {
@@ -15,11 +15,11 @@ object Painbox {
 
   final case class EnvironmentalDamage(obj: Painbox, amount: Int)
 
-  def apply(tdef: PainboxDefinition): Painbox = {
+def apply(tdef: PainboxDefinition): Painbox = {
     new Painbox(tdef)
   }
 
-  def Constructor(pos: Vector3, tdef: PainboxDefinition)(id: Int, context: ActorContext): Painbox = {
+private def Constructor(pos: Vector3, tdef: PainboxDefinition)(id: Int, context: ActorContext): Painbox = {
     val obj = Painbox(tdef)
     obj.Position = pos + tdef.SphereOffset
     obj.Actor = context.actorOf(Props(classOf[PainboxControl], obj), s"${obj.Definition.Name}_$id")

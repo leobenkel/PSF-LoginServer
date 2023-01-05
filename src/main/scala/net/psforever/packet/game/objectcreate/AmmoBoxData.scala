@@ -22,6 +22,6 @@ object AmmoBoxData {
     * @param ammo the ammunition object
     * @return an `InternalSlot` object that encapsulates `CommonFieldData`
     */
-  def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, ammo: CommonFieldData): InternalSlot =
+def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, ammo: CommonFieldData): InternalSlot =
     new InternalSlot(cls, guid, parentSlot, ammo)
 }

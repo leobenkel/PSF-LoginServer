@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class ObjectDeleteMessage(object_guid: PlanetSideGUID, unk1: Int) extends PlanetSideGamePacket {
   type Packet = ObjectDeleteMessage
-  def opcode = GamePacketOpcode.ObjectDeleteMessage
-  def encode = ObjectDeleteMessage.encode(this)
+def opcode = GamePacketOpcode.ObjectDeleteMessage
+def encode = ObjectDeleteMessage.encode(this)
 }
 
 object ObjectDeleteMessage extends Marshallable[ObjectDeleteMessage] {

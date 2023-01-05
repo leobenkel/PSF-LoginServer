@@ -29,7 +29,7 @@ final case class DamageInteraction(
     * If the cause of the original interaction can be attributed to some agency.
     * @return a connection between offender, victim, and method
     */
-  def adversarial: Option[Adversarial] = cause.adversary match {
+private def adversarial: Option[Adversarial] = cause.adversary match {
     case Some(adversity) => Some(Adversarial(adversity, target, cause.attribution))
     case None            => None
   }
@@ -39,7 +39,7 @@ final case class DamageInteraction(
     * and produce the application function literal that can have a target entity applied to it.
     * @return the function that applies changes to a target entity
     */
-  def calculate(): ResolutionCalculations.Output = cause.calculate(data = this)
+private def calculate(): ResolutionCalculations.Output = cause.calculate(data = this)
 
   /**
     * Process the primary parameters from the interaction
@@ -47,7 +47,7 @@ final case class DamageInteraction(
     * and produce the application function literal that can have a target entity applied to it.
     * @return the function that applies changes to a target entity
     */
-  def calculate(dtype: DamageType.Value): ResolutionCalculations.Output = cause.calculate(data = this, dtype)
+private def calculate(dtype: DamageType.Value): ResolutionCalculations.Output = cause.calculate(data = this, dtype)
 
   /**
     * Process the primary parameters from the interaction
@@ -57,7 +57,7 @@ final case class DamageInteraction(
     * @param target the target entity
     * @return the outcome of the interaction under the given re-framing
     */
-  def calculate(model: DamageAndResistance)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
+private def calculate(model: DamageAndResistance)(target: PlanetSideGameObject with FactionAffinity): DamageResult = {
     model.calculate(data = this)(target)
   }
 }
@@ -72,7 +72,7 @@ object DamageInteraction {
     * @param hitPos the coordinate location where the damage was inflicted
     * @return a `DamageInteraction` object
     */
-  def apply(resolution: DamageResolution.Value, target: SourceEntry, cause: DamageReason, hitPos: Vector3): DamageInteraction = {
+def apply(resolution: DamageResolution.Value, target: SourceEntry, cause: DamageReason, hitPos: Vector3): DamageInteraction = {
     DamageInteraction(
       target,
       hitPos,
@@ -89,7 +89,7 @@ object DamageInteraction {
     * @param hitPos the coordinate location where the damage was inflicted
     * @return a `DamageInteraction` object
     */
-  def apply(target: SourceEntry, cause: DamageReason, hitPos: Vector3): DamageInteraction = {
+def apply(target: SourceEntry, cause: DamageReason, hitPos: Vector3): DamageInteraction = {
     DamageInteraction(
       target,
       hitPos,

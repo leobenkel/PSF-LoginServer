@@ -59,8 +59,8 @@ final case class SplashHitMessage(
     targets: List[SplashedTarget]
 ) extends PlanetSideGamePacket {
   type Packet = SplashHitMessage
-  def opcode = GamePacketOpcode.SplashHitMessage
-  def encode = SplashHitMessage.encode(this)
+def opcode = GamePacketOpcode.SplashHitMessage
+def encode = SplashHitMessage.encode(this)
 }
 
 object SplashedTarget extends Marshallable[SplashedTarget] {

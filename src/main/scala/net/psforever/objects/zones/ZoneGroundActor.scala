@@ -19,7 +19,7 @@ import scala.collection.mutable.ListBuffer
 class ZoneGroundActor(zone: Zone, equipmentOnGround: ListBuffer[Equipment]) extends Actor {
   //private[this] val log = org.log4s.getLogger
 
-  def receive: Receive = {
+def receive: Receive = {
     case Zone.Ground.DropItem(item, pos, orient) =>
       sender() ! (if (!item.HasGUID) {
         Zone.Ground.CanNotDropItem(zone, item, "not registered yet")

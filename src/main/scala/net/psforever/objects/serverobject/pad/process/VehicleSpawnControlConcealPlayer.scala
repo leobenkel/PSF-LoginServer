@@ -19,12 +19,12 @@ import scala.concurrent.duration._
   * @param pad the `VehicleSpawnPad` object being governed
   */
 class VehicleSpawnControlConcealPlayer(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
-  def LogId = "-concealer"
+private def LogId = "-concealer"
 
 private val loadVehicle =
     context.actorOf(Props(classOf[VehicleSpawnControlLoadVehicle], pad), s"${context.parent.path.name}-load")
 
-  def receive: Receive = {
+def receive: Receive = {
     case order @ VehicleSpawnControl.Order(driver, vehicle) =>
       if (VehicleSpawnControl.validateOrderCredentials(pad, driver, vehicle).isEmpty) {
         trace(s"hiding ${driver.Name}")

@@ -48,7 +48,7 @@ final case class VehiclePage(stock: Map[String, () => Vehicle], trunk: Map[Strin
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     sender ! msg
   }
 }

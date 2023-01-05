@@ -9,25 +9,25 @@ import net.psforever.objects.entity.IdentifiableEntity
   * @param key a private reference to the original key
   */
 class LoanedKey(private val guid: Int, private val key: Monitor) {
-  def GUID: Int = guid
+private def GUID: Int = guid
 
-  def Policy: AvailabilityPolicy = key.policy
+private def Policy: AvailabilityPolicy = key.policy
 
-  def Object: Option[IdentifiableEntity] = key.obj
-
-  /**
-    * na
-    * @param obj the object that should hold this GUID
-    * @return `true`, if the assignment worked; `false`, otherwise
-    */
-  def Object_=(obj: IdentifiableEntity): Option[IdentifiableEntity] = Object_=(Some(obj))
+private def Object: Option[IdentifiableEntity] = key.obj
 
   /**
     * na
     * @param obj the object that should hold this GUID
     * @return `true`, if the assignment worked; `false`, otherwise
     */
-  def Object_=(obj: Option[IdentifiableEntity]): Option[IdentifiableEntity] = {
+private def Object_=(obj: IdentifiableEntity): Option[IdentifiableEntity] = Object_=(Some(obj))
+
+  /**
+    * na
+    * @param obj the object that should hold this GUID
+    * @return `true`, if the assignment worked; `false`, otherwise
+    */
+private def Object_=(obj: Option[IdentifiableEntity]): Option[IdentifiableEntity] = {
     if (key.policy == AvailabilityPolicy.Leased) {
       if (key.obj.isDefined) {
         key.obj.get.Invalidate()

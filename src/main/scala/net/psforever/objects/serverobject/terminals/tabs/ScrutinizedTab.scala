@@ -9,14 +9,14 @@ package net.psforever.objects.serverobject.terminals.tabs
 trait ScrutinizedTab extends Tab {
   private var contraband: Seq[ExclusionRule] = Nil
 
-  def Exclude: Seq[ExclusionRule] = contraband
+private def Exclude: Seq[ExclusionRule] = contraband
 
-  def Exclude_=(equipment: ExclusionRule): Seq[ExclusionRule] = {
+private def Exclude_=(equipment: ExclusionRule): Seq[ExclusionRule] = {
     contraband = Seq(equipment)
     Exclude
   }
 
-  def Exclude_=(equipmentList: Seq[ExclusionRule]): Seq[ExclusionRule] = {
+private def Exclude_=(equipmentList: Seq[ExclusionRule]): Seq[ExclusionRule] = {
     contraband = equipmentList
     Exclude
   }

@@ -22,8 +22,8 @@ import scodec.codecs._
   */
 final case class ZoneInfoMessage(zone: Int, empire_status: Boolean, lock_time: Long) extends PlanetSideGamePacket {
   type Packet = ZoneInfoMessage
-  def opcode = GamePacketOpcode.ZoneInfoMessage
-  def encode = ZoneInfoMessage.encode(this)
+def opcode = GamePacketOpcode.ZoneInfoMessage
+def encode = ZoneInfoMessage.encode(this)
 }
 
 object ZoneInfoMessage extends Marshallable[ZoneInfoMessage] {

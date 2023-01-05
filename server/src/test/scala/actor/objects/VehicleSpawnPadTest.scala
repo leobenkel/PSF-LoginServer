@@ -209,7 +209,7 @@ object VehicleSpawnPadControlTest {
   import net.psforever.objects.zones.ZoneMap
   private val map = new ZoneMap("test-map")
 
-  def SetUpAgents(
+private def SetUpAgents(
       faction: PlanetSideEmpire.Value
   )(implicit system: ActorSystem): (Vehicle, Player, VehicleSpawnPad, Terminal, Zone) = {
     import net.psforever.objects.guid.NumberPoolHub

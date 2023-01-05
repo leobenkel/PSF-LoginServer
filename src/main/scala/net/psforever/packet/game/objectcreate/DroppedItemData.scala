@@ -36,7 +36,7 @@ object DroppedItemData {
     * @return `Codec[ConstructorData]`
     * @see `ConstructorData` (function)
     */
-  def apply[T <: ConstructorData](objCodec: Codec[T], objType: String = "object"): Codec[ConstructorData] =
+def apply[T <: ConstructorData](objCodec: Codec[T], objType: String = "object"): Codec[ConstructorData] =
     (
       ("pos" | PlacementData.codec) ::
         ("obj" | objCodec)

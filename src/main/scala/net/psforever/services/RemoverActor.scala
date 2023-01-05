@@ -78,7 +78,7 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
     secondHeap = Nil
   }
 
-  def receive: Receive =
+def receive: Receive =
     entryManagementBehaviors
       .orElse {
         case RemoverActor.AddTask(obj, zone, duration) =>
@@ -161,7 +161,7 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
     * @param zone the zone in which these objects must be discovered;
     *             all targets must be in this zone, with the assumption that this is the zone where they were registered
     */
-  def HurrySpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
+private def HurrySpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
     PartitionTargetsFromList(firstHeap, targets.map { RemoverActor.Entry(_, zone, 0) }, zone) match {
       case (Nil, _) =>
         debug(s"no tasks matching the targets $targets have been hurried")
@@ -184,7 +184,7 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
   /**
     * Expedite all entries from the first pool into the second.
     */
-  def HurryAll(): Unit = {
+private def HurryAll(): Unit = {
     trace("all tasks have been hurried")
     firstTask.cancel()
     firstHeap.foreach {
@@ -200,7 +200,7 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
   /**
     * Remove specific entries from the first pool.
     */
-  def ClearSpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
+private def ClearSpecific(targets: List[PlanetSideGameObject], zone: Zone): Unit = {
     PartitionTargetsFromList(firstHeap, targets.map { RemoverActor.Entry(_, zone, 0) }, zone) match {
       case (Nil, _) =>
         debug(s"no tasks matching the targets $targets have been cleared")
@@ -216,7 +216,7 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
   /**
     * No entries in the first pool.
     */
-  def ClearAll(): Unit = {
+private def ClearAll(): Unit = {
     trace("all tasks have been cleared")
     firstTask.cancel()
     firstHeap = Nil
@@ -238,7 +238,7 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
     * @param now the time (in nanoseconds);
     *            defaults to the current time (in nanoseconds)
     */
-  def RetimeFirstTask(now: Long = System.nanoTime): Unit = {
+private def RetimeFirstTask(now: Long = System.nanoTime): Unit = {
     firstTask.cancel()
     if (firstHeap.nonEmpty) {
       val short_timeout: FiniteDuration = math.max(1, firstHeap.head.duration - (now - firstHeap.head.time)) nanoseconds
@@ -247,12 +247,12 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
     }
   }
 
-  def SecondJob(entry: RemoverActor.Entry): Unit = {
+private def SecondJob(entry: RemoverActor.Entry): Unit = {
     entry.obj.Position = Vector3.Zero //somewhere it will not disturb anything
     TaskWorkflow.execute(FinalTask(entry))
   }
 
-  def FinalTask(entry: RemoverActor.Entry): TaskBundle = {
+private def FinalTask(entry: RemoverActor.Entry): TaskBundle = {
     import scala.concurrent.ExecutionContext.Implicits.global
     TaskBundle(
       new StraightforwardTask() {
@@ -276,35 +276,35 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
     * Override.
     * @return the time as a `FiniteDuration` object (to be later transformed into nanoseconds)
     */
-  def FirstStandardDuration: FiniteDuration
+private def FirstStandardDuration: FiniteDuration
 
   /**
     * Default time for entries waiting in the second list.
     * Override.
     * @return the time as a `FiniteDuration` object (to be later transformed into nanoseconds)
     */
-  def SecondStandardDuration: FiniteDuration
+private def SecondStandardDuration: FiniteDuration
 
   /**
     * Performed when the entry is initially added to the first list.
     * Override.
     * @param entry the entry
     */
-  def InitialJob(entry: RemoverActor.Entry): Unit
+private def InitialJob(entry: RemoverActor.Entry): Unit
 
   /**
     * Performed when the entry is shifted from the first list to the second list.
     * Override.
     * @param entry the entry
     */
-  def FirstJob(entry: RemoverActor.Entry): Unit
+private def FirstJob(entry: RemoverActor.Entry): Unit
 
   /**
     * Performed to determine when an entry can be shifted off from the second list.
     * Override.
     * @param entry the entry
     */
-  def ClearanceTest(entry: RemoverActor.Entry): Boolean
+private def ClearanceTest(entry: RemoverActor.Entry): Boolean
 
   /**
     * The specific action that is necessary to complete the removal process.
@@ -312,7 +312,7 @@ abstract class RemoverActor() extends SupportActor[RemoverActor.Entry] {
     * @see `GUIDTask`
     * @param entry the entry
     */
-  def DeletionTask(entry: RemoverActor.Entry): TaskBundle
+private def DeletionTask(entry: RemoverActor.Entry): TaskBundle
 }
 
 object RemoverActor extends SupportActorCaseConversions {

@@ -35,12 +35,12 @@ final case class ChatMsg(
     assert(note.isEmpty, "Note contents found, but message type isnt Note")
 
   type Packet = ChatMsg
-  def opcode = GamePacketOpcode.ChatMsg
-  def encode = ChatMsg.encode(this)
+def opcode = GamePacketOpcode.ChatMsg
+def encode = ChatMsg.encode(this)
 }
 
 object ChatMsg extends Marshallable[ChatMsg] {
-  def apply(messageType: ChatMessageType, contents: String): ChatMsg =
+def apply(messageType: ChatMessageType, contents: String): ChatMsg =
     ChatMsg(messageType, wideContents=false, recipient="", contents, note=None)
 
   implicit val codec: Codec[ChatMsg] = (("messagetype" | ChatMessageType.codec) >>:~ { messagetype_value =>

@@ -21,7 +21,7 @@ object GenericHackables {
     * @param obj    the object being hacked
     * @return the percentage amount of progress per tick
     */
-  def GetHackSpeed(player: Player, obj: PlanetSideServerObject): Float = {
+private def GetHackSpeed(player: Player, obj: PlanetSideServerObject): Float = {
     val playerHackLevel = player.avatar.hackingSkillLevel()
     val timeToHack = obj match {
       case vehicle: Vehicle   => vehicle.JackingDuration(playerHackLevel).toFloat
@@ -59,7 +59,7 @@ object GenericHackables {
     * @return `true`, if the next cycle of progress should occur;
     *         `false`, otherwise
     */
-  def HackingTickAction(progressType: Int, tplayer: Player, target: PlanetSideServerObject, tool_guid: PlanetSideGUID)(
+private def HackingTickAction(progressType: Int, tplayer: Player, target: PlanetSideServerObject, tool_guid: PlanetSideGUID)(
       progress: Float
   ): Boolean = {
     //hack state for progress bar visibility
@@ -101,7 +101,7 @@ object GenericHackables {
     * @see `HackMessage`
     */
   //TODO add params here depending on which params in HackMessage are important
-  def FinishHacking(target: PlanetSideServerObject with Hackable, user: Player, unk: Long)(): Unit = {
+private def FinishHacking(target: PlanetSideServerObject with Hackable, user: Player, unk: Long)(): Unit = {
     import akka.pattern.ask
     import scala.concurrent.duration._
     log.info(s"${user.Name} hacked a ${target.Definition.Name}")

@@ -123,13 +123,13 @@ object FactionAffinityTest {
     def receive                = checkBehavior.orElse(convertBehavior).orElse { case _ => }
   }
 
-  def SetUpAgent(implicit system: ActorSystem) = {
+private def SetUpAgent(implicit system: ActorSystem) = {
     val obj = new Vehicle(GlobalDefinitions.quadstealth)
     obj.Actor = system.actorOf(Props(classOf[FactionAffinityTest.AffinityControl], obj), "test")
     obj
   }
 
-  def FreeFactionObject: FactionAffinity =
+private def FreeFactionObject: FactionAffinity =
     new FactionAffinity() {
       private var faction: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
       def Faction: PlanetSideEmpire.Value         = faction

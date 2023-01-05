@@ -23,7 +23,7 @@ object MountableInventory {
   * @param format the subtype for this vehicle
   * @return a `Codec` that translates `InventoryData`
   */
-  def custom_inventory_codec(hasVelocity: Boolean, format: VehicleFormat.Type): Codec[InventoryData] =
+private def custom_inventory_codec(hasVelocity: Boolean, format: VehicleFormat.Type): Codec[InventoryData] =
     custom_inventory_codec(InitialStreamLengthToSeatEntries(hasVelocity, format))
 
   /**
@@ -45,7 +45,7 @@ object MountableInventory {
     * @param length the distance in bits to the first inventory entry
     * @return a `Codec` that translates `InventoryData`
     */
-  def custom_inventory_codec(length: Long): Codec[InventoryData] = {
+private def custom_inventory_codec(length: Long): Codec[InventoryData] = {
     import shapeless.::
     (
       uint8 >>:~ { size =>
@@ -88,7 +88,7 @@ object MountableInventory {
     *                     used to calculate the padding value for the player's name in `CharacterAppearanceData`
     * @return a `PlayerData` object
     */
-  def PlayerData(
+private def PlayerData(
                   basic_appearance: Int => CharacterAppearanceData,
                   character_data: (Boolean, Boolean) => CharacterData,
                   inventory: InventoryData,
@@ -111,7 +111,7 @@ object MountableInventory {
     *                     used to calculate the padding value for the player's name in `CharacterAppearanceData`
     * @return a `PlayerData` object
     */
-  def PlayerData(
+private def PlayerData(
                   basic_appearance: Int => CharacterAppearanceData,
                   character_data: (Boolean, Boolean) => CharacterData,
                   drawn_slot: DrawnSlot.Type,
@@ -136,7 +136,7 @@ object MountableInventory {
     * @param format the subtype for this vehicle
     * @return the length of the bitstream
     */
-  def InitialStreamLengthToSeatEntries(hasVelocity: Boolean, format: VehicleFormat.Type): Long = {
+private def InitialStreamLengthToSeatEntries(hasVelocity: Boolean, format: VehicleFormat.Type): Long = {
     198 +
     (if (hasVelocity) 42 else 0) +
     (format match {
@@ -155,7 +155,7 @@ object MountableInventory {
     * @param next the length of the last entry, if one was parsed
     * @return the padding value, 0-7 bits
     */
-  def CumulativeSeatedPlayerNamePadding(base: Long, next: Option[StreamBitSize]): Int = {
+private def CumulativeSeatedPlayerNamePadding(base: Long, next: Option[StreamBitSize]): Int = {
     CumulativeSeatedPlayerNamePadding(base + (next match {
       case Some(o) => o.bitsize
       case None    => 0
@@ -176,7 +176,7 @@ object MountableInventory {
     * @param accumulative current entry stream offset (start of this player's entry)
     * @return the padding value, 0-7 bits
     */
-  def CumulativeSeatedPlayerNamePadding(accumulative: Long): Int = {
+private def CumulativeSeatedPlayerNamePadding(accumulative: Long): Int = {
     Player_Data.ByteAlignmentPadding(accumulative + 23 + 35)
   }
 

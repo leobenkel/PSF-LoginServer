@@ -14,13 +14,13 @@ class CorpseRemovalActor extends RemoverActor() {
 
   final val SecondStandardDuration: FiniteDuration = 500 milliseconds
 
-  def InclusionTest(entry: RemoverActor.Entry): Boolean = {
+private def InclusionTest(entry: RemoverActor.Entry): Boolean = {
     entry.obj.isInstanceOf[Player] && entry.obj.asInstanceOf[Player].isBackpack
   }
 
-  def InitialJob(entry: RemoverActor.Entry): Unit = {}
+private def InitialJob(entry: RemoverActor.Entry): Unit = {}
 
-  def FirstJob(entry: RemoverActor.Entry): Unit = {
+private def FirstJob(entry: RemoverActor.Entry): Unit = {
     import net.psforever.objects.zones.Zone
     entry.zone.Population ! Zone.Corpse.Remove(entry.obj.asInstanceOf[Player])
     context.parent ! AvatarServiceMessage(
@@ -29,9 +29,9 @@ class CorpseRemovalActor extends RemoverActor() {
     )
   }
 
-  def ClearanceTest(entry: RemoverActor.Entry): Boolean = !entry.zone.Corpses.contains(entry.obj)
+private def ClearanceTest(entry: RemoverActor.Entry): Boolean = !entry.zone.Corpses.contains(entry.obj)
 
-  def DeletionTask(entry: RemoverActor.Entry): TaskBundle = {
+private def DeletionTask(entry: RemoverActor.Entry): TaskBundle = {
     val player = entry.obj.asInstanceOf[Player]
     val task   = GUIDTask.unregisterPlayer(entry.zone.GUID, player)
     player.ExoSuit = ExoSuitType.Standard

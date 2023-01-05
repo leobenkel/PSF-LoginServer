@@ -5,5 +5,5 @@ import net.psforever.objects.Vehicle
 import net.psforever.objects.serverobject.mount.{MountableSpace, MountableSpaceDefinition}
 
 class Cargo(private val cdef: MountableSpaceDefinition[Vehicle]) extends MountableSpace[Vehicle] {
-  def definition: MountableSpaceDefinition[Vehicle] = cdef
+private def definition: MountableSpaceDefinition[Vehicle] = cdef
 }

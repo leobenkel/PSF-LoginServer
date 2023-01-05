@@ -134,7 +134,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     Vehicle.LoadDefinition(vehicle = this)
   }
 
-  def Faction: PlanetSideEmpire.Value = {
+private def Faction: PlanetSideEmpire.Value = {
     this.faction
   }
 
@@ -144,7 +144,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
   }
 
   /** How long it takes to jack the vehicle in seconds, based on the hacker's certification level */
-  def JackingDuration: Array[Int] = Definition.JackingDuration
+private def JackingDuration: Array[Int] = Definition.JackingDuration
 
   override def Health_=(assignHealth: Int): Int = {
     //TODO should vehicle class enforce this?
@@ -154,49 +154,49 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     Health
   }
 
-  def Shields: Int = {
+private def Shields: Int = {
     shields
   }
 
-  def Shields_=(strength: Int): Int = {
+private def Shields_=(strength: Int): Int = {
     shields = math.min(math.max(0, strength), MaxShields)
     Shields
   }
 
-  def MaxShields: Int = {
+private def MaxShields: Int = {
     Definition.MaxShields
   }
 
-  def Decal: Int = {
+private def Decal: Int = {
     decal
   }
 
-  def Decal_=(logo: Int): Int = {
+private def Decal_=(logo: Int): Int = {
     decal = logo
     Decal
   }
 
-  def Cloaked: Boolean = cloaked
+private def Cloaked: Boolean = cloaked
 
-  def Cloaked_=(isCloaked: Boolean): Boolean = {
+private def Cloaked_=(isCloaked: Boolean): Boolean = {
     cloaked = isCloaked
     Cloaked
   }
 
-  def isFlying: Boolean = flying.nonEmpty
+private def isFlying: Boolean = flying.nonEmpty
 
-  def Flying: Option[Int] = flying
+private def Flying: Option[Int] = flying
 
-  def Flying_=(isFlying: Int): Option[Int] = Flying_=(Some(isFlying))
+private def Flying_=(isFlying: Int): Option[Int] = Flying_=(Some(isFlying))
 
-  def Flying_=(isFlying: Option[Int]): Option[Int] = {
+private def Flying_=(isFlying: Option[Int]): Option[Int] = {
     flying = isFlying
     Flying
   }
 
-  def Capacitor: Int = capacitor
+private def Capacitor: Int = capacitor
 
-  def Capacitor_=(value: Int): Int = {
+private def Capacitor_=(value: Int): Int = {
     if (value > Definition.MaxCapacitor) {
       capacitor = Definition.MaxCapacitor
     } else if (value < 0) {
@@ -212,7 +212,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     * @param group the group index
     * @return what sort of access permission exist for this group
     */
-  def PermissionGroup(group: Int): Option[VehicleLockState.Value] = {
+private def PermissionGroup(group: Int): Option[VehicleLockState.Value] = {
     reindexPermissionsGroup(group) match {
       case Some(index) =>
         Some(groupPermissions(index))
@@ -228,7 +228,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     * @return the new access permission for this group;
     *         `None`, if the group does not exist or the level of permission was not changed
     */
-  def PermissionGroup(group: Int, level: Long): Option[VehicleLockState.Value] = {
+private def PermissionGroup(group: Int, level: Long): Option[VehicleLockState.Value] = {
     reindexPermissionsGroup(group) match {
       case Some(index) =>
         val current = groupPermissions(index)
@@ -261,7 +261,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
       None
     }
 
-  def CargoHold(cargoNumber: Int): Option[Cargo] = {
+private def CargoHold(cargoNumber: Int): Option[Cargo] = {
     if (cargoNumber >= 0) {
       this.cargoHolds.get(cargoNumber)
     } else {
@@ -269,11 +269,11 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     }
   }
 
-  def CargoHolds: Map[Int, Cargo] = {
+private def CargoHolds: Map[Int, Cargo] = {
     cargoHolds
   }
 
-  def SeatPermissionGroup(seatNumber: Int): Option[AccessPermissionGroup.Value] = {
+private def SeatPermissionGroup(seatNumber: Int): Option[AccessPermissionGroup.Value] = {
     if (seatNumber == 0) { //valid in almost all cases
       Some(AccessPermissionGroup.Driver)
     } else {
@@ -300,14 +300,14 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     }
   }
 
-  def Utilities: Map[Int, Utility] = utilities
+private def Utilities: Map[Int, Utility] = utilities
 
   /**
     * Get a reference to a certain `Utility` attached to this `Vehicle`.
     * @param utilNumber the attachment number of the `Utility`
     * @return the `Utility` or `None` (if invalid)
     */
-  def Utility(utilNumber: Int): Option[PlanetSideServerObject] = {
+private def Utility(utilNumber: Int): Option[PlanetSideServerObject] = {
     if (utilNumber >= 0 && utilNumber < this.utilities.size) {
       this.utilities.get(utilNumber) match {
         case Some(util) =>
@@ -320,7 +320,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     }
   }
 
-  def Utility(utilType: UtilityType.Value): Option[PlanetSideServerObject] = {
+private def Utility(utilType: UtilityType.Value): Option[PlanetSideServerObject] = {
     utilities.values.find(_.UtilType == utilType) match {
       case Some(util) =>
         Some(util())
@@ -329,19 +329,19 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     }
   }
 
-  def Subsystems(): List[VehicleSubsystem] = subsystems
+private def Subsystems(): List[VehicleSubsystem] = subsystems
 
-  def Subsystems(sys: VehicleSubsystemEntry): Option[VehicleSubsystem] = subsystems.find { _.sys == sys }
+private def Subsystems(sys: VehicleSubsystemEntry): Option[VehicleSubsystem] = subsystems.find { _.sys == sys }
 
-  def Subsystems(sys: String): Option[VehicleSubsystem] = subsystems.find { _.sys.name.contains(sys) }
+private def Subsystems(sys: String): Option[VehicleSubsystem] = subsystems.find { _.sys.name.contains(sys) }
 
-  def SubsystemMessages(): List[PlanetSideGamePacket] = {
+private def SubsystemMessages(): List[PlanetSideGamePacket] = {
     subsystems
       .filter { sub => sub.Enabled != sub.sys.defaultState }
       .flatMap { _.getMessage(vehicle = this) }
   }
 
-  def SubsystemStatus(sys: String): Option[Boolean] = {
+private def SubsystemStatus(sys: String): Option[Boolean] = {
     val elems = sys.split("\\.")
     if (elems.length < 2) {
       None
@@ -353,7 +353,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     }
   }
 
-  def SubsystemStatusMultiplier(sys: String): Float = {
+private def SubsystemStatusMultiplier(sys: String): Float = {
     val elems = sys.split("\\.")
     if (elems.length < 2) {
       1f
@@ -369,9 +369,9 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
 
   override def UndeployTime = Definition.UndeployTime
 
-  def Inventory: GridInventory = trunk
+private def Inventory: GridInventory = trunk
 
-  def VisibleSlots: Set[Int] = weapons.keys.toSet
+private def VisibleSlots: Set[Int] = weapons.keys.toSet
 
   override def Slot(slotNum: Int): EquipmentSlot = {
     weapons
@@ -446,13 +446,13 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     * A reference to the `Vehicle` `Trunk` space.
     * @return this `Vehicle` `Trunk`
     */
-  def Trunk: GridInventory = {
+private def Trunk: GridInventory = {
     this.trunk
   }
 
-  def AccessingTrunk: Option[PlanetSideGUID] = trunkAccess
+private def AccessingTrunk: Option[PlanetSideGUID] = trunkAccess
 
-  def AccessingTrunk_=(guid: PlanetSideGUID): Option[PlanetSideGUID] = {
+private def AccessingTrunk_=(guid: PlanetSideGUID): Option[PlanetSideGUID] = {
     AccessingTrunk = Some(guid)
   }
 
@@ -462,7 +462,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     * @param guid the player who wishes to access the trunk
     * @return the player who is currently allowed to access the trunk
     */
-  def AccessingTrunk_=(guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
+private def AccessingTrunk_=(guid: Option[PlanetSideGUID]): Option[PlanetSideGUID] = {
     guid match {
       case None =>
         trunkAccess = None
@@ -479,7 +479,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     * @param player a player attempting to access this `Trunk`
     * @return `true`, if the `player` is permitted access; `false`, otherwise
     */
-  def CanAccessTrunk(player: Player): Boolean = {
+private def CanAccessTrunk(player: Player): Boolean = {
     if (trunkAccess.isEmpty || trunkAccess.contains(player.GUID)) {
       groupPermissions(3) match {
         case VehicleLockState.Locked => //only the owner
@@ -498,18 +498,18 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     * Check access to the `Trunk`.
     * @return the current access value for the `Vehicle` `Trunk`
     */
-  def TrunkLockState: VehicleLockState.Value = groupPermissions(3)
+private def TrunkLockState: VehicleLockState.Value = groupPermissions(3)
 
   /**
     * Trunk locations are stored as the orientation zero point being to the East. We need to convert that to a North = 0 orientation before returning the location
     * @return A Vector3 of the current trunk location, orientated with North as the zero point
     */
-  def TrunkLocation: Vector3 = {
+private def TrunkLocation: Vector3 = {
     val rotationRadians = -math.toRadians(Orientation.z - 90f).toFloat
     Vector3.PlanarRotateAroundPoint(Position + Definition.TrunkLocation, Position, rotationRadians)
   }
 
-  def PrepareGatingManifest(): VehicleManifest = {
+private def PrepareGatingManifest(): VehicleManifest = {
     val manifest = VehicleManifest(this)
     seats.collect { case (index: Int, seat: Seat) if index > 0 => seat.unmount(seat.occupant) }
     vehicleGatingManifest = Some(manifest)
@@ -517,16 +517,16 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     manifest
   }
 
-  def PublishGatingManifest(): Option[VehicleManifest] = {
+private def PublishGatingManifest(): Option[VehicleManifest] = {
     val out = vehicleGatingManifest
     previousVehicleGatingManifest = vehicleGatingManifest
     vehicleGatingManifest = None
     out
   }
 
-  def PreviousGatingManifest(): Option[VehicleManifest] = previousVehicleGatingManifest
+private def PreviousGatingManifest(): Option[VehicleManifest] = previousVehicleGatingManifest
 
-  def DamageModel = Definition.asInstanceOf[DamageResistanceModel]
+private def DamageModel = Definition.asInstanceOf[DamageResistanceModel]
 
   override def BailProtection_=(protect: Boolean): Boolean = {
     !Definition.CanFly && super.BailProtection_=(protect)
@@ -536,9 +536,9 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     * This is the definition entry that is used to store and unload pertinent information about the `Vehicle`.
     * @return the vehicle's definition entry
     */
-  def Definition: VehicleDefinition = vehicleDef
+private def Definition: VehicleDefinition = vehicleDef
 
-  def canEqual(other: Any): Boolean = other.isInstanceOf[Vehicle]
+private def canEqual(other: Any): Boolean = other.isInstanceOf[Vehicle]
 
   override def equals(other: Any): Boolean =
     other match {
@@ -559,7 +559,7 @@ class Vehicle(private val vehicleDef: VehicleDefinition)
     Vehicle.toString(this)
   }
 
-  def MaxNtuCapacitor: Float = Definition.MaxNtuCapacitor
+private def MaxNtuCapacitor: Float = Definition.MaxNtuCapacitor
 }
 
 object Vehicle {
@@ -629,7 +629,7 @@ object Vehicle {
     * @param vehicleDef the vehicle's definition entry
     * @return a `Vehicle` object
     */
-  def apply(vehicleDef: VehicleDefinition): Vehicle = {
+def apply(vehicleDef: VehicleDefinition): Vehicle = {
     new Vehicle(vehicleDef)
   }
 
@@ -637,7 +637,7 @@ object Vehicle {
     * Given a `Map` of `Utility` objects, only return the objects with a positive or zero-index position.
     * @return a map of applicable utilities
     */
-  def EquipmentUtilities(utilities: Map[Int, Utility]): Map[Int, Utility] = {
+private def EquipmentUtilities(utilities: Map[Int, Utility]): Map[Int, Utility] = {
     utilities.filter({ case (index: Int, _: Utility) => index > -1 })
   }
 
@@ -646,7 +646,7 @@ object Vehicle {
     * @param vehicle the `Vehicle` being initialized
     * @see `{object}.LoadDefinition`
     */
-  def LoadDefinition(vehicle: Vehicle): Vehicle = {
+private def LoadDefinition(vehicle: Vehicle): Vehicle = {
     val vdef: VehicleDefinition = vehicle.Definition
     //general stuff
     vehicle.Health = vdef.DefaultHealth
@@ -694,7 +694,7 @@ object Vehicle {
     * Provide a fixed string representation.
     * @return the string output
     */
-  def toString(obj: Vehicle): String = {
+private def toString(obj: Vehicle): String = {
     val occupancy = obj.Seats.values.count(seat => seat.isOccupied)
     s"${obj.Definition.Name}, owned by ${obj.Owner}: (${obj.Health}/${obj.MaxHealth})(${obj.Shields}/${obj.MaxShields}) ($occupancy)"
   }

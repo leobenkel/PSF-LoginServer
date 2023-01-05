@@ -14,11 +14,11 @@ private class LivePlayerList {
   /** key - the session id; value - a `Player` object */
   private val sessionMap: Map[Long, Avatar] = new TrieMap[Long, Avatar]
 
-  def WorldPopulation(predicate: ((_, Avatar)) => Boolean): List[Avatar] = {
+private def WorldPopulation(predicate: ((_, Avatar)) => Boolean): List[Avatar] = {
     sessionMap.filter(predicate).values.toList
   }
 
-  def Add(sessionId: Long, avatar: Avatar): Boolean = {
+private def Add(sessionId: Long, avatar: Avatar): Boolean = {
     sessionMap.values.find(char => char.equals(avatar)) match {
       case None =>
         sessionMap.putIfAbsent(sessionId, avatar).isEmpty
@@ -27,7 +27,7 @@ private class LivePlayerList {
     }
   }
 
-  def Update(sessionId: Long, avatar: Avatar): Unit = {
+private def Update(sessionId: Long, avatar: Avatar): Unit = {
     sessionMap.get(sessionId) match {
       case Some(_) =>
         sessionMap(sessionId) = avatar
@@ -35,11 +35,11 @@ private class LivePlayerList {
     }
   }
 
-  def Remove(sessionId: Long): Option[Avatar] = {
+private def Remove(sessionId: Long): Option[Avatar] = {
     sessionMap.remove(sessionId)
   }
 
-  def Shutdown: List[Avatar] = {
+private def Shutdown: List[Avatar] = {
     val list = sessionMap.values.toList
     sessionMap.clear()
     list
@@ -73,7 +73,7 @@ object LivePlayerList {
     * @param predicate the conditions for filtering the live `Player`s
     * @return a list of users's `Player`s that fit the criteria
     */
-  def WorldPopulation(predicate: ((_, Avatar)) => Boolean): List[Avatar] = Instance.WorldPopulation(predicate)
+private def WorldPopulation(predicate: ((_, Avatar)) => Boolean): List[Avatar] = Instance.WorldPopulation(predicate)
 
   /**
     * Create a mapped entry between the user's session and a user's character.
@@ -83,9 +83,9 @@ object LivePlayerList {
     * @param avatar    the character
     * @return `true`, if the session was association was made; `false`, otherwise
     */
-  def Add(sessionId: Long, avatar: Avatar): Boolean = Instance.Add(sessionId, avatar)
+private def Add(sessionId: Long, avatar: Avatar): Boolean = Instance.Add(sessionId, avatar)
 
-  def Update(sessionId: Long, avatar: Avatar): Unit = Instance.Update(sessionId, avatar)
+private def Update(sessionId: Long, avatar: Avatar): Unit = Instance.Update(sessionId, avatar)
 
   /**
     * Remove all entries related to the given session identifier from the mappings.
@@ -94,12 +94,12 @@ object LivePlayerList {
     * @param sessionId the session
     * @return any character that was afffected by the mapping removal
     */
-  def Remove(sessionId: Long): Option[Avatar] = Instance.Remove(sessionId)
+private def Remove(sessionId: Long): Option[Avatar] = Instance.Remove(sessionId)
 
   /**
     * Hastily remove all mappings and ids.
     *
     * @return an unsorted list of the characters that were still online
     */
-  def Shutdown: List[Avatar] = Instance.Shutdown
+private def Shutdown: List[Avatar] = Instance.Shutdown
 }

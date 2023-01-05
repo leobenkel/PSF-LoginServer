@@ -19,7 +19,7 @@ import scala.util.{Failure, Success, Try}
 abstract class Loadout(label: String)
 
 object Loadout {
-  def Create(owner: Any, label: String): Try[Loadout] = {
+private def Create(owner: Any, label: String): Try[Loadout] = {
     owner match {
       case p: Player  => Success(Create(p, label))
       case v: Vehicle => Success(Create(v, label))
@@ -34,7 +34,7 @@ object Loadout {
     * @param label the name of this loadout
     * @return an `InfantryLoadout` object populated with appropriate information about the current state of the player
     */
-  def Create(player: Player, label: String): Loadout = {
+private def Create(player: Player, label: String): Loadout = {
     InfantryLoadout(
       label,
       packageSimplifications(player.Holsters()),
@@ -50,7 +50,7 @@ object Loadout {
     * @param label the name of this loadout
     * @return a `VehicleLoadout` object populated with appropriate information about the current state of the vehicle
     */
-  def Create(vehicle: Vehicle, label: String): Loadout = {
+private def Create(vehicle: Vehicle, label: String): Loadout = {
     val (_, entries: List[Loadout.SimplifiedEntry]) = vehicle.Weapons.collect {
       case (index, slot: EquipmentSlot) if slot.Equipment.nonEmpty =>
         (index, SimplifiedEntry(buildSimplification(slot.Equipment.get), index))
@@ -66,7 +66,7 @@ object Loadout {
   /**
     *  na
     */
-  def Create(squad: Squad, label: String): Loadout = {
+private def Create(squad: Squad, label: String): Loadout = {
     SquadLoadout(
       label,
       if (squad.CustomZoneId) { Some(squad.ZoneId) }
@@ -154,7 +154,7 @@ object Loadout {
     * @param player the player
     * @return the numeric subtype
     */
-  def DetermineSubtype(player: Player): Int = {
+private def DetermineSubtype(player: Player): Int = {
     InfantryLoadout.DetermineSubtype(player)
   }
 
@@ -164,7 +164,7 @@ object Loadout {
     * @param vehicle the vehicle
     * @return the numeric subtype, always 0
     */
-  def DetermineSubtype(vehicle: Vehicle): Int = 0
+private def DetermineSubtype(vehicle: Vehicle): Int = 0
 
   /**
     * Overloaded entry point for constructing simplified blueprints from holster slot equipment.

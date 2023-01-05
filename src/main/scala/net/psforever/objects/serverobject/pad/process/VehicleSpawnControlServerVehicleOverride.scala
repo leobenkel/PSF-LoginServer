@@ -20,12 +20,12 @@ import scala.concurrent.duration._
   * @param pad the `VehicleSpawnPad` object being governed
   */
 class VehicleSpawnControlServerVehicleOverride(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
-  def LogId = "-overrider"
+private def LogId = "-overrider"
 
 private val driverControl =
     context.actorOf(Props(classOf[VehicleSpawnControlDriverControl], pad), s"${context.parent.path.name}-driver")
 
-  def receive: Receive = {
+def receive: Receive = {
     case order @ VehicleSpawnControl.Order(driver, vehicle) =>
       val vehicleFailState = vehicle.Health == 0 || vehicle.Position == Vector3.Zero
       val driverFailState =

@@ -121,7 +121,7 @@ object CharacterData extends Marshallable[CharacterData] {
     * @param cosmetics optional decorative features that are added to the player's head model by console/chat commands
     * @return a `CharacterData` object
     */
-  def apply(
+def apply(
       health: Int,
       armor: Int,
       uniform: UniformStyle.Value,
@@ -131,7 +131,7 @@ object CharacterData extends Marshallable[CharacterData] {
   ): (Boolean, Boolean) => CharacterData =
     CharacterData(health, armor, uniform, 0, cr, implant_effects, cosmetics)
 
-  def codec(is_backpack: Boolean): Codec[CharacterData] =
+private def codec(is_backpack: Boolean): Codec[CharacterData] =
     (
       ("health" | uint8L) :: //dead state when health == 0
         ("armor" | uint8L) ::
@@ -172,7 +172,7 @@ object CharacterData extends Marshallable[CharacterData] {
       }
     )
 
-  def codec_seated(is_backpack: Boolean): Codec[CharacterData] =
+private def codec_seated(is_backpack: Boolean): Codec[CharacterData] =
     (
       ("uniform_upgrade" | UniformStyle.codec) >>:~ { style =>
         uint(3) :: //uniform_upgrade is actually interpreted as a 6u field, but the lower 3u seems to be discarded

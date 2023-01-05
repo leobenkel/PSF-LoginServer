@@ -25,7 +25,7 @@ class ZonePopulationActor(zone: Zone, playerMap: TrieMap[Int, Option[Player]], c
 
   import ZonePopulationActor._
 
-  def receive: Receive = {
+def receive: Receive = {
     case Zone.Population.Join(avatar) =>
       if (PopulationJoin(avatar.id, playerMap) && playerMap.size == 1) {
         zone.StartPlayerManagementSystems()
@@ -122,7 +122,7 @@ object ZonePopulationActor {
     * @return true, if the mapping is for a new key;
     *         false, if the key already exists
     */
-  def PopulationJoin(id: Int, playerMap: TrieMap[Int, Option[Player]]): Boolean = {
+private def PopulationJoin(id: Int, playerMap: TrieMap[Int, Option[Player]]): Boolean = {
     playerMap.get(id) match {
       case Some(_) =>
         false
@@ -140,7 +140,7 @@ object ZonePopulationActor {
     * @param playerMap the mapping of `Avatar` objects to `Player` objects
     * @return any `Player` object that was associated at the time the `avatar` was removed
     */
-  def PopulationLeave(id: Int, playerMap: TrieMap[Int, Option[Player]]): Option[Player] = {
+private def PopulationLeave(id: Int, playerMap: TrieMap[Int, Option[Player]]): Option[Player] = {
     playerMap.get(id) match {
       case None =>
         None
@@ -161,7 +161,7 @@ object ZonePopulationActor {
     *         and whether that player was added to the zone for the first time;
     *         `None`, if the player should not be introduced to this zone at this time
     */
-  def PopulationSpawn(
+private def PopulationSpawn(
       id: Int,
       player: Player,
       playerMap: TrieMap[Int, Option[Player]]
@@ -187,7 +187,7 @@ object ZonePopulationActor {
     * @param playerMap the mapping of `Avatar` objects to `Player` objects
     * @return any `Player` object that is associated at the time
     */
-  def PopulationRelease(id: Int, playerMap: TrieMap[Int, Option[Player]]): Option[Player] = {
+private def PopulationRelease(id: Int, playerMap: TrieMap[Int, Option[Player]]): Option[Player] = {
     playerMap.get(id) match {
       case None =>
         None
@@ -204,7 +204,7 @@ object ZonePopulationActor {
     * @return true, if the `player` was added to the list;
     *         false, otherwise
     */
-  def CorpseAdd(player: Player, corpseList: ListBuffer[Player]): Boolean = {
+private def CorpseAdd(player: Player, corpseList: ListBuffer[Player]): Boolean = {
     if (player.isBackpack) {
       corpseList += player
       true
@@ -218,7 +218,7 @@ object ZonePopulationActor {
     * @param player a `Player` object
     * @param corpseList a list of `Player` objects
     */
-  def CorpseRemove(player: Player, corpseList: ListBuffer[Player]): Boolean = {
+private def CorpseRemove(player: Player, corpseList: ListBuffer[Player]): Boolean = {
     corpseList.indexOf(player) match {
       case -1 =>
         false
@@ -228,12 +228,12 @@ object ZonePopulationActor {
     }
   }
 
-  def PlayerLeave(player: Player): Unit = {
+private def PlayerLeave(player: Player): Unit = {
     if (player.Actor != null) player.Actor ! akka.actor.PoisonPill
     player.Actor = Default.Actor
   }
 
-  def GetPlayerControlName(player: Player, old: Option[ActorRef]): String = {
+private def GetPlayerControlName(player: Player, old: Option[ActorRef]): String = {
     old match {
       case Some(control) =>
         val nameNumber = control.toString.split("/").last //split on '/'

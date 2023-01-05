@@ -27,7 +27,7 @@ final case class EquipmentPage(stock: Map[String, () => Equipment]) extends Scru
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     sender ! msg
   }
 }

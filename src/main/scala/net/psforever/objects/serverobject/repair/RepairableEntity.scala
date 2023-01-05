@@ -24,7 +24,7 @@ trait RepairableEntity extends Repairable {
     * @param player the user of the nano dispenser tool
     * @param item the nano dispenser tool
     */
-  def CanBeRepairedByNanoDispenser(player: Player, item: Tool): Unit = {
+private def CanBeRepairedByNanoDispenser(player: Player, item: Tool): Unit = {
     val obj = RepairableObject
     if (CanPerformRepairs(obj, player, item)) {
       PerformRepairs(obj, player, item)

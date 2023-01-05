@@ -29,8 +29,8 @@ final case class OffshoreVehicleMessage(
                                          msg: Int
                                        ) extends PlanetSideGamePacket {
   type Packet = OffshoreVehicleMessage
-  def opcode = GamePacketOpcode.OffshoreVehicleMessage
-  def encode = OffshoreVehicleMessage.encode(this)
+def opcode = GamePacketOpcode.OffshoreVehicleMessage
+def encode = OffshoreVehicleMessage.encode(this)
 }
 
 object OffshoreVehicleMessage extends Marshallable[OffshoreVehicleMessage] {

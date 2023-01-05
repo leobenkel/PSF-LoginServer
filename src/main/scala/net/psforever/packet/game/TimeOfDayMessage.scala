@@ -33,8 +33,8 @@ import scodec.codecs._
   */
 final case class TimeOfDayMessage(time: Long, unk: Long = 1092616192L) extends PlanetSideGamePacket {
   type Packet = TimeOfDayMessage
-  def opcode = GamePacketOpcode.TimeOfDayMessage
-  def encode = TimeOfDayMessage.encode(this)
+def opcode = GamePacketOpcode.TimeOfDayMessage
+def encode = TimeOfDayMessage.encode(this)
 }
 
 object TimeOfDayMessage extends Marshallable[TimeOfDayMessage] {

@@ -27,7 +27,7 @@ import scala.util.Success
   * @param pad the `VehicleSpawnPad` object being governed
   */
 class VehicleSpawnControlLoadVehicle(pad: VehicleSpawnPad) extends VehicleSpawnControlBase(pad) {
-  def LogId = "-loader"
+private def LogId = "-loader"
 
 private val railJack = context.actorOf(Props(classOf[VehicleSpawnControlRailJack], pad), s"${context.parent.path.name}-rails")
 
@@ -35,7 +35,7 @@ private var temp: Option[VehicleSpawnControl.Order] = None
 
   implicit val timeout = Timeout(3.seconds)
 
-  def receive: Receive = {
+def receive: Receive = {
     case order @ VehicleSpawnControl.Order(driver, vehicle) =>
       if (VehicleSpawnControl.validateOrderCredentials(pad, driver, vehicle).isEmpty) {
         trace(s"loading the ${vehicle.Definition.Name}")

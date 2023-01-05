@@ -31,8 +31,8 @@ import scodec.codecs._
 final case class TriggerEnvironmentalDamageMessage(unk1: Int, target_guid: PlanetSideGUID, unk2: Long)
     extends PlanetSideGamePacket {
   type Packet = TriggerEnvironmentalDamageMessage
-  def opcode = GamePacketOpcode.TriggerEnvironmentalDamageMessage
-  def encode = TriggerEnvironmentalDamageMessage.encode(this)
+def opcode = GamePacketOpcode.TriggerEnvironmentalDamageMessage
+def encode = TriggerEnvironmentalDamageMessage.encode(this)
 }
 
 object TriggerEnvironmentalDamageMessage extends Marshallable[TriggerEnvironmentalDamageMessage] {

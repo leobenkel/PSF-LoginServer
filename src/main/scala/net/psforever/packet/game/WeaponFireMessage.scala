@@ -81,8 +81,8 @@ final case class WeaponFireMessage(
     thrown_projectile_vel: Option[Option[Vector3]]
 ) extends PlanetSideGamePacket {
   type Packet = WeaponFireMessage
-  def opcode = GamePacketOpcode.WeaponFireMessage
-  def encode = WeaponFireMessage.encode(this)
+def opcode = GamePacketOpcode.WeaponFireMessage
+def encode = WeaponFireMessage.encode(this)
 }
 
 object WeaponFireMessage extends Marshallable[WeaponFireMessage] {

@@ -50,7 +50,8 @@ object ResistanceCalculations {
   private def failure(typeName: String) = Failure(new Exception(s"can not match expected target $typeName"))
 
   //target identification
-  def InvalidTarget(data: DamageInteraction): Try[SourceEntry] = failure(s"invalid ${data.target.Definition.Name}")
+  private def InvalidTarget(data: DamageInteraction): Try[SourceEntry] =
+    failure(s"invalid ${data.target.Definition.Name}")
 
   //target is always considered valid
   def AlwaysValidTarget(data: DamageInteraction): Try[SourceEntry] = Success(data.target)
@@ -68,7 +69,7 @@ object ResistanceCalculations {
     }
   }
 
-  def ValidMaxTarget(data: DamageInteraction): Try[PlayerSource] = {
+  private def ValidMaxTarget(data: DamageInteraction): Try[PlayerSource] = {
     data.target match {
       case target: PlayerSource =>
         if (target.ExoSuit == ExoSuitType.MAX) {
@@ -94,7 +95,7 @@ object ResistanceCalculations {
     }
   }
 
-  def ValidAircraftTarget(data: DamageInteraction): Try[VehicleSource] = {
+  private def ValidAircraftTarget(data: DamageInteraction): Try[VehicleSource] = {
     data.target match {
       case target: VehicleSource =>
         if (GlobalDefinitions.isFlightVehicle(target.Definition)) {
@@ -132,7 +133,7 @@ object ResistanceCalculations {
   def ExoSuitAggravatedExtractor(target: PlayerSource): Int =
     ExoSuitDefinition.Select(target.ExoSuit, target.Faction).ResistanceAggravated
 
-  def ExoSuitRadiationExtractor(target: PlayerSource): Float =
+  private def ExoSuitRadiationExtractor(target: PlayerSource): Float =
     ExoSuitDefinition.Select(target.ExoSuit, target.Faction).RadiationShielding
 
   def VehicleDirectExtractor(target: VehicleSource): Int = target.Definition.ResistanceDirectHit
@@ -141,7 +142,7 @@ object ResistanceCalculations {
 
   def VehicleAggravatedExtractor(target: VehicleSource): Int = target.Definition.ResistanceAggravated
 
-  def VehicleRadiationExtractor(target: VehicleSource): Float = target.Definition.RadiationShielding
+  private def VehicleRadiationExtractor(target: VehicleSource): Float = target.Definition.RadiationShielding
 
   def OtherDirectExtractor(target: ObjectSource): Int =
     target.Definition.asInstanceOf[ResistanceProfile].ResistanceDirectHit

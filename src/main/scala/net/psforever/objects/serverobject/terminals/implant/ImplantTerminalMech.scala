@@ -24,7 +24,7 @@ class ImplantTerminalMech(private val idef: ImplantTerminalMechDefinition)
   HackEffectDuration = Array(0, 30, 60, 90)
   HackDuration = Array(0, 10, 5, 3)
 
-  def Definition: ImplantTerminalMechDefinition = idef
+private def Definition: ImplantTerminalMechDefinition = idef
 }
 
 object ImplantTerminalMech {
@@ -33,7 +33,7 @@ object ImplantTerminalMech {
     * Overloaded constructor.
     * @param idef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
     */
-  def apply(idef: ImplantTerminalMechDefinition): ImplantTerminalMech = {
+def apply(idef: ImplantTerminalMechDefinition): ImplantTerminalMech = {
     new ImplantTerminalMech(idef)
   }
 
@@ -46,7 +46,7 @@ object ImplantTerminalMech {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `ImplantTerminalMech` object
     */
-  def Constructor(pos: Vector3)(id: Int, context: ActorContext): ImplantTerminalMech = {
+private def Constructor(pos: Vector3)(id: Int, context: ActorContext): ImplantTerminalMech = {
     import akka.actor.Props
     import net.psforever.objects.GlobalDefinitions
 
@@ -59,7 +59,7 @@ object ImplantTerminalMech {
     obj
   }
   @deprecated("use implant terminal mechs that have position", "destroyAndRepair")
-  def Constructor(id: Int, context: ActorContext): ImplantTerminalMech = {
+private def Constructor(id: Int, context: ActorContext): ImplantTerminalMech = {
     import akka.actor.Props
     import net.psforever.objects.GlobalDefinitions
 

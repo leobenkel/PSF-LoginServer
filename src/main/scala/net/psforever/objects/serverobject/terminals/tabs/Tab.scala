@@ -11,7 +11,7 @@ import net.psforever.packet.game.ItemTransactionMessage
   * @see `ItemTransactionMessage`
   */
 trait Tab {
-  def Buy(player: Player, msg: ItemTransactionMessage): Terminal.Exchange
-  def Sell(player: Player, msg: ItemTransactionMessage): Terminal.Exchange = Terminal.NoDeal()
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit
+private def Buy(player: Player, msg: ItemTransactionMessage): Terminal.Exchange
+private def Sell(player: Player, msg: ItemTransactionMessage): Terminal.Exchange = Terminal.NoDeal()
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit
 }

@@ -27,7 +27,7 @@ class HackClearActor() extends Actor {
   private var hackedObjects: List[HackClearActor.HackEntry] = Nil
   private[this] val log                                     = org.log4s.getLogger
 
-  def receive: Receive = {
+def receive: Receive = {
     case HackClearActor.ObjectIsHacked(target, zone, unk1, unk2, duration, time) =>
       val durationNanos = TimeUnit.NANOSECONDS.convert(duration, TimeUnit.SECONDS)
       hackedObjects = hackedObjects :+ HackClearActor.HackEntry(target, zone, unk1, unk2, time, durationNanos)

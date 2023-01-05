@@ -11,7 +11,7 @@ class GalaxyService extends Actor {
 
 private val GalaxyEvents = new GenericEventBus[GalaxyServiceResponse]
 
-  def receive: Receive = {
+def receive: Receive = {
     case Service.Join(faction) if "TRNCVS".containsSlice(faction) =>
       val path = s"/$faction/Galaxy"
       GalaxyEvents.subscribe(sender(), path)

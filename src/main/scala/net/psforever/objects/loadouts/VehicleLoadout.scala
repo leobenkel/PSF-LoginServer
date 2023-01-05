@@ -37,7 +37,7 @@ object VehicleLoadout {
     * @param definition the vehicle's definition
     * @return a number directly indicative of the type
     */
-  def DetermineBattleframeSubtype(definition: VehicleDefinition): Int = {
+private def DetermineBattleframeSubtype(definition: VehicleDefinition): Int = {
     definition match {
       case GlobalDefinitions.aphelion_flight  => 1
       case GlobalDefinitions.aphelion_gunner  => 2

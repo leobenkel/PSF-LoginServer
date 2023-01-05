@@ -67,7 +67,7 @@ class PropertyOverrideManager extends Actor {
     gamePropertyScopes = scopesBuffer.toList
   }
 
-  def LoadFile(path: String): ListBuffer[(String, String, String)] = {
+private def LoadFile(path: String): ListBuffer[(String, String, String)] = {
     val stream = getClass.getClassLoader.getResourceAsStream(path)
     if (stream == null) {
       return null

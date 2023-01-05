@@ -45,7 +45,7 @@ object DetailedWeaponData extends Marshallable[DetailedWeaponData] {
     * @param ammo the constructor data for the ammunition
     * @return a `DetailedWeaponData` object
     */
-  def apply(
+def apply(
       unk1: Int,
       unk2: Int,
       cls: Int,
@@ -80,7 +80,7 @@ object DetailedWeaponData extends Marshallable[DetailedWeaponData] {
     * @param ammo the constructor data for the ammunition
     * @return a `DetailedWeaponData` object
     */
-  def apply(
+def apply(
       unk1: Int,
       unk2: Int,
       fire_mode: Int,

@@ -18,7 +18,7 @@ class ZoneDeployableActor(zone: Zone, deployableList: ListBuffer[Deployable]) ex
 
   private[this] val log = org.log4s.getLogger
 
-  def receive: Receive = {
+def receive: Receive = {
     case Zone.Deployable.Build(obj) =>
       if (DeployableBuild(obj, deployableList)) {
         obj.Zone = zone
@@ -57,7 +57,7 @@ class ZoneDeployableActor(zone: Zone, deployableList: ListBuffer[Deployable]) ex
 }
 
 object ZoneDeployableActor {
-  def DeployableBuild(
+private def DeployableBuild(
       obj: Deployable,
       deployableList: ListBuffer[Deployable]
   ): Boolean = {
@@ -70,7 +70,7 @@ object ZoneDeployableActor {
     }
   }
 
-  def DeployableDismiss(
+private def DeployableDismiss(
       obj: Deployable,
       deployableList: ListBuffer[Deployable]
   ): Boolean = {

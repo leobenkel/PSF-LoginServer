@@ -48,18 +48,18 @@ final case class TriggerEffectMessage(
     location: Option[TriggeredEffectLocation] = None
 ) extends PlanetSideGamePacket {
   type Packet = TriggerEffectMessage
-  def opcode = GamePacketOpcode.TriggerEffectMessage
-  def encode = TriggerEffectMessage.encode(this)
+def opcode = GamePacketOpcode.TriggerEffectMessage
+def encode = TriggerEffectMessage.encode(this)
 }
 
 object TriggerEffectMessage extends Marshallable[TriggerEffectMessage] {
-  def apply(object_guid: PlanetSideGUID, effect: String): TriggerEffectMessage =
+def apply(object_guid: PlanetSideGUID, effect: String): TriggerEffectMessage =
     TriggerEffectMessage(object_guid, effect, None, None)
 
-  def apply(object_guid: PlanetSideGUID, effect: String, unk1: Boolean, unk2: Long): TriggerEffectMessage =
+def apply(object_guid: PlanetSideGUID, effect: String, unk1: Boolean, unk2: Long): TriggerEffectMessage =
     TriggerEffectMessage(object_guid, effect, Some(TriggeredEffect(unk1, unk2)), None)
 
-  def apply(effect: String, position: Vector3, orientation: Vector3): TriggerEffectMessage =
+def apply(effect: String, position: Vector3, orientation: Vector3): TriggerEffectMessage =
     TriggerEffectMessage(PlanetSideGUID(0), effect, None, Some(TriggeredEffectLocation(position, orientation)))
 
   /**

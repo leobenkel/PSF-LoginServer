@@ -29,7 +29,7 @@ object DamageableMountable {
     * @param cause historical information about the damage
     * @param countableDamage the amount of damage being done, translating to the intensity of the damage indicator
     */
-  def DamageAwareness(
+private def DamageAwareness(
                        target: Damageable.Target with Mountable,
                        cause: DamageResult,
                        countableDamage: Int
@@ -73,7 +73,7 @@ object DamageableMountable {
     * @param target the entity being destroyed
     * @param cause historical information about the damage
     */
-  def DestructionAwareness(target: Damageable.Target with Mountable, cause: DamageResult): Unit = {
+private def DestructionAwareness(target: Damageable.Target with Mountable, cause: DamageResult): Unit = {
     val interaction = cause.interaction
     target.Seats.values
       .filter(seat => {

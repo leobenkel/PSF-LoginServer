@@ -19,8 +19,8 @@ import scodec.codecs._
   */
 final case class AvatarJumpMessage(state: Boolean) extends PlanetSideGamePacket {
   type Packet = AvatarJumpMessage
-  def opcode = GamePacketOpcode.AvatarJumpMessage
-  def encode = AvatarJumpMessage.encode(this)
+def opcode = GamePacketOpcode.AvatarJumpMessage
+def encode = AvatarJumpMessage.encode(this)
 }
 
 object AvatarJumpMessage extends Marshallable[AvatarJumpMessage] {

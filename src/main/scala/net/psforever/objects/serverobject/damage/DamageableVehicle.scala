@@ -22,7 +22,7 @@ import scala.concurrent.duration._
 trait DamageableVehicle extends DamageableEntity with AggravatedBehavior {
   _: Actor =>
 
-  def damageableVehiclePostStop(): Unit = {
+private def damageableVehiclePostStop(): Unit = {
     EndAllAggravation()
   }
 
@@ -32,8 +32,8 @@ trait DamageableVehicle extends DamageableEntity with AggravatedBehavior {
   /** when the vehicle is destroyed, its major explosion is delayed */
   protected var queuedDestruction: Option[Cancellable] = None
 
-  def DamageableObject: Vehicle
-  def AggravatedObject: Vehicle = DamageableObject
+private def DamageableObject: Vehicle
+private def AggravatedObject: Vehicle = DamageableObject
 
   override val takesDamage: Receive = originalTakesDamage
     .orElse(aggravatedBehavior)
@@ -91,7 +91,7 @@ trait DamageableVehicle extends DamageableEntity with AggravatedBehavior {
     * @param obj the vehicle
     * @return the channel for updating health values, the channel for updating shield values
     */
-  def damageChannels(obj: Vehicle): (String, String) = {
+private def damageChannels(obj: Vehicle): (String, String) = {
     (obj.Zone.id, obj.Actor.toString)
   }
 
@@ -229,7 +229,7 @@ trait DamageableVehicle extends DamageableEntity with AggravatedBehavior {
     }
   }
 
-  def destructionDelayed(delay: Long, cause: DamageResult): Unit = {
+private def destructionDelayed(delay: Long, cause: DamageResult): Unit = {
     import scala.concurrent.ExecutionContext.Implicits.global
     import scala.concurrent.duration._
     val obj = DamageableObject

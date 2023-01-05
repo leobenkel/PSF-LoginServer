@@ -78,8 +78,8 @@ final case class SquadMembershipResponse(
     unk6: Option[Option[String]]
 ) extends PlanetSideGamePacket {
   type Packet = SquadMembershipResponse
-  def opcode = GamePacketOpcode.SquadMembershipResponse
-  def encode = SquadMembershipResponse.encode(this)
+def opcode = GamePacketOpcode.SquadMembershipResponse
+def encode = SquadMembershipResponse.encode(this)
 }
 
 object SquadMembershipResponse extends Marshallable[SquadMembershipResponse] {

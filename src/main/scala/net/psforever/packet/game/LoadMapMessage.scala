@@ -23,8 +23,8 @@ final case class LoadMapMessage(
 ) //?
     extends PlanetSideGamePacket {
   type Packet = LoadMapMessage
-  def opcode = GamePacketOpcode.LoadMapMessage
-  def encode = LoadMapMessage.encode(this)
+def opcode = GamePacketOpcode.LoadMapMessage
+def encode = LoadMapMessage.encode(this)
 }
 
 object LoadMapMessage extends Marshallable[LoadMapMessage] {

@@ -31,8 +31,8 @@ final case class VehicleSubStateMessage(
     unk2: Option[List[Boolean]]
 ) extends PlanetSideGamePacket {
   type Packet = VehicleSubStateMessage
-  def opcode: Type               = GamePacketOpcode.VehicleSubStateMessage
-  def encode: Attempt[BitVector] = VehicleSubStateMessage.encode(this)
+def opcode: Type               = GamePacketOpcode.VehicleSubStateMessage
+def encode: Attempt[BitVector] = VehicleSubStateMessage.encode(this)
 }
 
 object VehicleSubStateMessage extends Marshallable[VehicleSubStateMessage] {

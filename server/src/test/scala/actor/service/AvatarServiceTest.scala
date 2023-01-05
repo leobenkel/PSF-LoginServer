@@ -668,7 +668,7 @@ object AvatarServiceTest {
   import java.util.concurrent.atomic.AtomicInteger
   private val number = new AtomicInteger(1)
 
-  def TestName: String = {
+private def TestName: String = {
     s"service${number.getAndIncrement()}"
   }
 }

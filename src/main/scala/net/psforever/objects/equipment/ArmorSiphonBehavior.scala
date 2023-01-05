@@ -147,7 +147,7 @@ object ArmorSiphonBehavior {
 }
 
 case object ArmorSiphonRepairHost extends ArmorSiphonModifiers.Mod {
-  def calculate(damage: Int, data: DamageInteraction, cause: ArmorSiphonReason): Int = {
+private def calculate(damage: Int, data: DamageInteraction, cause: ArmorSiphonReason): Int = {
     if (damage > 0) {
       cause.hostVehicle.Actor ! ArmorSiphonBehavior.RepairedByArmorSiphon(data, damage)
     }

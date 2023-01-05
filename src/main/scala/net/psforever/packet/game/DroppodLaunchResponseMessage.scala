@@ -105,8 +105,8 @@ final case class DroppodLaunchResponseMessage(
     "ZoneFullWarpQueue requires queue information"
   )
   type Packet = DroppodLaunchResponseMessage
-  def opcode = GamePacketOpcode.DroppodLaunchResponseMessage
-  def encode = DroppodLaunchResponseMessage.encode(this)
+def opcode = GamePacketOpcode.DroppodLaunchResponseMessage
+def encode = DroppodLaunchResponseMessage.encode(this)
 }
 
 object DroppodLaunchResponseMessage extends Marshallable[DroppodLaunchResponseMessage] {
@@ -117,7 +117,7 @@ object DroppodLaunchResponseMessage extends Marshallable[DroppodLaunchResponseMe
     * @param guid the player using the droppod
     * @return a `DroppodLaunchResponseMessage` packet
     */
-  def apply(error: DroppodError, guid: PlanetSideGUID): DroppodLaunchResponseMessage = {
+def apply(error: DroppodError, guid: PlanetSideGUID): DroppodLaunchResponseMessage = {
     DroppodLaunchResponseMessage(error, guid, 0, Vector3.Zero)
   }
 
@@ -129,7 +129,7 @@ object DroppodLaunchResponseMessage extends Marshallable[DroppodLaunchResponseMe
     * @param xypos where in the zone (relative to the ground) the player will be placed
     * @return a `DroppodLaunchResponseMessage` packet
     */
-  def apply(
+def apply(
       error: DroppodError,
       guid: PlanetSideGUID,
       zoneNumber: Int,
@@ -144,7 +144,7 @@ object DroppodLaunchResponseMessage extends Marshallable[DroppodLaunchResponseMe
     * @param info information related to this droppod event
     * @return a `DroppodLaunchResponseMessage` packet
     */
-  def apply(error: DroppodError, info: DroppodLaunchInfo): DroppodLaunchResponseMessage = {
+def apply(error: DroppodError, info: DroppodLaunchInfo): DroppodLaunchResponseMessage = {
     DroppodLaunchResponseMessage(error, info, None)
   }
 
@@ -156,7 +156,7 @@ object DroppodLaunchResponseMessage extends Marshallable[DroppodLaunchResponseMe
     * @param placeInQueue the player's spot in the queue ('a' if a/b)
     * @return a `DroppodLaunchResponseMessage` packet
     */
-  def apply(guid: PlanetSideGUID, zoneNumber: Int, queueSize: Int, placeInQueue: Int): DroppodLaunchResponseMessage = {
+def apply(guid: PlanetSideGUID, zoneNumber: Int, queueSize: Int, placeInQueue: Int): DroppodLaunchResponseMessage = {
     DroppodLaunchResponseMessage(
       DroppodLaunchInfo(guid, zoneNumber, Vector3.Zero),
       queueSize,
@@ -171,7 +171,7 @@ object DroppodLaunchResponseMessage extends Marshallable[DroppodLaunchResponseMe
     * @param placeInQueue the player's spot in the queue ('a' if a/b)
     * @return a `DroppodLaunchResponseMessage` packet
     */
-  def apply(info: DroppodLaunchInfo, queueSize: Int, placeInQueue: Int): DroppodLaunchResponseMessage = {
+def apply(info: DroppodLaunchInfo, queueSize: Int, placeInQueue: Int): DroppodLaunchResponseMessage = {
     DroppodLaunchResponseMessage(
       DroppodError.ZoneFullWarpQueue,
       info,

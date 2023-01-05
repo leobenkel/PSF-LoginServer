@@ -73,7 +73,7 @@ object Avatar {
     GlobalDefinitions.super_staminakit -> 5.minutes // Temporary - Default value is 20 minutes
   )
 
-  def makeLocker(): LockerContainer = {
+  private def makeLocker(): LockerContainer = {
     new LockerContainer({
       val inv = new LocallyRegisteredInventory(numbers = 40150 until 40450) // TODO var bad
       inv.Resize(30, 20)
@@ -158,12 +158,12 @@ case class Avatar(
   }
 
   /** Returns the remaining purchase cooldown or None if an object is not on cooldown */
-  def purchaseCooldown(definition: BasicDefinition): Option[Duration] = {
+  private def purchaseCooldown(definition: BasicDefinition): Option[Duration] = {
     cooldown(cooldowns.purchase, Avatar.purchaseCooldowns, definition)
   }
 
   /** Returns the remaining use cooldown or None if an object is not on cooldown */
-  def useCooldown(definition: BasicDefinition): Option[Duration] = {
+  private def useCooldown(definition: BasicDefinition): Option[Duration] = {
     cooldown(cooldowns.use, Avatar.useCooldowns, definition)
   }
 
@@ -177,7 +177,7 @@ case class Avatar(
   val definition: AvatarDefinition = GlobalDefinitions.avatar
 
   /** Returns numerical value from 0-3 that is the hacking skill level representation in packets */
-  def hackingSkillLevel(): Int = {
+  private def hackingSkillLevel(): Int = {
     if (
       certifications.contains(Certification.ExpertHacking) || certifications.contains(Certification.ElectronicsExpert)
     ) {
@@ -195,11 +195,11 @@ case class Avatar(
   val maxStamina: Int = 100
 
   /** Return true if the stamina is at the maximum amount */
-  def staminaFull: Boolean = {
+  private def staminaFull: Boolean = {
     stamina == maxStamina
   }
 
-  def canEqual(other: Any): Boolean = other.isInstanceOf[Avatar]
+  private def canEqual(other: Any): Boolean = other.isInstanceOf[Avatar]
 
   override def equals(other: Any): Boolean =
     other match {

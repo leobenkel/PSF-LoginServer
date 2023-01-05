@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class ReloadMessage(item_guid: PlanetSideGUID, ammo_clip: Long, unk1: Int) extends PlanetSideGamePacket {
   type Packet = ReloadMessage
-  def opcode = GamePacketOpcode.ReloadMessage
-  def encode = ReloadMessage.encode(this)
+def opcode = GamePacketOpcode.ReloadMessage
+def encode = ReloadMessage.encode(this)
 }
 
 object ReloadMessage extends Marshallable[ReloadMessage] {

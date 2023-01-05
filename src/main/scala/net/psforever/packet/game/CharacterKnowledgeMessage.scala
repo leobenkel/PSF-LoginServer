@@ -19,15 +19,15 @@ final case class CharacterKnowledgeInfo(
 final case class CharacterKnowledgeMessage(char_id: Long, info: Option[CharacterKnowledgeInfo])
     extends PlanetSideGamePacket {
   type Packet = CharacterKnowledgeMessage
-  def opcode = GamePacketOpcode.CharacterKnowledgeMessage
-  def encode = CharacterKnowledgeMessage.encode(this)
+def opcode = GamePacketOpcode.CharacterKnowledgeMessage
+def encode = CharacterKnowledgeMessage.encode(this)
 }
 
 object CharacterKnowledgeMessage extends Marshallable[CharacterKnowledgeMessage] {
-  def apply(char_id: Long): CharacterKnowledgeMessage =
+def apply(char_id: Long): CharacterKnowledgeMessage =
     CharacterKnowledgeMessage(char_id, None)
 
-  def apply(char_id: Long, info: CharacterKnowledgeInfo): CharacterKnowledgeMessage =
+def apply(char_id: Long, info: CharacterKnowledgeInfo): CharacterKnowledgeMessage =
     CharacterKnowledgeMessage(char_id, Some(info))
 
   private val inverter: Codec[Boolean] = bool.xmap[Boolean](

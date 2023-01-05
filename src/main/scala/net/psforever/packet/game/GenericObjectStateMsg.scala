@@ -14,8 +14,8 @@ import scodec.codecs._
   */
 final case class GenericObjectStateMsg(object_guid: PlanetSideGUID, state: Long) extends PlanetSideGamePacket {
   type Packet = GenericObjectStateMsg
-  def opcode = GamePacketOpcode.GenericObjectStateMsg
-  def encode = GenericObjectStateMsg.encode(this)
+def opcode = GamePacketOpcode.GenericObjectStateMsg
+def encode = GenericObjectStateMsg.encode(this)
 }
 
 object GenericObjectStateMsg extends Marshallable[GenericObjectStateMsg] {

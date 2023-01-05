@@ -24,8 +24,8 @@ final case class LashMessage(
     unk1: Int
 ) extends PlanetSideGamePacket {
   type Packet = LashMessage
-  def opcode = GamePacketOpcode.LashMessage
-  def encode = LashMessage.encode(this)
+def opcode = GamePacketOpcode.LashMessage
+def encode = LashMessage.encode(this)
 }
 
 object LashMessage extends Marshallable[LashMessage] {

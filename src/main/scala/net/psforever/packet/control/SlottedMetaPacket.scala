@@ -11,7 +11,7 @@ final case class SlottedMetaPacket(slot: Int, subslot: Int, packet: ByteVector) 
 
   assert(slot >= 0 && slot <= 7, s"Slot number ($slot) is out of range")
 
-  def opcode = {
+def opcode = {
     val base = ControlPacketOpcode.SlottedMetaPacket0.id
     ControlPacketOpcode(base + slot)
   }
@@ -19,7 +19,7 @@ final case class SlottedMetaPacket(slot: Int, subslot: Int, packet: ByteVector) 
   // XXX: a nasty hack to ignore the "slot" field
   // There is so much wrong with this it's not even funny. Why scodec, whyyyy...
   // I've never had a library make me feel so stupid and smart at the same time
-  def encode = SlottedMetaPacket.encode(this).map(vect => vect.drop(8))
+def encode = SlottedMetaPacket.encode(this).map(vect => vect.drop(8))
 }
 
 object SlottedMetaPacket extends Marshallable[SlottedMetaPacket] {
@@ -29,7 +29,7 @@ object SlottedMetaPacket extends Marshallable[SlottedMetaPacket] {
       ("rest" | bytes)
   ).as[SlottedMetaPacket]
 
-  def decodeWithOpcode(slot: ControlPacketOpcode.Value)(bits: BitVector) = {
+private def decodeWithOpcode(slot: ControlPacketOpcode.Value)(bits: BitVector) = {
     decode(ControlPacketOpcode.codec.encode(slot).require ++ bits)
   }
 }

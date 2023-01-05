@@ -28,7 +28,7 @@ class Building(
     private val buildingType: StructureType,
     private val buildingDefinition: BuildingDefinition
 ) extends AmenityOwner
-  with BlockMapEntity {
+    with BlockMapEntity {
 
   private var faction: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
   private var playersInSOI: List[Player]      = List.empty
@@ -40,7 +40,7 @@ class Building(
 
   override def toString = name
 
-  def Name: String = name
+  private def Name: String = name
 
   /**
     * The map_id is the identifier number used in BuildingInfoUpdateMessage. This is the index that the building appears in the MPO file starting from index 1
@@ -48,29 +48,29 @@ class Building(
     */
   def MapId: Int = map_id
 
-  def IsCapitol: Boolean = capitols.contains(name)
-  def IsSubCapitol: Boolean = {
+  private def IsCapitol: Boolean = capitols.contains(name)
+  private def IsSubCapitol: Boolean = {
     Neighbours match {
       case Some(buildings: Set[Building]) => buildings.exists(x => capitols.contains(x.name))
       case None                           => false
     }
   }
-  def ForceDomeActive: Boolean = forceDomeActive
-  def ForceDomeActive_=(activated: Boolean): Boolean = {
+  private def ForceDomeActive: Boolean = forceDomeActive
+  private def ForceDomeActive_=(activated: Boolean): Boolean = {
     forceDomeActive = activated
     forceDomeActive
   }
 
-  def Faction: PlanetSideEmpire.Value = faction
+  private def Faction: PlanetSideEmpire.Value = faction
 
   override def Faction_=(fac: PlanetSideEmpire.Value): PlanetSideEmpire.Value = {
     faction = fac
     Faction
   }
 
-  def PlayersInSOI: List[Player] = playersInSOI
+  private def PlayersInSOI: List[Player] = playersInSOI
 
-  def PlayersInSOI_=(list: List[Player]): List[Player] = {
+  private def PlayersInSOI_=(list: List[Player]): List[Player] = {
     if (playersInSOI.isEmpty && list.nonEmpty) {
       Amenities.collect {
         case box: Painbox =>
@@ -87,7 +87,7 @@ class Building(
   }
 
   // Get all lattice neighbours
-  def AllNeighbours: Option[Set[Building]] = {
+  private def AllNeighbours: Option[Set[Building]] = {
     zone.Lattice find this match {
       case Some(x) => Some(x.diSuccessors.map(x => x.toOuter))
       case None    => None
@@ -96,21 +96,21 @@ class Building(
 
   // Get all lattice neighbours that are active
   // This is important because warp gates can be inactive
-  def Neighbours: Option[Set[Building]] = {
+  private def Neighbours: Option[Set[Building]] = {
     AllNeighbours collect {
       case wg: WarpGate if wg.Active => wg
       case b                         => b
     }
   }
 
-  def NtuSource: Option[NtuContainer] = {
+  private def NtuSource: Option[NtuContainer] = {
     Amenities.find(_.isInstanceOf[NtuContainer]) match {
       case Some(o: NtuContainer) => Some(o)
       case _                     => None
     }
   }
 
-  def NtuLevel: Int = {
+  private def NtuLevel: Int = {
     //if we have a silo, get the NTU level
     Amenities.find(_.Definition == GlobalDefinitions.resource_silo) match {
       case Some(obj: ResourceSilo) =>
@@ -120,38 +120,40 @@ class Building(
     }
   }
 
-  def Generator: Option[Generator] = {
+  private def Generator: Option[Generator] = {
     Amenities.find(_.isInstanceOf[Generator]) match {
       case Some(obj: Generator) => Some(obj)
       case _                    => None
     }
   }
 
-  def CaptureTerminal: Option[CaptureTerminal] = {
+  private def CaptureTerminal: Option[CaptureTerminal] = {
     Amenities.find(_.isInstanceOf[CaptureTerminal]) match {
       case Some(term) => Some(term.asInstanceOf[CaptureTerminal])
       case _          => None
     }
   }
 
-  def IsCtfBase: Boolean = GetFlagSocket match {
-    case Some(_) => true
-    case _ => false
-  }
+  private def IsCtfBase: Boolean =
+    GetFlagSocket match {
+      case Some(_) => true
+      case _       => false
+    }
 
-  def GetFlagSocket: Option[CaptureFlagSocket] = this.Amenities.find(_.Definition == GlobalDefinitions.llm_socket).asInstanceOf[Option[CaptureFlagSocket]]
-  def GetFlag: Option[CaptureFlag] = {
+  private def GetFlagSocket: Option[CaptureFlagSocket] =
+    this.Amenities.find(_.Definition == GlobalDefinitions.llm_socket).asInstanceOf[Option[CaptureFlagSocket]]
+  private def GetFlag: Option[CaptureFlag] = {
     GetFlagSocket match {
       case Some(socket) => socket.captureFlag
       case None         => None
     }
   }
 
-  def HackableAmenities: List[Amenity with Hackable] = {
+  private def HackableAmenities: List[Amenity with Hackable] = {
     Amenities.filter(x => x.isInstanceOf[Hackable]).map(x => x.asInstanceOf[Amenity with Hackable])
   }
 
-  def CaptureTerminalIsHacked: Boolean = {
+  private def CaptureTerminalIsHacked: Boolean = {
     CaptureTerminal match {
       case Some(obj: CaptureTerminal) =>
         obj.HackedBy.isDefined
@@ -160,7 +162,7 @@ class Building(
   }
 
   // Get all lattice neighbours matching the specified faction
-  def Neighbours(faction: PlanetSideEmpire.Value): Option[Set[Building]] = {
+  private def Neighbours(faction: PlanetSideEmpire.Value): Option[Set[Building]] = {
     this.Neighbours match {
       case Some(x: Set[Building]) =>
         val matching = x.filter(b => b.Faction == faction)
@@ -169,7 +171,7 @@ class Building(
     }
   }
 
-  def infoUpdateMessage(): BuildingInfoUpdateMessage = {
+  private def infoUpdateMessage(): BuildingInfoUpdateMessage = {
     val ntuLevel: Int = NtuLevel
     //if we have a capture terminal, get the hack status & time (in milliseconds) from control console if it exists
     val (hacking, hackingFaction, hackTime): (Boolean, PlanetSideEmpire.Value, Long) = CaptureTerminal match {
@@ -197,15 +199,16 @@ class Building(
       val o = Amenities.collect({ case tube: SpawnTube if !tube.Destroyed => tube })
       (o.nonEmpty, false) //TODO poll pain field strength
     }
-    val cavernBenefit: Set[CavernBenefit] = if (
-      generatorState != PlanetSideGeneratorState.Destroyed &&
-      faction != PlanetSideEmpire.NEUTRAL &&
-      connectedCavern().nonEmpty
-    ) {
-      Set(CavernBenefit.VehicleModule, CavernBenefit.EquipmentModule)
-    } else {
-      Set(CavernBenefit.None)
-    }
+    val cavernBenefit: Set[CavernBenefit] =
+      if (
+        generatorState != PlanetSideGeneratorState.Destroyed &&
+        faction != PlanetSideEmpire.NEUTRAL &&
+        connectedCavern().nonEmpty
+      ) {
+        Set(CavernBenefit.VehicleModule, CavernBenefit.EquipmentModule)
+      } else {
+        Set(CavernBenefit.None)
+      }
 
     BuildingInfoUpdateMessage(
       Zone.Number,
@@ -225,14 +228,14 @@ class Building(
       unk4 = Nil,
       unk5 = 0,
       unk6 = false,
-      unk7 = 8,     // unk7 != 8 will cause malformed packet
+      unk7 = 8, // unk7 != 8 will cause malformed packet
       unk7x = None,
       boostSpawnPain,
       boostGeneratorPain
     )
   }
 
-  def hasLatticeBenefit(wantedBenefit: LatticeBenefit): Boolean = {
+  private def hasLatticeBenefit(wantedBenefit: LatticeBenefit): Boolean = {
     val genState = Generator match {
       case Some(obj) => obj.Condition != PlanetSideGeneratorState.Destroyed
       case _         => false
@@ -243,13 +246,12 @@ class Building(
       // Check this Building is on the lattice first
       zone.Lattice find this match {
         case Some(_) =>
-          val subGraph = Zone.Lattice filter (
-            (b : Building) =>
-              b.Faction == this.Faction &&
+          val subGraph = Zone.Lattice filter ((b: Building) =>
+            b.Faction == this.Faction &&
               !b.CaptureTerminalIsHacked &&
               b.NtuLevel > 0 &&
               (b.Generator.isEmpty || b.Generator.get.Condition != PlanetSideGeneratorState.Destroyed)
-            )
+          )
           findLatticeBenefit(wantedBenefit, subGraph)
         case None =>
           false
@@ -258,9 +260,9 @@ class Building(
   }
 
   private def findLatticeBenefit(
-                                  wantedBenefit: LatticeBenefit,
-                                  subGraph: Graph[Building, GraphEdge.UnDiEdge]
-                                ): Boolean = {
+      wantedBenefit: LatticeBenefit,
+      subGraph: Graph[Building, GraphEdge.UnDiEdge]
+  ): Boolean = {
     var found = false
     subGraph find this match {
       case Some(self) =>
@@ -277,7 +279,7 @@ class Building(
     found
   }
 
-  def latticeConnectedFacilityBenefits(): Set[LatticeBenefit] = {
+  private def latticeConnectedFacilityBenefits(): Set[LatticeBenefit] = {
     val genState = Generator match {
       case Some(obj) => obj.Condition
       case _         => PlanetSideGeneratorState.Normal
@@ -289,30 +291,33 @@ class Building(
     }
   }
 
-  def friendlyFunctionalNeighborhood(): Set[Building] = {
-    var (currBuilding, newNeighbors) = Neighbours(faction).getOrElse(Set.empty[Building]).toList.splitAt(1)
-    var visitedNeighbors: Set[Int] = Set(MapId)
+  private def friendlyFunctionalNeighborhood(): Set[Building] = {
+    var (currBuilding, newNeighbors)         = Neighbours(faction).getOrElse(Set.empty[Building]).toList.splitAt(1)
+    var visitedNeighbors: Set[Int]           = Set(MapId)
     var friendlyNeighborhood: List[Building] = List(this)
     while (currBuilding.nonEmpty) {
       val building = currBuilding.head
-      val neighborsToAdd = if (!visitedNeighbors.contains(building.MapId)
-                               && (building match { case _ : WarpGate => false;  case _ => true })
-                               && !building.CaptureTerminalIsHacked
-                               && building.NtuLevel > 0
-                               && (building.Generator match {
-        case Some(o) => o.Condition != PlanetSideGeneratorState.Destroyed
-        case _ => true
-      })
-      ) {
-        visitedNeighbors = visitedNeighbors ++ Set(building.MapId)
-        friendlyNeighborhood = friendlyNeighborhood :+ building
-        building.Neighbours(faction)
-          .getOrElse(Set.empty[Building])
-          .toList
-          .filterNot { b => visitedNeighbors.contains(b.MapId) }
-      } else {
-        Nil
-      }
+      val neighborsToAdd =
+        if (
+          !visitedNeighbors.contains(building.MapId)
+          && (building match { case _: WarpGate => false; case _ => true })
+          && !building.CaptureTerminalIsHacked
+          && building.NtuLevel > 0
+          && (building.Generator match {
+            case Some(o) => o.Condition != PlanetSideGeneratorState.Destroyed
+            case _       => true
+          })
+        ) {
+          visitedNeighbors = visitedNeighbors ++ Set(building.MapId)
+          friendlyNeighborhood = friendlyNeighborhood :+ building
+          building
+            .Neighbours(faction)
+            .getOrElse(Set.empty[Building])
+            .toList
+            .filterNot { b => visitedNeighbors.contains(b.MapId) }
+        } else {
+          Nil
+        }
       val allocatedNeighbors = newNeighbors ++ neighborsToAdd
       currBuilding = allocatedNeighbors.take(1)
       newNeighbors = allocatedNeighbors.drop(1)
@@ -329,7 +334,8 @@ class Building(
     * just fail.
     * @return the discovered faction-aligned cavern facility
     */
-  def connectedCavern(): Option[Building] = net.psforever.objects.zones.Zone.findConnectedCavernFacility(building = this)
+  private def connectedCavern(): Option[Building] =
+    net.psforever.objects.zones.Zone.findConnectedCavernFacility(building = this)
 
   def BuildingType: StructureType = buildingType
 
@@ -339,7 +345,7 @@ class Building(
 
   override def Continent_=(zone: String): String = Continent //building never leaves zone after being set in constructor
 
-  def Definition: BuildingDefinition = buildingDefinition
+  private def Definition: BuildingDefinition = buildingDefinition
 }
 
 object Building {
@@ -354,7 +360,7 @@ object Building {
     new Building(name, guid, map_id, zone, buildingType, GlobalDefinitions.building)
   }
 
-  def Structure(
+  private def Structure(
       buildingType: StructureType,
       location: Vector3,
       rotation: Vector3,
@@ -367,7 +373,7 @@ object Building {
     obj
   }
 
-  def Structure(
+  private def Structure(
       buildingType: StructureType,
       location: Vector3
   )(name: String, guid: Int, map_id: Int, zone: Zone, context: ActorContext): Building = {
@@ -377,7 +383,7 @@ object Building {
     obj
   }
 
-  def Structure(
+  private def Structure(
       buildingType: StructureType
   )(name: String, guid: Int, map_id: Int, zone: Zone, context: ActorContext): Building = {
     val obj = new Building(name, guid, map_id, zone, buildingType, GlobalDefinitions.building)
@@ -385,7 +391,7 @@ object Building {
     obj
   }
 
-  def Structure(
+  private def Structure(
       buildingType: StructureType,
       buildingDefinition: BuildingDefinition,
       location: Vector3

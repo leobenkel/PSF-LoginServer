@@ -7,6 +7,7 @@ import net.psforever.types.Vector3
   * Calculation support for the geometric code.
   */
 object Geometry {
+
   /**
     * Are two `Float` numbers equal enough to be considered equal?
     * @param value1 the first value
@@ -44,7 +45,7 @@ object Geometry {
     * @return `true`, if the two `Vector3` entities are close enough to be considered equal;
     *        `false`, otherwise
     */
-  def equalVectors(value1: Vector3, value2: Vector3, off: Vector3): Boolean = {
+  private def equalVectors(value1: Vector3, value2: Vector3, off: Vector3): Boolean = {
     equalFloats(value1.x, value2.x, off.x) &&
     equalFloats(value1.y, value2.y, off.y) &&
     equalFloats(value1.z, value2.z, off.z)
@@ -60,7 +61,7 @@ object Geometry {
     * @param epsilon how far from zero the value is allowed to stray
     * @return the original number, or zero
     */
-  def closeToInsignificance(d: Float, epsilon: Float = 10f): Float = {
+  private def closeToInsignificance(d: Float, epsilon: Float = 10f): Float = {
     val ulp = math.ulp(epsilon)
     math.signum(d) match {
       case -1f =>

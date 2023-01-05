@@ -19,8 +19,8 @@ import scodec.codecs._
   */
 final case class RepairMessage(item_guid: PlanetSideGUID, repair_value: Long) extends PlanetSideGamePacket {
   type Packet = RepairMessage
-  def opcode = GamePacketOpcode.RepairMessage
-  def encode = RepairMessage.encode(this)
+def opcode = GamePacketOpcode.RepairMessage
+def encode = RepairMessage.encode(this)
 }
 
 object RepairMessage extends Marshallable[RepairMessage] {

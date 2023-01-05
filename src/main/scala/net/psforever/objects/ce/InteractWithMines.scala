@@ -13,8 +13,8 @@ case object MineInteraction extends ZoneInteractionType
   * "Interact", here, is a graceful word for "trample upon" and the consequence should be an explosion
   * and maybe death.
   */
-class InteractWithMines(val range: Float)
-  extends ZoneInteraction {
+class InteractWithMines(val range: Float) extends ZoneInteraction {
+
   /**
     * mines that, though detected, are skipped from being alerted;
     * in between interaction tests, a memory of the mines that were messaged last test are retained and
@@ -23,22 +23,22 @@ class InteractWithMines(val range: Float)
     */
   private var skipTargets: List[PlanetSideGUID] = List()
 
-  def Type = MineInteraction
+  private def Type = MineInteraction
 
   /**
     * Trample upon active mines in our current detection sector and alert those mines.
     * @param sector the portion of the block map being tested
     * @param target the fixed element in this test
     */
-  def interaction(sector: SectorPopulation, target: InteractsWithZone): Unit = {
+  override def interaction(sector: SectorPopulation, target: InteractsWithZone): Unit = {
     val faction = target.Faction
-    val targets = sector
-      .deployableList
+    val targets = sector.deployableList
       .filter {
-        case _: BoomerDeployable     => false //boomers are specific types of ExplosiveDeployable but do not count here
-        case ex: ExplosiveDeployable => ex.Faction != faction &&
-                                        Zone.distanceCheck(target, ex, ex.Definition.triggerRadius)
-        case _                       => false
+        case _: BoomerDeployable => false //boomers are specific types of ExplosiveDeployable but do not count here
+        case ex: ExplosiveDeployable =>
+          ex.Faction != faction &&
+            Zone.distanceCheck(target, ex, ex.Definition.triggerRadius)
+        case _ => false
       }
     val notSkipped = targets.filterNot { t => skipTargets.contains(t.GUID) }
     skipTargets = notSkipped.map { _.GUID }
@@ -52,7 +52,7 @@ class InteractWithMines(val range: Float)
     * All that can be done is blanking our retained previous messaging targets.
     * @param target the fixed element in this test
     */
-  def resetInteraction(target: InteractsWithZone): Unit = {
+  private def resetInteraction(target: InteractsWithZone): Unit = {
     skipTargets = List()
   }
 }

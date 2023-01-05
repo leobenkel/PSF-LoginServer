@@ -30,7 +30,7 @@ object PacketCoding {
     * @param crypto if set, encrypt final payload
     * @return a `BitVector` translated from the packet's data
     */
-  def marshalPacket(
+  private def marshalPacket(
       packet: PlanetSidePacket,
       sequence: Option[Int] = None,
       crypto: Option[CryptoCoding] = None

@@ -9,8 +9,8 @@ import shapeless.HNil
 
 final case class MultiPacketEx(packets: Vector[ByteVector]) extends PlanetSideControlPacket {
   type Packet = MultiPacketEx
-  def opcode = ControlPacketOpcode.MultiPacketEx
-  def encode = MultiPacketEx.encode(this)
+def opcode = ControlPacketOpcode.MultiPacketEx
+def encode = MultiPacketEx.encode(this)
 }
 
 object MultiPacketEx extends Marshallable[MultiPacketEx] {

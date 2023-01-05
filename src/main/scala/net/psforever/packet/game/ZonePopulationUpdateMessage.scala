@@ -56,8 +56,8 @@ final case class ZonePopulationUpdateMessage(
     bo_pop: Long = 0L
 ) extends PlanetSideGamePacket {
   type Packet = ZonePopulationUpdateMessage
-  def opcode = GamePacketOpcode.ZonePopulationUpdateMessage
-  def encode = ZonePopulationUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.ZonePopulationUpdateMessage
+def encode = ZonePopulationUpdateMessage.encode(this)
 }
 
 object ZonePopulationUpdateMessage extends Marshallable[ZonePopulationUpdateMessage] {

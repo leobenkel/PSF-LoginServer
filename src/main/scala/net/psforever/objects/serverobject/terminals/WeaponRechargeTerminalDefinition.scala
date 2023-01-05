@@ -10,9 +10,9 @@ class WeaponRechargeTerminalDefinition(objectId: Int)
   extends ProximityTerminalDefinition(objectId) {
   private var ammoAmount: Int = 1
 
-  def AmmoAmount: Int = ammoAmount
+private def AmmoAmount: Int = ammoAmount
 
-  def AmmoAmount_=(amount: Int): Int = {
+private def AmmoAmount_=(amount: Int): Int = {
     ammoAmount = amount
     AmmoAmount
   }

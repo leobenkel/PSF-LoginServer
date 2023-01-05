@@ -15,8 +15,8 @@ import shapeless.{::, HNil}
 final case class DensityLevelUpdateMessage(zone_id: Int, building_id: Int, density: List[Int])
     extends PlanetSideGamePacket {
   type Packet = DensityLevelUpdateMessage
-  def opcode = GamePacketOpcode.DensityLevelUpdateMessage
-  def encode = DensityLevelUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.DensityLevelUpdateMessage
+def encode = DensityLevelUpdateMessage.encode(this)
 }
 
 object DensityLevelUpdateMessage extends Marshallable[DensityLevelUpdateMessage] {

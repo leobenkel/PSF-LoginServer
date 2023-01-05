@@ -28,9 +28,9 @@ trait CarrierBehavior {
   /* gate-keep dismounting behavior so that another vehicle does not attempt to dismount, or dismount in the middle */
   private var isDismounting: Option[PlanetSideGUID] = None
 
-  def CarrierObject: Vehicle
+private def CarrierObject: Vehicle
 
-  def endAllCarrierOperations(): Unit = {
+private def endAllCarrierOperations(): Unit = {
     cargoMountTimer.cancel()
     cargoDismountTimer.cancel()
     val obj = CarrierObject
@@ -55,7 +55,7 @@ protected val carrierBehavior: Receive = {
       checkCargoDismount(cargo_guid, mountPoint, iteration, bailed)
   }
 
-  def checkCargoMounting(cargo_guid: PlanetSideGUID, mountPoint: Int, iteration: Int): Unit = {
+private def checkCargoMounting(cargo_guid: PlanetSideGUID, mountPoint: Int, iteration: Int): Unit = {
     val obj = CarrierObject
     if (
       (isMounting.isEmpty || isMounting.contains(cargo_guid)) && isDismounting.isEmpty &&
@@ -97,7 +97,7 @@ protected val carrierBehavior: Receive = {
     }
   }
 
-  def checkCargoDismount(cargo_guid: PlanetSideGUID, mountPoint: Int, iteration: Int, bailed: Boolean): Unit = {
+private def checkCargoDismount(cargo_guid: PlanetSideGUID, mountPoint: Int, iteration: Int, bailed: Boolean): Unit = {
     val obj = CarrierObject
     val zone = obj.Zone
     val guid = obj.GUID
@@ -166,7 +166,7 @@ object CarrierBehavior {
     * @param mountPoint the cargo hold to which the cargo vehicle is stowed
     * @param iteration number of times a proper mounting for this combination has been queried
     */
-  def HandleCheckCargoMounting(
+private def HandleCheckCargoMounting(
                                 zone: Zone,
                                 carrierGUID: PlanetSideGUID,
                                 cargoGUID: PlanetSideGUID,
@@ -284,7 +284,7 @@ object CarrierBehavior {
     * @param mountPoint na
     * @param iteration na
     */
-  def HandleCheckCargoDismounting(
+private def HandleCheckCargoDismounting(
                                    zone: Zone,
                                    carrierGUID: PlanetSideGUID,
                                    cargoGUID: PlanetSideGUID,
@@ -395,7 +395,7 @@ object CarrierBehavior {
     * @param requestedByPassenger na
     * @param kicked na
     */
-  def HandleVehicleCargoDismount(
+private def HandleVehicleCargoDismount(
                                   zone: Zone,
                                   cargo_guid: PlanetSideGUID,
                                   bailed: Boolean,
@@ -429,7 +429,7 @@ object CarrierBehavior {
     * @param requestedByPassenger the ferried vehicle is being politely disembarked from the cargo hold
     * @param kicked the ferried vehicle is being kicked out of the cargo hold
     */
-  def HandleVehicleCargoDismount(
+private def HandleVehicleCargoDismount(
                                   cargoGUID: PlanetSideGUID,
                                   cargo: Vehicle,
                                   carrierGUID: PlanetSideGUID,
@@ -526,7 +526,7 @@ object CarrierBehavior {
     * @param target an optional the target object
     * @param targetGUID the expected globally unique identifier of the target object
     */
-  def LogCargoEventMissingVehicleError(
+private def LogCargoEventMissingVehicleError(
                                         decorator: String,
                                         target: Option[PlanetSideGameObject],
                                         targetGUID: PlanetSideGUID
@@ -550,7 +550,7 @@ object CarrierBehavior {
     *                   also known as a "cargo hold"
     * @return a tuple composed of an `ObjectAttachMessage` packet and a `CargoMountPointStatusMessage` packet
     */
-  def CargoMountMessages(
+private def CargoMountMessages(
                           carrier: Vehicle,
                           cargo: Vehicle,
                           mountPoint: Int
@@ -569,7 +569,7 @@ object CarrierBehavior {
     * @param orientation the positioning of the cargo vehicle in the carrier cargo bay
     * @return a tuple composed of an `ObjectAttachMessage` packet and a `CargoMountPointStatusMessage` packet
     */
-  def CargoMountMessages(
+private def CargoMountMessages(
                           carrierGUID: PlanetSideGUID,
                           cargoGUID: PlanetSideGUID,
                           mountPoint: Int,
@@ -598,7 +598,7 @@ object CarrierBehavior {
     * @param mountPoint the point on the ferryoing vehicle where the ferried vehicle is attached
     * @return a tuple composed of an `ObjectAttachMessage` packet and a `CargoMountPointStatusMessage` packet
     */
-  def CargoMountBehaviorForOthers(
+private def CargoMountBehaviorForOthers(
                                    carrier: Vehicle,
                                    cargo: Vehicle,
                                    mountPoint: Int,
@@ -616,7 +616,7 @@ object CarrierBehavior {
     * @param attachMessage an `ObjectAttachMessage` packet suitable for initializing cargo operations
     * @param mountPointStatusMessage a `CargoMountPointStatusMessage` packet suitable for initializing cargo operations
     */
-  def CargoMountMessagesForOthers(
+private def CargoMountMessagesForOthers(
                                    zone: Zone,
                                    exclude: PlanetSideGUID,
                                    attachMessage: ObjectAttachMessage,
@@ -635,7 +635,7 @@ object CarrierBehavior {
     * @param mountPoint the point on the ferryoing vehicle where the ferried vehicle is attached
     * @return a tuple composed of an `ObjectAttachMessage` packet and a `CargoMountPointStatusMessage` packet
     */
-  def CargoMountBehaviorForAll(
+private def CargoMountBehaviorForAll(
                                 carrier: Vehicle,
                                 cargo: Vehicle,
                                 mountPoint: Int

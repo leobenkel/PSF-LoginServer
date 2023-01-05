@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class ServerFinished(challengeResult: ByteVector) extends PlanetSideCryptoPacket {
   type Packet = ServerFinished
-  def opcode = CryptoPacketOpcode.ServerFinished
-  def encode = ServerFinished.encode(this)
+def opcode = CryptoPacketOpcode.ServerFinished
+def encode = ServerFinished.encode(this)
 }
 
 object ServerFinished extends Marshallable[ServerFinished] {

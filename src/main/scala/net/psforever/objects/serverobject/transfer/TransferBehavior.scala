@@ -12,8 +12,8 @@ trait TransferBehavior {
   protected var findDischargeTargetFunc: (TransferContainer, Option[TransferContainer]) => Option[TransferContainer] =
     TransferBehavior.FindNoTargets
 
-  def TransferMaterial: TransferContainer.TransferMaterial
-  def ChargeTransferObject: TransferContainer
+private def TransferMaterial: TransferContainer.TransferMaterial
+private def ChargeTransferObject: TransferContainer
 
   val transferBehavior: Receive = {
     case TransferBehavior.Charging(mat) if mat != TransferMaterial =>
@@ -35,7 +35,7 @@ trait TransferBehavior {
   }
 
   /* Charging */
-  def TryChargingActivity(): Unit = {
+private def TryChargingActivity(): Unit = {
     if (transferEvent != TransferBehavior.Event.Discharging) {
       val chargeable = ChargeTransferObject
       findChargeTargetFunc(chargeable, transferTarget) match {
@@ -48,10 +48,10 @@ trait TransferBehavior {
     }
   }
 
-  def HandleChargingEvent(target: TransferContainer): Boolean
+private def HandleChargingEvent(target: TransferContainer): Boolean
 
   /* Discharging */
-  def TryDischargingActivity(): Unit = {
+private def TryDischargingActivity(): Unit = {
     if (transferEvent != TransferBehavior.Event.Charging) {
       val chargeable = ChargeTransferObject
       //determine how close we are to something that we can discharge into
@@ -65,10 +65,10 @@ trait TransferBehavior {
     }
   }
 
-  def HandleDischargingEvent(target: TransferContainer): Boolean
+private def HandleDischargingEvent(target: TransferContainer): Boolean
 
   /* Stopping */
-  def TryStopChargingEvent(container: TransferContainer): Unit = {
+private def TryStopChargingEvent(container: TransferContainer): Unit = {
     transferEvent = TransferBehavior.Event.None
     transferTarget match {
       case Some(_: net.psforever.objects.serverobject.structures.WarpGate) => ;
@@ -108,5 +108,5 @@ object TransferBehavior {
     * @param optionalTarget an optional entity that can be one of the discovered targets
     * @return always returns `None`
     */
-  def FindNoTargets(obj: TransferContainer, optionalTarget: Option[TransferContainer]): Option[TransferContainer] = None
+private def FindNoTargets(obj: TransferContainer, optionalTarget: Option[TransferContainer]): Option[TransferContainer] = None
 }

@@ -18,18 +18,18 @@ final case class SquadWaypointEvent(
     waypoint_info: Option[WaypointEvent]
 ) extends PlanetSideGamePacket {
   type Packet = SquadWaypointEvent
-  def opcode = GamePacketOpcode.SquadWaypointEvent
-  def encode = SquadWaypointEvent.encode(this)
+def opcode = GamePacketOpcode.SquadWaypointEvent
+def encode = SquadWaypointEvent.encode(this)
 }
 
 object SquadWaypointEvent extends Marshallable[SquadWaypointEvent] {
-  def Add(unk: Int, char_id: Long, waypoint_type: SquadWaypoint, waypoint: WaypointEvent): SquadWaypointEvent =
+private def Add(unk: Int, char_id: Long, waypoint_type: SquadWaypoint, waypoint: WaypointEvent): SquadWaypointEvent =
     SquadWaypointEvent(WaypointEventAction.Add, unk, char_id, waypoint_type, None, Some(waypoint))
 
-  def Unknown1(unk: Int, char_id: Long, waypoint_type: SquadWaypoint, unk_a: Long): SquadWaypointEvent =
+private def Unknown1(unk: Int, char_id: Long, waypoint_type: SquadWaypoint, unk_a: Long): SquadWaypointEvent =
     SquadWaypointEvent(WaypointEventAction.Unknown1, unk, char_id, waypoint_type, Some(unk_a), None)
 
-  def Remove(unk: Int, char_id: Long, waypoint_type: SquadWaypoint): SquadWaypointEvent =
+private def Remove(unk: Int, char_id: Long, waypoint_type: SquadWaypoint): SquadWaypointEvent =
     SquadWaypointEvent(WaypointEventAction.Remove, unk, char_id, waypoint_type, None, None)
 
   private val waypoint_codec: Codec[WaypointEvent] = (

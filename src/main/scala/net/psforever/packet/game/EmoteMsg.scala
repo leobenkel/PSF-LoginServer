@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class EmoteMsg(avatar_guid: PlanetSideGUID, emote: EmoteType.Value) extends PlanetSideGamePacket {
   type Packet = EmoteMsg
-  def opcode = GamePacketOpcode.EmoteMsg
-  def encode = EmoteMsg.encode(this)
+def opcode = GamePacketOpcode.EmoteMsg
+def encode = EmoteMsg.encode(this)
 }
 
 object EmoteMsg extends Marshallable[EmoteMsg] {

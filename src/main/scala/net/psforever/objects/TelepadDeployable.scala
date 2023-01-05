@@ -31,14 +31,14 @@ class TelepadDeployableDefinition(objectId: Int) extends DeployableDefinition(ob
 }
 
 object TelepadDeployableDefinition {
-  def apply(dtype: DeployedItem.Value): TelepadDeployableDefinition = {
+def apply(dtype: DeployedItem.Value): TelepadDeployableDefinition = {
     new TelepadDeployableDefinition(dtype.id)
   }
 }
 
 class TelepadDeployableControl(tpad: TelepadDeployable) extends Actor with DeployableBehavior with DamageableEntity {
-  def DeployableObject = tpad
-  def DamageableObject = tpad
+private def DeployableObject = tpad
+private def DamageableObject = tpad
 
   override def postStop(): Unit = {
     super.postStop()
@@ -46,7 +46,7 @@ class TelepadDeployableControl(tpad: TelepadDeployable) extends Actor with Deplo
     TelepadControl.DestructionAwareness(tpad)
   }
 
-  def receive: Receive =
+def receive: Receive =
     deployableBehavior
       .orElse(takesDamage)
       .orElse {
@@ -114,7 +114,7 @@ class TelepadDeployableControl(tpad: TelepadDeployable) extends Actor with Deplo
 }
 
 object TelepadControl {
-  def DestructionAwareness(tpad: TelepadDeployable): Unit = {
+private def DestructionAwareness(tpad: TelepadDeployable): Unit = {
     if (tpad.Active) {
       tpad.Active = false
       (tpad.Zone.GUID(tpad.Router) match {
@@ -127,7 +127,7 @@ object TelepadControl {
     }
   }
 
-  def TelepadError(zone: Zone, channel: String, msg: String): Unit = {
+private def TelepadError(zone: Zone, channel: String, msg: String): Unit = {
     zone.LocalEvents ! LocalServiceMessage(channel, LocalAction.RouterTelepadMessage(msg))
   }
 }

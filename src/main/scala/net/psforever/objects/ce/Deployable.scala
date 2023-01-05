@@ -22,34 +22,34 @@ trait BaseDeployable
   private var faction: PlanetSideEmpire.Value = PlanetSideEmpire.NEUTRAL
   private var shields: Int = 0
 
-  def Shields: Int = shields
+private def Shields: Int = shields
 
-  def Shields_=(toShields: Int): Int = {
+private def Shields_=(toShields: Int): Int = {
     shields = math.min(math.max(0, toShields), MaxShields)
     Shields
   }
 
-  def MaxShields: Int = {
+private def MaxShields: Int = {
     0 //Definition.MaxShields
   }
 
-  def MaxHealth: Int
+private def MaxHealth: Int
 
-  def Faction: PlanetSideEmpire.Value = faction
+private def Faction: PlanetSideEmpire.Value = faction
 
   override def Faction_=(toFaction: PlanetSideEmpire.Value): PlanetSideEmpire.Value = {
     faction = toFaction
     Faction
   }
 
-  def DamageModel: DamageResistanceModel = Definition.asInstanceOf[DamageResistanceModel]
+private def DamageModel: DamageResistanceModel = Definition.asInstanceOf[DamageResistanceModel]
 
-  def Definition: DeployableDefinition
+private def Definition: DeployableDefinition
 }
 
 abstract class Deployable(cdef: DeployableDefinition)
   extends BaseDeployable {
-  def Definition: DeployableDefinition = cdef
+private def Definition: DeployableDefinition = cdef
 }
 
 object Deployable {

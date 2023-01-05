@@ -37,8 +37,8 @@ final case class DeployRequestMessage(
     pos: Vector3
 ) extends PlanetSideGamePacket {
   type Packet = DeployRequestMessage
-  def opcode = GamePacketOpcode.DeployRequestMessage
-  def encode = DeployRequestMessage.encode(this)
+def opcode = GamePacketOpcode.DeployRequestMessage
+def encode = DeployRequestMessage.encode(this)
 }
 
 object DeployRequestMessage extends Marshallable[DeployRequestMessage] {

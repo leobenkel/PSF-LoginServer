@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class SetCurrentAvatarMessage(guid: PlanetSideGUID, unk1: Int, unk2: Int) extends PlanetSideGamePacket {
   type Packet = SetCurrentAvatarMessage
-  def opcode = GamePacketOpcode.SetCurrentAvatarMessage
-  def encode = SetCurrentAvatarMessage.encode(this)
+def opcode = GamePacketOpcode.SetCurrentAvatarMessage
+def encode = SetCurrentAvatarMessage.encode(this)
 }
 
 object SetCurrentAvatarMessage extends Marshallable[SetCurrentAvatarMessage] {

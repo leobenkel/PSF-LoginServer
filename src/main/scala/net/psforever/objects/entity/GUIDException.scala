@@ -13,10 +13,10 @@ import net.psforever.types.PlanetSideGUID
 abstract class GUIDException(message: String, cause: Throwable, obj: IdentifiableEntity, guid: PlanetSideGUID)
     extends RuntimeException(message, cause) {
   private val entity: IdentifiableEntity = obj
-  def getEntity: IdentifiableEntity      = entity
+private def getEntity: IdentifiableEntity      = entity
 
   private val entityGUID: PlanetSideGUID = guid
-  def getGUID: PlanetSideGUID            = entityGUID
+private def getGUID: PlanetSideGUID            = entityGUID
 }
 
 /**
@@ -32,7 +32,7 @@ class NoGUIDException(message: String, obj: IdentifiableEntity = None.orNull, ca
     extends GUIDException(message, cause, obj, null)
 
 object NoGUIDException {
-  def unapply(e: NoGUIDException): Option[(String, IdentifiableEntity, Throwable)] =
+def unapply(e: NoGUIDException): Option[(String, IdentifiableEntity, Throwable)] =
     Some((e.getMessage, e.getEntity, e.getCause))
 }
 
@@ -51,6 +51,6 @@ class AssigningGUIDException(
 ) extends GUIDException(message, cause, obj, guid)
 
 object AssigningGUIDException {
-  def unapply(e: AssigningGUIDException): Option[(String, Throwable, IdentifiableEntity, PlanetSideGUID)] =
+def unapply(e: AssigningGUIDException): Option[(String, Throwable, IdentifiableEntity, PlanetSideGUID)] =
     Some((e.getMessage, e.getCause, e.getEntity, e.getGUID))
 }

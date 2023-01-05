@@ -13,14 +13,14 @@ private var sois: Iterable[(Building, Int)] = Nil
 private var populateTick: Cancellable       = Default.Cancellable
   //private[this] val log = org.log4s.getLogger(s"${zone.Id.capitalize}-SphereOfInfluenceActor")
 
-  def receive: Receive = Stopped
+def receive: Receive = Stopped
 
-  def Build: Receive = {
+private def Build: Receive = {
     case SOI.Build() =>
       BuildSOI()
   }
 
-  def Running: Receive =
+private def Running: Receive =
     Build.orElse {
       case SOI.Populate() =>
         UpdateSOI()
@@ -33,7 +33,7 @@ private var populateTick: Cancellable       = Default.Cancellable
       case _ => ;
     }
 
-  def Stopped: Receive =
+private def Stopped: Receive =
     Build.orElse {
       case SOI.Start() if sois.nonEmpty =>
         context.become(Running)
@@ -42,7 +42,7 @@ private var populateTick: Cancellable       = Default.Cancellable
       case _ => ;
     }
 
-  def BuildSOI(): Unit = {
+private def BuildSOI(): Unit = {
     sois = zone.Buildings.values
       .map { facility => (facility, facility.Definition) }
       .collect {
@@ -51,7 +51,7 @@ private var populateTick: Cancellable       = Default.Cancellable
       }
   }
 
-  def UpdateSOI(): Unit = {
+private def UpdateSOI(): Unit = {
     sois.foreach {
       case (facility, radius) =>
         val facilityXY = facility.Position.xy

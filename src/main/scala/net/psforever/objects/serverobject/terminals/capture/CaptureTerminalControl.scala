@@ -11,10 +11,10 @@ class CaptureTerminalControl(terminal: CaptureTerminal)
     extends Actor
     with FactionAffinityBehavior.Check
     with HackableBehavior.GenericHackable {
-  def FactionObject: FactionAffinity = terminal
-  def HackableObject                 = terminal
+private def FactionObject: FactionAffinity = terminal
+private def HackableObject                 = terminal
 
-  def receive: Receive =
+def receive: Receive =
     checkBehavior
       .orElse(hackableBehavior)
       .orElse {

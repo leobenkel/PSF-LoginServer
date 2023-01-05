@@ -58,8 +58,8 @@ final case class GenericCollisionMsg(
     unk3: Long
 ) extends PlanetSideGamePacket {
   type Packet = GenericCollisionMsg
-  def opcode = GamePacketOpcode.GenericCollisionMsg
-  def encode = GenericCollisionMsg.encode(this)
+def opcode = GamePacketOpcode.GenericCollisionMsg
+def encode = GenericCollisionMsg.encode(this)
 }
 
 object GenericCollisionMsg extends Marshallable[GenericCollisionMsg] {

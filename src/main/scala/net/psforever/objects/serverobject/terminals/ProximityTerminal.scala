@@ -33,7 +33,7 @@ object ProximityTerminal {
     * Overloaded constructor.
     * @param tdef the `ObjectDefinition` that constructs this object and maintains some of its immutable fields
     */
-  def apply(tdef: ProximityTerminalDefinition): ProximityTerminal = {
+def apply(tdef: ProximityTerminalDefinition): ProximityTerminal = {
     new ProximityTerminal(tdef)
   }
 
@@ -46,7 +46,7 @@ object ProximityTerminal {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `Terminal` object
     */
-  def Constructor(tdef: ProximityTerminalDefinition)(id: Int, context: ActorContext): Terminal = {
+private def Constructor(tdef: ProximityTerminalDefinition)(id: Int, context: ActorContext): Terminal = {
     import akka.actor.Props
     val obj = ProximityTerminal(tdef)
     obj.Actor = context.actorOf(Props(classOf[ProximityTerminalControl], obj), s"${tdef.Name}_$id")
@@ -61,7 +61,7 @@ object ProximityTerminal {
     * @param context a context to allow the object to properly set up `ActorSystem` functionality
     * @return the `Terminal` object
     */
-  def Constructor(pos: Vector3, tdef: ProximityTerminalDefinition)(id: Int, context: ActorContext): Terminal = {
+private def Constructor(pos: Vector3, tdef: ProximityTerminalDefinition)(id: Int, context: ActorContext): Terminal = {
     import akka.actor.Props
     val obj = ProximityTerminal(tdef)
     obj.Position = pos
@@ -75,7 +75,7 @@ object ProximityTerminal {
     *            anticipating a `Terminal` object using this same definition
     * @param context hook to the local `Actor` system
     */
-  def Setup(obj: Amenity, context: ActorContext): Unit = {
+private def Setup(obj: Amenity, context: ActorContext): Unit = {
     import akka.actor.Props
     if (obj.Actor == Default.Actor) {
       obj.Actor =

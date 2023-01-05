@@ -52,7 +52,7 @@ class TurretDeployableDefinition(private val objectId: Int)
 }
 
 object TurretDeployableDefinition {
-  def apply(dtype: DeployedItem.Value): TurretDeployableDefinition = {
+def apply(dtype: DeployedItem.Value): TurretDeployableDefinition = {
     new TurretDeployableDefinition(dtype.id)
   }
 }
@@ -67,12 +67,12 @@ class TurretControl(turret: TurretDeployable)
     with MountableBehavior
     with DamageableWeaponTurret
     with RepairableWeaponTurret {
-  def DeployableObject = turret
-  def MountableObject  = turret
-  def JammableObject   = turret
-  def FactionObject    = turret
-  def DamageableObject = turret
-  def RepairableObject = turret
+private def DeployableObject = turret
+private def MountableObject  = turret
+private def JammableObject   = turret
+private def FactionObject    = turret
+private def DamageableObject = turret
+private def RepairableObject = turret
 
   override def postStop(): Unit = {
     super.postStop()
@@ -80,7 +80,7 @@ class TurretControl(turret: TurretDeployable)
     damageableWeaponTurretPostStop()
   }
 
-  def receive: Receive =
+def receive: Receive =
     deployableBehavior
       .orElse(checkBehavior)
       .orElse(jammableBehavior)

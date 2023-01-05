@@ -64,7 +64,7 @@ case object ImplantType extends IntEnum[ImplantType] {
     disabledFor = ExoSuitType.values
   )
 
-  def values: IndexedSeq[ImplantType] = findValues
+private def values: IndexedSeq[ImplantType] = findValues
 
   final val names: Seq[String] = Seq(
     "advanced_regen", "targeting", "audio_amplifier",

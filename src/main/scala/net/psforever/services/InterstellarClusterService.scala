@@ -21,7 +21,7 @@ object InterstellarClusterService {
   val InterstellarClusterServiceKey: ServiceKey[Command] =
     ServiceKey[InterstellarClusterService.Command]("interstellarCluster")
 
-  def apply(zones: Iterable[Zone]): Behavior[Command] =
+def apply(zones: Iterable[Zone]): Behavior[Command] =
     Behaviors
       .supervise[Command] {
         Behaviors.setup { context =>

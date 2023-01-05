@@ -53,16 +53,16 @@ final case class SquadStateInfo(
   */
 final case class SquadState(guid: PlanetSideGUID, info_list: List[SquadStateInfo]) extends PlanetSideGamePacket {
   type Packet = SquadState
-  def opcode = GamePacketOpcode.SquadState
-  def encode = SquadState.encode(this)
+def opcode = GamePacketOpcode.SquadState
+def encode = SquadState.encode(this)
 }
 
 object SquadStateInfo {
-  def apply(unk1: Long, unk2: Int, unk3: Int, pos: Vector3, unk4: Int, unk5: Int, unk6: Boolean, unk7: Int)
+def apply(unk1: Long, unk2: Int, unk3: Int, pos: Vector3, unk4: Int, unk5: Int, unk6: Boolean, unk7: Int)
       : SquadStateInfo =
     SquadStateInfo(unk1, unk2, unk3, pos, unk4, unk5, unk6, unk7, None, None)
 
-  def apply(
+def apply(
       unk1: Long,
       unk2: Int,
       unk3: Int,

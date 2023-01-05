@@ -41,39 +41,39 @@ final case class OxygenStateMessage(
                                      vehicle: Option[DrowningTarget]
                                    ) extends PlanetSideGamePacket {
   type Packet = OxygenStateMessage
-  def opcode = GamePacketOpcode.OxygenStateMessage
-  def encode = OxygenStateMessage.encode(this)
+def opcode = GamePacketOpcode.OxygenStateMessage
+def encode = OxygenStateMessage.encode(this)
 }
 
 object DrowningTarget {
-  def apply(guid: PlanetSideGUID): DrowningTarget =
+def apply(guid: PlanetSideGUID): DrowningTarget =
     DrowningTarget(guid, 100, OxygenState.Suffocation)
 
-  def apply(guid: PlanetSideGUID, progress: Float): DrowningTarget =
+def apply(guid: PlanetSideGUID, progress: Float): DrowningTarget =
     DrowningTarget(guid, progress, OxygenState.Suffocation)
 
-  def recover(guid: PlanetSideGUID, progress: Float): DrowningTarget =
+private def recover(guid: PlanetSideGUID, progress: Float): DrowningTarget =
     DrowningTarget(guid, progress, OxygenState.Recovery)
 }
 
 object OxygenStateMessage extends Marshallable[OxygenStateMessage] {
-  def apply(
+def apply(
              player_guid: PlanetSideGUID
            ): OxygenStateMessage =
     OxygenStateMessage(DrowningTarget(player_guid), None)
 
-  def apply(
+def apply(
              player_guid: PlanetSideGUID,
              progress: Float
            ): OxygenStateMessage =
     OxygenStateMessage(DrowningTarget(player_guid, progress), None)
 
-  def apply(
+def apply(
              player: DrowningTarget
            ): OxygenStateMessage =
     OxygenStateMessage(player, None)
 
-  def apply(
+def apply(
              player_guid: PlanetSideGUID,
              player_progress: Float,
              vehicle_guid: PlanetSideGUID,
@@ -84,7 +84,7 @@ object OxygenStateMessage extends Marshallable[OxygenStateMessage] {
       Some(DrowningTarget(vehicle_guid, vehicle_progress))
     )
 
-  def apply(
+def apply(
              player_guid: PlanetSideGUID,
              player_progress: Float,
              vehicle_guid: PlanetSideGUID
@@ -94,13 +94,13 @@ object OxygenStateMessage extends Marshallable[OxygenStateMessage] {
       Some(DrowningTarget(vehicle_guid))
     )
 
-  def recover(
+private def recover(
                   player_guid: PlanetSideGUID,
                   progress: Float
                 ): OxygenStateMessage =
     OxygenStateMessage(DrowningTarget.recover(player_guid, progress), None)
 
-  def recoverVehicle(
+private def recoverVehicle(
                    player_guid: PlanetSideGUID,
                    player_progress: Float,
                    vehicle_guid: PlanetSideGUID,
@@ -111,7 +111,7 @@ object OxygenStateMessage extends Marshallable[OxygenStateMessage] {
       Some(DrowningTarget.recover(vehicle_guid, vehicle_progress))
     )
 
-  def recover(
+private def recover(
                player_guid: PlanetSideGUID,
                player_progress: Float,
                vehicle_guid: PlanetSideGUID,

@@ -102,202 +102,202 @@ class VehicleDefinition(objectId: Int)
   RepairRestoresAt = 1
   registerAs = "vehicles"
 
-  def DefaultShields: Int = defaultShields.getOrElse(0)
+  private def DefaultShields: Int = defaultShields.getOrElse(0)
 
-  def DefaultShields_=(shield: Int): Int = DefaultShields_=(Some(shield))
+  private def DefaultShields_=(shield: Int): Int = DefaultShields_=(Some(shield))
 
-  def DefaultShields_=(shield: Option[Int]): Int = {
+  private def DefaultShields_=(shield: Option[Int]): Int = {
     defaultShields = shield
     DefaultShields
   }
 
-  def MaxShields: Int = maxShields
+  private def MaxShields: Int = maxShields
 
-  def MaxShields_=(shields: Int): Int = {
+  private def MaxShields_=(shields: Int): Int = {
     maxShields = shields
     MaxShields
   }
 
-  def ShieldPeriodicDelay: Long = shieldChargePeriodicCooldown
+  private def ShieldPeriodicDelay: Long = shieldChargePeriodicCooldown
 
-  def ShieldPeriodicDelay_=(cooldown: Long): Long = {
+  private def ShieldPeriodicDelay_=(cooldown: Long): Long = {
     shieldChargePeriodicCooldown = cooldown
     ShieldPeriodicDelay
   }
 
-  def ShieldDamageDelay: Long = shieldChargeDamageCooldown
+  private def ShieldDamageDelay: Long = shieldChargeDamageCooldown
 
-  def ShieldDamageDelay_=(cooldown: Long): Long = {
+  private def ShieldDamageDelay_=(cooldown: Long): Long = {
     shieldChargeDamageCooldown = cooldown
     ShieldDamageDelay
   }
 
-  def ShieldAutoRecharge: Option[Int] = autoShieldRecharge
+  private def ShieldAutoRecharge: Option[Int] = autoShieldRecharge
 
-  def ShieldAutoRecharge_=(charge: Int): Option[Int] = ShieldAutoRecharge_=(Some(charge))
+  private def ShieldAutoRecharge_=(charge: Int): Option[Int] = ShieldAutoRecharge_=(Some(charge))
 
-  def ShieldAutoRecharge_=(charge: Option[Int]): Option[Int] = {
+  private def ShieldAutoRecharge_=(charge: Option[Int]): Option[Int] = {
     autoShieldRecharge = charge
     ShieldAutoRecharge
   }
 
-  def ShieldAutoRechargeSpecial: Option[Int] = autoShieldRechargeSpecial.orElse(ShieldAutoRecharge)
+  private def ShieldAutoRechargeSpecial: Option[Int] = autoShieldRechargeSpecial.orElse(ShieldAutoRecharge)
 
-  def ShieldAutoRechargeSpecial_=(charge: Int): Option[Int] = ShieldAutoRechargeSpecial_=(Some(charge))
+  private def ShieldAutoRechargeSpecial_=(charge: Int): Option[Int] = ShieldAutoRechargeSpecial_=(Some(charge))
 
-  def ShieldAutoRechargeSpecial_=(charge: Option[Int]): Option[Int] = {
+  private def ShieldAutoRechargeSpecial_=(charge: Option[Int]): Option[Int] = {
     autoShieldRechargeSpecial = charge
     ShieldAutoRechargeSpecial
   }
 
-  def ShieldDrain: Option[Int] = shieldDrain
+  private def ShieldDrain: Option[Int] = shieldDrain
 
-  def ShieldDrain_=(drain: Int): Option[Int] = ShieldDrain_=(Some(drain))
+  private def ShieldDrain_=(drain: Int): Option[Int] = ShieldDrain_=(Some(drain))
 
-  def ShieldDrain_=(drain: Option[Int]): Option[Int] = {
+  private def ShieldDrain_=(drain: Option[Int]): Option[Int] = {
     shieldDrain = drain
     ShieldDrain
   }
 
-  def Cargo: mutable.HashMap[Int, CargoDefinition] = cargo
+  private def Cargo: mutable.HashMap[Int, CargoDefinition] = cargo
 
-  def CanBeOwned: Option[Boolean] = canBeOwned
+  private def CanBeOwned: Option[Boolean] = canBeOwned
 
-  def CanBeOwned_=(ownable: Boolean): Option[Boolean] = CanBeOwned_=(Some(ownable))
+  private def CanBeOwned_=(ownable: Boolean): Option[Boolean] = CanBeOwned_=(Some(ownable))
 
-  def CanBeOwned_=(ownable: Option[Boolean]): Option[Boolean] = {
+  private def CanBeOwned_=(ownable: Option[Boolean]): Option[Boolean] = {
     canBeOwned = ownable
     CanBeOwned
   }
 
-  def CanCloak: Boolean = canCloak
+  private def CanCloak: Boolean = canCloak
 
-  def CanCloak_=(cloakable: Boolean): Boolean = {
+  private def CanCloak_=(cloakable: Boolean): Boolean = {
     canCloak = cloakable
     CanCloak
   }
 
-  def CanFly: Boolean = canFly
+  private def CanFly: Boolean = canFly
 
-  def CanFly_=(flying: Boolean): Boolean = {
+  private def CanFly_=(flying: Boolean): Boolean = {
     canFly = flying
     CanFly
   }
 
-  def Deployment: Boolean = deployment
+  private def Deployment: Boolean = deployment
 
-  def Deployment_=(deployable: Boolean): Boolean = {
+  private def Deployment_=(deployable: Boolean): Boolean = {
     deployment = deployable
     Deployment
   }
 
-  def Utilities: mutable.HashMap[Int, UtilityType.Value] = utilities
+  private def Utilities: mutable.HashMap[Int, UtilityType.Value] = utilities
 
-  def UtilityOffset: mutable.HashMap[Int, Vector3] = utilityOffsets
+  private def UtilityOffset: mutable.HashMap[Int, Vector3] = utilityOffsets
 
-  def DeployTime: Int = deploymentTime_Deploy
+  private def DeployTime: Int = deploymentTime_Deploy
 
-  def DeployTime_=(dtime: Int): Int = {
+  private def DeployTime_=(dtime: Int): Int = {
     deploymentTime_Deploy = dtime
     DeployTime
   }
 
-  def DeconstructionTime: Option[FiniteDuration] = deconTime
+  private def DeconstructionTime: Option[FiniteDuration] = deconTime
 
-  def DeconstructionTime_=(time: FiniteDuration): Option[FiniteDuration] = {
+  private def DeconstructionTime_=(time: FiniteDuration): Option[FiniteDuration] = {
     deconTime_=(Some(time))
     DeconstructionTime
   }
 
-  def DeconstructionTime_=(time: Option[FiniteDuration]): Option[FiniteDuration] = {
+  private def DeconstructionTime_=(time: Option[FiniteDuration]): Option[FiniteDuration] = {
     deconTime = time
     DeconstructionTime
   }
 
-  def UndeployTime: Int = deploymentTime_Undeploy
+  private def UndeployTime: Int = deploymentTime_Undeploy
 
-  def UndeployTime_=(dtime: Int): Int = {
+  private def UndeployTime_=(dtime: Int): Int = {
     deploymentTime_Undeploy = dtime
     UndeployTime
   }
 
-  def TrunkSize: InventoryTile = trunkSize
+  private def TrunkSize: InventoryTile = trunkSize
 
-  def TrunkSize_=(tile: InventoryTile): InventoryTile = {
+  private def TrunkSize_=(tile: InventoryTile): InventoryTile = {
     trunkSize = tile
     TrunkSize
   }
 
-  def TrunkOffset: Int = trunkOffset
+  private def TrunkOffset: Int = trunkOffset
 
-  def TrunkOffset_=(offset: Int): Int = {
+  private def TrunkOffset_=(offset: Int): Int = {
     trunkOffset = offset
     TrunkOffset
   }
 
-  def TrunkLocation: Vector3 = trunkLocation
+  private def TrunkLocation: Vector3 = trunkLocation
 
-  def TrunkLocation_=(location: Vector3): Vector3 = {
+  private def TrunkLocation_=(location: Vector3): Vector3 = {
     trunkLocation = location
     TrunkLocation
   }
 
-  def AutoPilotSpeeds: (Int, Int) = serverVehicleOverrideSpeeds
+  private def AutoPilotSpeeds: (Int, Int) = serverVehicleOverrideSpeeds
 
-  def AutoPilotSpeeds_=(speeds: (Int, Int)): (Int, Int) = {
+  private def AutoPilotSpeeds_=(speeds: (Int, Int)): (Int, Int) = {
     serverVehicleOverrideSpeeds = speeds
     AutoPilotSpeeds
   }
 
-  def AutoPilotSpeed1: Int = serverVehicleOverrideSpeeds._1
+  private def AutoPilotSpeed1: Int = serverVehicleOverrideSpeeds._1
 
-  def AutoPilotSpeed2: Int = serverVehicleOverrideSpeeds._2
+  private def AutoPilotSpeed2: Int = serverVehicleOverrideSpeeds._2
 
-  def DefaultCapacitor: Int = defaultCapacitor
+  private def DefaultCapacitor: Int = defaultCapacitor
 
-  def DefaultCapacitor_=(defValue: Int): Int = {
+  private def DefaultCapacitor_=(defValue: Int): Int = {
     defaultCapacitor = defValue
     DefaultCapacitor
   }
 
-  def MaxCapacitor: Int = maxCapacitor
+  private def MaxCapacitor: Int = maxCapacitor
 
-  def MaxCapacitor_=(max: Int): Int = {
+  private def MaxCapacitor_=(max: Int): Int = {
     maxCapacitor = max
     MaxCapacitor
   }
 
-  def CapacitorRecharge: Int = capacitorRecharge
+  private def CapacitorRecharge: Int = capacitorRecharge
 
-  def CapacitorRecharge_=(charge: Int): Int = {
+  private def CapacitorRecharge_=(charge: Int): Int = {
     capacitorRecharge = charge
     CapacitorRecharge
   }
 
-  def CapacitorDrain: Int = capacitorDrain
+  private def CapacitorDrain: Int = capacitorDrain
 
-  def CapacitorDrain_=(charge: Int): Int = {
+  private def CapacitorDrain_=(charge: Int): Int = {
     capacitorDrain = charge
     CapacitorDrain
   }
 
-  def CapacitorDrainSpecial: Int = capacitorDrainSpecial
+  private def CapacitorDrainSpecial: Int = capacitorDrainSpecial
 
-  def CapacitorDrainSpecial_=(charge: Int): Int = {
+  private def CapacitorDrainSpecial_=(charge: Int): Int = {
     capacitorDrainSpecial = charge
     CapacitorDrainSpecial
   }
 
-  private var jackDuration        = Array(0, 0, 0, 0)
-  def JackingDuration: Array[Int] = jackDuration
-  def JackingDuration_=(arr: Array[Int]): Array[Int] = {
+  private var jackDuration                = Array(0, 0, 0, 0)
+  private def JackingDuration: Array[Int] = jackDuration
+  private def JackingDuration_=(arr: Array[Int]): Array[Int] = {
     jackDuration = arr
     arr
   }
 
-  def DestroyedModel: Option[DestroyedVehicle.Value] = destroyedModel
+  private def DestroyedModel: Option[DestroyedVehicle.Value] = destroyedModel
 
-  def DestroyedModel_=(model: Option[DestroyedVehicle.Value]): Option[DestroyedVehicle.Value] = {
+  private def DestroyedModel_=(model: Option[DestroyedVehicle.Value]): Option[DestroyedVehicle.Value] = {
     destroyedModel = model
     DestroyedModel
   }
@@ -310,7 +310,7 @@ class VehicleDefinition(objectId: Int)
     )
   }
 
-  def Uninitialize(obj: Vehicle, context: ActorContext): Unit = {
+  private def Uninitialize(obj: Vehicle, context: ActorContext): Unit = {
     obj.Actor ! akka.actor.PoisonPill
     obj.Actor = Default.Actor
   }
@@ -339,7 +339,7 @@ object VehicleDefinition {
     * Vehicle definition for the advanced mobile spawn (AMS) vehicle.
     * @param objectId the object id that is associated with this sort of `Vehicle`
     */
-  def Ams(objectId: Int): VehicleDefinition = new AmsDefinition(objectId)
+  private def Ams(objectId: Int): VehicleDefinition = new AmsDefinition(objectId)
 
   protected class AntDefinition(objectId: Int) extends VehicleDefinition(objectId) {
     import net.psforever.objects.vehicles.control.AntControl
@@ -355,7 +355,7 @@ object VehicleDefinition {
     * Vehicle definition for the advanced nanite transport (ANT) vehicle.
     * @param objectId the object id that is associated with this sort of `Vehicle`
     */
-  def Ant(objectId: Int): VehicleDefinition = new AntDefinition(objectId)
+  private def Ant(objectId: Int): VehicleDefinition = new AntDefinition(objectId)
 
   protected class ApcDefinition(objectId: Int) extends VehicleDefinition(objectId) {
     import net.psforever.objects.vehicles.control.ApcControl
@@ -403,7 +403,7 @@ object VehicleDefinition {
     * Vehicle definition(s) for the flight variant of the battle frame robotics vehicles.
     * @param objectId the object id that is associated with this sort of `Vehicle`
     */
-  def BfrFlight(objectId: Int): VehicleDefinition = new BfrFlightDefinition(objectId)
+  private def BfrFlight(objectId: Int): VehicleDefinition = new BfrFlightDefinition(objectId)
 
   protected class CarrierDefinition(objectId: Int) extends VehicleDefinition(objectId) {
     import net.psforever.objects.vehicles.control.CargoCarrierControl
@@ -435,7 +435,7 @@ object VehicleDefinition {
     * Vehicle definition(s) for the vehicles that perform significant mode state transitions.
     * @param objectId the object id that is associated with this sort of `Vehicle`
     */
-  def Deploying(objectId: Int): VehicleDefinition = new DeployingDefinition(objectId)
+  private def Deploying(objectId: Int): VehicleDefinition = new DeployingDefinition(objectId)
 
   protected class RouterDefinition(objectId: Int) extends VehicleDefinition(objectId) {
     import net.psforever.objects.vehicles.control.RouterControl
@@ -451,5 +451,5 @@ object VehicleDefinition {
     * Vehicle definition for the Router.
     * @param objectId the object id that is associated with this sort of `Vehicle`
     */
-  def Router(objectId: Int): VehicleDefinition = new RouterDefinition(objectId)
+  private def Router(objectId: Int): VehicleDefinition = new RouterDefinition(objectId)
 }

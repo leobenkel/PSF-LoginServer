@@ -6,7 +6,7 @@ import net.psforever.objects.equipment.{Ammo, Equipment}
 import net.psforever.types.PlanetSideEmpire
 
 class AmmoBox(private val ammoDef: AmmoBoxDefinition, cap: Option[Int] = None) extends Equipment {
-  private var capacity = if (cap.isDefined) { AmmoBox.limitCapacity(cap.get, 1) }
+  private var capacity: Int = if (cap.isDefined) { AmmoBox.limitCapacity(cap.get, 1) }
   else { FullCapacity }
 
   def AmmoType: Ammo.Value = ammoDef.AmmoType
@@ -18,9 +18,9 @@ class AmmoBox(private val ammoDef: AmmoBoxDefinition, cap: Option[Int] = None) e
     Capacity
   }
 
-  def FullCapacity: Int = ammoDef.Capacity
+  private def FullCapacity: Int = ammoDef.Capacity
 
-  def Definition: AmmoBoxDefinition = ammoDef
+  override def Definition: AmmoBoxDefinition = ammoDef
 
   override def Faction_=(fact: PlanetSideEmpire.Value): PlanetSideEmpire.Value = Faction
 
@@ -47,7 +47,7 @@ object AmmoBox {
     * @param box an `AmmoBox` object of unspecified capacity
     * @return a `List` of `AmmoBox` objects with correct capacities
     */
-  def Split(box: AmmoBox): List[AmmoBox] = {
+  private def Split(box: AmmoBox): List[AmmoBox] = {
     val ammoDef       = box.Definition
     val boxCap: Int   = box.Capacity
     val maxCap: Int   = ammoDef.Capacity
@@ -63,9 +63,9 @@ object AmmoBox {
     }
   }
 
-  def limitCapacity(count: Int, min: Int = 0): Int = math.min(math.max(min, count), 65535)
+  private def limitCapacity(count: Int, min: Int = 0): Int = math.min(math.max(min, count), 65535)
 
-  def toString(obj: AmmoBox): String = {
+  private def toString(obj: AmmoBox): String = {
     s"box of ${obj.AmmoType} ammo (${obj.Capacity})"
   }
 }

@@ -18,7 +18,7 @@ import scodec.Codec
 final case class ComponentDamageField(alarm_level: Long, damage: Long, unk: Boolean)
 
 object ComponentDamageField {
-  def apply(alarmLevel: Long, dam: Long): ComponentDamageField = ComponentDamageField(alarmLevel, dam, unk = true)
+def apply(alarmLevel: Long, dam: Long): ComponentDamageField = ComponentDamageField(alarmLevel, dam, unk = true)
 }
 
 /**
@@ -42,8 +42,8 @@ final case class ComponentDamageMessage(
                                          status: Option[ComponentDamageField]
                                        ) extends PlanetSideGamePacket {
   type Packet = ComponentDamageMessage
-  def opcode = GamePacketOpcode.ComponentDamageMessage
-  def encode = ComponentDamageMessage.encode(this)
+def opcode = GamePacketOpcode.ComponentDamageMessage
+def encode = ComponentDamageMessage.encode(this)
 }
 
 object ComponentDamageMessage extends Marshallable[ComponentDamageMessage] {
@@ -53,7 +53,7 @@ object ComponentDamageMessage extends Marshallable[ComponentDamageMessage] {
     * @param component the subsystem, or part of the subsystem, being affected
     * @return a `ComponentDamageMessage` packet
     */
-  def apply(guid: PlanetSideGUID, component: SubsystemComponent): ComponentDamageMessage =
+def apply(guid: PlanetSideGUID, component: SubsystemComponent): ComponentDamageMessage =
     ComponentDamageMessage(guid, component, None)
 
   /**
@@ -63,7 +63,7 @@ object ComponentDamageMessage extends Marshallable[ComponentDamageMessage] {
     * @param status specific about the component damage
     * @return a `ComponentDamageMessage` packet
     */
-  def apply(guid: PlanetSideGUID, component: SubsystemComponent, status: ComponentDamageField): ComponentDamageMessage =
+def apply(guid: PlanetSideGUID, component: SubsystemComponent, status: ComponentDamageField): ComponentDamageMessage =
     ComponentDamageMessage(guid, component, Some(status))
 
   private val subsystemComponentCodec = PacketHelpers.createLongIntEnumCodec(SubsystemComponent, uint32L)

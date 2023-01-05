@@ -13,8 +13,8 @@ import shapeless.{::, HNil}
   */
 final case class CaptureFlagUpdateMessage(zone_number: Int, flagInfoList: List[FlagInfo]) extends PlanetSideGamePacket {
   type Packet = CaptureFlagUpdateMessage
-  def opcode = GamePacketOpcode.CaptureFlagUpdateMessage
-  def encode = CaptureFlagUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.CaptureFlagUpdateMessage
+def encode = CaptureFlagUpdateMessage.encode(this)
 }
 
 /**

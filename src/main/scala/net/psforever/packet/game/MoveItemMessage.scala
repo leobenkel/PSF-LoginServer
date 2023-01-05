@@ -17,9 +17,9 @@ final case class MoveItemMessage(
 ) extends PlanetSideGamePacket {
   type Packet = MoveItemMessage
 
-  def opcode: Type = GamePacketOpcode.MoveItemMessage
+def opcode: Type = GamePacketOpcode.MoveItemMessage
 
-  def encode: Attempt[BitVector] = MoveItemMessage.encode(this)
+def encode: Attempt[BitVector] = MoveItemMessage.encode(this)
 }
 
 object MoveItemMessage extends Marshallable[MoveItemMessage] {

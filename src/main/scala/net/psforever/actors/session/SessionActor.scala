@@ -393,7 +393,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def attemptRecoveryFromNoGuidExceptionAsVehicle(v: Vehicle, e: Throwable): SupervisorStrategy.Directive = {
+private def attemptRecoveryFromNoGuidExceptionAsVehicle(v: Vehicle, e: Throwable): SupervisorStrategy.Directive = {
     val entry = v.Seats.find { case (_, s) => s.occupants.contains(player) }
     entry match {
       case Some((index, _)) =>
@@ -409,7 +409,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def attemptRecoveryFromNoGuidExceptionAsPlayer(p: Player, e: Throwable): SupervisorStrategy.Directive = {
+private def attemptRecoveryFromNoGuidExceptionAsPlayer(p: Player, e: Throwable): SupervisorStrategy.Directive = {
     if (p eq player) {
       val hasGUID = p.HasGUID
       zoneLoaded match {
@@ -435,7 +435,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def attemptRecoveryFromInventoryDisarrayException(inv: GridInventory): Unit = {
+private def attemptRecoveryFromInventoryDisarrayException(inv: GridInventory): Unit = {
     inv.ElementsInListCollideInGrid() match {
       case Nil => ;
       case overlaps =>
@@ -532,7 +532,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def writeLogException(e: Throwable): SupervisorStrategy.Directive = {
+private def writeLogException(e: Throwable): SupervisorStrategy.Directive = {
     import java.io.{PrintWriter, StringWriter}
     val sw = new StringWriter
     e.printStackTrace(new PrintWriter(sw))
@@ -540,27 +540,27 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     SupervisorStrategy.Resume
   }
 
-  def writeLogExceptionAndStop(e: Throwable): SupervisorStrategy.Directive = {
+private def writeLogExceptionAndStop(e: Throwable): SupervisorStrategy.Directive = {
     writeLogException(e)
     ImmediateDisconnect()
     SupervisorStrategy.stop
   }
 
-  def session: Session = _session
+private def session: Session = _session
 
-  def session_=(session: Session): Unit = {
+private def session_=(session: Session): Unit = {
     // TODO use Topic
     chatActor ! ChatActor.SetSession(session)
     avatarActor ! AvatarActor.SetSession(session)
     _session = session
   }
 
-  def account: Account = _session.account
+private def account: Account = _session.account
 
-  def continent: Zone = _session.zone // TODO continent -> zone
-  def player: Player  = _session.player
+private def continent: Zone = _session.zone // TODO continent -> zone
+private def player: Player  = _session.player
 
-  def avatar: Avatar = _session.avatar
+private def avatar: Avatar = _session.avatar
 
   private val serviceManager = ServiceManager.serviceManager
   serviceManager ! Lookup("accountIntermediary")
@@ -603,19 +603,19 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     context.stop(chatActor)
   }
 
-  def ValidObject(id: Int): Option[PlanetSideGameObject] = ValidObject(Some(PlanetSideGUID(id)), decorator = "")
+private def ValidObject(id: Int): Option[PlanetSideGameObject] = ValidObject(Some(PlanetSideGUID(id)), decorator = "")
 
-  def ValidObject(id: Int, decorator: String): Option[PlanetSideGameObject] =
+private def ValidObject(id: Int, decorator: String): Option[PlanetSideGameObject] =
     ValidObject(Some(PlanetSideGUID(id)), decorator)
 
-  def ValidObject(id: PlanetSideGUID): Option[PlanetSideGameObject] = ValidObject(Some(id), decorator = "")
+private def ValidObject(id: PlanetSideGUID): Option[PlanetSideGameObject] = ValidObject(Some(id), decorator = "")
 
-  def ValidObject(id: PlanetSideGUID, decorator: String): Option[PlanetSideGameObject] =
+private def ValidObject(id: PlanetSideGUID, decorator: String): Option[PlanetSideGameObject] =
     ValidObject(Some(id), decorator)
 
-  def ValidObject(id: Option[PlanetSideGUID]): Option[PlanetSideGameObject] = ValidObject(id, decorator = "")
+private def ValidObject(id: Option[PlanetSideGUID]): Option[PlanetSideGameObject] = ValidObject(id, decorator = "")
 
-  def ValidObject(id: Option[PlanetSideGUID], decorator: String): Option[PlanetSideGameObject] = {
+private def ValidObject(id: Option[PlanetSideGUID], decorator: String): Option[PlanetSideGameObject] = {
     val elevatedDecorator = if (decorator.nonEmpty) decorator else "ValidObject"
     id match {
       case Some(guid) =>
@@ -674,7 +674,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def receive: Receive = {
+def receive: Receive = {
     case LookupResult("accountIntermediary", endpoint) =>
       accountIntermediary = endpoint
     case LookupResult("accountPersistence", endpoint) =>
@@ -1839,7 +1839,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
       log.warn(s"Invalid packet class received: $default from ${sender()}")
   }
 
-  def RandomSanctuarySpawnPosition(target: Player): Unit = {
+private def RandomSanctuarySpawnPosition(target: Player): Unit = {
     //xy-coordinates indicate spawn bias:
     val sanctuaryNum = Zones.sanctuaryZoneNumber(target.Faction)
     val harts = Zones.zones.find(zone => zone.Number == sanctuaryNum) match {
@@ -1876,7 +1876,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Update this player avatar for persistence.
     * Set to `persist` initially.
     */
-  def UpdatePersistenceOnly(): Unit = {
+private def UpdatePersistenceOnly(): Unit = {
     persistFunc()
   }
 
@@ -1884,7 +1884,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Update this player avatar for persistence.
     * Set to `persist` when (new) player is loaded.
     */
-  def UpdatePersistenceAndRefs(): Unit = {
+private def UpdatePersistenceAndRefs(): Unit = {
     persistFunc()
     updateOldRefsMap()
   }
@@ -1893,14 +1893,14 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Do not update this player avatar for persistence.
     * Set to `persistFunc` initially.
     */
-  def NoPersistence(): Unit = {}
+private def NoPersistence(): Unit = {}
 
   /**
     * Update this player avatar for persistence.
     * Set this to `persistFunc` when persistence is ready.
     * @param persistRef reference to the persistence monitor
     */
-  def UpdatePersistence(persistRef: ActorRef)(): Unit = {
+private def UpdatePersistence(persistRef: ActorRef)(): Unit = {
     persistRef ! AccountPersistenceService.Update(player.Name, continent, player.Position)
   }
 
@@ -1921,7 +1921,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *
     * @param runnable execute for the next step of the zoning process
     */
-  def beginZoningCountdown(runnable: Runnable): Unit = {
+private def beginZoningCountdown(runnable: Runnable): Unit = {
     val descriptor = zoningType.toString.toLowerCase
     if (zoningStatus == Zoning.Status.Request) {
       avatarActor ! AvatarActor.DeinitializeImplants()
@@ -1960,7 +1960,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Being anywhere in one's faction's own sanctuary is a special case.
     * @return a `Tuple` composed of the initial countdown time and the descriptor for message composition
     */
-  def ZoningStartInitialMessageAndTimer(): (Int, String) = {
+private def ZoningStartInitialMessageAndTimer(): (Int, String) = {
     val location = if (Zones.sanctuaryZoneNumber(player.Faction) == continent.Number) {
       Zoning.Time.Sanctuary
     } else {
@@ -2001,7 +2001,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param spawnPointTarget an optional paired zone entity and a spawn point within the zone
     * @param zoningType a token that references the manner of zone transfer
     */
-  def resolveZoningSpawnPointLoad(spawnPointTarget: Option[(Zone, SpawnPoint)], zoningType: Zoning.Method): Unit = {
+private def resolveZoningSpawnPointLoad(spawnPointTarget: Option[(Zone, SpawnPoint)], zoningType: Zoning.Method): Unit = {
     spawnPointTarget match {
       case Some((zone, spawnPoint)) =>
         val obj = continent.GUID(player.VehicleSeated) match {
@@ -2038,7 +2038,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param zone            the destination zone
     * @param spawnPosition   the destination drop position
     */
-  def LoadZoneLaunchDroppod(zone: Zone, spawnPosition: Vector3): Unit = {
+private def LoadZoneLaunchDroppod(zone: Zone, spawnPosition: Vector3): Unit = {
     log.info(s"${player.Name} is launching  to ${zone.id} in ${player.Sex.possessive} droppod")
     CancelZoningProcess()
     PlayerActionsToCancel()
@@ -2061,7 +2061,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * The user no longer expects to perform a zoning event for this reason.
     * @param msg the message to the user
     */
-  def CancelZoningProcessWithDescriptiveReason(msg: String): Unit = {
+private def CancelZoningProcessWithDescriptiveReason(msg: String): Unit = {
     CancelZoningProcessWithReason(s"@${zoningType.toString.toLowerCase}_$msg", Some(zoningChatMessageType))
   }
 
@@ -2072,7 +2072,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *                normally, this message uses the same value as `zoningChatMessageType`;
     *                defaults to `None`
     */
-  def CancelZoningProcessWithReason(msg: String, msgType: Option[ChatMessageType] = None): Unit = {
+private def CancelZoningProcessWithReason(msg: String, msgType: Option[ChatMessageType] = None): Unit = {
     if (zoningStatus != Zoning.Status.None) {
       sendResponse(ChatMsg(msgType.getOrElse(zoningChatMessageType), false, "", msg, None))
     }
@@ -2083,7 +2083,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * The user no longer expects to perform a zoning event,
     * or the process is merely resetting its internal state.
     */
-  def CancelZoningProcess(): Unit = {
+private def CancelZoningProcess(): Unit = {
     zoningTimer.cancel()
     player.ZoningRequest = Zoning.Method.None
     zoningType = Zoning.Method.None
@@ -2093,7 +2093,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     instantActionFallbackDestination = None
   }
 
-  def HandleNewPlayerLoaded(tplayer: Player): Unit = {
+private def HandleNewPlayerLoaded(tplayer: Player): Unit = {
     //new zone
     log.info(s"${tplayer.Name} has spawned into ${session.zone.id}")
     oldRefsMap.clear()
@@ -2142,7 +2142,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def HandleZoneResponse(foundZone: Zone): Unit = {
+private def HandleZoneResponse(foundZone: Zone): Unit = {
     log.trace(s"ZoneResponse: zone ${foundZone.id} will now load for ${player.Name}")
     loadConfZone = true
     val oldZone = session.zone
@@ -2169,7 +2169,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param guid      na
     * @param reply     na
     */
-  def HandleAvatarServiceResponse(toChannel: String, guid: PlanetSideGUID, reply: AvatarResponse.Response): Unit = {
+private def HandleAvatarServiceResponse(toChannel: String, guid: PlanetSideGUID, reply: AvatarResponse.Response): Unit = {
     val tplayer_guid =
       if (player != null && player.HasGUID) player.GUID
       else PlanetSideGUID(0)
@@ -2692,7 +2692,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def DropSpecialSlotItem(): Unit = {
+private def DropSpecialSlotItem(): Unit = {
     specialItemSlotGuid match {
       case Some(guid: PlanetSideGUID) =>
         specialItemSlotGuid = None
@@ -2722,7 +2722,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param target the location in which the equipment will be stowed
     * @param slots the equipment, in the standard object-slot format container
     */
-  def ApplyPurchaseTimersBeforePackingLoadout(
+private def ApplyPurchaseTimersBeforePackingLoadout(
       player: Player,
       target: PlanetSideServerObject with Container,
       slots: List[InventoryItem]
@@ -2745,7 +2745,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param guid      na
     * @param reply     na
     */
-  def HandleLocalServiceResponse(toChannel: String, guid: PlanetSideGUID, reply: LocalResponse.Response): Unit = {
+private def HandleLocalServiceResponse(toChannel: String, guid: PlanetSideGUID, reply: LocalResponse.Response): Unit = {
     val tplayer_guid =
       if (player.HasGUID) player.GUID
       else PlanetSideGUID(0)
@@ -2958,7 +2958,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param tplayer na
     * @param reply   na
     */
-  def HandleMountMessages(tplayer: Player, reply: Mountable.Exchange): Unit = {
+private def HandleMountMessages(tplayer: Player, reply: Mountable.Exchange): Unit = {
     reply match {
       case Mountable.CanMount(obj: ImplantTerminalMech, seat_number, _) =>
         CancelZoningProcessWithDescriptiveReason("cancel_use")
@@ -3135,7 +3135,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param msg     na
     * @param order   na
     */
-  def HandleTerminalMessage(tplayer: Player, msg: ItemTransactionMessage, order: Terminal.Exchange): Unit = {
+private def HandleTerminalMessage(tplayer: Player, msg: ItemTransactionMessage, order: Terminal.Exchange): Unit = {
     order match {
       case Terminal.BuyEquipment(item) =>
         tplayer.avatar.purchaseCooldown(item.Definition) match {
@@ -3249,7 +3249,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param guid      na
     * @param reply     na
     */
-  def HandleVehicleServiceResponse(toChannel: String, guid: PlanetSideGUID, reply: VehicleResponse.Response): Unit = {
+private def HandleVehicleServiceResponse(toChannel: String, guid: PlanetSideGUID, reply: VehicleResponse.Response): Unit = {
     val tplayer_guid = if (player.HasGUID) player.GUID else PlanetSideGUID(0)
     reply match {
       case VehicleResponse.AttachToRails(vehicle_guid, pad_guid) =>
@@ -3560,7 +3560,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param mountPoint the point on the ferryoing vehicle where the ferried vehicle is attached
     * @return a tuple composed of an `ObjectAttachMessage` packet and a `CargoMountPointStatusMessage` packet
     */
-  def CargoMountBehaviorForUs(
+private def CargoMountBehaviorForUs(
       carrier: Vehicle,
       cargo: Vehicle,
       mountPoint: Int
@@ -3577,7 +3577,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param attachMessage           an `ObjectAttachMessage` packet suitable for initializing cargo operations
     * @param mountPointStatusMessage a `CargoMountPointStatusMessage` packet suitable for initializing cargo operations
     */
-  def CargoMountMessagesForUs(
+private def CargoMountMessagesForUs(
       attachMessage: ObjectAttachMessage,
       mountPointStatusMessage: CargoMountPointStatusMessage
   ): Unit = {
@@ -3609,7 +3609,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param tickAction       an optional action is is performed for each tick of progress;
     *                         also performs a continuity check to determine if the process has been disrupted
     */
-  def HandleProgressChange(
+private def HandleProgressChange(
       delta: Float,
       completionAction: () => Unit,
       tickAction: Float => Boolean,
@@ -3660,7 +3660,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Initialize all client-specific data that is dependent on some player being declared the "avatar".
     * @param tplayer the target player
     */
-  def HandleSetCurrentAvatar(tplayer: Player): Unit = {
+private def HandleSetCurrentAvatar(tplayer: Player): Unit = {
     log.trace(s"HandleSetCurrentAvatar - ${tplayer.Name}")
     session = session.copy(player = tplayer)
     val guid = tplayer.GUID
@@ -3838,7 +3838,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `SetCurrentAvatar`
     * @param tplayer the target player
     */
-  def SetCurrentAvatarNormally(tplayer: Player): Unit = {
+private def SetCurrentAvatarNormally(tplayer: Player): Unit = {
     HandleSetCurrentAvatar(tplayer)
   }
 
@@ -3848,7 +3848,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param bundleSize it doesn't matter
     * @param delay it doesn't matter
     */
-  def skipAvatarAwardMessageDelivery(bundleSize: Int, delay: Long): Unit = {}
+private def skipAvatarAwardMessageDelivery(bundleSize: Int, delay: Long): Unit = {}
 
   /**
     * Extract the award advancement information from a player character, and
@@ -3856,7 +3856,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param bundleSize divide packets into groups of this size
     * @param delay dispatch packet divisions in intervals
     */
-  def setupAvatarAwardMessageDelivery(bundleSize: Int, delay: Long): Unit = {
+private def setupAvatarAwardMessageDelivery(bundleSize: Int, delay: Long): Unit = {
     setupAvatarAwardMessageDelivery(player, bundleSize, delay)
     populateAvatarAwardRibbonsFunc = skipAvatarAwardMessageDelivery
   }
@@ -3870,7 +3870,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param bundleSize divide packets into groups of this size
     * @param delay dispatch packet divisions in intervals
     */
-  def setupAvatarAwardMessageDelivery(tplayer: Player, bundleSize: Int, delay: Long): Unit = {
+private def setupAvatarAwardMessageDelivery(tplayer: Player, bundleSize: Int, delay: Long): Unit = {
     val date: Int = (System.currentTimeMillis() / 1000L).toInt - 604800 //last week, in seconds
     performAvatarAwardMessageDelivery(
       Award.values
@@ -3900,7 +3900,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param messageBundles groups of packets to be dispatched
     * @param delay dispatch packet divisions in intervals
     */
-  def performAvatarAwardMessageDelivery(
+private def performAvatarAwardMessageDelivery(
       messageBundles: Iterable[Iterable[PlanetSidePacket]],
       delay: Long
   ): Unit = {
@@ -3922,7 +3922,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * These messages are dispatched when first starting up the client and connecting to the server for the first time.
     * While many of these messages will be reused for other situations, they appear in this order only during startup.
     */
-  def FirstTimeSquadSetup(): Unit = {
+private def FirstTimeSquadSetup(): Unit = {
     sendResponse(SquadDetailDefinitionUpdateMessage.Init)
     sendResponse(ReplicationStreamMessage(5, Some(6), Vector.empty)) //clear squad list
     sendResponse(SquadDefinitionActionMessage(PlanetSideGUID(0), 0, SquadAction.Unknown(6)))
@@ -3949,7 +3949,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * especially the unique character identifier number,
     * only the zone-specific squad members will receive the important messages about their squad member's spawn.
     */
-  def RespawnSquadSetup(): Unit = {
+private def RespawnSquadSetup(): Unit = {
     if (squad_supplement_id > 0) {
       squadUI.get(player.CharId) match {
         case Some(elem) =>
@@ -3974,7 +3974,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * the player must also set squad colors for each other squad members.
     * Default respawn functionality may resume afterwards.
     */
-  def ZoneChangeSquadSetup(): Unit = {
+private def ZoneChangeSquadSetup(): Unit = {
     RespawnSquadSetup()
     squadService ! SquadServiceMessage(player, continent, SquadServiceAction.InitSquadList())
     GiveSquadColorsInZone()
@@ -3984,7 +3984,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
   /**
     * Allocate all squad members in zone and give their nameplates and their marquees the appropriate squad color.
     */
-  def GiveSquadColorsInZone(): Unit = {
+private def GiveSquadColorsInZone(): Unit = {
     GiveSquadColorsInZone(squadUI.keys, squad_supplement_id)
   }
 
@@ -3992,7 +3992,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Allocate the listed squad members in zone and give their nameplates and their marquees the appropriate squad color.
     * @param members members of the squad to target
     */
-  def GiveSquadColorsInZone(members: Iterable[Long]): Unit = {
+private def GiveSquadColorsInZone(members: Iterable[Long]): Unit = {
     GiveSquadColorsInZone(members, squad_supplement_id)
   }
 
@@ -4002,7 +4002,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param members members of the squad to target
     * @param value   the assignment value
     */
-  def GiveSquadColorsInZone(members: Iterable[Long], value: Long): Unit = {
+private def GiveSquadColorsInZone(members: Iterable[Long], value: Long): Unit = {
     SquadMembersInZone(members).foreach { members =>
       sendResponse(PlanetsideAttributeMessage(members.GUID, 31, value))
     }
@@ -4014,7 +4014,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param members members of the squad to target
     * @return a list of `Player` objects
     */
-  def SquadMembersInZone(members: Iterable[Long]): Iterable[Player] = {
+private def SquadMembersInZone(members: Iterable[Long]): Iterable[Player] = {
     val players = continent.LivePlayers
     for {
       charId <- members
@@ -4025,7 +4025,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     } yield player.get
   }
 
-  def handleGamePkt(pkt: PlanetSideGamePacket) =
+private def handleGamePkt(pkt: PlanetSideGamePacket) =
     pkt match {
       case ConnectToWorldRequestMessage(server, token, majorVersion, minorVersion, revision, buildDate, unk) =>
         log.trace(
@@ -6843,7 +6843,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     )
   }
 
-  def AccessContainer(container: Container): Unit = {
+private def AccessContainer(container: Container): Unit = {
     container match {
       case v: Vehicle =>
         AccessVehicleContents(v)
@@ -6857,7 +6857,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def AccessGenericContainer(container: PlanetSideServerObject with Container): Unit = {
+private def AccessGenericContainer(container: PlanetSideServerObject with Container): Unit = {
     accessedContainer = Some(container)
     DisplayContainerContents(container.GUID, container.Inventory.Items)
   }
@@ -6870,7 +6870,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `GridInventory.Items`
     * @param vehicle the vehicle
     */
-  def AccessVehicleContents(vehicle: Vehicle): Unit = {
+private def AccessVehicleContents(vehicle: Vehicle): Unit = {
     accessedContainer = Some(vehicle)
     AccessContainerChannel(continent.VehicleEvents, vehicle.Actor.toString)
     DisplayContainerContents(vehicle.GUID, vehicle.Inventory.Items)
@@ -6885,7 +6885,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `Player.HolsterItems`
     * @param tplayer the corpse
     */
-  def AccessCorpseContents(tplayer: Player): Unit = {
+private def AccessCorpseContents(tplayer: Player): Unit = {
     accessedContainer = Some(tplayer)
     AccessContainerChannel(continent.AvatarEvents, tplayer.Actor.toString)
     DisplayContainerContents(tplayer.GUID, tplayer.HolsterItems())
@@ -6897,7 +6897,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param events the event system bus to which to subscribe
     * @param channel the channel name
     */
-  def AccessContainerChannel(events: ActorRef, channel: String): Unit = {
+private def AccessContainerChannel(events: ActorRef, channel: String): Unit = {
     events ! Service.Join(channel)
   }
 
@@ -6910,7 +6910,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param containerId the container's unique identifier
     * @param items a list of the entities to be depicted
     */
-  def DisplayContainerContents(containerId: PlanetSideGUID, items: Iterable[InventoryItem]): Unit = {
+private def DisplayContainerContents(containerId: PlanetSideGUID, items: Iterable[InventoryItem]): Unit = {
     items.foreach(entry => {
       val obj    = entry.obj
       val objDef = obj.Definition
@@ -6929,7 +6929,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * For whatever conatiner the character considers itself accessing,
     * initiate protocol to release it from "access".
     */
-  def UnaccessContainer(): Unit = {
+private def UnaccessContainer(): Unit = {
     accessedContainer match {
       case Some(container) => UnaccessContainer(container)
       case _               => ;
@@ -6939,7 +6939,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
   /**
     * For the target container, initiate protocol to release it from "access".
     */
-  def UnaccessContainer(container: Container): Unit = {
+private def UnaccessContainer(container: Container): Unit = {
     container match {
       case v: Vehicle =>
         UnaccessVehicleContainer(v)
@@ -6954,7 +6954,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def UnaccessGenericContainer(container: Container): Unit = {
+private def UnaccessGenericContainer(container: Container): Unit = {
     accessedContainer = None
     HideContainerContents(container.Inventory.Items)
   }
@@ -6965,7 +6965,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Deconstruct every object in the vehicle's inventory.
     * @param vehicle the vehicle
     */
-  def UnaccessVehicleContainer(vehicle: Vehicle): Unit = {
+private def UnaccessVehicleContainer(vehicle: Vehicle): Unit = {
     accessedContainer = None
     if (vehicle.AccessingTrunk.contains(player.GUID)) {
       vehicle.AccessingTrunk = None
@@ -6980,7 +6980,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Deconstruct every object in the backpack's inventory.
     * @param tplayer the corpse
     */
-  def UnaccessCorpseContainer(tplayer: Player): Unit = {
+private def UnaccessCorpseContainer(tplayer: Player): Unit = {
     accessedContainer = None
     UnaccessContainerChannel(continent.AvatarEvents, tplayer.Actor.toString)
     HideContainerContents(tplayer.HolsterItems())
@@ -6992,7 +6992,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param events the event system bus to which to subscribe
     * @param channel the channel name
     */
-  def UnaccessContainerChannel(events: ActorRef, channel: String): Unit = {
+private def UnaccessContainerChannel(events: ActorRef, channel: String): Unit = {
     events ! Service.Leave(Some(channel))
   }
 
@@ -7002,7 +7002,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `ObjectDeleteMessage`
     * @param items a list of the entities to be depicted
     */
-  def HideContainerContents(items: List[InventoryItem]): Unit = {
+private def HideContainerContents(items: List[InventoryItem]): Unit = {
     items.foreach { entry =>
       sendResponse(ObjectDeleteMessage(entry.obj.GUID, 0))
     }
@@ -7026,7 +7026,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *         the first value is a `Container` object;
     *         the second value is an `Equipment` object in the former
     */
-  def FindContainedEquipment(): (Option[PlanetSideGameObject with Container], Set[Equipment]) = {
+private def FindContainedEquipment(): (Option[PlanetSideGameObject with Container], Set[Equipment]) = {
     continent.GUID(player.VehicleSeated) match {
       case Some(vehicle: Mountable with MountableWeapons with Container) =>
         vehicle.PassengerInSeat(player) match {
@@ -7049,7 +7049,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Check two locations for a controlled piece of equipment that is associated with the `player`
     * and has the specified global unique identifier number.
     */
-  def FindContainedEquipment(
+private def FindContainedEquipment(
       guid: PlanetSideGUID
   ): (Option[PlanetSideGameObject with Container], Set[Equipment]) = {
     val (o, equipment) = FindContainedEquipment()
@@ -7063,14 +7063,14 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Runs `FindContainedEquipment` but ignores the `Container` object output.
     * @return an `Equipment` object
     */
-  def FindEquipment(): Set[Equipment] = FindContainedEquipment()._2
+private def FindEquipment(): Set[Equipment] = FindContainedEquipment()._2
 
   /**
     * Runs `FindContainedEquipment` but ignores the `Container` object output
     * and only discovers `Equipment` with the specified global unique identifier number.
     * @return an `Equipment` object
     */
-  def FindEquipment(guid: PlanetSideGUID): Option[Equipment] = FindEquipment().find { _.GUID == guid }
+private def FindEquipment(guid: PlanetSideGUID): Option[Equipment] = FindEquipment().find { _.GUID == guid }
 
   /**
     * Check two locations for a controlled piece of equipment that is associated with the `player`.
@@ -7079,7 +7079,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *         the first value is a `Container` object;
     *         the second value is an `Tool` object in the former
     */
-  def FindContainedWeapon: (Option[PlanetSideGameObject with Container], Set[Tool]) = {
+private def FindContainedWeapon: (Option[PlanetSideGameObject with Container], Set[Tool]) = {
     FindContainedEquipment() match {
       case (container, equipment) =>
         (container, equipment collect { case t: Tool => t })
@@ -7095,7 +7095,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *         the first value is a `Container` object;
     *         the second value is an `Tool` object in the former
     */
-  def FindContainedWeapon(
+private def FindContainedWeapon(
       guid: PlanetSideGUID
   ): (Option[PlanetSideGameObject with Container], Set[Tool]) = {
     val (o, equipment) = FindContainedWeapon
@@ -7109,14 +7109,14 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Runs `FindContainedWeapon` but ignores the `Container` object output.
     * @return a `Tool` object
     */
-  def FindWeapon: Set[Tool] = FindContainedWeapon._2
+private def FindWeapon: Set[Tool] = FindContainedWeapon._2
 
   /**
     * Get the current `Vehicle` object that the player is riding/driving.
     * The vehicle must be found solely through use of `player.VehicleSeated`.
     * @return the vehicle
     */
-  def FindLocalVehicle: Option[Vehicle] = {
+private def FindLocalVehicle: Option[Vehicle] = {
     player.VehicleSeated match {
       case Some(vehicle_guid) =>
         continent.GUID(vehicle_guid) match {
@@ -7175,7 +7175,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param tool na
     * @param obj na
     */
-  def PerformToolAmmoChange(tool: Tool, obj: PlanetSideServerObject with Container): Unit = {
+private def PerformToolAmmoChange(tool: Tool, obj: PlanetSideServerObject with Container): Unit = {
     val originalAmmoType = tool.AmmoType
     do {
       val requestedAmmoType = tool.NextAmmoType
@@ -7309,7 +7309,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *             curried for callback
     * @param item the item
     */
-  def NormalItemDrop(obj: PlanetSideServerObject with Container, zone: Zone)(item: Equipment): Unit = {
+private def NormalItemDrop(obj: PlanetSideServerObject with Container, zone: Zone)(item: Equipment): Unit = {
     zone.Ground.tell(Zone.Ground.DropItem(item, obj.Position, Vector3.z(obj.Orientation.z)), obj.Actor)
   }
 
@@ -7317,7 +7317,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * After a weapon has finished shooting, determine if it needs to be sorted in a special way.
     * @param tool a weapon
     */
-  def FireCycleCleanup(tool: Tool): Unit = {
+private def FireCycleCleanup(tool: Tool): Unit = {
     //TODO replaced by more appropriate functionality in the future
     val tdef = tool.Definition
     if (GlobalDefinitions.isGrenade(tdef)) {
@@ -7359,7 +7359,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *         the first value is the container that matched correctly with the object's GUID;
     *         the second value is the slot position of the object
     */
-  def FindInLocalContainer(
+private def FindInLocalContainer(
       object_guid: PlanetSideGUID
   )(parent: PlanetSideServerObject with Container): Option[(PlanetSideServerObject with Container, Option[Int])] = {
     val slot: Option[Int] = parent.Find(object_guid)
@@ -7377,7 +7377,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param state the `DriveState` that could not be promoted
     * @param reason a string explaining why the state can not or will not change
     */
-  def CanNotChangeDeployment(
+private def CanNotChangeDeployment(
       obj: PlanetSideServerObject with Deployment,
       state: DriveState.Value,
       reason: String
@@ -7402,7 +7402,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param buildingNumber the building id
     * @param building the building object
     */
-  def initBuilding(continentNumber: Int, buildingNumber: Int, building: Building): Unit = {
+private def initBuilding(continentNumber: Int, buildingNumber: Int, building: Building): Unit = {
     building.BuildingType match {
       case StructureType.WarpGate =>
         initGate(continentNumber, buildingNumber, building)
@@ -7419,7 +7419,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param buildingNumber the building id
     * @param building the building object
     */
-  def initFacility(continentNumber: Int, buildingNumber: Int, building: Building): Unit = {
+private def initFacility(continentNumber: Int, buildingNumber: Int, building: Building): Unit = {
     sendResponse(building.infoUpdateMessage())
     sendResponse(DensityLevelUpdateMessage(continentNumber, buildingNumber, List(0, 0, 0, 0, 0, 0, 0, 0)))
   }
@@ -7435,7 +7435,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param buildingNumber the building id
     * @param building the building object
     */
-  def initGate(continentNumber: Int, buildingNumber: Int, building: Building): Unit = {
+private def initGate(continentNumber: Int, buildingNumber: Int, building: Building): Unit = {
     building match {
       case wg: WarpGate =>
         sendResponse(building.infoUpdateMessage())
@@ -7461,7 +7461,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *     `HackMessage`
     * @param zone the zone being loaded
     */
-  def configZone(zone: Zone): Unit = {
+private def configZone(zone: Zone): Unit = {
     zone.Buildings.values.foreach(building => {
       val guid = building.GUID
       sendResponse(SetEmpireMessage(guid, building.Faction))
@@ -7498,7 +7498,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `VitalityDefinition.Damageable`
     * @param amenity the facility object
     */
-  def configAmenityAsWorking(amenity: Amenity): Unit = {
+private def configAmenityAsWorking(amenity: Amenity): Unit = {
     val amenityId = amenity.GUID
     //sync model access state
     sendResponse(PlanetsideAttributeMessage(amenityId, 50, 0))
@@ -7567,7 +7567,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `PlanetSideGameObject.Destroyed`
     * @param amenity the facility object
     */
-  def configAmenityAsDestroyed(amenity: Amenity): Unit = {
+private def configAmenityAsDestroyed(amenity: Amenity): Unit = {
     val amenityId = amenity.GUID
     val configValue = amenity match {
       case _: ImplantTerminalMech => 0
@@ -7589,7 +7589,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param unk1 na
     * @param unk2 na
     */
-  def HackObject(target_guid: PlanetSideGUID, unk1: Long, unk2: Long): Unit = {
+private def HackObject(target_guid: PlanetSideGUID, unk1: Long, unk2: Long): Unit = {
     sendResponse(HackMessage(0, target_guid, PlanetSideGUID(0), 100, unk1, HackState.Hacked, unk2))
   }
 
@@ -7599,7 +7599,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param attribute_number The attribute number
     * @param attribute_value The attribute value
     */
-  def SendPlanetsideAttributeMessage(
+private def SendPlanetsideAttributeMessage(
       target_guid: PlanetSideGUID,
       attribute_number: PlanetsideAttributeEnum,
       attribute_value: Long
@@ -7613,7 +7613,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *       `PlayerSuicide`
     * @param tplayer the player to be killed
     */
-  def suicide(tplayer: Player): Unit = {
+private def suicide(tplayer: Player): Unit = {
     tplayer.History(PlayerSuicide(PlayerSource(tplayer)))
     tplayer.Actor ! Player.Die()
   }
@@ -7628,7 +7628,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * - if the player is anchored<br>
     * This is not a complete list but, for the purpose of enforcement, some pointers will be documented here.
     */
-  def PlayerActionsToCancel(): Unit = {
+private def PlayerActionsToCancel(): Unit = {
     shootingStart.clear()
     shootingStop.clear()
     progressBarUpdate.cancel()
@@ -7690,7 +7690,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * The vehicle without a rendered player will always be created if that vehicle exists.
     * The vehicle should only be constructed once.
     */
-  def AvatarCreate(): Unit = {
+private def AvatarCreate(): Unit = {
     val health = player.Health
     val armor  = player.Armor
     val events = continent.VehicleEvents
@@ -7805,7 +7805,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *         if and only if the vehicle is known to this client and the `WorldSessioNActor`-global `player` occupies it;
     *         `(None, None)`, otherwise (even if the vehicle can be determined)
     */
-  def GetMountableAndSeat(
+private def GetMountableAndSeat(
       direct: Option[PlanetSideGameObject with Mountable],
       occupant: Player,
       zone: Zone
@@ -7836,7 +7836,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *         if and only if the vehicle is known to this client and the `WorldSessioNActor`-global `player` occupies it;
     *         `(None, None)`, otherwise (even if the vehicle can be determined)
     */
-  def GetKnownVehicleAndSeat(): (Option[Vehicle], Option[Int]) =
+private def GetKnownVehicleAndSeat(): (Option[Vehicle], Option[Int]) =
     GetMountableAndSeat(interstellarFerry, player, continent) match {
       case (Some(v: Vehicle), Some(seat)) => (Some(v), Some(seat))
       case _                              => (None, None)
@@ -7849,7 +7849,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *         if and only if the vehicle is known to this client and the `WorldSessioNActor`-global `player` occupies it;
     *         `(None, None)`, otherwise (even if the vehicle can be determined)
     */
-  def GetVehicleAndSeat(): (Option[Vehicle], Option[Int]) =
+private def GetVehicleAndSeat(): (Option[Vehicle], Option[Int]) =
     GetMountableAndSeat(None, player, continent) match {
       case (Some(v: Vehicle), Some(seat)) => (Some(v), Some(seat))
       case _                              => (None, None)
@@ -7873,7 +7873,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param vehicle the vehicle the player is riding
     * @param seat the mount index
     */
-  def AvatarCreateInVehicle(tplayer: Player, vehicle: Vehicle, seat: Int): Unit = {
+private def AvatarCreateInVehicle(tplayer: Player, vehicle: Vehicle, seat: Int): Unit = {
     val pdef  = tplayer.avatar.definition
     val pguid = tplayer.GUID
     val vguid = vehicle.GUID
@@ -7930,7 +7930,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Neither the player avatar nor the vehicle should be reconstructed before the next zone load operation
     * to avoid damaging the critical setup of this function.
     */
-  def AvatarRejoin(): Unit = {
+private def AvatarRejoin(): Unit = {
     GetKnownVehicleAndSeat() match {
       case (Some(vehicle: Vehicle), Some(seat: Int)) =>
         //vehicle and driver/passenger
@@ -7989,7 +7989,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param tplayer the original player
     * @return the duplication of the player, in Standard Exo-Suit and with default equipment loadout
     */
-  def RespawnClone(tplayer: Player): Player = {
+private def RespawnClone(tplayer: Player): Player = {
     // workaround to make sure player is spawned with full stamina
     player.avatar = player.avatar.copy(stamina = avatar.maxStamina)
     avatarActor ! AvatarActor.RestoreStamina(avatar.maxStamina)
@@ -8007,7 +8007,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * MAX's have their primary weapon in the designated slot removed.
     * @param obj the player to be turned into a corpse
     */
-  def FriskDeadBody(obj: Player): Unit = {
+private def FriskDeadBody(obj: Player): Unit = {
     if (!obj.isAlive) {
       obj.Slot(4).Equipment match {
         case None => ;
@@ -8049,7 +8049,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `Zone.Corpse.Add`
     * @param tplayer the player
     */
-  def PrepareToTurnPlayerIntoCorpse(tplayer: Player, zone: Zone): Unit = {
+private def PrepareToTurnPlayerIntoCorpse(tplayer: Player, zone: Zone): Unit = {
     tplayer.Release
     FriskDeadBody(tplayer)
     if (!WellLootedDeadBody(tplayer)) {
@@ -8078,7 +8078,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `Zone.Population`
     * @param tplayer the player
     */
-  def TurnPlayerIntoCorpse(tplayer: Player, zone: Zone): Unit = {
+private def TurnPlayerIntoCorpse(tplayer: Player, zone: Zone): Unit = {
     tplayer.Release
     DepictPlayerAsCorpse(tplayer)
     zone.Population ! Zone.Corpse.Add(tplayer)
@@ -8091,7 +8091,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `CorpseConverter.converter`
     * @param tplayer the player
     */
-  def DepictPlayerAsCorpse(tplayer: Player): Unit = {
+private def DepictPlayerAsCorpse(tplayer: Player): Unit = {
     val guid = tplayer.GUID
     //the corpse as a receptacle
     sendResponse(
@@ -8109,7 +8109,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @return `true`, if the `obj` is actually a corpse and has no objects in its holsters or backpack;
     *        `false`, otherwise
     */
-  def WellLootedDeadBody(obj: Player): Boolean = {
+private def WellLootedDeadBody(obj: Player): Boolean = {
     !obj.isAlive && obj.Holsters().count(_.Equipment.nonEmpty) == 0 && obj.Inventory.Size == 0
   }
 
@@ -8119,7 +8119,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @return `true`, if the `obj` is actually a corpse and has no objects in its holsters or backpack;
     *        `false`, otherwise
     */
-  def TryDisposeOfLootedCorpse(obj: Player): Boolean = {
+private def TryDisposeOfLootedCorpse(obj: Player): Boolean = {
     if (obj.isBackpack && WellLootedDeadBody(obj)) {
       obj.Zone.AvatarEvents ! AvatarServiceMessage.Corpse(RemoverActor.HurrySpecific(List(obj), obj.Zone))
       true
@@ -8138,7 +8138,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param tplayer the player
     * @param currentZone the current zone number
     */
-  def RequestSanctuaryZoneSpawn(tplayer: Player, currentZone: Int): Unit = {
+private def RequestSanctuaryZoneSpawn(tplayer: Player, currentZone: Int): Unit = {
     if (currentZone == Zones.sanctuaryZoneNumber(tplayer.Faction)) {
       log.error(s"RequestSanctuaryZoneSpawn: ${player.Name} is already in faction sanctuary zone.")
       sendResponse(DisconnectMessage("RequestSanctuaryZoneSpawn: player is already in sanctuary."))
@@ -8167,7 +8167,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * na
     * @param terminal na
     */
-  def HandleProximityTerminalUse(terminal: Terminal with ProximityUnit): Unit = {
+private def HandleProximityTerminalUse(terminal: Terminal with ProximityUnit): Unit = {
     val term_guid      = terminal.GUID
     val targets        = FindProximityUnitTargetsInScope(terminal)
     val currentTargets = terminal.Targets
@@ -8187,7 +8187,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param terminal na
     * @return na
     */
-  def FindProximityUnitTargetsInScope(terminal: Terminal with ProximityUnit): Seq[PlanetSideGameObject] = {
+private def FindProximityUnitTargetsInScope(terminal: Terminal with ProximityUnit): Seq[PlanetSideGameObject] = {
     terminal.Definition.asInstanceOf[ProximityDefinition].TargetValidation.keySet collect {
       case EffectTarget.Category.Player                                   => Some(player)
       case EffectTarget.Category.Vehicle | EffectTarget.Category.Aircraft => continent.GUID(player.VehicleSeated)
@@ -8201,7 +8201,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param terminal the proximity-based unit
     * @param target the entity that is being considered for terminal operation
     */
-  def StartUsingProximityUnit(terminal: Terminal with ProximityUnit, target: PlanetSideGameObject): Unit = {
+private def StartUsingProximityUnit(terminal: Terminal with ProximityUnit, target: PlanetSideGameObject): Unit = {
     val term_guid = terminal.GUID
     //log.trace(s"StartUsingProximityUnit: ${player.Name} wants to use ${terminal.Definition.Name}@${term_guid.guid} on $target")
     if (player.isAlive) {
@@ -8229,7 +8229,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * inform it that we wish it stop affecting the discovered target(s).
     * @param terminal the proximity-based unit
     */
-  def StopUsingProximityUnit(terminal: Terminal with ProximityUnit): Unit = {
+private def StopUsingProximityUnit(terminal: Terminal with ProximityUnit): Unit = {
     FindProximityUnitTargetsInScope(terminal).foreach { target =>
       LocalStopUsingProximityUnit(terminal, target)
       terminal.Actor ! CommonMessages.Unuse(player, Some(target))
@@ -8244,7 +8244,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Other sorts of proximity-based units are put on a timer.
     * @param terminal the proximity-based unit
     */
-  def LocalStopUsingProximityUnit(terminal: Terminal with ProximityUnit, target: PlanetSideGameObject): Unit = {
+private def LocalStopUsingProximityUnit(terminal: Terminal with ProximityUnit, target: PlanetSideGameObject): Unit = {
     val term_guid = terminal.GUID
     if (usingMedicalTerminal.contains(term_guid)) {
       usingMedicalTerminal = None
@@ -8254,7 +8254,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
   /**
     * na
     */
-  def ForgetAllProximityTerminals(term_guid: PlanetSideGUID): Unit = {
+private def ForgetAllProximityTerminals(term_guid: PlanetSideGUID): Unit = {
     if (usingMedicalTerminal.contains(term_guid)) {
       usingMedicalTerminal = None
     }
@@ -8266,7 +8266,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * This operations may invoke callback messages.
     * @see `postStop`
     */
-  def CancelAllProximityUnits(): Unit = {
+private def CancelAllProximityUnits(): Unit = {
     continent.GUID(usingMedicalTerminal) match {
       case Some(terminal: Terminal with ProximityUnit) =>
         FindProximityUnitTargetsInScope(terminal).foreach(target =>
@@ -8282,7 +8282,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Lock all applicable controls of the current vehicle
     * Set the vehicle to move in reverse
     */
-  def ServerVehicleLockReverse(): Unit = {
+private def ServerVehicleLockReverse(): Unit = {
     serverVehicleControlVelocity = Some(-1)
     sendResponse(
       ServerVehicleOverrideMsg(
@@ -8303,7 +8303,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Lock all applicable controls of the current vehicle
     * Set the vehicle to strafe right
     */
-  def ServerVehicleLockStrafeRight(): Unit = {
+private def ServerVehicleLockStrafeRight(): Unit = {
     serverVehicleControlVelocity = Some(-1)
     sendResponse(
       ServerVehicleOverrideMsg(
@@ -8324,7 +8324,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Lock all applicable controls of the current vehicle
     * Set the vehicle to strafe left
     */
-  def ServerVehicleLockStrafeLeft(): Unit = {
+private def ServerVehicleLockStrafeLeft(): Unit = {
     serverVehicleControlVelocity = Some(-1)
     sendResponse(
       ServerVehicleOverrideMsg(
@@ -8345,7 +8345,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * This includes forward motion, turning, and, if applicable, strafing.
     * @param vehicle the vehicle being controlled
     */
-  def ServerVehicleLock(vehicle: Vehicle): Unit = {
+private def ServerVehicleLock(vehicle: Vehicle): Unit = {
     serverVehicleControlVelocity = Some(-1)
     sendResponse(ServerVehicleOverrideMsg(true, true, false, false, 0, 1, 0, Some(0)))
   }
@@ -8356,7 +8356,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param speed how fast the vehicle is moving forward
     * @param flight whether the vehicle is ascending or not, if the vehicle is an applicable type
     */
-  def ServerVehicleOverride(vehicle: Vehicle, speed: Int = 0, flight: Int = 0): Unit = {
+private def ServerVehicleOverride(vehicle: Vehicle, speed: Int = 0, flight: Int = 0): Unit = {
     serverVehicleControlVelocity = Some(speed)
     sendResponse(ServerVehicleOverrideMsg(true, true, false, false, flight, 0, speed, Some(0)))
   }
@@ -8368,7 +8368,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param speed how fast the vehicle is moving forward
     * @param flight whether the vehicle is ascending or not, if the vehicle is an applicable type
     */
-  def DriverVehicleControl(vehicle: Vehicle, speed: Int = 0, flight: Int = 0): Unit = {
+private def DriverVehicleControl(vehicle: Vehicle, speed: Int = 0, flight: Int = 0): Unit = {
     if (serverVehicleControlVelocity.nonEmpty) {
       serverVehicleControlVelocity = None
       sendResponse(ServerVehicleOverrideMsg(false, false, false, true, flight, 0, speed, None))
@@ -8381,13 +8381,13 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Stop all movement entirely.
     * @param vehicle the vehicle
     */
-  def ConditionalDriverVehicleControl(vehicle: Vehicle): Unit = {
+private def ConditionalDriverVehicleControl(vehicle: Vehicle): Unit = {
     if (serverVehicleControlVelocity.nonEmpty && !serverVehicleControlVelocity.contains(0)) {
       TotalDriverVehicleControl(vehicle)
     }
   }
 
-  def TotalDriverVehicleControl(vehicle: Vehicle): Unit = {
+private def TotalDriverVehicleControl(vehicle: Vehicle): Unit = {
     serverVehicleControlVelocity = None
     sendResponse(ServerVehicleOverrideMsg(false, false, false, false, 0, 0, 0, None))
   }
@@ -8399,7 +8399,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param projectile_guid the projectile's GUID
     * @return the discovered projectile
     */
-  def FindProjectileEntry(projectile_guid: PlanetSideGUID): Option[Projectile] = {
+private def FindProjectileEntry(projectile_guid: PlanetSideGUID): Option[Projectile] = {
     val index = projectile_guid.guid - Projectile.baseUID
     if (0 <= index && index < projectiles.length) {
       projectiles(index)
@@ -8416,7 +8416,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param resolution the resolution status to promote the projectile
     * @return the projectile
     */
-  def ResolveProjectileInteraction(
+private def ResolveProjectileInteraction(
       projectile_guid: PlanetSideGUID,
       resolution: DamageResolution.Value,
       target: PlanetSideGameObject with FactionAffinity with Vitality,
@@ -8438,7 +8438,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param resolution the resolution status to promote the projectile
     * @return a copy of the projectile
     */
-  def ResolveProjectileInteraction(
+private def ResolveProjectileInteraction(
       projectile: Projectile,
       index: Int,
       resolution: DamageResolution.Value,
@@ -8459,7 +8459,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param resolution the resolution status to promote the projectile
     * @return a copy of the projectile
     */
-  def ResolveProjectileInteraction(
+private def ResolveProjectileInteraction(
       projectile: Projectile,
       resolution: DamageResolution.Value,
       target: PlanetSideGameObject with FactionAffinity with Vitality,
@@ -8483,7 +8483,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param obj the mountable object
     * @param seatNum the mount into which the player is mounting
     */
-  def MountingAction(tplayer: Player, obj: PlanetSideGameObject with Mountable, seatNum: Int): Unit = {
+private def MountingAction(tplayer: Player, obj: PlanetSideGameObject with Mountable, seatNum: Int): Unit = {
     val player_guid: PlanetSideGUID = tplayer.GUID
     val obj_guid: PlanetSideGUID    = obj.GUID
     PlayerActionsToCancel()
@@ -8502,7 +8502,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param obj the mountable object
     * @param seatNum the mount out of which which the player is disembarking
     */
-  def DismountAction(tplayer: Player, obj: PlanetSideGameObject with Mountable, seatNum: Int): Unit = {
+private def DismountAction(tplayer: Player, obj: PlanetSideGameObject with Mountable, seatNum: Int): Unit = {
     val player_guid: PlanetSideGUID = tplayer.GUID
     keepAliveFunc = NormalKeepAlive
     val bailType = if (tplayer.BailProtection) {
@@ -8529,7 +8529,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param target a valid game object that is known to the server
     * @param data a projectile that will affect the target
     */
-  def HandleDealingDamage(target: PlanetSideGameObject with Vitality, data: DamageInteraction): Unit = {
+private def HandleDealingDamage(target: PlanetSideGameObject with Vitality, data: DamageInteraction): Unit = {
     val func = data.calculate()
     target match {
       case obj: Player if obj.CanDamage && obj.Actor != Default.Actor =>
@@ -8583,7 +8583,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *            defaults to 121, the object id of `avatar`
     * @return a `DestroyDisplayMessage` packet that is properly formatted
     */
-  def DestroyDisplayMessage(
+private def DestroyDisplayMessage(
       killer: SourceEntry,
       victim: SourceEntry,
       method: Int,
@@ -8627,7 +8627,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *             first pair is current quantity;
     *             second pair is maximum quantity
     */
-  def UpdateDeployableUIElements(list: List[(Int, Int, Int, Int)]): Unit = {
+private def UpdateDeployableUIElements(list: List[(Int, Int, Int, Int)]): Unit = {
     val guid = PlanetSideGUID(0)
     list.foreach({
       case (currElem, curr, maxElem, max) =>
@@ -8658,7 +8658,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `SetCurrentAvatar`
     * @param obj a `Deployable` object
     */
-  def RedrawDeployableIcons(obj: Deployable): Unit = {
+private def RedrawDeployableIcons(obj: Deployable): Unit = {
     val deployInfo = DeployableInfo(
       obj.GUID,
       Deployable.Icon(obj.Definition.Item),
@@ -8689,7 +8689,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `SetCurrentAvatar`
     * @param obj a `Deployable` object
     */
-  def DontRedrawIcons(obj: Deployable): Unit = {}
+private def DontRedrawIcons(obj: Deployable): Unit = {}
 
   /**
     * Common actions related to constructing a new `Deployable` object in the game environment.<br>
@@ -8699,7 +8699,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * the owner has no other means of controlling the created object that it is associated with.
     * @param obj the `Deployable` object to be built
     */
-  def DeployableBuildActivity(obj: Deployable): Unit = {
+private def DeployableBuildActivity(obj: Deployable): Unit = {
     sendResponse(GenericObjectActionMessage(obj.GUID, 21)) //reset build cooldown
     UpdateDeployableUIElements(avatar.deployables.UpdateUIElement(obj.Definition.Item))
   }
@@ -8718,7 +8718,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @return `true`, if the target object was discovered and removed;
     *        `false`, otherwise
     */
-  def FindEquipmentToDelete(object_guid: PlanetSideGUID, obj: Equipment): Boolean = {
+private def FindEquipmentToDelete(object_guid: PlanetSideGUID, obj: Equipment): Boolean = {
     val findFunc
         : PlanetSideServerObject with Container => Option[(PlanetSideServerObject with Container, Option[Int])] =
       FindInLocalContainer(object_guid)
@@ -8775,7 +8775,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param orient the previous orientation of the deployable
     * @param deletionType the value passed to `ObjectDeleteMessage` concerning the deconstruction animation
     */
-  def DeconstructDeployable(
+private def DeconstructDeployable(
       obj: Deployable,
       guid: PlanetSideGUID,
       pos: Vector3,
@@ -8792,7 +8792,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * and remove all `BoomerTrigger` objects, both functionally and visually.
     * @return all discovered `BoomTrigger` objects
     */
-  def RemoveBoomerTriggersFromInventory(): List[BoomerTrigger] = {
+private def RemoveBoomerTriggersFromInventory(): List[BoomerTrigger] = {
     val events = continent.AvatarEvents
     val zoneId = continent.id
     (player.Inventory.Items ++ player.HolsterItems())
@@ -8845,7 +8845,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param respawnTime the character downtime spent respawning, as clocked on the redeployment screen;
     *                    does not factor in any time required for loading zone or game objects
     */
-  def LoadZonePhysicalSpawnPoint(
+private def LoadZonePhysicalSpawnPoint(
       zoneId: String,
       pos: Vector3,
       ori: Vector3,
@@ -8915,7 +8915,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *                     not necessarily the same player as the `WorldSessionActor`-global `player`
     * @param zoneId       the zone in which the player will be placed
     */
-  def LoadZoneAsPlayer(targetPlayer: Player, zoneId: String): Unit = {
+private def LoadZoneAsPlayer(targetPlayer: Player, zoneId: String): Unit = {
     log.debug(s"LoadZoneAsPlayer: ${targetPlayer.avatar.name} loading into $zoneId")
     if (!zoneReload && zoneId == continent.id) {
       if (player.isBackpack) { // important! test the actor-wide player ref, not the parameter
@@ -8968,7 +8968,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *                or in which the vehicle has already been placed
     * @return a tuple composed of an `ActorRef` destination and a message to send to that destination
     */
-  def LoadZoneInVehicle(vehicle: Vehicle, pos: Vector3, ori: Vector3, zone_id: String): Unit = {
+private def LoadZoneInVehicle(vehicle: Vehicle, pos: Vector3, ori: Vector3, zone_id: String): Unit = {
     interstellarFerry = Some(vehicle)
     if (vehicle.PassengerInSeat(player).contains(0)) {
       vehicle.Position = pos
@@ -9000,7 +9000,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *                or in which the vehicle has already been placed
     * @return a tuple composed of an `ActorRef` destination and a message to send to that destination
     */
-  def LoadZoneInVehicleAsDriver(vehicle: Vehicle, zoneId: String): Unit = {
+private def LoadZoneInVehicleAsDriver(vehicle: Vehicle, zoneId: String): Unit = {
     val msg: String = s"${player.Name} is driving a ${vehicle.Definition.Name}"
     log.info(msg)
     log.debug(s"LoadZoneInVehicleAsDriver: $msg")
@@ -9097,7 +9097,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param zoneId  the zone in which the vehicle and driver will be placed
     * @return a tuple composed of an `ActorRef` destination and a message to send to that destination
     */
-  def LoadZoneInVehicleAsPassenger(vehicle: Vehicle, zoneId: String): Unit = {
+private def LoadZoneInVehicleAsPassenger(vehicle: Vehicle, zoneId: String): Unit = {
     val msg: String = s"${player.Name} is the passenger of a ${vehicle.Definition.Name}"
     log.info(msg)
     log.debug(s"LoadZoneInVehicleAsPassenger: $msg")
@@ -9130,7 +9130,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param toZoneId the zone where the target vehicle will be moved
     * @param vehicle the vehicle (object)
     */
-  def LoadZoneTransferPassengerMessages(player_guid: PlanetSideGUID, toZoneId: String, vehicle: Vehicle): Unit = {
+private def LoadZoneTransferPassengerMessages(player_guid: PlanetSideGUID, toZoneId: String, vehicle: Vehicle): Unit = {
     vehicle.PublishGatingManifest() match {
       case Some(manifest) =>
         val toChannel = manifest.file
@@ -9158,7 +9158,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
   }
 
   /** Before changing zones, perform the following task (which can be a nesting of subtasks). */
-  def taskThenZoneChange(
+private def taskThenZoneChange(
       task: TaskBundle,
       zoneMessage: ICS.FindZone
   ): TaskBundle = {
@@ -9185,7 +9185,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * encompassing actions that disassociate the player with entities they left (will leave) in the previous zone.
     * It also sets up actions for the new zone loading process.
     */
-  def LoadZoneCommonTransferActivity(): Unit = {
+private def LoadZoneCommonTransferActivity(): Unit = {
     zoneLoaded = None
     zoneReload = false
     if (player.avatar.vehicle.nonEmpty && player.VehicleSeated != player.avatar.vehicle) {
@@ -9214,7 +9214,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param systemPlan specific object identification of the two endpoints of the teleportation system;
     *                   if absent, the knowable endpoint is deleted from the client reflexively
     */
-  def ToggleTeleportSystem(router: Vehicle, systemPlan: Option[(Utility.InternalTelepad, TelepadDeployable)]): Unit = {
+private def ToggleTeleportSystem(router: Vehicle, systemPlan: Option[(Utility.InternalTelepad, TelepadDeployable)]): Unit = {
     systemPlan match {
       case Some((internalTelepad, remoteTelepad)) =>
         internalTelepad.Telepad = remoteTelepad.GUID //necessary; backwards link to the (new) telepad
@@ -9237,7 +9237,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param src the origin of the teleportation (where the player starts)
     * @param dest the destination of the teleportation (where the player is going)
     */
-  def UseRouterTelepadSystem(
+private def UseRouterTelepadSystem(
       router: Vehicle,
       internalTelepad: InternalTelepad,
       remoteTelepad: TelepadDeployable,
@@ -9270,7 +9270,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param srcGUID the origin of the teleportation
     * @param destGUID the destination of the teleportation
     */
-  def UseRouterTelepadEffect(playerGUID: PlanetSideGUID, srcGUID: PlanetSideGUID, destGUID: PlanetSideGUID): Unit = {
+private def UseRouterTelepadEffect(playerGUID: PlanetSideGUID, srcGUID: PlanetSideGUID, destGUID: PlanetSideGUID): Unit = {
     sendResponse(PlanetsideAttributeMessage(playerGUID, 64, 1)) //what does this do?
     sendResponse(GenericObjectActionMessage(srcGUID, 31))
     sendResponse(GenericObjectActionMessage(destGUID, 32))
@@ -9280,7 +9280,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * For a certain weapon that cna load ammunition, enforce that its magazine is empty.
     * @param weapon_guid the weapon
     */
-  def EmptyMagazine(weapon_guid: PlanetSideGUID): Unit = {
+private def EmptyMagazine(weapon_guid: PlanetSideGUID): Unit = {
     continent.GUID(weapon_guid) match {
       case Some(tool: Tool) =>
         EmptyMagazine(weapon_guid, tool)
@@ -9294,7 +9294,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param weapon_guid the weapon (GUID)
     * @param tool the weapon (object)
     */
-  def EmptyMagazine(weapon_guid: PlanetSideGUID, tool: Tool): Unit = {
+private def EmptyMagazine(weapon_guid: PlanetSideGUID, tool: Tool): Unit = {
     tool.Magazine = 0
     sendResponse(InventoryStateMessage(tool.AmmoSlot.Box.GUID, weapon_guid, 0))
     sendResponse(ChangeFireStateMessage_Stop(weapon_guid))
@@ -9312,7 +9312,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `DeadState.Release`
     * @see `Player.Release`
     */
-  def GoToDeploymentMap(): Unit = {
+private def GoToDeploymentMap(): Unit = {
     deadState = DeadState.Release //we may be alive or dead, may or may not be a corpse
     sendResponse(AvatarDeadStateMessage(DeadState.Release, 0, 0, player.Position, player.Faction, true))
     DrawCurrentAmsSpawnPoint()
@@ -9323,7 +9323,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param objWithSeat the object that owns seats (and weaponry)
     * @param seatNum the mount
     */
-  def UpdateWeaponAtSeatPosition(objWithSeat: MountableWeapons, seatNum: Int): Unit = {
+private def UpdateWeaponAtSeatPosition(objWithSeat: MountableWeapons, seatNum: Int): Unit = {
     objWithSeat.WeaponControlledFromSeat(seatNum) foreach {
       case weapon: Tool =>
         //update mounted weapon belonging to mount
@@ -9347,7 +9347,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param fromZoneId   the zone where the target current is located
     * @return how long the spawning process will take
     */
-  def CountSpawnDelay(toZoneId: String, toSpawnPoint: SpawnPoint, fromZoneId: String): FiniteDuration = {
+private def CountSpawnDelay(toZoneId: String, toSpawnPoint: SpawnPoint, fromZoneId: String): FiniteDuration = {
     val sanctuaryZoneId = Zones.sanctuaryZoneId(player.Faction)
     if (fromZoneId.equals("Nowhere") || sanctuaryZoneId.equals(toZoneId) || !isAcceptableNextSpawnPoint()) {
       //first login, to sanctuary, resolution of invalid spawn point
@@ -9371,7 +9371,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `BindPlayerMessage`
     * @see `DeadState.Release`
     */
-  def DrawCurrentAmsSpawnPoint(): Unit = {
+private def DrawCurrentAmsSpawnPoint(): Unit = {
     if (deadState == DeadState.Release) {
       amsSpawnPoints
         .sortBy(tube => Vector3.DistanceSquared(tube.Position, player.Position))
@@ -9406,7 +9406,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def SwapSquadUIElements(squad: Squad, fromIndex: Int, toIndex: Int): Unit = {
+private def SwapSquadUIElements(squad: Squad, fromIndex: Int, toIndex: Int): Unit = {
     if (squadUI.nonEmpty) {
       val fromMember = squad.Membership(toIndex)   //the players have already been swapped in the backend object
       val fromCharId = fromMember.CharId
@@ -9454,9 +9454,9 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def NoSquadUpdates(): Unit = {}
+private def NoSquadUpdates(): Unit = {}
 
-  def SquadUpdates(): Unit = {
+private def SquadUpdates(): Unit = {
     squadService ! SquadServiceMessage(
       player,
       continent,
@@ -9472,12 +9472,12 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     )
   }
 
-  def PeriodicUpdatesWhenEnrolledInSquad(): Unit = {
+private def PeriodicUpdatesWhenEnrolledInSquad(): Unit = {
     queuedSquadActions(squadUpdateCounter)()
     squadUpdateCounter = (squadUpdateCounter + 1) % queuedSquadActions.length
   }
 
-  def CapacitorTick(jump_thrust: Boolean): Unit = {
+private def CapacitorTick(jump_thrust: Boolean): Unit = {
     if (player.ExoSuit == ExoSuitType.MAX) {
       //Discharge
       if (jump_thrust || player.isOverdrived || player.isShielded) {
@@ -9529,7 +9529,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def ToggleMaxSpecialState(enable: Boolean): Unit = {
+private def ToggleMaxSpecialState(enable: Boolean): Unit = {
     if (player.ExoSuit == ExoSuitType.MAX) {
       if (enable) {
         player.Faction match {
@@ -9567,7 +9567,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param targets the globally unique identifiers of the immediate detected targets
     * @return channels names that allow direct communication to specific realized targets
     */
-  def FindDetectedProjectileTargets(targets: Iterable[PlanetSideGUID]): Iterable[String] = {
+private def FindDetectedProjectileTargets(targets: Iterable[PlanetSideGUID]): Iterable[String] = {
     targets
       .map { ValidObject }
       .flatMap {
@@ -9583,7 +9583,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
       }
   }
 
-  def CheckForHitPositionDiscrepancy(
+private def CheckForHitPositionDiscrepancy(
       projectile_guid: PlanetSideGUID,
       hitPos: Vector3,
       target: PlanetSideGameObject with FactionAffinity with Vitality
@@ -9602,7 +9602,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @param tplayer na
     * @param zone na
     */
-  def HandleReleaseAvatar(tplayer: Player, zone: Zone): Unit = {
+private def HandleReleaseAvatar(tplayer: Player, zone: Zone): Unit = {
     keepAliveFunc = KeepAlivePersistence
     tplayer.Release
     tplayer.VehicleSeated match {
@@ -9623,7 +9623,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * it starts counting at one rather than zero.
     * @param p the player's globally unique identifier number
     */
-  def NormalTurnCounter(p: PlanetSideGUID): Unit = {
+private def NormalTurnCounter(p: PlanetSideGUID): Unit = {
     upstreamMessageCount = 1 + upstreamMessageCount % Int.MaxValue
   }
 
@@ -9636,7 +9636,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * the counter does not accumulate properly.
     * @param guid the player's globally unique identifier number
     */
-  def TurnCounterDuringInterim(guid: PlanetSideGUID): Unit = {
+private def TurnCounterDuringInterim(guid: PlanetSideGUID): Unit = {
     upstreamMessageCount = 0
     if (player != null && player.GUID == guid && player.Zone == continent) {
       turnCounterFunc = NormalTurnCounter
@@ -9665,7 +9665,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * and only at that time will begin registering `KeepAliveMessage` to mark the end of their interim period.
     * @param guid the player's globally unique identifier number
     */
-  def TurnCounterDuringInterimWhileInPassengerSeat(guid: PlanetSideGUID): Unit = {
+private def TurnCounterDuringInterimWhileInPassengerSeat(guid: PlanetSideGUID): Unit = {
     upstreamMessageCount = 0
     val pguid = player.GUID
     if (pguid == guid && player.Zone == continent) {
@@ -9694,7 +9694,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Hereafter, the normal accumulator will be referenced.
     * @param guid the player's globally unique identifier number
     */
-  def TurnCounterLogin(guid: PlanetSideGUID): Unit = {
+private def TurnCounterLogin(guid: PlanetSideGUID): Unit = {
     NormalTurnCounter(guid)
     sendResponse(ChatMsg(zoningChatMessageType, false, "", loginChatMessage, None))
     CancelZoningProcess()
@@ -9711,7 +9711,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `KeepAliveMessage`
     * @see `keepAliveFunc`
     */
-  def NormalKeepAlive(): Unit = {}
+private def NormalKeepAlive(): Unit = {}
 
   /**
     * The atypical response to receiving a `KeepAliveMessage` packet from the client.<br>
@@ -9723,7 +9723,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @see `turnCounterFunc`
     * @see `persist`
     */
-  def KeepAlivePersistence(): Unit = {
+private def KeepAlivePersistence(): Unit = {
     interimUngunnedVehicle = None
     persist()
     if (player.HasGUID) {
@@ -9737,14 +9737,14 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     *  A really atypical response to receiving a `KeepAliveMessage` packet from the client
     *  that applies only during the character select portion and part of the first zone load activity.
     */
-  def KeepAlivePersistenceInitial(): Unit = {
+private def KeepAlivePersistenceInitial(): Unit = {
     persist()
     if (player != null && player.HasGUID) {
       keepAliveFunc = KeepAlivePersistence
     }
   }
 
-  def AdministrativeKick(tplayer: Player) = {
+private def AdministrativeKick(tplayer: Player) = {
     log.warn(s"${tplayer.Name} has been kicked by ${player.Name}")
     tplayer.death_by = -1
     accountPersistence ! AccountPersistenceService.Kick(tplayer.Name)
@@ -9761,7 +9761,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def KickedByAdministration(): Unit = {
+private def KickedByAdministration(): Unit = {
     sendResponse(DisconnectMessage("@kick_w"))
     context.system.scheduler.scheduleOnce(
       delay = 300 milliseconds,
@@ -9770,14 +9770,14 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     )
   }
 
-  def ImmediateDisconnect(): Unit = {
+private def ImmediateDisconnect(): Unit = {
     if (avatar != null) {
       accountPersistence ! AccountPersistenceService.Logout(avatar.name)
     }
     middlewareActor ! MiddlewareActor.Teardown()
   }
 
-  def HandleWeaponFire(
+private def HandleWeaponFire(
       weaponGUID: PlanetSideGUID,
       projectileGUID: PlanetSideGUID,
       shotOrigin: Vector3,
@@ -9869,7 +9869,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def HandleWeaponFireAccountability(
+private def HandleWeaponFireAccountability(
       weaponGUID: PlanetSideGUID,
       projectileGUID: PlanetSideGUID
   ): (Option[PlanetSideGameObject with Container], Option[Tool]) = {
@@ -9921,7 +9921,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def FindEnabledWeaponsToHandleWeaponFireAccountability(
+private def FindEnabledWeaponsToHandleWeaponFireAccountability(
       o: Option[PlanetSideGameObject with Container],
       tools: Set[Tool]
   ): (Option[PlanetSideGameObject with Container], Set[Tool]) = {
@@ -9972,7 +9972,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * @return a for all affected targets, a combination of projectiles, projectile location, and the target's location;
     *         nothing if no targets were affected
     */
-  def HandleDamageProxy(
+private def HandleDamageProxy(
       projectile: Projectile,
       pguid: PlanetSideGUID,
       hitPos: Vector3
@@ -10019,7 +10019,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def HandleDamageProxySetupLittleBuddy(listOfProjectiles: List[Projectile], detonationPosition: Vector3): Boolean = {
+private def HandleDamageProxySetupLittleBuddy(listOfProjectiles: List[Projectile], detonationPosition: Vector3): Boolean = {
     val listOfLittleBuddies: List[Projectile] = listOfProjectiles.filter { _.tool_def == GlobalDefinitions.oicw }
     val size: Int                             = listOfLittleBuddies.size
     if (size > 0) {
@@ -10074,7 +10074,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def HandleDamageProxyLittleBuddyExplosion(proxy: Projectile, orientation: Vector3, distance: Float): Unit = {
+private def HandleDamageProxyLittleBuddyExplosion(proxy: Projectile, orientation: Vector3, distance: Float): Unit = {
     //explosion
     val obj = DummyExplodingEntity(proxy)
     obj.Position = obj.Position + orientation * distance
@@ -10085,11 +10085,11 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def isAcceptableNextSpawnPoint(): Boolean = isAcceptableSpawnPoint(nextSpawnPoint)
+private def isAcceptableNextSpawnPoint(): Boolean = isAcceptableSpawnPoint(nextSpawnPoint)
 
-  def isAcceptableSpawnPoint(spawnPoint: SpawnPoint): Boolean = isAcceptableSpawnPoint(Some(spawnPoint))
+private def isAcceptableSpawnPoint(spawnPoint: SpawnPoint): Boolean = isAcceptableSpawnPoint(Some(spawnPoint))
 
-  def isAcceptableSpawnPoint(spawnPoint: Option[SpawnPoint]): Boolean = {
+private def isAcceptableSpawnPoint(spawnPoint: Option[SpawnPoint]): Boolean = {
     spawnPoint match {
       case Some(aSpawnPoint) =>
         !aSpawnPoint.isOffline &&
@@ -10103,7 +10103,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def updateBlockMap(target: BlockMapEntity, zone: Zone, newCoords: Vector3): Unit = {
+private def updateBlockMap(target: BlockMapEntity, zone: Zone, newCoords: Vector3): Unit = {
     target.blockMapEntry match {
       case Some(entry) =>
         if (
@@ -10121,7 +10121,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
   }
 
   private var oldRefsMap: mutable.HashMap[PlanetSideGUID, String] = new mutable.HashMap[PlanetSideGUID, String]()
-  def updateOldRefsMap(): Unit = {
+private def updateOldRefsMap(): Unit = {
     if (player.HasGUID) {
       oldRefsMap.addAll(
         (continent.GUID(player.VehicleSeated) match {
@@ -10150,7 +10150,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def updateOldRefsMap(
+private def updateOldRefsMap(
       inventory: net.psforever.objects.inventory.GridInventory
   ): IterableOnce[(PlanetSideGUID, String)] = {
     inventory.Items.flatMap {
@@ -10158,7 +10158,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def updateOldRefsMap(item: PlanetSideGameObject): IterableOnce[(PlanetSideGUID, String)] = {
+private def updateOldRefsMap(item: PlanetSideGameObject): IterableOnce[(PlanetSideGUID, String)] = {
     item match {
       case t: Tool =>
         t.AmmoSlots.map { slot =>
@@ -10170,7 +10170,7 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     }
   }
 
-  def fallHeightTracker(zHeight: Float): Unit = {
+private def fallHeightTracker(zHeight: Float): Unit = {
     if (
       (heightTrend && heightLast - zHeight >= 0.5f) ||
       (!heightTrend && zHeight - heightLast >= 0.5f)
@@ -10193,33 +10193,33 @@ class SessionActor(middlewareActor: typed.ActorRef[MiddlewareActor.Command], con
     * Only call this once during login and never any time after that.
     * @param avatar the avatar being set as the current one belonging to this session
     */
-  def avatarLoginResponse(avatar: Avatar): Unit = {
+private def avatarLoginResponse(avatar: Avatar): Unit = {
     session = session.copy(avatar = avatar)
     Deployables.InitializeDeployableQuantities(avatar)
     cluster ! ICS.FilterZones(_ => true, context.self)
   }
 
-  def displayCharSavedMsgThenRenewTimer(fixedLen: Long, varLen: Long): Unit = {
+private def displayCharSavedMsgThenRenewTimer(fixedLen: Long, varLen: Long): Unit = {
     charSaved()
     renewCharSavedTimer(fixedLen, varLen)
   }
 
-  def renewCharSavedTimer(fixedLen: Long, varLen: Long): Unit = {
+private def renewCharSavedTimer(fixedLen: Long, varLen: Long): Unit = {
     charSavedTimer.cancel()
     val delay = (fixedLen + (varLen * scala.math.random()).toInt).seconds
     charSavedTimer = context.system.scheduler.scheduleOnce(delay, self, SessionActor.CharSavedMsg)
   }
 
-  def charSaved(): Unit = {
+private def charSaved(): Unit = {
     sendResponse(ChatMsg(ChatMessageType.UNK_227, wideContents = false, "", "@charsaved", None))
   }
 
-  def failWithError(error: String) = {
+private def failWithError(error: String) = {
     log.error(error)
     middlewareActor ! MiddlewareActor.Teardown()
   }
 
-  def sendResponse(packet: PlanetSidePacket): Unit = {
+private def sendResponse(packet: PlanetSidePacket): Unit = {
     middlewareActor ! MiddlewareActor.Send(packet)
   }
 }

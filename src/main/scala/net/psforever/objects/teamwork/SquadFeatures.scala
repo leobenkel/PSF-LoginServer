@@ -75,77 +75,77 @@ class SquadFeatures(val Squad: Squad) {
 
   private lazy val channel: String = s"${Squad.Faction}-Squad${Squad.GUID.guid}"
 
-  def Start(implicit context: ActorContext): SquadFeatures = {
+private def Start(implicit context: ActorContext): SquadFeatures = {
     switchboard = context.actorOf(Props[SquadSwitchboard](), s"squad_${Squad.GUID.guid}_${System.currentTimeMillis}")
     waypoints = Array.fill[WaypointData](SquadWaypoint.values.size)(new WaypointData())
     this
   }
 
-  def Stop: SquadFeatures = {
+private def Stop: SquadFeatures = {
     switchboard ! akka.actor.PoisonPill
     switchboard = ActorRef.noSender
     waypoints = Array.empty
     this
   }
 
-  def InitialAssociation: Boolean = initialAssociation
+private def InitialAssociation: Boolean = initialAssociation
 
-  def InitialAssociation_=(assoc: Boolean): Boolean = {
+private def InitialAssociation_=(assoc: Boolean): Boolean = {
     initialAssociation = assoc
     InitialAssociation
   }
 
-  def Switchboard: ActorRef = switchboard
+private def Switchboard: ActorRef = switchboard
 
-  def Waypoints: Array[WaypointData] = waypoints
+private def Waypoints: Array[WaypointData] = waypoints
 
-  def SearchForRole: Option[Int] = searchForRole
+private def SearchForRole: Option[Int] = searchForRole
 
-  def SearchForRole_=(role: Int): Option[Int] = SearchForRole_=(Some(role))
+private def SearchForRole_=(role: Int): Option[Int] = SearchForRole_=(Some(role))
 
-  def SearchForRole_=(role: Option[Int]): Option[Int] = {
+private def SearchForRole_=(role: Option[Int]): Option[Int] = {
     searchForRole = role
     SearchForRole
   }
 
-  def ProxyInvites: List[Long] = proxyInvites
+private def ProxyInvites: List[Long] = proxyInvites
 
-  def ProxyInvites_=(list: List[Long]): List[Long] = {
+private def ProxyInvites_=(list: List[Long]): List[Long] = {
     proxyInvites = list
     ProxyInvites
   }
 
-  def Refuse: List[Long] = refusedPlayers
+private def Refuse: List[Long] = refusedPlayers
 
-  def Refuse_=(charId: Long): List[Long] = {
+private def Refuse_=(charId: Long): List[Long] = {
     Refuse_=(List(charId))
   }
 
-  def Refuse_=(list: List[Long]): List[Long] = {
+private def Refuse_=(list: List[Long]): List[Long] = {
     refusedPlayers = list ++ refusedPlayers
     Refuse
   }
 
-  def LocationFollowsSquadLead: Boolean = locationFollowsSquadLead
+private def LocationFollowsSquadLead: Boolean = locationFollowsSquadLead
 
-  def LocationFollowsSquadLead_=(follow: Boolean): Boolean = {
+private def LocationFollowsSquadLead_=(follow: Boolean): Boolean = {
     locationFollowsSquadLead = follow
     LocationFollowsSquadLead
   }
 
-  def AutoApproveInvitationRequests: Boolean = autoApproveInvitationRequests
+private def AutoApproveInvitationRequests: Boolean = autoApproveInvitationRequests
 
-  def AutoApproveInvitationRequests_=(autoApprove: Boolean): Boolean = {
+private def AutoApproveInvitationRequests_=(autoApprove: Boolean): Boolean = {
     autoApproveInvitationRequests = autoApprove
     AutoApproveInvitationRequests
   }
 
-  def Listed: Boolean = listed
+private def Listed: Boolean = listed
 
-  def Listed_=(announce: Boolean): Boolean = {
+private def Listed_=(announce: Boolean): Boolean = {
     listed = announce
     Listed
   }
 
-  def ToChannel: String = channel
+private def ToChannel: String = channel
 }

@@ -28,8 +28,8 @@ import scodec.codecs._
   */
 final case class PlayerStasisMessage(player_guid: PlanetSideGUID, stasis: Boolean = true) extends PlanetSideGamePacket {
   type Packet = PlayerStasisMessage
-  def opcode = GamePacketOpcode.PlayerStasisMessage
-  def encode = PlayerStasisMessage.encode(this)
+def opcode = GamePacketOpcode.PlayerStasisMessage
+def encode = PlayerStasisMessage.encode(this)
 }
 
 object PlayerStasisMessage extends Marshallable[PlayerStasisMessage] {

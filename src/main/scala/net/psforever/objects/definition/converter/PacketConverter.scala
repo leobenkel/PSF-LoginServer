@@ -17,8 +17,9 @@ sealed trait PacketConverter
   * @tparam A the type of game object
   */
 abstract class ObjectCreateConverter[A <: PlanetSideGameObject] extends PacketConverter {
+
   /** some objects do not have a detailed constructor data form */
-  def noDetailedForm(obj: A): Boolean = DetailedConstructorData(obj).isFailure
+  private def noDetailedForm(obj: A): Boolean = DetailedConstructorData(obj).isFailure
 
   /**
     * Take a game object and transform it into its equivalent data for an `0x17` packet.
@@ -34,7 +35,7 @@ abstract class ObjectCreateConverter[A <: PlanetSideGameObject] extends PacketCo
     * @param obj the game object
     * @return the specific `ConstructorData` that is equivalent to this object
     */
-  def DetailedConstructorData(obj: A): Try[ConstructorData] = {
+  private def DetailedConstructorData(obj: A): Try[ConstructorData] = {
     Failure(new NoSuchMethodException(s"method not defined for object $obj"))
   }
 }

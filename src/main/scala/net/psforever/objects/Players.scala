@@ -33,7 +33,7 @@ object Players {
     * @return `true`, if the next cycle of progress should occur;
     *         `false`, otherwise
     */
-  def RevivingTickAction(target: Player, user: Player, item: Tool)(progress: Float): Boolean = {
+private def RevivingTickAction(target: Player, user: Player, item: Tool)(progress: Float): Boolean = {
     if (
       !target.isAlive && !target.isBackpack &&
       user.isAlive && !user.isMoving &&
@@ -60,7 +60,7 @@ object Players {
     * @param medic the name of the player doing the reviving
     * @param item the tool being used to revive the target player
     */
-  def FinishRevivingPlayer(target: Player, medic: String, item: Tool)(): Unit = {
+private def FinishRevivingPlayer(target: Player, medic: String, item: Tool)(): Unit = {
     val name = target.Name
     log.info(s"$medic had revived $name")
     val magazine = item.Discharge(Some(25))
@@ -140,7 +140,7 @@ object Players {
     * @return `true`, if the player and the exo-suit are compatible;
     *        `false`, otherwise
     */
-  def CertificationToUseExoSuit(player: Player, exosuit: ExoSuitType.Value, subtype: Int): Boolean = {
+private def CertificationToUseExoSuit(player: Player, exosuit: ExoSuitType.Value, subtype: Int): Boolean = {
     ExoSuitDefinition.Select(exosuit, player.Faction).Permissions match {
       case Nil =>
         true
@@ -163,7 +163,7 @@ object Players {
     * @param player the player whose certifications are to be tested
     * @return the engineering level
     */
-  def repairModifierLevel(player: Player): Int = {
+private def repairModifierLevel(player: Player): Int = {
     val certs = player.avatar.certifications
     if (certs.contains(Certification.AdvancedEngineering) ||
         certs.contains(Certification.AssaultEngineering) ||
@@ -215,7 +215,7 @@ object Players {
     * @return `true`, if the deployable can be constructed under the control of and be supported by the player;
     *        `false`, otherwise
     */
-  def deployableWithinBuildLimits(player: Player, obj: Deployable): Boolean = {
+private def deployableWithinBuildLimits(player: Player, obj: Deployable): Boolean = {
     val zone = obj.Zone
     val channel = player.Name
     val definition = obj.Definition
@@ -288,7 +288,7 @@ object Players {
     * @return `true`, if the player was assignment management of the deployable;
     *        `false`, otherwise
     */
-  def gainDeployableOwnership(
+private def gainDeployableOwnership(
                                player: Player,
                                obj: Deployable,
                                addFunc: Deployable=>Boolean
@@ -308,7 +308,7 @@ object Players {
     * @param channel to whom to send the messages
     * @param obj the `Deployable` object
     */
-  def successfulBuildActivity(zone: Zone, channel: String, obj: Deployable): Unit = {
+private def successfulBuildActivity(zone: Zone, channel: String, obj: Deployable): Unit = {
     //sent to avatar event bus to preempt additional tool management
     buildCooldownReset(zone, channel, obj)
     //sent to local event bus to cooperate with deployable management
@@ -324,7 +324,7 @@ object Players {
     * @param channel to whom to send the messages
     * @param obj the `Deployable` object
     */
-  def buildCooldownReset(zone: Zone, channel: String, obj: Deployable): Unit = {
+private def buildCooldownReset(zone: Zone, channel: String, obj: Deployable): Unit = {
     //sent to avatar event bus to preempt additional tool management
     zone.AvatarEvents ! AvatarServiceMessage(
       channel,
@@ -338,7 +338,7 @@ object Players {
     * @param tool the `ConstructionItem` object currently in the slot (checked)
     * @param index the slot index
     */
-  def commonDestroyConstructionItem(player: Player, tool: ConstructionItem, index: Int): Unit = {
+private def commonDestroyConstructionItem(player: Player, tool: ConstructionItem, index: Int): Unit = {
     val zone = player.Zone
     if (safelyRemoveConstructionItemFromSlot(player, tool, index, "CommonDestroyConstructionItem")) {
       TaskWorkflow.execute(GUIDTask.unregisterEquipment(zone.GUID, tool))
@@ -361,7 +361,7 @@ object Players {
     * @return `true`, if the target object was found and removed;
     *        `false`, otherwise
     */
-  def safelyRemoveConstructionItemFromSlot(
+private def safelyRemoveConstructionItemFromSlot(
                                             player: Player,
                                             tool: ConstructionItem,
                                             index: Int,
@@ -410,7 +410,7 @@ object Players {
     * @param tool the `ConstructionItem` object to match
     * @param index where to put the discovered replacement
     */
-  def findReplacementConstructionItem(player: Player, tool: ConstructionItem, index: Int): Unit = {
+private def findReplacementConstructionItem(player: Player, tool: ConstructionItem, index: Int): Unit = {
     val definition = tool.Definition
     if (player.Slot(index).Equipment.isEmpty) {
       FindEquipmentStock(player, { e => e.Definition == definition }, 1) match {

@@ -9,7 +9,7 @@ object CryptoPacketOpcode extends Enumeration {
 
   val Ignore, ClientChallengeXchg, ServerChallengeXchg, ClientFinished, ServerFinished = Value
 
-  def getPacketDecoder(opcode: CryptoPacketOpcode.Type): BitVector => Attempt[DecodeResult[PlanetSideCryptoPacket]] =
+private def getPacketDecoder(opcode: CryptoPacketOpcode.Type): BitVector => Attempt[DecodeResult[PlanetSideCryptoPacket]] =
     opcode match {
       case Ignore              => crypto.Ignore.decode
       case ClientChallengeXchg => crypto.ClientChallengeXchg.decode

@@ -15,9 +15,9 @@ import net.psforever.types.Vector3
   */
 final case class Sphere(p: Point, radius: Float)
   extends VolumetricGeometry {
-  def center: Point = p
+private def center: Point = p
 
-  def moveCenter(point: geometry.Point): Sphere = Sphere(Point(point), radius)
+private def moveCenter(point: geometry.Point): Sphere = Sphere(Point(point), radius)
 
   /**
     * Find a point on the exterior of the geometry if a line was drawn outwards from the centroid.
@@ -40,7 +40,7 @@ object Sphere {
     * @param radius a distance around the world origin coordinates
     * @return a `Sphere` entity
     */
-  def apply(radius: Float): Sphere = Sphere(Point(), radius)
+def apply(radius: Float): Sphere = Sphere(Point(), radius)
 
   /**
     * An overloaded constructor that uses individual coordinates to define the central point.
@@ -50,7 +50,7 @@ object Sphere {
     * @param radius a distance around the world origin coordinates
     * @return a `Sphere` entity
     */
-  def apply(x: Float, y: Float, z: Float, radius: Float): Sphere = Sphere(Point(x,y,z), radius)
+def apply(x: Float, y: Float, z: Float, radius: Float): Sphere = Sphere(Point(x,y,z), radius)
 
   /**
     * An overloaded constructor that uses vector coordinates to define the central point.
@@ -58,5 +58,5 @@ object Sphere {
     * @param radius a distance around the world origin coordinates
     * @return a `Sphere` entity
     */
-  def apply(v: Vector3, radius: Float): Sphere = Sphere(Point(v), radius)
+def apply(v: Vector3, radius: Float): Sphere = Sphere(Point(v), radius)
 }

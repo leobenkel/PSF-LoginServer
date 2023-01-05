@@ -8,8 +8,8 @@ import scodec.codecs._
 
 final case class RequestDestroyMessage(object_guid: PlanetSideGUID) extends PlanetSideGamePacket {
   type Packet = RequestDestroyMessage
-  def opcode = GamePacketOpcode.RequestDestroyMessage
-  def encode = RequestDestroyMessage.encode(this)
+def opcode = GamePacketOpcode.RequestDestroyMessage
+def encode = RequestDestroyMessage.encode(this)
 }
 
 object RequestDestroyMessage extends Marshallable[RequestDestroyMessage] {

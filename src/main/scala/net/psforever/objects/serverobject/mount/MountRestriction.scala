@@ -5,27 +5,27 @@ import net.psforever.objects.{GlobalDefinitions, Player, Vehicle}
 import net.psforever.types.ExoSuitType
 
 trait MountRestriction[A] {
-  def test(target: A): Boolean
+private def test(target: A): Boolean
 }
 
 case object MaxOnly extends MountRestriction[Player] {
-  def test(target: Player): Boolean = target.ExoSuit == ExoSuitType.MAX
+private def test(target: Player): Boolean = target.ExoSuit == ExoSuitType.MAX
 }
 
 case object NoMax extends MountRestriction[Player] {
-  def test(target: Player): Boolean = target.ExoSuit != ExoSuitType.MAX
+private def test(target: Player): Boolean = target.ExoSuit != ExoSuitType.MAX
 }
 
 case object NoReinforcedOrMax extends MountRestriction[Player] {
-  def test(target: Player): Boolean = target.ExoSuit != ExoSuitType.Reinforced && target.ExoSuit != ExoSuitType.MAX
+private def test(target: Player): Boolean = target.ExoSuit != ExoSuitType.Reinforced && target.ExoSuit != ExoSuitType.MAX
 }
 
 case object Unrestricted extends MountRestriction[Player] {
-  def test(target: Player): Boolean = true
+private def test(target: Player): Boolean = true
 }
 
 case object SmallCargo extends MountRestriction[Vehicle] {
-  def test(target: Vehicle): Boolean = {
+private def test(target: Vehicle): Boolean = {
     target.Definition == GlobalDefinitions.ant ||
     target.Definition == GlobalDefinitions.quadassault ||
     target.Definition == GlobalDefinitions.quadstealth ||
@@ -41,7 +41,7 @@ case object SmallCargo extends MountRestriction[Vehicle] {
 }
 
 case object LargeCargo extends MountRestriction[Vehicle] {
-  def test(target: Vehicle): Boolean = {
+private def test(target: Vehicle): Boolean = {
     GlobalDefinitions.isBattleFrameVehicle(target.Definition) || !target.Definition.CanFly
   }
 }

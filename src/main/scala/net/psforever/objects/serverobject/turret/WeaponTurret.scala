@@ -37,17 +37,17 @@ trait WeaponTurret
   due to the inheritance requirement above, these statements are not required to be implemented or overrode ever
   they are purely for class visibility
    */
-  def Health: Int
+private def Health: Int
 
-  def MaxHealth: Int
+private def MaxHealth: Int
 
-  def Inventory: GridInventory = inventory
+private def Inventory: GridInventory = inventory
 
-  def VisibleSlots: Set[Int] = Set(1)
+private def VisibleSlots: Set[Int] = Set(1)
 
-  def Upgrade: TurretUpgrade.Value = upgradePath
+private def Upgrade: TurretUpgrade.Value = upgradePath
 
-  def Upgrade_=(upgrade: TurretUpgrade.Value): TurretUpgrade.Value = {
+private def Upgrade_=(upgrade: TurretUpgrade.Value): TurretUpgrade.Value = {
     middleOfUpgrade = true //blocking flag; block early
     var updated = false
     //upgrade each weapon as long as that weapon has a valid option for that upgrade
@@ -70,16 +70,16 @@ trait WeaponTurret
     Upgrade
   }
 
-  def ConfirmUpgrade(upgrade: TurretUpgrade.Value): TurretUpgrade.Value = {
+private def ConfirmUpgrade(upgrade: TurretUpgrade.Value): TurretUpgrade.Value = {
     if (middleOfUpgrade && upgradePath == upgrade) {
       middleOfUpgrade = false
     }
     upgradePath
   }
 
-  def isUpgrading: Boolean = middleOfUpgrade
+private def isUpgrading: Boolean = middleOfUpgrade
 
-  def Definition: TurretDefinition
+private def Definition: TurretDefinition
 }
 
 object WeaponTurret {
@@ -89,7 +89,7 @@ object WeaponTurret {
     * @see `{object}.LoadDefinition`
     * @param turret the `MannedTurret` being initialized
     */
-  def LoadDefinition(turret: WeaponTurret): WeaponTurret = {
+private def LoadDefinition(turret: WeaponTurret): WeaponTurret = {
     LoadDefinition(turret, turret.Definition)
   }
 
@@ -100,7 +100,7 @@ object WeaponTurret {
     * @param turret the `MannedTurret` being initialized
     * @param tdef the object definition
     */
-  def LoadDefinition(turret: WeaponTurret, tdef: TurretDefinition): WeaponTurret = {
+private def LoadDefinition(turret: WeaponTurret, tdef: TurretDefinition): WeaponTurret = {
     import net.psforever.objects.equipment.EquipmentSize.BaseTurretWeapon
     //create weapons; note the class
     turret.weapons = tdef.WeaponPaths
@@ -134,7 +134,7 @@ class TurretWeapon(
 ) extends Tool(udefs(default)) {
   private var upgradePath: TurretUpgrade.Value = default
 
-  def Upgrade: TurretUpgrade.Value = {
+private def Upgrade: TurretUpgrade.Value = {
     /*
     Must check `not null` due to how this object's `Definition` will be called during `Tool`'s constructor
     before the internal value can be set to default value `None`
@@ -147,7 +147,7 @@ class TurretWeapon(
     }
   }
 
-  def Upgrade_=(upgrade: TurretUpgrade.Value): TurretUpgrade.Value = {
+private def Upgrade_=(upgrade: TurretUpgrade.Value): TurretUpgrade.Value = {
     if (udefs.contains(upgrade)) {
       val beforeUpgrade = upgradePath
       upgradePath = upgrade

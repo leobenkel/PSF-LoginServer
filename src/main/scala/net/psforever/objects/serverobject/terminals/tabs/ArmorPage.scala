@@ -23,7 +23,7 @@ final case class ArmorPage(stock: Map[String, (ExoSuitType.Value, Int)]) extends
     }
   }
 
-  def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
+private def Dispatch(sender: ActorRef, terminal: Terminal, msg: Terminal.TerminalMessage): Unit = {
     msg.player.Actor ! msg
   }
 }

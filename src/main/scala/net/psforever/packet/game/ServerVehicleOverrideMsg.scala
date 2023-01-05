@@ -60,8 +60,8 @@ final case class ServerVehicleOverrideMsg(
     unk8: Option[Long]
 ) extends PlanetSideGamePacket {
   type Packet = ServerVehicleOverrideMsg
-  def opcode = GamePacketOpcode.ServerVehicleOverrideMsg
-  def encode = ServerVehicleOverrideMsg.encode(this)
+def opcode = GamePacketOpcode.ServerVehicleOverrideMsg
+def encode = ServerVehicleOverrideMsg.encode(this)
 }
 
 object ServerVehicleOverrideMsg extends Marshallable[ServerVehicleOverrideMsg] {

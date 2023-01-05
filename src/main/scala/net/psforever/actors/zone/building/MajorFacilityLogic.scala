@@ -124,7 +124,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     *         `None`, if the facility is not a capitol building;
     *         `Some(true|false)` to indicate the state of the force dome
     */
-  def checkForceDomeStatus(building: Building): Option[Boolean] = {
+private def checkForceDomeStatus(building: Building): Option[Boolean] = {
     if (building.IsCapitol) {
       val originalStatus = building.ForceDomeActive
       val faction        = building.Faction
@@ -158,7 +158,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     * @param data optional information
     * @return the next behavior for this control agency messaging system
     */
-  def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command] = {
+private def amenityStateChange(details: BuildingWrapper, entity: Amenity, data: Option[Any]): Behavior[Command] = {
     entity match {
       case gen: Generator =>
         if (generatorStateChange(details, gen, data)) {
@@ -198,7 +198,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     * and are instructed to display their "unpowered" model.
     * Additionally, the facility is now rendered unspawnable regardless of its player spawning amenities.
     */
-  def powerOff(details: BuildingWrapper): Behavior[Command] = {
+private def powerOff(details: BuildingWrapper): Behavior[Command] = {
     details.building.Generator match {
       case Some(gen) => gen.Actor ! BuildingActor.NtuDepleted()
       case _         => powerLost(details)
@@ -212,7 +212,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     * and are instructed to display their "powered" model.
     * Additionally, the facility is now rendered spawnable if its player spawning amenities are online.
     */
-  def powerOn(details: BuildingWrapper): Behavior[Command] = {
+private def powerOn(details: BuildingWrapper): Behavior[Command] = {
     details.building.Generator match {
       case Some(gen) if details.building.NtuLevel > 0 => gen.Actor ! BuildingActor.SuppliedWithNtu()
       case _                                          => powerRestored(details)
@@ -227,7 +227,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     * @param details package class that conveys the important information
     * @return the next behavior for this control agency messaging system
     */
-  def ntuDepleted(details: BuildingWrapper): Behavior[Command] = {
+private def ntuDepleted(details: BuildingWrapper): Behavior[Command] = {
     // Someone let the base run out of nanites. No one gets anything.
     details.building.Amenities.foreach { amenity =>
       amenity.Actor ! BuildingActor.NtuDepleted()
@@ -244,7 +244,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     * @param details package class that conveys the important information
     * @return the next behavior for this control agency messaging system
     */
-  def suppliedWithNtu(details: BuildingWrapper): Behavior[Command] = {
+private def suppliedWithNtu(details: BuildingWrapper): Behavior[Command] = {
     // Auto-repair restart, mainly.  If the Generator works, power should be restored too.
     details.asInstanceOf[MajorFacilityWrapper].hasNtuSupply = true
     details.building.Amenities.foreach { amenity =>
@@ -323,7 +323,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     }
   }
 
-  def setFactionTo(
+private def setFactionTo(
       details: BuildingWrapper,
       faction: PlanetSideEmpire.Value
   ): Behavior[Command] = {
@@ -336,7 +336,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     Behaviors.same
   }
 
-  def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command] = {
+private def alertToFactionChange(details: BuildingWrapper, building: Building): Behavior[Command] = {
     alignForceDomeStatus(details)
     Behaviors.same
   }
@@ -396,7 +396,7 @@ case object MajorFacilityLogic extends BuildingLogic {
     * @param msg the original message that instigated this upoate
     * @return the next behavior for this control agency messaging system
     */
-  def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command] = {
+private def ntu(details: BuildingWrapper, msg: NtuCommand.Command): Behavior[Command] = {
     import NtuCommand._
     msg match {
       case Request(_, replyTo) =>

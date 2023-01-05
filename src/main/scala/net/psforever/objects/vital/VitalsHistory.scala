@@ -11,17 +11,17 @@ import net.psforever.objects.vital.projectile.ProjectileReason
 import net.psforever.types.{ExoSuitType, ImplantType}
 
 trait VitalsActivity {
-  def time: Long
+private def time: Long
 }
 
 trait HealingActivity extends VitalsActivity {
-  def amount: Int
+private def amount: Int
   val time: Long = System.currentTimeMillis()
 }
 
 trait DamagingActivity extends VitalsActivity {
-  def time: Long = data.interaction.hitTime
-  def data: DamageResult
+private def time: Long = data.interaction.hitTime
+private def data: DamageResult
 }
 
 final case class HealFromKit(kit_def: KitDefinition, amount: Int) extends HealingActivity
@@ -33,15 +33,15 @@ final case class HealFromEquipment(
 ) extends HealingActivity
 
 final case class HealFromTerm(term_def: TerminalDefinition, health: Int, armor: Int) extends HealingActivity {
-  def amount: Int = health + armor
+private def amount: Int = health + armor
 }
 
 final case class HealFromImplant(implant: ImplantType, health: Int) extends HealingActivity {
-  def amount: Int = health
+private def amount: Int = health
 }
 
 final case class HealFromExoSuitChange(exosuit: ExoSuitType.Value) extends HealingActivity {
-  def amount: Int = 0
+private def amount: Int = 0
 }
 
 final case class RepairFromKit(kit_def: KitDefinition, amount: Int) extends HealingActivity()
@@ -75,7 +75,7 @@ final case class PlayerSuicide(player: PlayerSource) extends DamagingActivity {
     )
     out
   }
-  def data: DamageResult = result
+private def data: DamageResult = result
 }
 
 final case class DamageFromExplodingEntity(data: DamageResult) extends DamagingActivity
@@ -92,7 +92,7 @@ trait VitalsHistory {
 
   private var lastDamage: Option[DamageResult] = None
 
-  def History: List[VitalsActivity] = vitalsHistory
+private def History: List[VitalsActivity] = vitalsHistory
 
   /**
     * A `VitalsActivity` event must be recorded.
@@ -100,7 +100,7 @@ trait VitalsHistory {
     * @param action the fully-informed entry
     * @return the list of previous changes to this object's vital statistics
     */
-  def History(action: VitalsActivity): List[VitalsActivity] = History(Some(action))
+private def History(action: VitalsActivity): List[VitalsActivity] = History(Some(action))
 
   /**
     * A `VitalsActivity` event must be recorded.
@@ -108,7 +108,7 @@ trait VitalsHistory {
     * @param action the fully-informed entry
     * @return the list of previous changes to this object's vital statistics
     */
-  def History(action: Option[VitalsActivity]): List[VitalsActivity] = {
+private def History(action: Option[VitalsActivity]): List[VitalsActivity] = {
     action match {
       case Some(act) =>
         vitalsHistory = act +: vitalsHistory
@@ -122,7 +122,7 @@ trait VitalsHistory {
     * @param result the fully-informed entry
     * @return the list of previous changes to this object's vital statistics
     */
-  def History(result: DamageResult): List[VitalsActivity] = {
+private def History(result: DamageResult): List[VitalsActivity] = {
     result.interaction.cause match {
       case _: ProjectileReason =>
         vitalsHistory = DamageFromProjectile(result) +: vitalsHistory
@@ -144,13 +144,13 @@ trait VitalsHistory {
     vitalsHistory
   }
 
-  def LastDamage: Option[DamageResult] = lastDamage
+private def LastDamage: Option[DamageResult] = lastDamage
 
   /**
     * Find, specifically, the last instance of a weapon discharge vital statistics change.
     * @return information about the discharge
     */
-  def LastShot: Option[DamageResult] = {
+private def LastShot: Option[DamageResult] = {
     vitalsHistory.find({ p => p.isInstanceOf[DamageFromProjectile] }) match {
       case Some(entry: DamageFromProjectile) =>
         Some(entry.data)
@@ -159,7 +159,7 @@ trait VitalsHistory {
     }
   }
 
-  def ClearHistory(): List[VitalsActivity] = {
+private def ClearHistory(): List[VitalsActivity] = {
     val out = vitalsHistory
     vitalsHistory = List.empty[VitalsActivity]
     out
@@ -168,12 +168,12 @@ trait VitalsHistory {
 
 //deprecated overrides
 object HealFromKit {
-  def apply(Target: PlayerSource, amount: Int, kit_def: KitDefinition): HealFromKit =
+def apply(Target: PlayerSource, amount: Int, kit_def: KitDefinition): HealFromKit =
     HealFromKit(kit_def, amount)
 }
 
 object HealFromEquipment {
-  def apply(
+def apply(
       Target: PlayerSource,
       user: PlayerSource,
       amount: Int,
@@ -183,27 +183,27 @@ object HealFromEquipment {
 }
 
 object HealFromTerm {
-  def apply(Target: PlayerSource, health: Int, armor: Int, term_def: TerminalDefinition): HealFromTerm =
+def apply(Target: PlayerSource, health: Int, armor: Int, term_def: TerminalDefinition): HealFromTerm =
     HealFromTerm(term_def, health, armor)
 }
 
 object HealFromImplant {
-  def apply(Target: PlayerSource, amount: Int, implant: ImplantType): HealFromImplant =
+def apply(Target: PlayerSource, amount: Int, implant: ImplantType): HealFromImplant =
     HealFromImplant(implant, amount)
 }
 
 object HealFromExoSuitChange {
-  def apply(Target: PlayerSource, exosuit: ExoSuitType.Value): HealFromExoSuitChange =
+def apply(Target: PlayerSource, exosuit: ExoSuitType.Value): HealFromExoSuitChange =
     HealFromExoSuitChange(exosuit)
 }
 
 object RepairFromKit {
-  def apply(Target: PlayerSource, amount: Int, kit_def: KitDefinition): RepairFromKit =
+def apply(Target: PlayerSource, amount: Int, kit_def: KitDefinition): RepairFromKit =
     RepairFromKit(kit_def, amount)
 }
 
 object RepairFromEquipment {
-  def apply(
+def apply(
       Target: PlayerSource,
       user: PlayerSource,
       amount: Int,
@@ -213,11 +213,11 @@ object RepairFromEquipment {
 }
 
 object RepairFromTerm {
-  def apply(Target: VehicleSource, amount: Int, term_def: TerminalDefinition): RepairFromTerm =
+def apply(Target: VehicleSource, amount: Int, term_def: TerminalDefinition): RepairFromTerm =
     RepairFromTerm(term_def, amount)
 }
 
 object VehicleShieldCharge {
-  def apply(Target: VehicleSource, amount: Int): VehicleShieldCharge =
+def apply(Target: VehicleSource, amount: Int): VehicleShieldCharge =
     VehicleShieldCharge(amount)
 }

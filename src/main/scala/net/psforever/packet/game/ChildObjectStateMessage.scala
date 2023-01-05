@@ -25,8 +25,8 @@ import scodec.codecs._
 final case class ChildObjectStateMessage(object_guid: PlanetSideGUID, pitch: Float, yaw: Float)
     extends PlanetSideGamePacket {
   type Packet = ChildObjectStateMessage
-  def opcode: Type               = GamePacketOpcode.ChildObjectStateMessage
-  def encode: Attempt[BitVector] = ChildObjectStateMessage.encode(this)
+def opcode: Type               = GamePacketOpcode.ChildObjectStateMessage
+def encode: Attempt[BitVector] = ChildObjectStateMessage.encode(this)
 }
 
 object ChildObjectStateMessage extends Marshallable[ChildObjectStateMessage] {

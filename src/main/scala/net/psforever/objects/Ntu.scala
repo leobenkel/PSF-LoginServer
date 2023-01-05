@@ -36,15 +36,15 @@ object Ntu {
 }
 
 trait NtuContainerOwner {
-  def getNtuContainer: Option[NtuContainer]
+private def getNtuContainer: Option[NtuContainer]
 }
 
 trait NtuContainer extends TransferContainer {
-  def NtuCapacitor: Float
+private def NtuCapacitor: Float
 
-  def NtuCapacitor_=(value: Float): Float
+private def NtuCapacitor_=(value: Float): Float
 
-  def NtuCapacitorScaled: Int = {
+private def NtuCapacitorScaled: Int = {
     if (Definition.MaxNtuCapacitor > 0) {
       scala.math.ceil((NtuCapacitor / Definition.MaxNtuCapacitor) * 10).toInt
     } else {
@@ -52,17 +52,17 @@ trait NtuContainer extends TransferContainer {
     }
   }
 
-  def MaxNtuCapacitor: Float
+private def MaxNtuCapacitor: Float
 
-  def Definition: ObjectDefinition with NtuContainerDefinition
+private def Definition: ObjectDefinition with NtuContainerDefinition
 }
 
 trait CommonNtuContainer extends NtuContainer {
   private var ntuCapacitor: Float = 0
 
-  def NtuCapacitor: Float = ntuCapacitor
+private def NtuCapacitor: Float = ntuCapacitor
 
-  def NtuCapacitor_=(value: Float): Float = {
+private def NtuCapacitor_=(value: Float): Float = {
     ntuCapacitor = scala.math.max(0, scala.math.min(value, Definition.MaxNtuCapacitor))
     NtuCapacitor
   }
@@ -71,18 +71,18 @@ trait CommonNtuContainer extends NtuContainer {
 trait NtuContainerDefinition {
   private var maxNtuCapacitor: Float = 0
 
-  def MaxNtuCapacitor: Float = maxNtuCapacitor
+private def MaxNtuCapacitor: Float = maxNtuCapacitor
 
-  def MaxNtuCapacitor_=(max: Float): Float = {
+private def MaxNtuCapacitor_=(max: Float): Float = {
     maxNtuCapacitor = max
     MaxNtuCapacitor
   }
 }
 
 trait NtuStorageBehavior extends Actor {
-  def NtuStorageObject: NtuContainer = null
+private def NtuStorageObject: NtuContainer = null
 
-  def storageBehavior: Receive = {
+private def storageBehavior: Receive = {
     case Ntu.Offer(src) => HandleNtuOffer(sender(), src)
 
     case Ntu.Grant(_, 0) | Ntu.Request(0, 0) | TransferBehavior.Stopping() => StopNtuBehavior(sender())
@@ -98,11 +98,11 @@ trait NtuStorageBehavior extends Actor {
     case NtuCommand.Grant(src, amount) => HandleNtuGrant(sender(), src, amount)
   }
 
-  def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit
+private def HandleNtuOffer(sender: ActorRef, src: NtuContainer): Unit
 
-  def StopNtuBehavior(sender: ActorRef): Unit
+private def StopNtuBehavior(sender: ActorRef): Unit
 
-  def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit
+private def HandleNtuRequest(sender: ActorRef, min: Float, max: Float): Unit
 
-  def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit
+private def HandleNtuGrant(sender: ActorRef, src: NtuContainer, amount: Float): Unit
 }

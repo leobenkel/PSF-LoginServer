@@ -30,12 +30,12 @@ final case class BroadcastWarpgateUpdateMessage(
                                                  vs: Boolean
                                                ) extends PlanetSideGamePacket {
   type Packet = BroadcastWarpgateUpdateMessage
-  def opcode = GamePacketOpcode.BroadcastWarpgateUpdateMessage
-  def encode = BroadcastWarpgateUpdateMessage.encode(this)
+def opcode = GamePacketOpcode.BroadcastWarpgateUpdateMessage
+def encode = BroadcastWarpgateUpdateMessage.encode(this)
 }
 
 object BroadcastWarpgateUpdateMessage extends Marshallable[BroadcastWarpgateUpdateMessage] {
-  def apply(
+def apply(
              zoneId: Int,
              buildingId: Int,
              faction: PlanetSideEmpire.Value
@@ -43,7 +43,7 @@ object BroadcastWarpgateUpdateMessage extends Marshallable[BroadcastWarpgateUpda
     BroadcastWarpgateUpdateMessage(zoneId, buildingId, Set(faction))
   }
 
-  def apply(
+def apply(
              zoneId: Int,
              buildingId: Int,
              factions: Set[PlanetSideEmpire.Value]

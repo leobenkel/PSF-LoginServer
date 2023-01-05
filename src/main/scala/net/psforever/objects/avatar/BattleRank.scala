@@ -7,7 +7,7 @@ import net.psforever.packet.game.objectcreate.UniformStyle
   * Source: http://wiki.psforever.net/wiki/Battle_Rank
   */
 sealed abstract class BattleRank(val value: Int, val experience: Long) extends IntEnumEntry {
-  def implantSlots: Int = {
+private def implantSlots: Int = {
     if (this.value >= BattleRank.BR18.value) {
       3
     } else if (this.value >= BattleRank.BR12.value) {
@@ -19,7 +19,7 @@ sealed abstract class BattleRank(val value: Int, val experience: Long) extends I
     }
   }
 
-  def uniformStyle: UniformStyle.Value = {
+private def uniformStyle: UniformStyle.Value = {
     if (this.value >= BattleRank.BR25.value) {
       UniformStyle.ThirdUpgrade
     } else if (this.value >= BattleRank.BR14.value) {
@@ -88,12 +88,12 @@ case object BattleRank extends IntEnum[BattleRank] {
   val values: IndexedSeq[BattleRank] = findValues
 
   /** Find BattleRank variant for given experience value */
-  def withExperience(experience: Long): BattleRank = {
+private def withExperience(experience: Long): BattleRank = {
     withExperienceOpt(experience).get
   }
 
   /** Find BattleRank variant for given experience value */
-  def withExperienceOpt(experience: Long): Option[BattleRank] = {
+private def withExperienceOpt(experience: Long): Option[BattleRank] = {
     values.find(br =>
       this.withValueOpt(br.value + 1) match {
         case Some(nextBr) =>

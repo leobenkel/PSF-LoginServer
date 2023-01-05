@@ -14,15 +14,15 @@ class ConstructionItemDefinition(objectId: Int) extends EquipmentDefinition(obje
   Packet = new ACEConverter
   registerAs = "items"
 
-  def Modes: ListBuffer[ConstructionFireMode] = modes
+private def Modes: ListBuffer[ConstructionFireMode] = modes
 }
 
 object ConstructionItemDefinition {
-  def apply(objectId: Int): ConstructionItemDefinition = {
+def apply(objectId: Int): ConstructionItemDefinition = {
     new ConstructionItemDefinition(objectId)
   }
 
-  def apply(cItem: CItem.Value): ConstructionItemDefinition = {
+def apply(cItem: CItem.Value): ConstructionItemDefinition = {
     new ConstructionItemDefinition(cItem.id)
   }
 }
@@ -31,17 +31,17 @@ class ConstructionFireMode {
   private val deployables: ListBuffer[DeployedItem.Value] = ListBuffer.empty
   private val permissions: ListBuffer[Set[Certification]] = ListBuffer.empty
 
-  def Permissions: ListBuffer[Set[Certification]] = permissions
+private def Permissions: ListBuffer[Set[Certification]] = permissions
 
-  def Deployables: ListBuffer[DeployedItem.Value] = deployables
+private def Deployables: ListBuffer[DeployedItem.Value] = deployables
 
-  def Item(deployable: DeployedItem.Value): ListBuffer[DeployedItem.Value] = {
+private def Item(deployable: DeployedItem.Value): ListBuffer[DeployedItem.Value] = {
     deployables += deployable
     permissions += Set.empty[Certification]
     deployables
   }
 
-  def Item(deployable: DeployedItem.Value, permission: Set[Certification]): ListBuffer[DeployedItem.Value] = {
+private def Item(deployable: DeployedItem.Value, permission: Set[Certification]): ListBuffer[DeployedItem.Value] = {
     deployables += deployable
     permissions += permission
     deployables

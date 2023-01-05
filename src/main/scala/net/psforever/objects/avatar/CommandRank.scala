@@ -22,12 +22,12 @@ case object CommandRank extends IntEnum[CommandRank] {
   val values: IndexedSeq[CommandRank] = findValues
 
   /** Find CommandRank variant for given experience value */
-  def withExperience(experience: Long): CommandRank = {
+private def withExperience(experience: Long): CommandRank = {
     withExperienceOpt(experience).get
   }
 
   /** Find CommandRank variant for given experience value */
-  def withExperienceOpt(experience: Long): Option[CommandRank] = {
+private def withExperienceOpt(experience: Long): Option[CommandRank] = {
     values.find(cr =>
       this.withValueOpt(cr.value + 1) match {
         case Some(nextCr) =>

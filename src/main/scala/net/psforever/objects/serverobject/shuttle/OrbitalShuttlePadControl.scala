@@ -37,7 +37,7 @@ class OrbitalShuttlePadControl(pad: OrbitalShuttlePad) extends Actor {
 private var managedDoors: List[Door] = Nil
 private var shuttle: Vehicle = _
 
-  def receive: Receive = startUp
+def receive: Receive = startUp
 
   /** the HART system is active and ready to handle state changes */
 private val taxiing: Receive = {
@@ -129,7 +129,7 @@ object OrbitalShuttlePadControl {
     * @param ref a reference to the control agency for the orbital shuttle pad
     * @return a `TaskBundle` object
     */
-  def registerShuttle(zone: Zone, shuttle: Vehicle, ref: ActorRef): TaskBundle = {
+private def registerShuttle(zone: Zone, shuttle: Vehicle, ref: ActorRef): TaskBundle = {
     import scala.concurrent.ExecutionContext.Implicits.global
     TaskBundle(
       new StraightforwardTask() {
@@ -155,7 +155,7 @@ object OrbitalShuttlePadControl {
     * @return `true`, if the user is the accepted by the door;
     *        `false`, otherwise
     */
-  def shuttleIsBoarding(obj: PlanetSideServerObject, door: Door): Boolean = {
+private def shuttleIsBoarding(obj: PlanetSideServerObject, door: Door): Boolean = {
     obj.Faction == door.Faction
   }
 
@@ -174,7 +174,7 @@ object OrbitalShuttlePadControl {
     * @param door the door
     * @return `false`, as the door can not be opened in this state
     */
-  def lockedWaitingForShuttle(obj: PlanetSideServerObject, door: Door): Boolean = {
+private def lockedWaitingForShuttle(obj: PlanetSideServerObject, door: Door): Boolean = {
     val zone = door.Zone
     obj match {
       case p: Player if p.Faction == door.Faction =>

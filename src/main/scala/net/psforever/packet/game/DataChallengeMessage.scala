@@ -12,8 +12,8 @@ import scodec.bits.BitVector
   */
 final case class DataChallengeMessage(attribute: String, value: Long) extends PlanetSideGamePacket {
   type Packet = DataChallengeMessage
-  def opcode: GamePacketOpcode.Value = GamePacketOpcode.DataChallengeMessage
-  def encode: Attempt[BitVector]     = DataChallengeMessage.encode(this)
+def opcode: GamePacketOpcode.Value = GamePacketOpcode.DataChallengeMessage
+def encode: Attempt[BitVector]     = DataChallengeMessage.encode(this)
 }
 
 object DataChallengeMessage extends Marshallable[DataChallengeMessage] {

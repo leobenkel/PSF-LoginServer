@@ -57,8 +57,8 @@ final case class ProjectileStateMessage(
     hit_target_guid: PlanetSideGUID
 ) extends PlanetSideGamePacket {
   type Packet = ProjectileStateMessage
-  def opcode = GamePacketOpcode.ProjectileStateMessage
-  def encode = ProjectileStateMessage.encode(this)
+def opcode = GamePacketOpcode.ProjectileStateMessage
+def encode = ProjectileStateMessage.encode(this)
 }
 
 object ProjectileStateMessage extends Marshallable[ProjectileStateMessage] {

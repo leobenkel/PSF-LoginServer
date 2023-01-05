@@ -34,7 +34,7 @@ object DetailedLockerContainerData extends Marshallable[DetailedLockerContainerD
     * @param unk na
     * @return a `DetailedLockerContainerData` object
     */
-  def apply(unk: Int): DetailedLockerContainerData =
+def apply(unk: Int): DetailedLockerContainerData =
     new DetailedLockerContainerData(CommonFieldData(PlanetSideEmpire.NEUTRAL, unk), None)
 
   /**
@@ -43,7 +43,7 @@ object DetailedLockerContainerData extends Marshallable[DetailedLockerContainerD
     * @param inventory the items in the inventory
     * @return a `DetailedLockerContainerData` object
     */
-  def apply(unk: Int, inventory: List[InternalSlot]): DetailedLockerContainerData =
+def apply(unk: Int, inventory: List[InternalSlot]): DetailedLockerContainerData =
     new DetailedLockerContainerData(CommonFieldData(PlanetSideEmpire.NEUTRAL, unk), Some(InventoryData(inventory)))
 
   /**
@@ -54,7 +54,7 @@ object DetailedLockerContainerData extends Marshallable[DetailedLockerContainerD
     * @param locker the `DetailedLockerContainerData`
     * @return an `InternalSlot` object that encapsulates `DetailedLockerContainerData`
     */
-  def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, locker: DetailedLockerContainerData): InternalSlot =
+def apply(cls: Int, guid: PlanetSideGUID, parentSlot: Int, locker: DetailedLockerContainerData): InternalSlot =
     new InternalSlot(cls, guid, parentSlot, locker)
 
   implicit val codec: Codec[DetailedLockerContainerData] = (
