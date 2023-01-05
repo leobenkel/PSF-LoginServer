@@ -154,7 +154,7 @@ object GlobalDefinitions {
   /*
   Projectiles
    */
-  private val no_projectile = new ProjectileDefinition(0) //also called none in ADB
+  val no_projectile = new ProjectileDefinition(0) //also called none in ADB
 
   private val bullet_105mm_projectile = ProjectileDefinition(Projectiles.Types.bullet_105mm_projectile)
 
@@ -1116,33 +1116,33 @@ object GlobalDefinitions {
    */
   val boomer = BoomerDeployableDefinition(DeployedItem.boomer)
 
-  private val he_mine = ExplosiveDeployableDefinition(DeployedItem.he_mine)
+  val he_mine = ExplosiveDeployableDefinition(DeployedItem.he_mine)
 
-  private val jammer_mine = ExplosiveDeployableDefinition(DeployedItem.jammer_mine)
+  val jammer_mine = ExplosiveDeployableDefinition(DeployedItem.jammer_mine)
 
-  private val spitfire_turret = TurretDeployableDefinition(DeployedItem.spitfire_turret)
+  val spitfire_turret = TurretDeployableDefinition(DeployedItem.spitfire_turret)
 
-  private val spitfire_cloaked = TurretDeployableDefinition(DeployedItem.spitfire_cloaked)
+  val spitfire_cloaked = TurretDeployableDefinition(DeployedItem.spitfire_cloaked)
 
-  private val spitfire_aa = TurretDeployableDefinition(DeployedItem.spitfire_aa)
+  val spitfire_aa = TurretDeployableDefinition(DeployedItem.spitfire_aa)
 
-  private val motionalarmsensor = SensorDeployableDefinition(DeployedItem.motionalarmsensor)
+  val motionalarmsensor = SensorDeployableDefinition(DeployedItem.motionalarmsensor)
 
-  private val sensor_shield = SensorDeployableDefinition(DeployedItem.sensor_shield)
+  val sensor_shield = SensorDeployableDefinition(DeployedItem.sensor_shield)
 
-  private val tank_traps = TrapDeployableDefinition(DeployedItem.tank_traps)
+  val tank_traps = TrapDeployableDefinition(DeployedItem.tank_traps)
 
-  private val portable_manned_turret = TurretDeployableDefinition(DeployedItem.portable_manned_turret)
+  val portable_manned_turret = TurretDeployableDefinition(DeployedItem.portable_manned_turret)
 
-  private val portable_manned_turret_nc = TurretDeployableDefinition(DeployedItem.portable_manned_turret_nc)
+  val portable_manned_turret_nc = TurretDeployableDefinition(DeployedItem.portable_manned_turret_nc)
 
-  private val portable_manned_turret_tr = TurretDeployableDefinition(DeployedItem.portable_manned_turret_tr)
+  val portable_manned_turret_tr = TurretDeployableDefinition(DeployedItem.portable_manned_turret_tr)
 
-  private val portable_manned_turret_vs = TurretDeployableDefinition(DeployedItem.portable_manned_turret_vs)
+  val portable_manned_turret_vs = TurretDeployableDefinition(DeployedItem.portable_manned_turret_vs)
 
-  private val deployable_shield_generator = new ShieldGeneratorDefinition
+  val deployable_shield_generator = new ShieldGeneratorDefinition
 
-  private val router_telepad_deployable = TelepadDeployableDefinition(DeployedItem.router_telepad_deployable)
+  val router_telepad_deployable = TelepadDeployableDefinition(DeployedItem.router_telepad_deployable)
 
   //this is only treated like a deployable
   val internal_router_telepad_deployable = InternalTelepadDefinition() //objectId: 744
@@ -1171,9 +1171,9 @@ object GlobalDefinitions {
 
   private val cert_terminal = new OrderTerminalDefinition(171)
 
-  private val implant_terminal_mech = new ImplantTerminalMechDefinition
+  val implant_terminal_mech = new ImplantTerminalMechDefinition
 
-  private val implant_terminal_interface = new OrderTerminalDefinition(409)
+  val implant_terminal_interface = new OrderTerminalDefinition(409)
 
   private val ground_vehicle_terminal = new OrderTerminalDefinition(386)
 
@@ -1191,10 +1191,10 @@ object GlobalDefinitions {
 
   val respawn_tube = new SpawnTubeDefinition(732)
 
-  private val respawn_tube_sanctuary =
+  val respawn_tube_sanctuary =
     new SpawnTubeDefinition(732) //respawn_tube for sanctuary VT_building_* structures
 
-  private val respawn_tube_tower = new SpawnTubeDefinition(733)
+  val respawn_tube_tower = new SpawnTubeDefinition(733)
 
   val teleportpad_terminal = new OrderTerminalDefinition(853)
 
@@ -1214,9 +1214,9 @@ object GlobalDefinitions {
 
   private val repair_silo = new MedicalTerminalDefinition(729)
 
-  private val recharge_terminal = new WeaponRechargeTerminalDefinition(724)
+  val recharge_terminal = new WeaponRechargeTerminalDefinition(724)
 
-  private val recharge_terminal_weapon_module = new WeaponRechargeTerminalDefinition(725)
+  val recharge_terminal_weapon_module = new WeaponRechargeTerminalDefinition(725)
 
   private val mb_pad_creation = new VehicleSpawnPadDefinition(525)
 
@@ -1234,7 +1234,7 @@ object GlobalDefinitions {
 
   val mb_locker = new LockerDefinition
 
-  private val lock_external = new IFFLockDefinition
+  val lock_external = new IFFLockDefinition
 
   val door = new DoorDefinition(242)
 
@@ -1267,7 +1267,7 @@ object GlobalDefinitions {
 
   val ground_rearm_terminal = new OrderTerminalDefinition(384)
 
-  private val manned_turret = new FacilityTurretDefinition(480)
+  val manned_turret = new FacilityTurretDefinition(480)
 
   val vanu_sentry_turret = new FacilityTurretDefinition(943)
 
@@ -1283,11 +1283,11 @@ object GlobalDefinitions {
 
   private val painbox_radius_continuous = new PainboxDefinition(627)
 
-  private val gen_control = new GeneratorTerminalDefinition(349)
+  val gen_control = new GeneratorTerminalDefinition(349)
 
-  private val generator = new GeneratorDefinition(351)
+  val generator = new GeneratorDefinition(351)
 
-  private val obbasemesh = new AmenityDefinition(598) {}
+  val obbasemesh = new AmenityDefinition(598) {}
 
   val targeting_laser_dispenser = new OrderTerminalDefinition(851)
   initMiscellaneous()
@@ -1387,7 +1387,7 @@ object GlobalDefinitions {
   private val vanu_control_point   = new BuildingDefinition(931) { Name = "vanu_control_point"; SOIRadius = 187 }
   private val vanu_vehicle_station = new BuildingDefinition(948) { Name = "vanu_vehicle_station"; SOIRadius = 187 }
 
-  private val hst = new WarpGateDefinition(402)
+  val hst = new WarpGateDefinition(402)
   hst.Name = "hst"
   hst.UseRadius = 44.96882005f
   hst.SOIRadius = 82
@@ -1403,21 +1403,21 @@ object GlobalDefinitions {
   hst.NoWarp += peregrine_flight
   hst.SpecificPointFunc = SpawnPoint.CavernGate(innerRadius = 6f)
 
-  private val warpgate = new WarpGateDefinition(993)
+  val warpgate = new WarpGateDefinition(993)
   warpgate.Name = "warpgate"
   warpgate.UseRadius = 67.81070029f
   warpgate.SOIRadius = 302 //301.8713f
   warpgate.VehicleAllowance = true
   warpgate.SpecificPointFunc = SpawnPoint.Gate
 
-  private val warpgate_cavern = new WarpGateDefinition(994)
+  val warpgate_cavern = new WarpGateDefinition(994)
   warpgate_cavern.Name = "warpgate_cavern"
   warpgate_cavern.UseRadius = 19.72639434f
   warpgate_cavern.SOIRadius = 41
   warpgate_cavern.VehicleAllowance = true
   warpgate_cavern.SpecificPointFunc = SpawnPoint.CavernGate(innerRadius = 4.5f)
 
-  private val warpgate_small = new WarpGateDefinition(995)
+  val warpgate_small = new WarpGateDefinition(995)
   warpgate_small.Name = "warpgate_small"
   warpgate_small.UseRadius = 69.03687655f
   warpgate_small.SOIRadius = 103
