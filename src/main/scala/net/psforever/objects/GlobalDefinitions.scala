@@ -180,9 +180,9 @@ object GlobalDefinitions {
 
   private val bullet_75mm_projectile = ProjectileDefinition(Projectiles.Types.bullet_75mm_projectile)
 
-  private val bullet_9mm_AP_projectile = ProjectileDefinition(Projectiles.Types.bullet_9mm_AP_projectile)
+  val bullet_9mm_AP_projectile = ProjectileDefinition(Projectiles.Types.bullet_9mm_AP_projectile)
 
-  private val bullet_9mm_projectile = ProjectileDefinition(Projectiles.Types.bullet_9mm_projectile)
+  val bullet_9mm_projectile = ProjectileDefinition(Projectiles.Types.bullet_9mm_projectile)
 
   private val anniversary_projectilea = ProjectileDefinition(Projectiles.Types.anniversary_projectilea)
 
@@ -260,7 +260,7 @@ object GlobalDefinitions {
 
   private val forceblade_projectile = ProjectileDefinition(Projectiles.Types.forceblade_projectile)
 
-  private val frag_cartridge_projectile = ProjectileDefinition(Projectiles.Types.frag_cartridge_projectile)
+  val frag_cartridge_projectile = ProjectileDefinition(Projectiles.Types.frag_cartridge_projectile)
 
   private val frag_cartridge_projectile_b = ProjectileDefinition(Projectiles.Types.frag_cartridge_projectile_b)
 
@@ -288,7 +288,7 @@ object GlobalDefinitions {
     Projectiles.Types.hunter_seeker_missile_projectile
   )
 
-  private val jammer_cartridge_projectile = ProjectileDefinition(Projectiles.Types.jammer_cartridge_projectile)
+  val jammer_cartridge_projectile = ProjectileDefinition(Projectiles.Types.jammer_cartridge_projectile)
 
   private val jammer_cartridge_projectile_b = ProjectileDefinition(Projectiles.Types.jammer_cartridge_projectile_b)
 
@@ -374,11 +374,11 @@ object GlobalDefinitions {
 
   private val peregrine_sparrow_projectile = ProjectileDefinition(Projectiles.Types.peregrine_sparrow_projectile)
 
-  private val phalanx_av_projectile = ProjectileDefinition(Projectiles.Types.phalanx_av_projectile)
+  val phalanx_av_projectile = ProjectileDefinition(Projectiles.Types.phalanx_av_projectile)
 
   private val phalanx_flak_projectile = ProjectileDefinition(Projectiles.Types.phalanx_flak_projectile)
 
-  private val phalanx_projectile = ProjectileDefinition(Projectiles.Types.phalanx_projectile)
+  val phalanx_projectile = ProjectileDefinition(Projectiles.Types.phalanx_projectile)
 
   val phoenix_missile_guided_projectile = ProjectileDefinition(
     Projectiles.Types.phoenix_missile_guided_projectile
@@ -386,7 +386,7 @@ object GlobalDefinitions {
 
   private val phoenix_missile_projectile = ProjectileDefinition(Projectiles.Types.phoenix_missile_projectile)
 
-  private val plasma_cartridge_projectile = ProjectileDefinition(Projectiles.Types.plasma_cartridge_projectile)
+  val plasma_cartridge_projectile = ProjectileDefinition(Projectiles.Types.plasma_cartridge_projectile)
 
   private val plasma_cartridge_projectile_b = ProjectileDefinition(Projectiles.Types.plasma_cartridge_projectile_b)
 
@@ -400,9 +400,9 @@ object GlobalDefinitions {
 
   private val ppa_projectile = ProjectileDefinition(Projectiles.Types.ppa_projectile)
 
-  private val pulsar_ap_projectile = ProjectileDefinition(Projectiles.Types.pulsar_ap_projectile)
+  val pulsar_ap_projectile = ProjectileDefinition(Projectiles.Types.pulsar_ap_projectile)
 
-  private val pulsar_projectile = ProjectileDefinition(Projectiles.Types.pulsar_projectile)
+  val pulsar_projectile = ProjectileDefinition(Projectiles.Types.pulsar_projectile)
 
   private val quasar_projectile = ProjectileDefinition(Projectiles.Types.quasar_projectile)
 
@@ -414,7 +414,7 @@ object GlobalDefinitions {
 
   private val reaver_rocket_projectile = ProjectileDefinition(Projectiles.Types.reaver_rocket_projectile)
 
-  private val rocket_projectile = ProjectileDefinition(Projectiles.Types.rocket_projectile)
+  val rocket_projectile = ProjectileDefinition(Projectiles.Types.rocket_projectile)
 
   private val rocklet_flak_projectile = ProjectileDefinition(Projectiles.Types.rocklet_flak_projectile)
 
@@ -426,9 +426,9 @@ object GlobalDefinitions {
 
   private val scythe_projectile_slave = ProjectileDefinition(Projectiles.Types.scythe_projectile_slave)
 
-  private val shotgun_shell_AP_projectile = ProjectileDefinition(Projectiles.Types.shotgun_shell_AP_projectile)
+  val shotgun_shell_AP_projectile = ProjectileDefinition(Projectiles.Types.shotgun_shell_AP_projectile)
 
-  private val shotgun_shell_projectile = ProjectileDefinition(Projectiles.Types.shotgun_shell_projectile)
+  val shotgun_shell_projectile = ProjectileDefinition(Projectiles.Types.shotgun_shell_projectile)
 
   private val six_shooter_projectile = ProjectileDefinition(Projectiles.Types.six_shooter_projectile)
 
@@ -1169,13 +1169,13 @@ object GlobalDefinitions {
 
   private val vanu_equipment_term = new OrderTerminalDefinition(933)
 
-  private val cert_terminal = new OrderTerminalDefinition(171)
+  val cert_terminal = new OrderTerminalDefinition(171)
 
   val implant_terminal_mech = new ImplantTerminalMechDefinition
 
   val implant_terminal_interface = new OrderTerminalDefinition(409)
 
-  private val ground_vehicle_terminal = new OrderTerminalDefinition(386)
+  val ground_vehicle_terminal = new OrderTerminalDefinition(386)
 
   private val air_vehicle_terminal = new OrderTerminalDefinition(43)
 
@@ -1218,7 +1218,7 @@ object GlobalDefinitions {
 
   val recharge_terminal_weapon_module = new WeaponRechargeTerminalDefinition(725)
 
-  private val mb_pad_creation = new VehicleSpawnPadDefinition(525)
+  val mb_pad_creation = new VehicleSpawnPadDefinition(525)
 
   private val dropship_pad_doors = new VehicleSpawnPadDefinition(261)
 
@@ -1254,7 +1254,7 @@ object GlobalDefinitions {
 
   val llm_socket = new CaptureFlagSocketDefinition()
 
-  private val capture_flag = new CaptureFlagDefinition()
+  val capture_flag = new CaptureFlagDefinition()
   capture_flag.Packet = new CaptureFlagConverter
 
   val lodestar_repair_terminal = new MedicalTerminalDefinition(461)
@@ -1310,7 +1310,7 @@ object GlobalDefinitions {
     SOIRadius = 300
     LatticeLinkBenefit = LatticeBenefit.DropshipCenter
   }
-  private val cryo_facility = new BuildingDefinition(215) {
+  val cryo_facility = new BuildingDefinition(215) {
     Name = "cryo_facility"
     SOIRadius = 300
     LatticeLinkBenefit = LatticeBenefit.BioLaboratory
@@ -1429,7 +1429,7 @@ object GlobalDefinitions {
   private val bunker_sm       = new BuildingDefinition(152) { Name = "bunker_sm" }
 
   private val orbital_building_nc = new BuildingDefinition(605) { Name = "orbital_building_nc" }
-  private val orbital_building_tr = new BuildingDefinition(606) { Name = "orbital_building_tr" }
+  val orbital_building_tr         = new BuildingDefinition(606) { Name = "orbital_building_tr" }
   private val orbital_building_vs = new BuildingDefinition(607) { Name = "orbital_building_vs" }
   private val VT_building_nc      = new BuildingDefinition(978) { Name = "VT_building_nc" }
   private val VT_building_tr      = new BuildingDefinition(979) { Name = "VT_building_tr" }

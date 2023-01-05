@@ -70,8 +70,6 @@ object Client {
 }
 
 class Client(username: String, password: String) {
-  import Client._
-
   private var sequence = 0
   private def nextSequence = {
     val r = sequence

@@ -14,7 +14,7 @@ object DrawnSlot extends Enumeration {
 
   val Pistol1         = Value(0)
   private val Pistol2 = Value(1)
-  private val Rifle1  = Value(2)
+  val Rifle1  = Value(2)
   private val Rifle2  = Value(3)
   private val Melee   = Value(4)
   val None            = Value(7)

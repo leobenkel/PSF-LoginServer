@@ -8,7 +8,7 @@ package net.psforever.objects.vehicles
 object VehicleLockState extends Enumeration {
   type Type = Value
 
-  val Locked        = Value(0) //owner only
-  private val Group = Value(1) //owner's squad/platoon only
-  val Empire        = Value(3) //owner's whole faction
+  val Locked = Value(0) //owner only
+  val Group  = Value(1) //owner's squad/platoon only
+  val Empire = Value(3) //owner's whole faction
 }

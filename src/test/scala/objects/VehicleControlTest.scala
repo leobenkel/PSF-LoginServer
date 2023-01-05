@@ -14,7 +14,7 @@ import net.psforever.objects.guid.source.MaxNumberSource
 import net.psforever.objects.serverobject.environment._
 import net.psforever.objects.serverobject.mount.Mountable
 import net.psforever.objects.vehicles.VehicleLockState
-import net.psforever.objects.vehicles.control.{/*CargoCarrierControl, */VehicleControl}
+import net.psforever.objects.vehicles.control.{/*CargoCarrierControl, */ VehicleControl}
 import net.psforever.objects.vital.{VehicleShieldCharge, Vitality}
 import net.psforever.objects.zones.{Zone, ZoneMap}
 import net.psforever.packet.game._
@@ -26,10 +26,10 @@ import net.psforever.types._
 import scala.concurrent.duration._
 
 class VehicleControlPrepareForDeletionTest extends ActorTest {
-private val vehicle = Vehicle(GlobalDefinitions.two_man_assault_buggy)
+  private val vehicle = Vehicle(GlobalDefinitions.two_man_assault_buggy)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
-private val vehicleProbe = new TestProbe(system)
+  private val vehicleProbe = new TestProbe(system)
   vehicle.Zone = new Zone("test", new ZoneMap("test"), 0) {
     VehicleEvents = vehicleProbe.ref
   }
@@ -46,14 +46,14 @@ private val vehicleProbe = new TestProbe(system)
 }
 
 class VehicleControlPrepareForDeletionPassengerTest extends ActorTest {
-private val vehicle = Vehicle(GlobalDefinitions.two_man_assault_buggy)
+  private val vehicle = Vehicle(GlobalDefinitions.two_man_assault_buggy)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
-private val vehicleProbe = new TestProbe(system)
+  private val vehicleProbe = new TestProbe(system)
   vehicle.Zone = new Zone("test", new ZoneMap("test"), 0) {
     VehicleEvents = vehicleProbe.ref
   }
-private val player1 = Player(VehicleTest.avatar1)
+  private val player1 = Player(VehicleTest.avatar1)
 
   vehicle.GUID = PlanetSideGUID(1)
   player1.GUID = PlanetSideGUID(2)
@@ -67,7 +67,11 @@ private val player1 = Player(VehicleTest.avatar1)
 
       val vehicle_msg = vehicleProbe.receiveN(1, 500 milliseconds)
       vehicle_msg.head match {
-        case VehicleServiceMessage("test", VehicleAction.KickPassenger(PlanetSideGUID(2), 4, true, PlanetSideGUID(1))) => ;
+        case VehicleServiceMessage(
+              "test",
+              VehicleAction.KickPassenger(PlanetSideGUID(2), 4, true, PlanetSideGUID(1))
+            ) =>
+          ;
         case _ =>
           assert(false, s"VehicleControlPrepareForDeletionPassengerTest: ${vehicle_msg.head}")
       }
@@ -169,11 +173,11 @@ private val player1 = Player(VehicleTest.avatar1)
 //}
 
 class VehicleControlPrepareForDeletionMountedCargoTest extends FreedContextActorTest {
-private val vehicleProbe = new TestProbe(system)
-private val catchall = new TestProbe(system)
-private val guid = new NumberPoolHub(new MaxNumberSource(10))
+  private val vehicleProbe = new TestProbe(system)
+  private val catchall     = new TestProbe(system)
+  private val guid         = new NumberPoolHub(new MaxNumberSource(10))
   ServiceManager.boot
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     GUID(guid)
 
     override def SetupNumberPools(): Unit = {}
@@ -183,22 +187,22 @@ private val zone = new Zone("test", new ZoneMap("test"), 0) {
   // crappy workaround but without it the zone doesn't get initialized in time
   expectNoMessage(200 milliseconds)
 
-private val vehicle = Vehicle(GlobalDefinitions.two_man_assault_buggy)
+  private val vehicle = Vehicle(GlobalDefinitions.two_man_assault_buggy)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.Zone = zone
-private val cargoProbe = new TestProbe(system)
+  private val cargoProbe = new TestProbe(system)
   vehicle.Actor = cargoProbe.ref
-private val lodestar = Vehicle(GlobalDefinitions.lodestar)
+  private val lodestar = Vehicle(GlobalDefinitions.lodestar)
   lodestar.Faction = PlanetSideEmpire.TR
   lodestar.Zone = zone
-private val player1 = Player(VehicleTest.avatar1) //name="test1"
-private val player2 = Player(VehicleTest.avatar2) //name="test2"
+  private val player1 = Player(VehicleTest.avatar1) //name="test1"
+  private val player2 = Player(VehicleTest.avatar2) //name="test2"
 
   guid.register(vehicle, 1)
   guid.register(lodestar, 2)
   player1.GUID = PlanetSideGUID(3)
   player2.GUID = PlanetSideGUID(4)
-private var utilityId = 10
+  private var utilityId = 10
   lodestar.Utilities.values.foreach { util =>
     util().GUID = PlanetSideGUID(utilityId)
     utilityId += 1
@@ -217,7 +221,11 @@ private var utilityId = 10
 
       val vehicle_msg = vehicleProbe.receiveN(6, 500 milliseconds)
       vehicle_msg(5) match {
-        case VehicleServiceMessage("test", VehicleAction.KickPassenger(PlanetSideGUID(4), 4, true, PlanetSideGUID(2))) => ;
+        case VehicleServiceMessage(
+              "test",
+              VehicleAction.KickPassenger(PlanetSideGUID(4), 4, true, PlanetSideGUID(2))
+            ) =>
+          ;
         case _ =>
           assert(false, s"VehicleControlPrepareForDeletionMountedCargoTest-1: ${vehicle_msg(5)}")
       }
@@ -225,27 +233,53 @@ private var utilityId = 10
       assert(lodestar.Seats(0).occupant.isEmpty)
       //cargo dismounting messages
       vehicle_msg.head match {
-        case VehicleServiceMessage(_, VehicleAction.SendResponse(_, PlanetsideAttributeMessage(PlanetSideGUID(1), 0, _))) => ;
+        case VehicleServiceMessage(
+              _,
+              VehicleAction.SendResponse(_, PlanetsideAttributeMessage(PlanetSideGUID(1), 0, _))
+            ) =>
+          ;
         case _ =>
           assert(false, s"VehicleControlPrepareForDeletionMountedCargoTest-2: ${vehicle_msg.head}")
       }
       vehicle_msg(1) match {
-        case VehicleServiceMessage(_, VehicleAction.SendResponse(_, PlanetsideAttributeMessage(PlanetSideGUID(1), 68, _))) => ;
+        case VehicleServiceMessage(
+              _,
+              VehicleAction.SendResponse(_, PlanetsideAttributeMessage(PlanetSideGUID(1), 68, _))
+            ) =>
+          ;
         case _ =>
           assert(false, s"VehicleControlPrepareForDeletionMountedCargoTest-3: ${vehicle_msg(1)}")
       }
       vehicle_msg(2) match {
-        case VehicleServiceMessage("test", VehicleAction.SendResponse(_, CargoMountPointStatusMessage(PlanetSideGUID(2), _, PlanetSideGUID(1), _, 1, CargoStatus.InProgress, 0))) => ;
+        case VehicleServiceMessage(
+              "test",
+              VehicleAction.SendResponse(
+                _,
+                CargoMountPointStatusMessage(PlanetSideGUID(2), _, PlanetSideGUID(1), _, 1, CargoStatus.InProgress, 0)
+              )
+            ) =>
+          ;
         case _ =>
           assert(false, s"VehicleControlPrepareForDeletionMountedCargoTest-4: ${vehicle_msg(2)}")
       }
       vehicle_msg(3) match {
-        case VehicleServiceMessage("test", VehicleAction.SendResponse(_, ObjectDetachMessage(PlanetSideGUID(2), PlanetSideGUID(1), _, _, _, _))) => ;
+        case VehicleServiceMessage(
+              "test",
+              VehicleAction.SendResponse(_, ObjectDetachMessage(PlanetSideGUID(2), PlanetSideGUID(1), _, _, _, _))
+            ) =>
+          ;
         case _ =>
           assert(false, s"VehicleControlPrepareForDeletionMountedCargoTest-5: ${vehicle_msg(3)}")
       }
       vehicle_msg(4) match {
-        case VehicleServiceMessage("test", VehicleAction.SendResponse(_, CargoMountPointStatusMessage(PlanetSideGUID(2), _, _, PlanetSideGUID(1), 1, CargoStatus.Empty, 0))) => ;
+        case VehicleServiceMessage(
+              "test",
+              VehicleAction.SendResponse(
+                _,
+                CargoMountPointStatusMessage(PlanetSideGUID(2), _, _, PlanetSideGUID(1), 1, CargoStatus.Empty, 0)
+              )
+            ) =>
+          ;
         case _ =>
           assert(false, s"VehicleControlPrepareForDeletionMountedCargoTest-6: ${vehicle_msg(4)}")
       }
@@ -254,37 +288,37 @@ private var utilityId = 10
 }
 
 class VehicleControlMountingBlockedExosuitTest extends ActorTest {
-private val catchallProbe = new TestProbe(system)
-private val catchall = catchallProbe.ref
-private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+  private val catchallProbe = new TestProbe(system)
+  private val catchall      = catchallProbe.ref
+  private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools(): Unit = {}
-    override def AvatarEvents: ActorRef = catchall
-    override def LocalEvents: ActorRef = catchall
+    override def AvatarEvents: ActorRef  = catchall
+    override def LocalEvents: ActorRef   = catchall
     override def VehicleEvents: ActorRef = catchall
-    override def Activity: ActorRef = catchall
+    override def Activity: ActorRef      = catchall
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
-private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
+  private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Zone = zone
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
 
-private val vehicle2 = Vehicle(GlobalDefinitions.lightning)
+  private val vehicle2 = Vehicle(GlobalDefinitions.lightning)
   vehicle2.Faction = PlanetSideEmpire.TR
   vehicle2.GUID = PlanetSideGUID(11)
   vehicle2.Zone = zone
   vehicle2.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle2), "vehicle2-test")
 
-private val player1 = Player(VehicleTest.avatar1)
+  private val player1 = Player(VehicleTest.avatar1)
   player1.ExoSuit = ExoSuitType.Reinforced
   player1.GUID = PlanetSideGUID(1)
   player1.Zone = zone
-private val player2 = Player(VehicleTest.avatar1)
+  private val player2 = Player(VehicleTest.avatar1)
   player2.ExoSuit = ExoSuitType.MAX
   player2.GUID = PlanetSideGUID(2)
   player2.Zone = zone
-private val player3 = Player(VehicleTest.avatar1)
+  private val player3 = Player(VehicleTest.avatar1)
   player3.ExoSuit = ExoSuitType.Agile
   player3.GUID = PlanetSideGUID(3)
   player3.Zone = zone
@@ -303,16 +337,22 @@ private val player3 = Player(VehicleTest.avatar1)
       VehicleControlTest.checkCanNotMount(probe, "Agile in MAX-only mount")
 
       //allow
-      vehicle.Actor.tell(Mountable.TryMount(player1, 1), probe.ref) // Reinforced in driver mount allowing all except MAX
+      vehicle.Actor.tell(
+        Mountable.TryMount(player1, 1),
+        probe.ref
+      ) // Reinforced in driver mount allowing all except MAX
       VehicleControlTest.checkCanMount(probe, "Reinforced in driver mount allowing all except MAX")
       // Reset to allow further driver mount mounting tests
       vehicle.Actor.tell(Mountable.TryDismount(player1, 0), probe.ref)
-      probe.receiveOne(500 milliseconds) //discard
-      vehicle.Owner = None //ensure
-      vehicle.OwnerName = None //ensure
+      probe.receiveOne(500 milliseconds)                            //discard
+      vehicle.Owner = None                                          //ensure
+      vehicle.OwnerName = None                                      //ensure
       vehicle.Actor.tell(Mountable.TryMount(player3, 1), probe.ref) // Agile in driver mount allowing all except MAX
       VehicleControlTest.checkCanMount(probe, "Agile in driver mount allowing all except MAX")
-      vehicle.Actor.tell(Mountable.TryMount(player1, 3), probe.ref) // Reinforced in passenger mount allowing all except MAX
+      vehicle.Actor.tell(
+        Mountable.TryMount(player1, 3),
+        probe.ref
+      ) // Reinforced in passenger mount allowing all except MAX
       VehicleControlTest.checkCanMount(probe, "Reinforced in passenger mount allowing all except MAX")
       vehicle.Actor.tell(Mountable.TryMount(player2, 11), probe.ref) // MAX in MAX-only mount
       VehicleControlTest.checkCanMount(probe, "MAX in MAX-only mount")
@@ -321,8 +361,8 @@ private val player3 = Player(VehicleTest.avatar1)
 }
 
 class VehicleControlMountingBlockedSeatPermissionTest extends ActorTest {
-private val probe = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
@@ -331,19 +371,19 @@ private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
 
-private val player1 = Player(VehicleTest.avatar1)
+  private val player1 = Player(VehicleTest.avatar1)
   player1.GUID = PlanetSideGUID(1)
-private val player2 = Player(VehicleTest.avatar1)
+  private val player2 = Player(VehicleTest.avatar1)
   player2.GUID = PlanetSideGUID(2)
 
   "Vehicle Control" should {
     //11 June 2018: Group is not supported yet so do not bother testing it
     "block players from sitting if the mount does not allow it" in {
 
-      vehicle.PermissionGroup(2, 3)                  //passenger group -> empire
+      vehicle.PermissionGroup(2, 3)                                 //passenger group -> empire
       vehicle.Actor.tell(Mountable.TryMount(player1, 4), probe.ref) //passenger mount
       VehicleControlTest.checkCanMount(probe, "")
-      vehicle.PermissionGroup(2, 0)                  //passenger group -> locked
+      vehicle.PermissionGroup(2, 0)                                 //passenger group -> locked
       vehicle.Actor.tell(Mountable.TryMount(player2, 5), probe.ref) //passenger mount
       VehicleControlTest.checkCanNotMount(probe, "")
     }
@@ -351,8 +391,8 @@ private val player2 = Player(VehicleTest.avatar1)
 }
 
 class VehicleControlMountingDriverSeatTest extends ActorTest {
-private val probe = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
@@ -360,7 +400,7 @@ private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
     override def SetupNumberPools(): Unit = {}
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
-private val player1 = Player(VehicleTest.avatar1)
+  private val player1 = Player(VehicleTest.avatar1)
   player1.GUID = PlanetSideGUID(1)
 
   "Vehicle Control" should {
@@ -376,8 +416,8 @@ private val player1 = Player(VehicleTest.avatar1)
 }
 
 class VehicleControlMountingOwnedLockedDriverSeatTest extends ActorTest {
-private val probe = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
@@ -386,9 +426,9 @@ private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
 
-private val player1 = Player(VehicleTest.avatar1)
+  private val player1 = Player(VehicleTest.avatar1)
   player1.GUID = PlanetSideGUID(1)
-private val player2 = Player(VehicleTest.avatar1)
+  private val player2 = Player(VehicleTest.avatar1)
   player2.GUID = PlanetSideGUID(2)
 
   "Vehicle Control" should {
@@ -412,8 +452,8 @@ private val player2 = Player(VehicleTest.avatar1)
 }
 
 class VehicleControlMountingOwnedUnlockedDriverSeatTest extends ActorTest {
-private val probe = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
@@ -422,9 +462,9 @@ private val vehicle = Vehicle(GlobalDefinitions.apc_tr)
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
 
-private val player1 = Player(VehicleTest.avatar1)
+  private val player1 = Player(VehicleTest.avatar1)
   player1.GUID = PlanetSideGUID(1)
-private val player2 = Player(VehicleTest.avatar1)
+  private val player2 = Player(VehicleTest.avatar1)
   player2.GUID = PlanetSideGUID(2)
 
   "Vehicle Control" should {
@@ -449,8 +489,8 @@ private val player2 = Player(VehicleTest.avatar1)
 }
 
 class VehicleControlShieldsChargingTest extends ActorTest {
-private val probe   = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.fury)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.fury)
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
   vehicle.Zone = new Zone("test", new ZoneMap("test"), 0) {
@@ -473,8 +513,8 @@ private val vehicle = Vehicle(GlobalDefinitions.fury)
 }
 
 class VehicleControlShieldsNotChargingVehicleDeadTest extends ActorTest {
-private val probe   = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.fury)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.fury)
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
   vehicle.Zone = new Zone("test", new ZoneMap("test"), 0) {
@@ -496,8 +536,8 @@ private val vehicle = Vehicle(GlobalDefinitions.fury)
 }
 
 class VehicleControlShieldsNotChargingVehicleShieldsFullTest extends ActorTest {
-private val probe   = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.fury)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.fury)
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
   vehicle.Zone = new Zone("test", new ZoneMap("test"), 0) {
@@ -517,8 +557,8 @@ private val vehicle = Vehicle(GlobalDefinitions.fury)
 }
 
 class VehicleControlShieldsNotChargingTooEarlyTest extends ActorTest {
-private val probe   = new TestProbe(system)
-private val vehicle = Vehicle(GlobalDefinitions.fury)
+  private val probe   = new TestProbe(system)
+  private val vehicle = Vehicle(GlobalDefinitions.fury)
   vehicle.GUID = PlanetSideGUID(10)
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-test")
   vehicle.Zone = new Zone("test", new ZoneMap("test"), 0) {
@@ -574,13 +614,13 @@ private val vehicle = Vehicle(GlobalDefinitions.fury)
 //}
 
 class VehicleControlInteractWithWaterPartialTest extends ActorTest {
-private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
-private val player1 =
+  private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
+  private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-private val playerProbe = TestProbe()
-private val guid = new NumberPoolHub(new MaxNumberSource(15))
-private val pool = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
-private val zone = new Zone(
+  private val playerProbe = TestProbe()
+  private val guid        = new NumberPoolHub(new MaxNumberSource(15))
+  private val pool        = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
+  private val zone = new Zone(
     id = "test-zone",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -590,7 +630,7 @@ private val zone = new Zone(
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1)
-    override def Vehicles = List(vehicle)
+    override def Vehicles    = List(vehicle)
   }
   zone.blockMap.addTo(vehicle)
   zone.blockMap.addTo(pool)
@@ -608,17 +648,18 @@ private val zone = new Zone(
 
   "VehicleControl" should {
     "causes disability when the vehicle drives too deep in water (check driver messaging)" in {
-      vehicle.Position = Vector3(5,5,-3) //right in the pool
-      vehicle.zoneInteractions() //trigger
+      vehicle.Position = Vector3(5, 5, -3) //right in the pool
+      vehicle.zoneInteractions()           //trigger
 
       val msg_drown = playerProbe.receiveOne(250 milliseconds)
       assert(
         msg_drown match {
           case InteractingWithEnvironment(
-            p1,
-            p2,
-            Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Suffocation, 100f))
-          )      => (p1 eq player1) && (p2 eq pool)
+                p1,
+                p2,
+                Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Suffocation, 100f))
+              ) =>
+            (p1 eq player1) && (p2 eq pool)
           case _ => false
         }
       )
@@ -627,14 +668,14 @@ private val zone = new Zone(
 }
 
 class VehicleControlInteractWithWaterTest extends ActorTest {
-private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
-private val player1 =
+  private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
+  private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-private val avatarProbe = TestProbe()
-private val vehicleProbe = TestProbe()
-private val guid = new NumberPoolHub(new MaxNumberSource(15))
-private val pool = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
-private val zone = new Zone(
+  private val avatarProbe  = TestProbe()
+  private val vehicleProbe = TestProbe()
+  private val guid         = new NumberPoolHub(new MaxNumberSource(15))
+  private val pool         = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
+  private val zone = new Zone(
     id = "test-zone",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -643,9 +684,9 @@ private val zone = new Zone(
   ) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def LivePlayers = List(player1)
-    override def Vehicles = List(vehicle)
-    override def AvatarEvents = avatarProbe.ref
+    override def LivePlayers   = List(player1)
+    override def Vehicles      = List(vehicle)
+    override def AvatarEvents  = avatarProbe.ref
     override def VehicleEvents = vehicleProbe.ref
 
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
@@ -662,25 +703,26 @@ private val zone = new Zone(
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.Seats(0).mount(player1)
   player1.VehicleSeated = vehicle.GUID
-private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+  private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, avatarActor), "player1-control")
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-control")
 
   "VehicleControl" should {
     "causes disability when the vehicle drives too deep in water" in {
-      vehicle.Position = Vector3(5,5,-3) //right in the pool
-      vehicle.zoneInteractions() //trigger
+      vehicle.Position = Vector3(5, 5, -3) //right in the pool
+      vehicle.zoneInteractions()           //trigger
 
       val msg_drown = avatarProbe.receiveOne(250 milliseconds)
       assert(
         msg_drown match {
           case AvatarServiceMessage(
-            "TestCharacter1",
-            AvatarAction.OxygenState(
-              OxygenStateTarget(PlanetSideGUID(1), OxygenState.Suffocation, 100f),
-              Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Suffocation, 100f))
-            )
-          )      => true
+                "TestCharacter1",
+                AvatarAction.OxygenState(
+                  OxygenStateTarget(PlanetSideGUID(1), OxygenState.Suffocation, 100f),
+                  Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Suffocation, 100f))
+                )
+              ) =>
+            true
           case _ => false
         }
       )
@@ -689,9 +731,10 @@ private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
       val msg_kick = vehicleProbe.receiveOne(10 seconds)
       msg_kick match {
         case VehicleServiceMessage(
-          "test-zone",
-          VehicleAction.KickPassenger(PlanetSideGUID(1), 4, _, PlanetSideGUID(2))
-        )      => assert(true)
+              "test-zone",
+              VehicleAction.KickPassenger(PlanetSideGUID(1), 4, _, PlanetSideGUID(2))
+            ) =>
+          assert(true)
         case _ => assert(false)
       }
       //player will die, but detailing players death messages is not necessary for this test
@@ -700,13 +743,13 @@ private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
 }
 
 class VehicleControlStopInteractWithWaterTest extends ActorTest {
-private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
-private val player1 =
+  private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
+  private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-private val playerProbe = TestProbe()
-private val guid = new NumberPoolHub(new MaxNumberSource(15))
-private val pool = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
-private val zone = new Zone(
+  private val playerProbe = TestProbe()
+  private val guid        = new NumberPoolHub(new MaxNumberSource(15))
+  private val pool        = Pool(EnvironmentAttribute.Water, DeepSquare(-1, 10, 10, 0, 0))
+  private val zone = new Zone(
     id = "test-zone",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -716,7 +759,7 @@ private val zone = new Zone(
     override def SetupNumberPools() = {}
     GUID(guid)
     override def LivePlayers = List(player1)
-    override def Vehicles = List(vehicle)
+    override def Vehicles    = List(vehicle)
   }
   zone.blockMap.addTo(vehicle)
   zone.blockMap.addTo(pool)
@@ -734,16 +777,17 @@ private val zone = new Zone(
 
   "VehicleControl" should {
     "stop becoming disabled if the vehicle drives out of the water" in {
-      vehicle.Position = Vector3(5,5,-3) //right in the pool
-      vehicle.zoneInteractions() //trigger
+      vehicle.Position = Vector3(5, 5, -3) //right in the pool
+      vehicle.zoneInteractions()           //trigger
       val msg_drown = playerProbe.receiveOne(250 milliseconds)
       assert(
         msg_drown match {
           case InteractingWithEnvironment(
-            p1,
-            p2,
-            Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Suffocation, 100f))
-          )      => (p1 eq player1) && (p2 eq pool)
+                p1,
+                p2,
+                Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Suffocation, 100f))
+              ) =>
+            (p1 eq player1) && (p2 eq pool)
           case _ => false
         }
       )
@@ -754,10 +798,11 @@ private val zone = new Zone(
       assert(
         msg_recover match {
           case EscapeFromEnvironment(
-            p1,
-            p2,
-            Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Recovery, _))
-          )      => (p1 eq player1) && (p2 eq pool)
+                p1,
+                p2,
+                Some(OxygenStateTarget(PlanetSideGUID(2), OxygenState.Recovery, _))
+              ) =>
+            (p1 eq player1) && (p2 eq pool)
           case _ => false
         }
       )
@@ -766,14 +811,14 @@ private val zone = new Zone(
 }
 
 class VehicleControlInteractWithLavaTest extends ActorTest {
-private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
-private val player1 =
+  private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
+  private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-private val avatarProbe = TestProbe()
-private val vehicleProbe = TestProbe()
-private val guid = new NumberPoolHub(new MaxNumberSource(15))
-private val pool = Pool(EnvironmentAttribute.Lava, DeepSquare(-1, 10, 10, 0, 0))
-private val zone = new Zone(
+  private val avatarProbe  = TestProbe()
+  private val vehicleProbe = TestProbe()
+  private val guid         = new NumberPoolHub(new MaxNumberSource(15))
+  private val pool         = Pool(EnvironmentAttribute.Lava, DeepSquare(-1, 10, 10, 0, 0))
+  private val zone = new Zone(
     id = "test-zone",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -782,11 +827,11 @@ private val zone = new Zone(
   ) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def LivePlayers = List(player1)
-    override def Vehicles = List(vehicle)
-    override def AvatarEvents = avatarProbe.ref
+    override def LivePlayers   = List(player1)
+    override def Vehicles      = List(vehicle)
+    override def AvatarEvents  = avatarProbe.ref
     override def VehicleEvents = vehicleProbe.ref
-    override def Activity = TestProbe().ref
+    override def Activity      = TestProbe().ref
   }
   zone.blockMap.addTo(vehicle)
   zone.blockMap.addTo(pool)
@@ -800,41 +845,42 @@ private val zone = new Zone(
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.Seats(0).mount(player1)
   player1.VehicleSeated = vehicle.GUID
-private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+  private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, avatarActor), "player1-control")
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-control")
 
   "VehicleControl" should {
     "take continuous damage if vehicle drives into lava" in {
-      assert(vehicle.Health > 0) //alive
-      assert(player1.Health == 100) //alive
-      vehicle.Position = Vector3(5,5,-3) //right in the pool
-      vehicle.zoneInteractions() //trigger
+      assert(vehicle.Health > 0)           //alive
+      assert(player1.Health == 100)        //alive
+      vehicle.Position = Vector3(5, 5, -3) //right in the pool
+      vehicle.zoneInteractions()           //trigger
 
-      val msg_burn = vehicleProbe.receiveN(3,1 seconds)
+      val msg_burn = vehicleProbe.receiveN(3, 1 seconds)
       msg_burn.foreach { msg =>
         assert(
           msg match {
-            case VehicleServiceMessage("test-zone", VehicleAction.PlanetsideAttribute(_, PlanetSideGUID(2), 0, _)) => true
+            case VehicleServiceMessage("test-zone", VehicleAction.PlanetsideAttribute(_, PlanetSideGUID(2), 0, _)) =>
+              true
             case _ => false
           }
         )
       }
       //etc..
       probe.receiveOne(65 seconds) //wait until player1's implants deinitialize
-      assert(vehicle.Health == 0) //ded
-      assert(player1.Health == 0) //ded
+      assert(vehicle.Health == 0)  //ded
+      assert(player1.Health == 0)  //ded
     }
   }
 }
 
 class VehicleControlInteractWithDeathTest extends ActorTest {
-private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
-private val player1 =
+  private val vehicle = Vehicle(GlobalDefinitions.fury) //guid=2
+  private val player1 =
     Player(Avatar(0, "TestCharacter1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)) //guid=1
-private val guid = new NumberPoolHub(new MaxNumberSource(15))
-private val pool = Pool(EnvironmentAttribute.Death, DeepSquare(-1, 10, 10, 0, 0))
-private val zone = new Zone(
+  private val guid = new NumberPoolHub(new MaxNumberSource(15))
+  private val pool = Pool(EnvironmentAttribute.Death, DeepSquare(-1, 10, 10, 0, 0))
+  private val zone = new Zone(
     id = "test-zone",
     new ZoneMap(name = "test-map") {
       environment = List(pool)
@@ -843,9 +889,9 @@ private val zone = new Zone(
   ) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def LivePlayers = List(player1)
-    override def Vehicles = List(vehicle)
-    override def AvatarEvents = TestProbe().ref
+    override def LivePlayers   = List(player1)
+    override def Vehicles      = List(vehicle)
+    override def AvatarEvents  = TestProbe().ref
     override def VehicleEvents = TestProbe().ref
   }
   zone.blockMap.addTo(vehicle)
@@ -860,16 +906,16 @@ private val zone = new Zone(
   vehicle.Faction = PlanetSideEmpire.TR
   vehicle.Seats(0).mount(player1)
   player1.VehicleSeated = vehicle.GUID
-private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
+  private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
   player1.Actor = system.actorOf(Props(classOf[PlayerControl], player1, avatarActor), "player1-control")
   vehicle.Actor = system.actorOf(Props(classOf[VehicleControl], vehicle), "vehicle-control")
 
   "VehicleControl" should {
     "take continuous damage if vehicle drives into a pool of death" in {
-      assert(vehicle.Health > 0) //alive
-      assert(player1.Health == 100) //alive
-      vehicle.Position = Vector3(5,5,-3) //right in the pool
-      vehicle.zoneInteractions() //trigger
+      assert(vehicle.Health > 0)           //alive
+      assert(player1.Health == 100)        //alive
+      vehicle.Position = Vector3(5, 5, -3) //right in the pool
+      vehicle.zoneInteractions()           //trigger
 
       probe.receiveOne(2 seconds) //wait until player1's implants deinitialize
       assert(vehicle.Health == 0) //ded
@@ -879,20 +925,20 @@ private val (probe, avatarActor) = PlayerControlTest.DummyAvatar(system)
 }
 
 class ApcControlCanChargeCapacitor extends FreedContextActorTest {
-private val apc = Vehicle(GlobalDefinitions.apc_tr) //guid=1, weapons not registered
+  private val apc = Vehicle(GlobalDefinitions.apc_tr) //guid=1, weapons not registered
 
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
-private val localProbe = TestProbe()
-private val vehicleProbe = TestProbe()
-private val catchall = TestProbe()
-private val zone = new Zone(id = "test-zone", new ZoneMap(name = "test-map"), zoneNumber = 0) {
+  private val guid         = new NumberPoolHub(new MaxNumberSource(max = 5))
+  private val localProbe   = TestProbe()
+  private val vehicleProbe = TestProbe()
+  private val catchall     = TestProbe()
+  private val zone = new Zone(id = "test-zone", new ZoneMap(name = "test-map"), zoneNumber = 0) {
     override def SetupNumberPools(): Unit = {}
     GUID(guid)
-    override def Vehicles = List(apc)
+    override def Vehicles      = List(apc)
     override def VehicleEvents = vehicleProbe.ref
-    override def LocalEvents = localProbe.ref
-    override def AvatarEvents = catchall.ref
-    override def Activity = catchall.ref
+    override def LocalEvents   = localProbe.ref
+    override def AvatarEvents  = catchall.ref
+    override def Activity      = catchall.ref
   }
 
   guid.register(apc, number = 1)
@@ -901,7 +947,7 @@ private val zone = new Zone(id = "test-zone", new ZoneMap(name = "test-map"), zo
   //apc.Definition.Initialize(apc, context) //do later ...
   zone.blockMap.addTo(apc)
 
-private val maxCapacitor = apc.Definition.MaxCapacitor
+  private val maxCapacitor = apc.Definition.MaxCapacitor
 
   "ApcControl" should {
     "charge its capacitors when initialized" in {
@@ -915,8 +961,7 @@ private val maxCapacitor = apc.Definition.MaxCapacitor
           case _ =>
             assert(false)
         }
-      }
-      while(apc.Capacitor < maxCapacitor)
+      } while (apc.Capacitor < maxCapacitor)
       vehicleProbe.expectNoMessage(5.seconds)
       assert(apc.Capacitor == maxCapacitor)
     }
@@ -924,24 +969,24 @@ private val maxCapacitor = apc.Definition.MaxCapacitor
 }
 
 class ApcControlCanEmp extends FreedContextActorTest {
-private val apc = Vehicle(GlobalDefinitions.apc_vs) //guid=1, weapons not registered
-private val fury = Vehicle(GlobalDefinitions.fury) //guid=2, weapons not registered
-private val boomer = Deployables.Make(DeployedItem.boomer)() //guid=3, no trigger
-private val boomer2 = Deployables.Make(DeployedItem.boomer)() //guid=4, no trigger
+  private val apc     = Vehicle(GlobalDefinitions.apc_vs)       //guid=1, weapons not registered
+  private val fury    = Vehicle(GlobalDefinitions.fury)         //guid=2, weapons not registered
+  private val boomer  = Deployables.Make(DeployedItem.boomer)() //guid=3, no trigger
+  private val boomer2 = Deployables.Make(DeployedItem.boomer)() //guid=4, no trigger
 
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 5))
-private val localProbe = TestProbe()
-private val vehicleProbe = TestProbe()
-private val catchall = TestProbe()
-private val zone = new Zone(id = "test-zone", new ZoneMap(name = "test-map"), zoneNumber = 0) {
+  private val guid         = new NumberPoolHub(new MaxNumberSource(max = 5))
+  private val localProbe   = TestProbe()
+  private val vehicleProbe = TestProbe()
+  private val catchall     = TestProbe()
+  private val zone = new Zone(id = "test-zone", new ZoneMap(name = "test-map"), zoneNumber = 0) {
     override def SetupNumberPools(): Unit = {}
     GUID(guid)
-    override def Vehicles = List(apc, fury)
+    override def Vehicles       = List(apc, fury)
     override def DeployableList = List(boomer, boomer2)
-    override def VehicleEvents = vehicleProbe.ref
-    override def LocalEvents = localProbe.ref
-    override def AvatarEvents = catchall.ref
-    override def Activity = catchall.ref
+    override def VehicleEvents  = vehicleProbe.ref
+    override def LocalEvents    = localProbe.ref
+    override def AvatarEvents   = catchall.ref
+    override def Activity       = catchall.ref
   }
 
   guid.register(apc, number = 1)
@@ -951,7 +996,7 @@ private val zone = new Zone(id = "test-zone", new ZoneMap(name = "test-map"), zo
   apc.Definition.Initialize(apc, context)
   zone.blockMap.addTo(apc)
 
-private val furyProbe = TestProbe()
+  private val furyProbe = TestProbe()
   guid.register(fury, number = 2)
   fury.Position = Vector3(4, 0, 0) //within 15m of apc
   fury.Faction = PlanetSideEmpire.TR
@@ -959,7 +1004,7 @@ private val furyProbe = TestProbe()
   fury.Actor = furyProbe.ref
   zone.blockMap.addTo(fury)
 
-private val boomerProbe = TestProbe()
+  private val boomerProbe = TestProbe()
   guid.register(boomer, number = 3)
   boomer.Position = Vector3(0, 14, 0) //within 15m of apc
   boomer.Faction = PlanetSideEmpire.TR
@@ -967,7 +1012,7 @@ private val boomerProbe = TestProbe()
   boomer.Actor = boomerProbe.ref
   zone.blockMap.addTo(boomer)
 
-private val boomer2Probe = TestProbe()
+  private val boomer2Probe = TestProbe()
   guid.register(boomer2, number = 4)
   boomer2.Position = Vector3(0, 30, 0) //beyond 15m of apc
   boomer2.Faction = PlanetSideEmpire.TR
@@ -985,16 +1030,22 @@ private val boomer2Probe = TestProbe()
       val vehicleMsgs = vehicleProbe.receiveN(2, 500.milliseconds)
       vehicleMsgs.head match {
         case VehicleServiceMessage(_, VehicleAction.PlanetsideAttribute(_, PlanetSideGUID(1), 113, 0)) => ;
-        case _ => assert(false)
+        case _                                                                                         => assert(false)
       }
       vehicleMsgs(1) match {
         case VehicleServiceMessage(
-        "test-zone",
-          VehicleAction.SendResponse(
-            _,
-            TriggerEffectMessage(_, "apc_explosion_emp_vs", None, Some(TriggeredEffectLocation(Vector3.Zero, Vector3.Zero)))
-          )
-        ) => ;
+              "test-zone",
+              VehicleAction.SendResponse(
+                _,
+                TriggerEffectMessage(
+                  _,
+                  "apc_explosion_emp_vs",
+                  None,
+                  Some(TriggeredEffectLocation(Vector3.Zero, Vector3.Zero))
+                )
+              )
+            ) =>
+          ;
         case _ => assert(false)
       }
       assert(apc.Capacitor == 0)
@@ -1002,12 +1053,12 @@ private val boomer2Probe = TestProbe()
       val furyMsg = furyProbe.receiveOne(200.milliseconds)
       furyMsg match {
         case Vitality.Damage(_) => ;
-        case _ => assert(false)
+        case _                  => assert(false)
       }
       val boomerMsg = boomerProbe.receiveOne(200.milliseconds)
       boomerMsg match {
         case Vitality.Damage(_) => ;
-        case _ => assert(false)
+        case _                  => assert(false)
       }
       boomer2Probe.expectNoMessage(400.milliseconds) //out of range
     }
@@ -1018,8 +1069,8 @@ object VehicleControlTest {
   import net.psforever.objects.avatar.Avatar
   import net.psforever.types.{CharacterSex, PlanetSideEmpire}
 
-private val avatar1 = Avatar(0, "test1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-private val avatar2 = Avatar(1, "test2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  private val avatar1 = Avatar(0, "test1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  private val avatar2 = Avatar(1, "test2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
 
   def checkCanNotMount(probe: TestProbe, id: String): Unit = {
     val reply = probe.receiveOne(Duration.create(250, "ms"))

@@ -17,7 +17,7 @@ import net.psforever.util.Md5Mac
 object PacketCoding {
   Security.addProvider(new BouncyCastleProvider)
 
-private val RC5_BLOCK_SIZE = 8
+  val RC5_BLOCK_SIZE = 8
 
   /** A lower bound on the packet size */
   final val PLANETSIDE_MIN_PACKET_SIZE = 1

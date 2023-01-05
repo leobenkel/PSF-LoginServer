@@ -9,7 +9,12 @@ import net.psforever.objects.{GlobalDefinitions, Vehicle}
 import net.psforever.objects.guid.{NumberPoolHub, UniqueNumberOps, UniqueNumberSetup}
 import net.psforever.objects.guid.source.MaxNumberSource
 import net.psforever.objects.serverobject.doors.Door
-import net.psforever.objects.serverobject.shuttle.{OrbitalShuttle, OrbitalShuttlePad, OrbitalShuttlePadControl, ShuttleAmenity}
+import net.psforever.objects.serverobject.shuttle.{
+  OrbitalShuttle,
+  OrbitalShuttlePad,
+  OrbitalShuttlePadControl,
+  ShuttleAmenity
+}
 import net.psforever.objects.serverobject.structures.{Building, StructureType}
 import net.psforever.objects.zones.{Zone, ZoneMap, ZoneVehicleActor}
 import net.psforever.services.{InterstellarClusterService, Service, ServiceManager}
@@ -24,27 +29,27 @@ import scala.concurrent.duration._
 class OrbitalShuttlePadControlTest extends FreedContextActorTest {
   import akka.actor.typed.scaladsl.adapter._
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
-private val services = ServiceManager.boot(system)
+  private val services = ServiceManager.boot(system)
   services ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   services ! ServiceManager.Register(Props[HartService](), "hart")
   expectNoMessage(1000 milliseconds)
-private var buildingMap = new TrieMap[Int, Building]()
-private val vehicles = ListBuffer[Vehicle]()
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 20))
+  private var buildingMap = new TrieMap[Int, Building]()
+  private val vehicles    = ListBuffer[Vehicle]()
+  private val guid        = new NumberPoolHub(new MaxNumberSource(max = 20))
   guid.AddPool("vehicles", (11 to 15).toList)
   guid.AddPool("tools", (16 to 19).toList)
-private val catchall = new TestProbe(system).ref
-private val unops = new UniqueNumberOps(guid, UniqueNumberSetup.AllocateNumberPoolActors(context, guid))
-private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+  private val catchall = new TestProbe(system).ref
+  private val unops    = new UniqueNumberOps(guid, UniqueNumberSetup.AllocateNumberPoolActors(context, guid))
+  private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     val transport: ActorRef = context.actorOf(Props(classOf[ZoneVehicleActor], this, vehicles), s"zone-test-vehicles")
 
     override def SetupNumberPools() = {}
     GUID(guid)
     override def GUID = { unops }
-    override def AvatarEvents = catchall
-    override def LocalEvents = catchall
+    override def AvatarEvents  = catchall
+    override def LocalEvents   = catchall
     override def VehicleEvents = catchall
-    override def Activity = catchall
+    override def Activity      = catchall
     override def Transport = { transport }
     override def Vehicles = { vehicles.toList }
     override def Buildings = { buildingMap.toMap }
@@ -52,7 +57,7 @@ private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     import akka.actor.typed.scaladsl.adapter._
     this.actor = new TestProbe(system).ref.toTyped[ZoneActor.Command]
   }
-private val building = new Building(
+  private val building = new Building(
     name = "test-orbital-building-tr",
     building_guid = 1,
     map_id = 0,
@@ -73,7 +78,7 @@ private val building = new Building(
     guid.register(door, index)
   }
 
-private val pad = new OrbitalShuttlePad(GlobalDefinitions.obbasemesh)
+  private val pad = new OrbitalShuttlePad(GlobalDefinitions.obbasemesh)
   guid.register(pad, number = 2)
   pad.Actor = system.actorOf(Props(classOf[OrbitalShuttlePadControl], pad), "test-shuttle-pad")
   building.Amenities = pad
@@ -87,7 +92,7 @@ private val pad = new OrbitalShuttlePad(GlobalDefinitions.obbasemesh)
       assert(building.Amenities.size == 10)
       assert(vehicles.size == 1)
       assert(building.Amenities(9).isInstanceOf[ShuttleAmenity]) //the shuttle is an amenity of the building now
-      assert(vehicles.head.isInstanceOf[OrbitalShuttle]) //here is the shuttle
+      assert(vehicles.head.isInstanceOf[OrbitalShuttle])         //here is the shuttle
     }
   }
 }

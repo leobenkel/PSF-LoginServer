@@ -9,15 +9,15 @@ import shapeless.{::, HNil}
 object RemoteProjectiles {
   abstract class Data(val a: Int, val b: Int)
 
-  final case object Meteor                          extends Data(0, 32)
-  final case object Wasp                            extends Data(0, 208)
-  final case object Sparrow                         extends Data(13107, 187)
-  final case object PeregrineSparrow                extends Data(13107, 187)
-  final case object OICW                            extends Data(13107, 195)
-  final case object Striker                         extends Data(26214, 134)
-  final case object HunterSeeker                    extends Data(39577, 201)
-  final case object Starfire                        extends Data(39577, 249)
-  final case object AphelionStarfire                extends Data(39577, 249)
+  final case object Meteor           extends Data(0, 32)
+  final case object Wasp             extends Data(0, 208)
+  final case object Sparrow          extends Data(13107, 187)
+  final case object PeregrineSparrow extends Data(13107, 187)
+  final case object OICW             extends Data(13107, 195)
+  final case object Striker          extends Data(26214, 134)
+  final case object HunterSeeker     extends Data(39577, 201)
+  final case object Starfire         extends Data(39577, 249)
+  final case object AphelionStarfire extends Data(39577, 249)
 
   //the oicw_little_buddy is handled by its own transcoder
 }
@@ -26,17 +26,17 @@ object FlightPhysics extends Enumeration {
   type Type = Value
 
   //valid (extremely small distance) (requires non-zero unk4, unk5)
-private val State3 = Value(3)
+  private val State3 = Value(3)
   //valid (infinite) (if unk4 == 0 unk5 == 0, minimum distance + time)
-private val State4 = Value(4)
+  val State4 = Value(4)
   //valid(infinite)
-private val State5 = Value(5)
+  private val State5 = Value(5)
   //valid (uses velocity) (infinite)
-private val State6 = Value(6)
+  private val State6 = Value(6)
   //valid (uses velocity) (infinite)
-private val State7 = Value(7)
+  private val State7 = Value(7)
   //valid (uses velocity) (time > 0 is infinite) (unk5 == 2)
-private val State15 = Value(15)
+  private val State15 = Value(15)
 
   implicit val codec = PacketHelpers.createEnumerationCodec(this, uint4L)
 }

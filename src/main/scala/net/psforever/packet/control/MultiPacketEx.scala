@@ -14,7 +14,7 @@ final case class MultiPacketEx(packets: Vector[ByteVector]) extends PlanetSideCo
 }
 
 object MultiPacketEx extends Marshallable[MultiPacketEx] {
-private val sizeCodec: Codec[Long] = new Codec[Long] {
+  val sizeCodec: Codec[Long] = new Codec[Long] {
     private def description = s"variable-bit unsigned integer"
     override def sizeBound  = SizeBound.bounded(8, 32)
 

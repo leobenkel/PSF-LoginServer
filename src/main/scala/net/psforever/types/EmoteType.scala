@@ -7,7 +7,7 @@ import scodec.codecs._
 
 object EmoteType extends Enumeration {
   type Type = Value
-private val Charge, Halt, Nod, Stinky, Wave, Bow, CabbagePatch, Cheer, ChestThump, Choking, Dunno, Fistup, Followme, Help,
+  val Charge, Halt, Nod, Stinky, Wave, Bow, CabbagePatch, Cheer, ChestThump, Choking, Dunno, Fistup, Followme, Help,
       Laugh, Move, No, // TODO: Double check this one, doesn't seem to have an associated slash command
   Roundup, Salute, Sorry, Spreadout, Thumbsdown = Value
 

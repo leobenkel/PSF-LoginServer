@@ -36,8 +36,8 @@ class VehicleTest extends Specification {
       fury.Seats.size mustEqual 1
       fury.Seats(0).bailable mustEqual true
       fury.MountPoints.size mustEqual 2
-      fury.MountPoints.get(1).contains(MountInfo(0, Vector3(0,0,0))) mustEqual true
-      fury.MountPoints.get(2).contains(MountInfo(0, Vector3(0,0,0))) mustEqual true
+      fury.MountPoints.get(1).contains(MountInfo(0, Vector3(0, 0, 0))) mustEqual true
+      fury.MountPoints.get(2).contains(MountInfo(0, Vector3(0, 0, 0))) mustEqual true
       fury.Weapons.size mustEqual 1
       fury.Weapons.get(0).isEmpty mustEqual true
       fury.Weapons.get(1).contains(GlobalDefinitions.fury_weapon_systema)
@@ -309,6 +309,6 @@ object VehicleTest {
   import net.psforever.objects.avatar.Avatar
   import net.psforever.types.{CharacterSex, PlanetSideEmpire}
 
-private val avatar1 = Avatar(0, "test1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
-private val avatar2 = Avatar(1, "test2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  val avatar1 = Avatar(0, "test1", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  val avatar2 = Avatar(1, "test2", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
 }

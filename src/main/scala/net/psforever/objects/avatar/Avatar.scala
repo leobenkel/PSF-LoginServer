@@ -136,8 +136,8 @@ case class Avatar(
   assert(bep >= 0)
   assert(cep >= 0)
 
-  val br: BattleRank          = BattleRank.withExperience(bep)
-  private val cr: CommandRank = CommandRank.withExperience(cep)
+  val br: BattleRank  = BattleRank.withExperience(bep)
+  val cr: CommandRank = CommandRank.withExperience(cep)
 
   private def cooldown(
       times: Map[String, LocalDateTime],

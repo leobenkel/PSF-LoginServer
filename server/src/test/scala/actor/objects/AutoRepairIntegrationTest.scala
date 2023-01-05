@@ -33,25 +33,28 @@ class AutoRepairFacilityIntegrationTest extends FreedContextActorTest {
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val avatarProbe = new TestProbe(system)
-private val catchall = new TestProbe(system).ref
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val guid        = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val avatarProbe = new TestProbe(system)
+  private val catchall    = new TestProbe(system).ref
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def AvatarEvents = avatarProbe.ref
-    override def LocalEvents = catchall
+    override def AvatarEvents  = avatarProbe.ref
+    override def LocalEvents   = catchall
     override def VehicleEvents = catchall
-    override def Activity = catchall
+    override def Activity      = catchall
   }
-private val building = Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
+  private val building =
+    Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
   building.Invalidate()
 
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
-private val silo = new ResourceSilo()
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
+  private val silo     = new ResourceSilo()
   guid.register(player, number = 1)
   guid.register(weapon, number = 2)
   guid.register(weapon.AmmoSlot.Box, number = 3)
@@ -66,12 +69,12 @@ private val silo = new ResourceSilo()
   silo.Actor = system.actorOf(Props(classOf[ResourceSiloControl], silo), "test-silo")
   silo.Actor ! "startup"
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -80,7 +83,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate on damage and trade NTU from the facility's resource silo for repairs" in {
@@ -91,7 +94,7 @@ private val applyDamageTo = resolved.calculate()
       avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       assert(terminal.Health < terminal.MaxHealth)
       var i = 0 //safety counter
-      while(terminal.Health < terminal.MaxHealth && i < 100) {
+      while (terminal.Health < terminal.MaxHealth && i < 100) {
         i += 1
         avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       }
@@ -106,22 +109,23 @@ class AutoRepairFacilityIntegrationGiveNtuTest extends FreedContextActorTest {
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val avatarProbe = new TestProbe(system)
-private val catchall = new TestProbe(system).ref
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val guid        = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val avatarProbe = new TestProbe(system)
+  private val catchall    = new TestProbe(system).ref
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def AvatarEvents = avatarProbe.ref
-    override def LocalEvents = catchall
+    override def AvatarEvents  = avatarProbe.ref
+    override def LocalEvents   = catchall
     override def VehicleEvents = catchall
-    override def Activity = catchall
+    override def Activity      = catchall
   }
-private val building = Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
+  private val building =
+    Building.Structure(StructureType.Facility)(name = "integ-fac-test-building", guid = 6, map_id = 0, zone, context)
   building.Invalidate()
 
-private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
-private val silo = new ResourceSilo()
+  private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
+  private val silo     = new ResourceSilo()
   guid.register(terminal, number = 4)
   guid.register(silo, number = 5)
   guid.register(building, number = 6)
@@ -140,12 +144,12 @@ private val silo = new ResourceSilo()
       assert(terminal.Health == 0)
       assert(terminal.Destroyed)
       avatarProbe.expectNoMessage(max = 1000 milliseconds) //nothing
-      silo.Actor ! ResourceSilo.UpdateChargeLevel(1000) //then ...
+      silo.Actor ! ResourceSilo.UpdateChargeLevel(1000)    //then ...
 
       avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       assert(terminal.Health < terminal.MaxHealth)
       var i = 0 //safety counter
-      while(terminal.Health < terminal.MaxHealth && i < 1000) {
+      while (terminal.Health < terminal.MaxHealth && i < 1000) {
         i += 1
         avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       }
@@ -161,25 +165,27 @@ class AutoRepairFacilityIntegrationAntGiveNtuTest extends FreedContextActorTest 
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-private var buildingMap = new TrieMap[Int, Building]()
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-private val ant = Vehicle(GlobalDefinitions.ant)
-private val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
-private val silo = new ResourceSilo()
-private val avatarProbe = new TestProbe(system)
-private val catchall = new TestProbe(system).ref
-private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+  private var buildingMap = new TrieMap[Int, Building]()
+  private val guid        = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
+  private val ant         = Vehicle(GlobalDefinitions.ant)
+  private val terminal    = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
+  private val silo        = new ResourceSilo()
+  private val avatarProbe = new TestProbe(system)
+  private val catchall    = new TestProbe(system).ref
+  private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def AvatarEvents = avatarProbe.ref
-    override def LocalEvents = catchall
+    override def AvatarEvents  = avatarProbe.ref
+    override def LocalEvents   = catchall
     override def VehicleEvents = catchall
-    override def Activity = catchall
-    override def Vehicles = List(ant)
+    override def Activity      = catchall
+    override def Vehicles      = List(ant)
     override def Buildings = { buildingMap.toMap }
   }
-private val building = new Building(
+  private val building = new Building(
     name = "integ-fac-test-building",
     building_guid = 6,
     map_id = 0,
@@ -197,7 +203,7 @@ private val building = new Building(
   guid.register(silo, number = 5)
   guid.register(building, number = 6)
 
-private val maxNtuCap = ant.Definition.MaxNtuCapacitor
+  private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   player.Spawn()
   ant.NtuCapacitor = maxNtuCap
   ant.Definition.Initialize(ant, context)
@@ -219,12 +225,12 @@ private val maxNtuCap = ant.Definition.MaxNtuCapacitor
       assert(terminal.Health == 0)
       assert(terminal.Destroyed)
       avatarProbe.expectNoMessage(max = 1000 milliseconds) //nothing
-      silo.Actor ! CommonMessages.Use(player) //then ...
+      silo.Actor ! CommonMessages.Use(player)              //then ...
 
       avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       assert(terminal.Health < terminal.MaxHealth)
       var i = 0 //safety counter
-      while(terminal.Health < terminal.MaxHealth && i < 1000) {
+      while (terminal.Health < terminal.MaxHealth && i < 1000) {
         i += 1
         avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       }
@@ -233,9 +239,9 @@ private val maxNtuCap = ant.Definition.MaxNtuCapacitor
       assert(ntuAfterRepairs < maxNtuCap)
       assert(terminal.Health == terminal.MaxHealth)
       assert(!terminal.Destroyed)
-      if(silo.NtuCapacitor < maxNtuCap) {
+      if (silo.NtuCapacitor < maxNtuCap) {
         var j = 0 //safety counter
-        while(silo.NtuCapacitor < silo.MaxNtuCapacitor && j < 1000) {
+        while (silo.NtuCapacitor < silo.MaxNtuCapacitor && j < 1000) {
           j += 1
           avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
         }
@@ -252,26 +258,28 @@ class AutoRepairFacilityIntegrationTerminalDestroyedTerminalAntTest extends Free
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-private var buildingMap = new TrieMap[Int, Building]()
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val ant = Vehicle(GlobalDefinitions.ant)
-private val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
-private val silo = new ResourceSilo()
-private val avatarProbe = new TestProbe(system)
-private val catchall = new TestProbe(system).ref
-private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+  private var buildingMap = new TrieMap[Int, Building]()
+  private val guid        = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
+  private val weapon      = new Tool(GlobalDefinitions.suppressor)
+  private val ant         = Vehicle(GlobalDefinitions.ant)
+  private val terminal    = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
+  private val silo        = new ResourceSilo()
+  private val avatarProbe = new TestProbe(system)
+  private val catchall    = new TestProbe(system).ref
+  private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def AvatarEvents = avatarProbe.ref
-    override def LocalEvents = catchall
+    override def AvatarEvents  = avatarProbe.ref
+    override def LocalEvents   = catchall
     override def VehicleEvents = catchall
-    override def Activity = catchall
-    override def Vehicles = List(ant)
+    override def Activity      = catchall
+    override def Vehicles      = List(ant)
     override def Buildings = { buildingMap.toMap }
   }
-private val building = new Building(
+  private val building = new Building(
     name = "integ-fac-test-building",
     building_guid = 6,
     map_id = 0,
@@ -291,7 +299,7 @@ private val building = new Building(
   guid.register(building, number = 6)
   guid.register(weapon.AmmoSlot.Box, number = 7)
 
-private val maxNtuCap = ant.Definition.MaxNtuCapacitor
+  private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   player.Spawn()
   ant.NtuCapacitor = maxNtuCap
   ant.Definition.Initialize(ant, context)
@@ -305,12 +313,12 @@ private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   silo.Actor = system.actorOf(Props(classOf[ResourceSiloControl], silo), "test-silo")
   silo.Actor ! "startup"
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -319,7 +327,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate upon destruction and trade NTU from the silo only when NTU is made available from an ANT" in {
@@ -328,15 +336,15 @@ private val applyDamageTo = resolved.calculate()
       assert(!terminal.Destroyed)
       avatarProbe.expectNoMessage(max = 1000 milliseconds) //nothing
       terminal.Actor ! Vitality.Damage(applyDamageTo)
-      while(avatarProbe.receiveOne(max = 1000 milliseconds) != null) { /* health loss event(s) + state updates */ }
+      while (avatarProbe.receiveOne(max = 1000 milliseconds) != null) { /* health loss event(s) + state updates */ }
       assert(terminal.Destroyed)
       avatarProbe.expectNoMessage(max = 1000 milliseconds) //nothing
-      silo.Actor ! CommonMessages.Use(player) //then ...
+      silo.Actor ! CommonMessages.Use(player)              //then ...
 
       avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       assert(terminal.Health < terminal.MaxHealth)
       var i = 0 //safety counter
-      while(terminal.Health < terminal.MaxHealth && i < 1000) {
+      while (terminal.Health < terminal.MaxHealth && i < 1000) {
         i += 1
         avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       }
@@ -354,26 +362,28 @@ class AutoRepairFacilityIntegrationTerminalIncompleteRepairTest extends FreedCon
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-private var buildingMap = new TrieMap[Int, Building]()
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val ant = Vehicle(GlobalDefinitions.ant)
-private val terminal = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
-private val silo = new ResourceSilo()
-private val avatarProbe = new TestProbe(system)
-private val catchall = new TestProbe(system).ref
-private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
+  private var buildingMap = new TrieMap[Int, Building]()
+  private val guid        = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
+  private val weapon      = new Tool(GlobalDefinitions.suppressor)
+  private val ant         = Vehicle(GlobalDefinitions.ant)
+  private val terminal    = new Terminal(AutoRepairIntegrationTest.slow_terminal_definition)
+  private val silo        = new ResourceSilo()
+  private val avatarProbe = new TestProbe(system)
+  private val catchall    = new TestProbe(system).ref
+  private val zone = new Zone("test", new ZoneMap("test-map"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def AvatarEvents = avatarProbe.ref
-    override def LocalEvents = catchall
+    override def AvatarEvents  = avatarProbe.ref
+    override def LocalEvents   = catchall
     override def VehicleEvents = catchall
-    override def Activity = catchall
-    override def Vehicles = List(ant)
+    override def Activity      = catchall
+    override def Vehicles      = List(ant)
     override def Buildings = { buildingMap.toMap }
   }
-private val building = new Building(
+  private val building = new Building(
     name = "integ-fac-test-building",
     building_guid = 6,
     map_id = 0,
@@ -393,7 +403,7 @@ private val building = new Building(
   guid.register(building, number = 6)
   guid.register(weapon.AmmoSlot.Box, number = 7)
 
-private val maxNtuCap = ant.Definition.MaxNtuCapacitor
+  private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   player.Spawn()
   ant.NtuCapacitor = maxNtuCap
   ant.Definition.Initialize(ant, context)
@@ -407,12 +417,12 @@ private val maxNtuCap = ant.Definition.MaxNtuCapacitor
   silo.Actor = system.actorOf(Props(classOf[ResourceSiloControl], silo), "test-silo")
   silo.Actor ! "startup"
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -421,7 +431,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate and trade NTU from the silo; if the ANT stops depositing, auto-repair continues" in {
@@ -430,35 +440,35 @@ private val applyDamageTo = resolved.calculate()
       assert(!terminal.Destroyed)
       avatarProbe.expectNoMessage(max = 1000 milliseconds) //nothing
       terminal.Actor ! Vitality.Damage(applyDamageTo)
-      while(avatarProbe.receiveOne(max = 1000 milliseconds) != null) { /* health loss event(s) + state updates */ }
+      while (avatarProbe.receiveOne(max = 1000 milliseconds) != null) { /* health loss event(s) + state updates */ }
       assert(terminal.Destroyed)
       avatarProbe.expectNoMessage(max = 1000 milliseconds) //nothing
-      silo.Actor ! CommonMessages.Use(player) //then ...
+      silo.Actor ! CommonMessages.Use(player)              //then ...
 
       avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       assert(terminal.Health < terminal.MaxHealth)
       var i = 0 //safety counter
-      while(terminal.Health < terminal.MaxHealth && i < 10) {
+      while (terminal.Health < terminal.MaxHealth && i < 10) {
         i += 1
         avatarProbe.receiveOne(max = 1000 milliseconds) //some health update events ...
       }
       ant.Actor ! Deployment.TryUndeploy(DriveState.Undeploying)
       ant.Actor ! Deployment.TryUndeploy(DriveState.Mobile)
-      while( avatarProbe.receiveOne(max = 1000 milliseconds) != null ) { /* remainder of the messages */ }
+      while (avatarProbe.receiveOne(max = 1000 milliseconds) != null) { /* remainder of the messages */ }
       val siloCapacitor = silo.NtuCapacitor
-      val antCapacitor = ant.NtuCapacitor
-      val termHealth = terminal.Health
+      val antCapacitor  = ant.NtuCapacitor
+      val termHealth    = terminal.Health
       assert(ant.DeploymentState == DriveState.Mobile)
       assert(siloCapacitor > 0 && siloCapacitor < silo.MaxNtuCapacitor)
       assert(antCapacitor > 0 && antCapacitor < maxNtuCap)
       assert(termHealth > 0 && termHealth < terminal.MaxHealth)
-      while(terminal.Health < terminal.MaxHealth && i < 20) {
+      while (terminal.Health < terminal.MaxHealth && i < 20) {
         i += 1
         avatarProbe.receiveOne(max = 1000 milliseconds) //some health update events ...
       }
       //while( avatarProbe.receiveOne(max = 1000 milliseconds) != null ) { /* remainder of the messages */ }
-      assert(siloCapacitor != silo.NtuCapacitor) //changing ...
-      assert(antCapacitor == ant.NtuCapacitor) //not supplying anymore
+      assert(siloCapacitor != silo.NtuCapacitor)                                    //changing ...
+      assert(antCapacitor == ant.NtuCapacitor)                                      //not supplying anymore
       assert(terminal.Health > termHealth && terminal.Health <= terminal.MaxHealth) //still auto-repairing
       println(s"Test '${testNames.head}' successful.")
     }
@@ -470,24 +480,27 @@ class AutoRepairTowerIntegrationTest extends FreedContextActorTest {
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val avatarProbe = new TestProbe(system)
-private val catchall = new TestProbe(system).ref
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val guid        = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val avatarProbe = new TestProbe(system)
+  private val catchall    = new TestProbe(system).ref
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
-    override def AvatarEvents = avatarProbe.ref
-    override def LocalEvents = catchall
+    override def AvatarEvents  = avatarProbe.ref
+    override def LocalEvents   = catchall
     override def VehicleEvents = catchall
-    override def Activity = catchall
+    override def Activity      = catchall
   }
-private val building = Building.Structure(StructureType.Tower)(name = "integ-twr-test-building", guid = 6, map_id = 0, zone, context)
+  private val building =
+    Building.Structure(StructureType.Tower)(name = "integ-twr-test-building", guid = 6, map_id = 0, zone, context)
   building.Invalidate()
 
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definition)
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   guid.register(player, number = 1)
   guid.register(weapon, number = 2)
@@ -497,14 +510,14 @@ private val terminal = new Terminal(AutoRepairIntegrationTest.terminal_definitio
 
   building.Amenities = terminal
   building.Actor ! BuildingActor.SuppliedWithNtu() //artificial
-  building.Actor ! BuildingActor.PowerOn() //artificial
+  building.Actor ! BuildingActor.PowerOn()         //artificial
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     SourceEntry(terminal),
     ProjectileReason(
       DamageResolution.Hit,
@@ -513,7 +526,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "should activate on damage and trade NTU from the tower for repairs" in {
@@ -523,7 +536,7 @@ private val applyDamageTo = resolved.calculate()
       avatarProbe.receiveOne(max = 500 milliseconds) //health update event
       assert(terminal.Health < terminal.MaxHealth)
       var i = 0 //safety counter
-      while(terminal.Health < terminal.MaxHealth && i < 100) {
+      while (terminal.Health < terminal.MaxHealth && i < 100) {
         i += 1
         avatarProbe.receiveOne(max = 1000 milliseconds) //health update event
       }
@@ -533,7 +546,7 @@ private val applyDamageTo = resolved.calculate()
 }
 
 object AutoRepairIntegrationTest {
-private val terminal_definition = new OrderTerminalDefinition(objId = 612) {
+  val terminal_definition = new OrderTerminalDefinition(objId = 612) {
     Name = "order_terminal"
     MaxHealth = 500
     Damageable = true
@@ -542,7 +555,7 @@ private val terminal_definition = new OrderTerminalDefinition(objId = 612) {
     RepairIfDestroyed = true
   }
 
-private val slow_terminal_definition = new OrderTerminalDefinition(objId = 612) {
+  val slow_terminal_definition = new OrderTerminalDefinition(objId = 612) {
     Name = "order_terminal"
     MaxHealth = 500
     Damageable = true
