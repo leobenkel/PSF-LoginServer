@@ -17,6 +17,7 @@ import net.psforever.objects.vital.base.DamageResolution
 import net.psforever.objects.vital.damage.DamageProfile
 import net.psforever.objects.vital.interaction.DamageInteraction
 import net.psforever.objects.vital.projectile.ProjectileReason
+import net.psforever.objects.vital.resolution.ResolutionCalculations.Output
 import net.psforever.objects.zones.{Zone, ZoneMap}
 import net.psforever.objects.{GlobalDefinitions, Player, Tool}
 import net.psforever.services.ServiceManager
@@ -26,16 +27,18 @@ import scala.concurrent.duration._
 
 class AutoRepairRequestNtuTest extends FreedContextActorTest {
   ServiceManager.boot
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairTest.terminal_definition)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairTest.terminal_definition)
+  private val guid     = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-private val avatarProbe = new TestProbe(system)
+  private val avatarProbe = new TestProbe(system)
   zone.AvatarEvents = avatarProbe.ref
 
   guid.register(player, number = 1)
@@ -43,21 +46,21 @@ private val avatarProbe = new TestProbe(system)
   guid.register(weapon.AmmoSlot.Box, number = 3)
   guid.register(terminal, number = 4)
 
-private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
+  private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
   building.Invalidate()
   guid.register(building, number = 6)
-private val buildingProbe = new TestProbe(system)
+  private val buildingProbe = new TestProbe(system)
   building.Actor = buildingProbe.ref
   building.Zone = zone
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   terminal.Owner = building
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     DamageResolution.Hit,
     SourceEntry(terminal),
     ProjectileReason(
@@ -67,7 +70,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo: Output = resolved.calculate()
 
   "AutoRepair" should {
     "asks owning building for NTU after damage" in {
@@ -87,16 +90,18 @@ private val applyDamageTo = resolved.calculate()
 
 class AutoRepairRequestNtuRepeatTest extends FreedContextActorTest {
   ServiceManager.boot
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairTest.terminal_definition)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairTest.terminal_definition)
+  private val guid     = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-private val avatarProbe = new TestProbe(system)
+  private val avatarProbe = new TestProbe(system)
   zone.AvatarEvents = avatarProbe.ref
 
   guid.register(player, number = 1)
@@ -104,21 +109,21 @@ private val avatarProbe = new TestProbe(system)
   guid.register(weapon.AmmoSlot.Box, number = 3)
   guid.register(terminal, number = 4)
 
-private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
+  private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
   building.Invalidate()
   guid.register(building, number = 6)
-private val buildingProbe = new TestProbe(system)
+  private val buildingProbe = new TestProbe(system)
   building.Actor = buildingProbe.ref
   building.Zone = zone
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   terminal.Owner = building
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     DamageResolution.Hit,
     SourceEntry(terminal),
     ProjectileReason(
@@ -128,7 +133,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "repeatedly asks owning building for NTU after damage" in {
@@ -151,16 +156,18 @@ private val applyDamageTo = resolved.calculate()
 
 class AutoRepairNoRequestNtuTest extends FreedContextActorTest {
   ServiceManager.boot
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairTest.terminal_definition)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairTest.terminal_definition)
+  private val guid     = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-private val avatarProbe = new TestProbe(system)
+  private val avatarProbe = new TestProbe(system)
   zone.AvatarEvents = avatarProbe.ref
 
   guid.register(player, number = 1)
@@ -168,21 +175,21 @@ private val avatarProbe = new TestProbe(system)
   guid.register(weapon.AmmoSlot.Box, number = 3)
   guid.register(terminal, number = 4)
 
-private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
+  private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
   building.Invalidate()
   guid.register(building, number = 6)
-private val buildingProbe = new TestProbe(system)
+  private val buildingProbe = new TestProbe(system)
   building.Actor = buildingProbe.ref
   building.Zone = zone
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   terminal.Owner = building
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     DamageResolution.Hit,
     SourceEntry(terminal),
     ProjectileReason(
@@ -192,7 +199,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "not ask for NTU after damage if it expects no NTU" in {
@@ -209,16 +216,18 @@ private val applyDamageTo = resolved.calculate()
 
 class AutoRepairRestoreRequestNtuTest extends FreedContextActorTest {
   ServiceManager.boot
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairTest.terminal_definition)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairTest.terminal_definition)
+  private val guid     = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-private val avatarProbe = new TestProbe(system)
+  private val avatarProbe = new TestProbe(system)
   zone.AvatarEvents = avatarProbe.ref
 
   guid.register(player, number = 1)
@@ -226,21 +235,21 @@ private val avatarProbe = new TestProbe(system)
   guid.register(weapon.AmmoSlot.Box, number = 3)
   guid.register(terminal, number = 4)
 
-private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
+  private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
   building.Invalidate()
   guid.register(building, number = 6)
-private val buildingProbe = new TestProbe(system)
+  private val buildingProbe = new TestProbe(system)
   building.Actor = buildingProbe.ref
   building.Zone = zone
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   terminal.Owner = building
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     DamageResolution.Hit,
     SourceEntry(terminal),
     ProjectileReason(
@@ -250,7 +259,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "ask for NTU after damage if its expectation of NTU is restored" in {
@@ -266,7 +275,7 @@ private val applyDamageTo = resolved.calculate()
       val buildingMsg = buildingProbe.receiveOne(max = 600 milliseconds)
       assert(buildingMsg match {
         case BuildingActor.Ntu(NtuCommand.Request(_, _)) => true
-        case _                                               => false
+        case _                                           => false
       })
     }
   }
@@ -274,16 +283,18 @@ private val applyDamageTo = resolved.calculate()
 
 class AutoRepairRepairWithNtuTest extends FreedContextActorTest {
   ServiceManager.boot
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairTest.terminal_definition)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairTest.terminal_definition)
+  private val guid     = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-private val avatarProbe = new TestProbe(system)
+  private val avatarProbe = new TestProbe(system)
   zone.AvatarEvents = avatarProbe.ref
 
   guid.register(player, number = 1)
@@ -291,21 +302,21 @@ private val avatarProbe = new TestProbe(system)
   guid.register(weapon.AmmoSlot.Box, number = 3)
   guid.register(terminal, number = 4)
 
-private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
+  private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
   building.Invalidate()
   guid.register(building, number = 6)
-private val buildingProbe = new TestProbe(system)
+  private val buildingProbe = new TestProbe(system)
   building.Actor = buildingProbe.ref
   building.Zone = zone
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   terminal.Owner = building
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     DamageResolution.Hit,
     SourceEntry(terminal),
     ProjectileReason(
@@ -315,7 +326,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "repair some of the damage when it receives NTU" in {
@@ -336,16 +347,18 @@ private val applyDamageTo = resolved.calculate()
 
 class AutoRepairRepairWithNtuUntilDoneTest extends FreedContextActorTest {
   ServiceManager.boot
-private val player = Player(Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute))
+  private val player = Player(
+    Avatar(0, "TestCharacter", PlanetSideEmpire.TR, CharacterSex.Male, 0, CharacterVoice.Mute)
+  )
   player.Spawn()
-private val weapon = new Tool(GlobalDefinitions.suppressor)
-private val terminal = new Terminal(AutoRepairTest.terminal_definition)
-private val guid = new NumberPoolHub(new MaxNumberSource(max = 10))
-private val zone = new Zone("test", new ZoneMap("test"), 0) {
+  private val weapon   = new Tool(GlobalDefinitions.suppressor)
+  private val terminal = new Terminal(AutoRepairTest.terminal_definition)
+  private val guid     = new NumberPoolHub(new MaxNumberSource(max = 10))
+  private val zone = new Zone("test", new ZoneMap("test"), 0) {
     override def SetupNumberPools() = {}
     GUID(guid)
   }
-private val avatarProbe = new TestProbe(system)
+  private val avatarProbe = new TestProbe(system)
   zone.AvatarEvents = avatarProbe.ref
 
   guid.register(player, number = 1)
@@ -353,21 +366,21 @@ private val avatarProbe = new TestProbe(system)
   guid.register(weapon.AmmoSlot.Box, number = 3)
   guid.register(terminal, number = 4)
 
-private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
+  private val building = Building("test-building", 1, 1, zone, StructureType.Facility)
   building.Invalidate()
   guid.register(building, number = 6)
-private val buildingProbe = new TestProbe(system)
+  private val buildingProbe = new TestProbe(system)
   building.Actor = buildingProbe.ref
   building.Zone = zone
   terminal.Actor = context.actorOf(Props(classOf[TerminalControl], terminal), name = "test-terminal")
   terminal.Owner = building
 
-private val wep_fmode  = weapon.FireMode
-private val wep_prof   = wep_fmode.Add
-private val proj       = weapon.Projectile
-private val proj_prof  = proj.asInstanceOf[DamageProfile]
-private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
-private val resolved = DamageInteraction(
+  private val wep_fmode  = weapon.FireMode
+  private val wep_prof   = wep_fmode.Add
+  private val proj       = weapon.Projectile
+  private val proj_prof  = proj.asInstanceOf[DamageProfile]
+  private val projectile = Projectile(proj, weapon.Definition, wep_fmode, player, Vector3(2, 0, 0), Vector3.Zero)
+  private val resolved = DamageInteraction(
     DamageResolution.Hit,
     SourceEntry(terminal),
     ProjectileReason(
@@ -377,7 +390,7 @@ private val resolved = DamageInteraction(
     ),
     Vector3(1, 0, 0)
   )
-private val applyDamageTo = resolved.calculate()
+  private val applyDamageTo = resolved.calculate()
 
   "AutoRepair" should {
     "ask for NTU after damage and repair some of the damage when it receives NTU, until fully-repaired" in {
@@ -387,7 +400,7 @@ private val applyDamageTo = resolved.calculate()
       avatarProbe.receiveOne(max = 200 milliseconds) //health update event
       assert(terminal.Health < terminal.MaxHealth)
       var i = 0
-      while(terminal.Health < terminal.MaxHealth && i < 100) {
+      while (terminal.Health < terminal.MaxHealth && i < 100) {
         i += 1 //safety counter
         val buildingMsg = buildingProbe.receiveOne(max = 1000 milliseconds)
         buildingMsg match {
@@ -402,7 +415,7 @@ private val applyDamageTo = resolved.calculate()
 }
 
 object AutoRepairTest {
-private val terminal_definition = new OrderTerminalDefinition(objId = 612) {
+  val terminal_definition: OrderTerminalDefinition = new OrderTerminalDefinition(objId = 612) {
     Name = "order_terminal"
     MaxHealth = 500
     Damageable = true

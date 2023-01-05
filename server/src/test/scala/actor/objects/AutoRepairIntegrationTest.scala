@@ -27,9 +27,9 @@ import net.psforever.types._
 
 import scala.collection.concurrent.TrieMap
 import scala.concurrent.duration._
+import akka.actor.typed.scaladsl.adapter._
 
 class AutoRepairFacilityIntegrationTest extends FreedContextActorTest {
-  import akka.actor.typed.scaladsl.adapter._
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
@@ -105,7 +105,6 @@ class AutoRepairFacilityIntegrationTest extends FreedContextActorTest {
 }
 
 class AutoRepairFacilityIntegrationGiveNtuTest extends FreedContextActorTest {
-  import akka.actor.typed.scaladsl.adapter._
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
@@ -358,7 +357,6 @@ class AutoRepairFacilityIntegrationTerminalDestroyedTerminalAntTest extends Free
 }
 
 class AutoRepairFacilityIntegrationTerminalIncompleteRepairTest extends FreedContextActorTest {
-  import akka.actor.typed.scaladsl.adapter._
   system.spawn(InterstellarClusterService(Nil), InterstellarClusterService.InterstellarClusterServiceKey.id)
   ServiceManager.boot(system) ! ServiceManager.Register(Props[GalaxyService](), "galaxy")
   expectNoMessage(1000 milliseconds)
