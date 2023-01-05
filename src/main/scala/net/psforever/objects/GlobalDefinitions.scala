@@ -788,7 +788,7 @@ object GlobalDefinitions {
 
   val bank = ToolDefinition(ObjectClass.bank)
 
-  private val boomer_trigger = SimpleItemDefinition(SItem.boomer_trigger)
+  val boomer_trigger = SimpleItemDefinition(SItem.boomer_trigger)
 
   val remote_electronics_kit = SimpleItemDefinition(SItem.remote_electronics_kit)
 
@@ -1145,27 +1145,27 @@ object GlobalDefinitions {
   private val router_telepad_deployable = TelepadDeployableDefinition(DeployedItem.router_telepad_deployable)
 
   //this is only treated like a deployable
-  private val internal_router_telepad_deployable = InternalTelepadDefinition() //objectId: 744
+  val internal_router_telepad_deployable = InternalTelepadDefinition() //objectId: 744
   init_deployables()
 
   /*
   Miscellaneous
    */
-  private val ams_respawn_tube = new SpawnTubeDefinition(49)
+  val ams_respawn_tube = new SpawnTubeDefinition(49)
 
   private val matrix_terminala = new MatrixTerminalDefinition(517)
 
   private val matrix_terminalb = new MatrixTerminalDefinition(518)
 
-  private val matrix_terminalc = new MatrixTerminalDefinition(519)
+  val matrix_terminalc = new MatrixTerminalDefinition(519)
 
   private val spawn_terminal = new MatrixTerminalDefinition(812)
 
   private val order_terminal = new OrderTerminalDefinition(612)
 
-  private val order_terminala = new OrderTerminalDefinition(613)
+  val order_terminala = new OrderTerminalDefinition(613)
 
-  private val order_terminalb = new OrderTerminalDefinition(614)
+  val order_terminalb = new OrderTerminalDefinition(614)
 
   private val vanu_equipment_term = new OrderTerminalDefinition(933)
 
@@ -1257,7 +1257,7 @@ object GlobalDefinitions {
   private val capture_flag = new CaptureFlagDefinition()
   capture_flag.Packet = new CaptureFlagConverter
 
-  private val lodestar_repair_terminal = new MedicalTerminalDefinition(461)
+  val lodestar_repair_terminal = new MedicalTerminalDefinition(461)
 
   val multivehicle_rearm_terminal = new OrderTerminalDefinition(576)
 

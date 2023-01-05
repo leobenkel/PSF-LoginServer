@@ -11,12 +11,10 @@ import net.psforever.objects.vital.interaction.DamageResult
   * This includes the Galaxy (`dropship`) and the Lodestar.
   * @param vehicle the vehicle
   */
-class CargoCarrierControl(vehicle: Vehicle)
-  extends VehicleControl(vehicle)
-    with CarrierBehavior {
+class CargoCarrierControl(vehicle: Vehicle) extends VehicleControl(vehicle) with CarrierBehavior {
   def CarrierObject = vehicle
 
-  override def postStop() : Unit = {
+  override def postStop(): Unit = {
     super.postStop()
     endAllCarrierOperations()
   }
@@ -27,10 +25,10 @@ class CargoCarrierControl(vehicle: Vehicle)
     * If the vehicle becomes disabled, the safety and autonomy of the cargo should be prioritized.
     * @param kickPassengers passengers need to be ejected "by force"
     */
-  override def PrepareForDisabled(kickPassengers: Boolean) : Unit = {
+  override def PrepareForDisabled(kickPassengers: Boolean): Unit = {
     //abandon all cargo
     vehicle.CargoHolds.collect {
-      case (index, hold : Cargo) if hold.isOccupied =>
+      case (index, hold: Cargo) if hold.isOccupied =>
         val cargo = hold.occupant.get
         checkCargoDismount(cargo.GUID, index, iteration = 0, bailed = false)
         super.PrepareForDisabled(kickPassengers)
@@ -47,8 +45,8 @@ class CargoCarrierControl(vehicle: Vehicle)
   override protected def DamageAwareness(target: Damageable.Target, cause: DamageResult, amount: Any): Unit = {
     val report = amount match {
       case (a: Int, b: Int) => a + b
-      case a: Int => a
-      case _ => 0
+      case a: Int           => a
+      case _                => 0
     }
     val announceConfrontation: Boolean = reportDamageToVehicle || report > 0
     super.DamageAwareness(target, cause, amount)
@@ -57,7 +55,7 @@ class CargoCarrierControl(vehicle: Vehicle)
       vehicle.CargoHolds.values.foreach(hold => {
         hold.occupant match {
           case Some(cargo) => cargo.Actor ! DamageableVehicle.Damage(cause, report)
-          case None => ;
+          case None        => ;
         }
       })
     }
@@ -77,7 +75,7 @@ class CargoCarrierControl(vehicle: Vehicle)
     vehicle.CargoHolds.values.foreach { hold =>
       hold.occupant match {
         case Some(cargo) => cargo.Actor ! DamageableVehicle.Destruction(cause)
-        case None => ;
+        case None        => ;
       }
     }
   }

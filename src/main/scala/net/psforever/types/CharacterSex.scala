@@ -3,6 +3,7 @@ package net.psforever.types
 
 import enumeratum.values.{IntEnum, IntEnumEntry}
 import net.psforever.packet.PacketHelpers
+import scodec.Codec
 import scodec.codecs.uint2L
 
 /**
@@ -41,5 +42,5 @@ private val values = findValues
     override def possessiveNoObject: String = "hers"
   }
 
-  implicit val codec = PacketHelpers.createIntEnumCodec(enum = this, uint2L)
+  implicit val codec: Codec[CharacterSex] = PacketHelpers.createIntEnumCodec(enum = this, uint2L)
 }

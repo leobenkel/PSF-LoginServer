@@ -1,6 +1,7 @@
 // Copyright (c) 2019 PSForever
 package net.psforever.types
 
+import scodec.Codec
 import scodec.codecs._
 
 /**
@@ -85,5 +86,5 @@ object SquadWaypoint {
   /** the squad experience bonus rally */
   case object ExperienceRally extends StandardWaypoint(value = 4)
 
-  implicit val codec = uint8L.xmap[SquadWaypoint](n => apply(n), waypoint => waypoint.value)
+  implicit val codec: Codec[SquadWaypoint] = uint8L.xmap[SquadWaypoint](n => apply(n), waypoint => waypoint.value)
 }

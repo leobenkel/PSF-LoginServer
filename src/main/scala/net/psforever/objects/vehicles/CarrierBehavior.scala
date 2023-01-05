@@ -47,7 +47,7 @@ trait CarrierBehavior {
     isDismounting = None
   }
 
-private val carrierBehavior: Receive = {
+protected val carrierBehavior: Receive = {
     case CarrierBehavior.CheckCargoMounting(cargo_guid, mountPoint, iteration) =>
       checkCargoMounting(cargo_guid, mountPoint, iteration)
 

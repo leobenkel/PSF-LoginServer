@@ -29,7 +29,7 @@ class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends
   // val servicesToResolve = Array("cluster")
   private var buffer = ByteString()
 
-  implicit val formats = DefaultFormats // for JSON serialization
+  implicit val formats: DefaultFormats.type = DefaultFormats // for JSON serialization
 
   case class CommandCall(operation: String, args: Array[String])
 
@@ -38,7 +38,7 @@ class PsAdminActor(peerAddress: InetSocketAddress, connection: ActorRef) extends
     context.self
   )
 
-  override def preStart() = {
+  override def preStart(): Unit = {
     log.trace(s"PsAdmin connection started $peerAddress")
   }
 

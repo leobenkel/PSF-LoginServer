@@ -2,6 +2,7 @@
 package net.psforever.types
 
 import net.psforever.packet.PacketHelpers
+import scodec.Codec
 import scodec.codecs._
 
 object CargoStatus extends Enumeration {
@@ -12,5 +13,5 @@ object CargoStatus extends Enumeration {
   private val UNK1       = Value(2) // to have Xtoolspar working
   val Occupied   = Value(3)
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint4L)
+  implicit val codec: Codec[CargoStatus.Value] = PacketHelpers.createEnumerationCodec(this, uint4L)
 }

@@ -14,7 +14,7 @@ object ImplantAction extends Enumeration {
 
   val Add, Remove, Initialization, Activation, UnlockMessage, OutOfStamina = Value
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uintL(3))
+  implicit val codec: Codec[ImplantAction.Value] = PacketHelpers.createEnumerationCodec(this, uintL(3))
 }
 
 /**

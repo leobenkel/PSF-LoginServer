@@ -5,5 +5,5 @@ import net.psforever.packet.PacketHelpers
 import scodec.codecs.ulongL
 
 object DataChallenge {
-private val codec = PacketHelpers.encodedString :: ulongL(bits = 32)
+  val codec = PacketHelpers.encodedString :: ulongL(bits = 32)
 }

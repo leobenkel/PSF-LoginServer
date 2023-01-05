@@ -1,9 +1,11 @@
 // Copyright (c) 2017 PSForever
 package net.psforever.packet.game
 
+import net.psforever.packet.GamePacketOpcode.Type
 import net.psforever.packet.{GamePacketOpcode, Marshallable, PlanetSideGamePacket}
 import net.psforever.types.{Angular, PlanetSideGUID, Vector3}
-import scodec.Codec
+import scodec.bits.BitVector
+import scodec.{Attempt, Codec}
 import scodec.codecs._
 import shapeless.{::, HNil}
 
@@ -22,8 +24,8 @@ import shapeless.{::, HNil}
 final case class DeployObjectMessage(object_guid: PlanetSideGUID, unk1: Long, pos: Vector3, orient: Vector3, unk2: Long)
     extends PlanetSideGamePacket {
   type Packet = DeployObjectMessage
-  def opcode = GamePacketOpcode.DeployObjectMessage
-  def encode = DeployObjectMessage.encode(this)
+  def opcode: Type = GamePacketOpcode.DeployObjectMessage
+  def encode: Attempt[BitVector] = DeployObjectMessage.encode(this)
 }
 
 object DeployObjectMessage extends Marshallable[DeployObjectMessage] {

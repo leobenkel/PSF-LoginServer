@@ -1,12 +1,8 @@
 // Copyright (c) 2017 PSForever
 package net.psforever.packet.game
 
-import net.psforever.packet.game.objectcreate.{
-  ConstructorData,
-  ObjectClass,
-  ObjectCreateBase,
-  ObjectCreateMessageParent
-}
+import net.psforever.packet.GamePacketOpcode.Type
+import net.psforever.packet.game.objectcreate.{ConstructorData, ObjectClass, ObjectCreateBase, ObjectCreateMessageParent}
 import net.psforever.packet.{GamePacketOpcode, Marshallable, PlanetSideGamePacket}
 import net.psforever.types.PlanetSideGUID
 import scodec.bits.BitVector
@@ -49,8 +45,8 @@ final case class ObjectCreateDetailedMessage(
     data: ConstructorData
 ) extends PlanetSideGamePacket {
   type Packet = ObjectCreateDetailedMessage
-  def opcode = GamePacketOpcode.ObjectCreateMessage
-  def encode = ObjectCreateDetailedMessage.encode(this)
+  def opcode: Type = GamePacketOpcode.ObjectCreateMessage
+  def encode: Attempt[BitVector] = ObjectCreateDetailedMessage.encode(this)
 }
 
 object ObjectCreateDetailedMessage extends Marshallable[ObjectCreateDetailedMessage] {

@@ -2,6 +2,7 @@
 package net.psforever.types
 
 import net.psforever.packet.PacketHelpers
+import scodec.Codec
 import scodec.codecs.uint
 
 /**
@@ -22,5 +23,5 @@ object CharacterVoice extends Enumeration {
   Voice5            //daredevil, calculating
   = Value
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint(3))
+  implicit val codec: Codec[CharacterVoice.Value] = PacketHelpers.createEnumerationCodec(this, uint(3))
 }

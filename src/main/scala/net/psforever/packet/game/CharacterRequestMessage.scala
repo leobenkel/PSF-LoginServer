@@ -10,7 +10,7 @@ object CharacterRequestAction extends Enumeration(0) {
 
   val Select, Delete, Unused, Unknown3 = Value
 
-  implicit val codec = PacketHelpers.createLongEnumerationCodec(this, uint32L)
+  implicit val codec: Codec[CharacterRequestAction.Value] = PacketHelpers.createLongEnumerationCodec(this, uint32L)
 }
 
 /**

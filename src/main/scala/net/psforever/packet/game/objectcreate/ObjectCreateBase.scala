@@ -174,7 +174,7 @@ object ObjectCreateBase {
   /**
     * `Codec` for handling the primary fields of both `ObjectCreateMessage` packets and `ObjectCreateDetailedMessage` packets.
     */
-private val baseCodec: Codec[basePattern] =
+  val baseCodec: Codec[basePattern] =
     ("streamLength" | uint32L) ::
       (either(bool, parent, noParent).exmap[parentPattern](
         {

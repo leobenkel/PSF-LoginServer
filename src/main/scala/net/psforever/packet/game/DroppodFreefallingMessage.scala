@@ -1,10 +1,12 @@
 // Copyright (c) 2020 PSForever
 package net.psforever.packet.game
 
+import net.psforever.packet.GamePacketOpcode.Type
 import net.psforever.packet.{GamePacketOpcode, Marshallable, PlanetSideGamePacket}
 import net.psforever.types.{Angular, PlanetSideGUID, Vector3}
 import scodec.Attempt.Successful
-import scodec.Codec
+import scodec.bits.BitVector
+import scodec.{Attempt, Codec}
 import scodec.codecs._
 import shapeless.{::, HNil}
 
@@ -38,8 +40,8 @@ final case class DroppodFreefallingMessage(
     orientation2: Vector3
 ) extends PlanetSideGamePacket {
   type Packet = DroppodFreefallingMessage
-  def opcode = GamePacketOpcode.DroppodFreefallingMessage
-  def encode = DroppodFreefallingMessage.encode(this)
+  def opcode: Type = GamePacketOpcode.DroppodFreefallingMessage
+  def encode: Attempt[BitVector] = DroppodFreefallingMessage.encode(this)
 }
 
 object DroppodFreefallingMessage extends Marshallable[DroppodFreefallingMessage] {

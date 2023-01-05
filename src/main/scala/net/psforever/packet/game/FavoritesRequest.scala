@@ -11,7 +11,7 @@ object FavoritesAction extends Enumeration {
 
   val Unknown, Save, Delete = Value
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint2L)
+  implicit val codec: Codec[FavoritesAction.Value] = PacketHelpers.createEnumerationCodec(this, uint2L)
 }
 
 /**

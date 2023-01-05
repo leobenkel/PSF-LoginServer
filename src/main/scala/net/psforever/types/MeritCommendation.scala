@@ -1,7 +1,7 @@
 // Copyright (c) 2017 PSForever
 package net.psforever.types
 
-import scodec.{Attempt, Err}
+import scodec.{Attempt, Codec, Err}
 import scodec.codecs._
 
 /**
@@ -149,7 +149,7 @@ object MeritCommendation extends Enumeration {
   /**
     * Carefully and explicitly convert between `Codec[Long] -> Long -> Int -> MeritCommendation.Value`.
     */
-  implicit val codec = uint32L.exmap[MeritCommendation.Value](
+  implicit val codec: Codec[MeritCommendation.Value] = uint32L.exmap[MeritCommendation.Value](
     {
       case 0xffffffffL =>
         Attempt.successful(MeritCommendation.None)

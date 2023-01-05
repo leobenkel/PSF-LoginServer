@@ -151,8 +151,7 @@ object WeaponData extends Marshallable[WeaponData] {
     )
   }
 
-  private def baseCodec(commonFieldCodec: Codec[CommonFieldData]): Codec[WeaponData] =
-    (
+  private def baseCodec(commonFieldCodec: Codec[CommonFieldData]): Codec[WeaponData] = (
       ("data" | commonFieldCodec) ::
         ("fire_mode" | int8) ::
         bool ::

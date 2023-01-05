@@ -158,5 +158,5 @@ object CommonFieldData extends Marshallable[CommonFieldData] {
       }
     )
 
-private val codec2: Codec[CommonFieldData] = codec2(false)
+  private val codec2: Codec[CommonFieldData] = codec2(false)
 }

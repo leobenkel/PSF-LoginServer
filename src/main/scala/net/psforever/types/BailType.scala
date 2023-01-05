@@ -2,6 +2,7 @@
 package net.psforever.types
 
 import net.psforever.packet.PacketHelpers
+import scodec.Codec
 import scodec.codecs._
 
 object BailType extends Enumeration {
@@ -17,5 +18,5 @@ object BailType extends Enumeration {
   private val Unk7 = Value(7) // to have Xtoolspar working
   val Bailed       = Value(8) // User bailed out
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uint4L)
+  implicit val codec: Codec[BailType.Value] = PacketHelpers.createEnumerationCodec(this, uint4L)
 }

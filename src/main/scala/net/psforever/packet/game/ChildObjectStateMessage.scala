@@ -1,9 +1,11 @@
 // Copyright (c) 2017 PSForever
 package net.psforever.packet.game
 
+import net.psforever.packet.GamePacketOpcode.Type
 import net.psforever.packet.{GamePacketOpcode, Marshallable, PlanetSideGamePacket}
 import net.psforever.types.{Angular, PlanetSideGUID}
-import scodec.Codec
+import scodec.bits.BitVector
+import scodec.{Attempt, Codec}
 import scodec.codecs._
 
 /**
@@ -23,8 +25,8 @@ import scodec.codecs._
 final case class ChildObjectStateMessage(object_guid: PlanetSideGUID, pitch: Float, yaw: Float)
     extends PlanetSideGamePacket {
   type Packet = ChildObjectStateMessage
-  def opcode = GamePacketOpcode.ChildObjectStateMessage
-  def encode = ChildObjectStateMessage.encode(this)
+  def opcode: Type               = GamePacketOpcode.ChildObjectStateMessage
+  def encode: Attempt[BitVector] = ChildObjectStateMessage.encode(this)
 }
 
 object ChildObjectStateMessage extends Marshallable[ChildObjectStateMessage] {

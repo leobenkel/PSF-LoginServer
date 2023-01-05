@@ -2,6 +2,7 @@
 package net.psforever.types
 
 import net.psforever.packet.PacketHelpers
+import scodec.Codec
 import scodec.codecs._
 
 /**
@@ -12,5 +13,5 @@ object PlanetSideGeneratorState extends Enumeration {
 
   val Normal, Critical, Destroyed, Unk3 = Value
 
-  implicit val codec = PacketHelpers.createEnumerationCodec(this, uintL(2))
+  implicit val codec: Codec[PlanetSideGeneratorState.Value] = PacketHelpers.createEnumerationCodec(this, uintL(2))
 }
